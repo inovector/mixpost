@@ -1,0 +1,76 @@
+{
+    "name": "lao9s/mixpost",
+    "description": "Laravel marketing platform for Social Network",
+    "keywords": [
+        "lao9s",
+        "laravel",
+        "mixpost"
+    ],
+    "homepage": "https://github.com/lao9s/mixpost",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dumitru Botezatu",
+            "email": "dima.botezatu@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "illuminate/contracts": "^9.0",
+        "inertiajs/inertia-laravel": "^0.6.3",
+        "spatie/laravel-package-tools": "^1.9.2",
+        "tightenco/ziggy": "1.*"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.0",
+        "nunomaduro/collision": "^6.0",
+        "nunomaduro/larastan": "^2.0.1",
+        "orchestra/testbench": "^7.0",
+        "pestphp/pest": "^1.21",
+        "pestphp/pest-plugin-laravel": "^1.1",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan-deprecation-rules": "^1.0",
+        "phpstan/phpstan-phpunit": "^1.0",
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lao9s\\Mixpost\\": "src",
+            "Lao9s\\Mixpost\\Database\\Factories\\": "database/factories"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lao9s\\Mixpost\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "analyse": "vendor/bin/phpstan analyse",
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage",
+        "format": "vendor/bin/pint"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Lao9s\\Mixpost\\MixpostServiceProvider"
+            ],
+            "aliases": {
+                "Mixpost": "Lao9s\\Mixpost\\Facades\\Mixpost"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
