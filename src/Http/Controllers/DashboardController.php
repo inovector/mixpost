@@ -2,9 +2,13 @@
 
 namespace Lao9s\Mixpost\Http\Controllers;
 
-class DashboardController
+use Illuminate\Routing\Controller;
+use Inertia\Inertia;
+
+class DashboardController extends Controller
 {
-    public function __invoke()
+    public function __invoke(): \Inertia\Response
     {
+        return Inertia::render('Dashboard');
     }
 }

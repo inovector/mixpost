@@ -2,7 +2,7 @@
 
 namespace Lao9s\Mixpost;
 
-use Lao9s\Mixpost\Commands\MixpostCommand;
+use Lao9s\Mixpost\Commands\PublishAssetsCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -19,9 +19,8 @@ class MixpostServiceProvider extends PackageServiceProvider
             ->name('mixpost')
             ->hasConfigFile()
             ->hasViews()
-            ->hasAssets()
             ->hasRoute('web')
             ->hasMigration('create_mixpost_table')
-            ->hasCommand(MixpostCommand::class);
+            ->hasCommand(PublishAssetsCommand::class);
     }
 }

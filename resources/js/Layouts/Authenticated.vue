@@ -1,13 +1,14 @@
+<script setup>
+import Sidebar from "@/Components/Sidebar.vue";
+</script>
 <template>
-    <div class="flex flex-col h-screen min-h-full">
-        <header class="bg-white shadow" v-if="$slots.header">
-            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                <slot name="header" />
-            </div>
-        </header>
-        <main class="grow">
+    <div class="flex flex-row h-screen min-h-full bg-stone-500">
+        <div class="flex w-[350px] h-full">
+            <sidebar/>
+        </div>
+        <div class="w-full ">
             <slot />
-        </main>
-        <footer>2022</footer>
+        </div>
     </div>
 </template>
+

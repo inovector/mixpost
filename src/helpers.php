@@ -20,12 +20,12 @@ if (! function_exists('mixpostAssets')) {
         }
 
         $manifest = json_decode(file_get_contents(
-            public_path('vendor/mixpost/build/manifest.json')
+            public_path('vendor/mixpost/manifest.json')
         ), true);
 
         return new HtmlString(<<<HTML
-                <script type="module" src="/vendor/mixpost/build/{$manifest['resources/js/app.js']['file']}"></script>
-                <link rel="stylesheet" href="/vendor/mixpost/build/{$manifest['resources/js/app.js']['css'][0]}">
+                <script type="module" src="/vendor/mixpost/{$manifest['resources/js/app.js']['file']}"></script>
+                <link rel="stylesheet" href="/vendor/mixpost/{$manifest['resources/js/app.js']['css'][0]}">
             HTML
         );
     }

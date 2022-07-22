@@ -1,0 +1,82 @@
+{
+  "resources/js/app.js": {
+    "file": "assets/app.07bb33fb.js",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "dynamicImports": [
+      "resources/js/Pages/Accounts.vue",
+      "resources/js/Pages/Dashboard.vue",
+      "resources/js/Pages/Media.vue",
+      "resources/js/Pages/Posts.vue",
+      "resources/js/Pages/Schedule.vue",
+      "resources/js/Pages/Settings.vue"
+    ],
+    "css": [
+      "assets/app.c5c609bd.css"
+    ]
+  },
+  "resources/js/Pages/Accounts.vue": {
+    "file": "assets/Accounts.bc22d0c8.js",
+    "src": "resources/js/Pages/Accounts.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_Authenticated.0ad11b00.js",
+      "resources/js/app.js"
+    ]
+  },
+  "_Authenticated.0ad11b00.js": {
+    "file": "assets/Authenticated.0ad11b00.js",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/Pages/Dashboard.vue": {
+    "file": "assets/Dashboard.b214f28b.js",
+    "src": "resources/js/Pages/Dashboard.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_Authenticated.0ad11b00.js",
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/Pages/Media.vue": {
+    "file": "assets/Media.7db950ac.js",
+    "src": "resources/js/Pages/Media.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_Authenticated.0ad11b00.js",
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/Pages/Posts.vue": {
+    "file": "assets/Posts.0df67cc7.js",
+    "src": "resources/js/Pages/Posts.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_Authenticated.0ad11b00.js",
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/Pages/Schedule.vue": {
+    "file": "assets/Schedule.00260206.js",
+    "src": "resources/js/Pages/Schedule.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_Authenticated.0ad11b00.js",
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/Pages/Settings.vue": {
+    "file": "assets/Settings.4514852d.js",
+    "src": "resources/js/Pages/Settings.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_Authenticated.0ad11b00.js",
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/app.css": {
+    "file": "assets/app.c5c609bd.css",
+    "src": "resources/js/app.css"
+  }
+}

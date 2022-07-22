@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth overflow-x-hidden">
 <head>
-    <title>Mixpost{{ config('app.name') ? ' - ' . config('app.name') : '' }}</title>
+    <title inertia>Mixpost{{ config('app.name') ? ' - ' . config('app.name') : '' }}</title>
     <meta name="robots" content="noindex, nofollow">
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
