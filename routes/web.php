@@ -13,7 +13,11 @@ Route::middleware(['web', HandleInertiaRequests::class])->prefix('mixpost')->nam
     Route::get('/', DashboardController::class)->name('dashboard');
     Route::get('accounts', [AccountsController::class, 'index'])->name('accounts');
     Route::get('settings', [SettingsController::class, 'index'])->name('settings');
-    Route::get('posts', [PostsController::class, 'index'])->name('posts');
+    Route::prefix('posts')->name('posts.')->group(function() {
+        Route::get('/', [PostsController::class, 'index'])->name('index');
+        Route::get('create', [PostsController::class, 'create'])->name('create');
+        Route::post('store', [PostsController::class, 'store'])->name('store');
+    });
     Route::get('schedule', [ScheduleController::class, 'index'])->name('schedule');
     Route::get('media', [MediaController::class, 'index'])->name('media');
 });

@@ -2,7 +2,7 @@
 import { Head } from '@inertiajs/inertia-vue3';
 </script>
 <template>
-    <Head title="Media Library" />
+    <Head title="Posts" />
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

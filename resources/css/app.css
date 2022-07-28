@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.default-x-padding {
+    @apply sm:px-6 lg:px-8;
+}
+
+.default-y-padding {
+    @apply py-10;
+}

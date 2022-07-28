@@ -9,6 +9,16 @@ class PostsController extends Controller
 {
     public function index(): \Inertia\Response
     {
-        return Inertia::render('Posts');
+        return Inertia::render('Posts/Index');
+    }
+
+    public function create()
+    {
+        return Inertia::render('Posts/Create');
+    }
+
+    public function store()
+    {
+
     }
 }
