@@ -30,7 +30,7 @@ const form = useForm({
 
 const scheduleTime = computed(() => {
     if (form.date && form.time) {
-        return format(new Date(form.date + ' ' + form.time), "E, MMM do, y 'at' k:mm");
+        return format(new Date(form.date + ' ' + form.time), "E, MMM do, y 'at' kk:mm");
     }
 
     return null;
@@ -103,8 +103,7 @@ const onSelectEmoji = (emoji) => {
                                                                 :class="{'!normal-case rounded-r-none border-r-indigo-800': scheduleTime}"
                                                                 @click="timePicker = true">
                                             <CalendarIcon class="mr-2"/>
-                                            <span v-if="!scheduleTime">Pick time</span>
-                                            <span v-if="scheduleTime">{{ scheduleTime }}</span>
+                                            <span>{{ scheduleTime ? scheduleTime : 'Pick time'}}</span>
                                         </MixpostSecondaryButton>
 
                                         <template v-if="scheduleTime">

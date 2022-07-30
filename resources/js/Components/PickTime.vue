@@ -1,5 +1,5 @@
 <script setup>
-import {ref, onMounted, watch} from "vue";
+import {ref, onMounted, watch, nextTick} from "vue";
 import {format, addHours} from "date-fns"
 import MixpostDialogModal from "@/Components/DialogModal.vue"
 import MixpostPrimaryButton from "@/Components/PrimaryButton.vue"
@@ -28,8 +28,9 @@ const emit = defineEmits(['close', 'update']);
 const date = ref();
 const time = ref();
 
+const timePicker = ref();
 
-const setDateTime = ()=> {
+const setDateTime = () => {
     if (props.show) {
         date.value = props.date ? props.date : format(new Date(), 'Y-MM-dd');
 
@@ -49,6 +50,11 @@ watch(() => props.show, () => {
 });
 
 const confirm = () => {
+    const hour = timePicker.value.querySelector('.flatpickr-hour').value;
+    const minutes = timePicker.value.querySelector('.flatpickr-minute').value;
+
+    time.value = hour + ':' + minutes; // we make sure we have the data that was entered manually (on keyup)
+
     emit('update', {
         date: date.value,
         time: time.value
@@ -94,7 +100,7 @@ const configTimePicker = {
 
                 <div class="flex items-center justify-center mx-auto mt-6">
                     <div class="mr-2 text-gray-400">Time</div>
-                    <div class="w-auto">
+                    <div class="w-auto" ref="timePicker">
                         <FlatPickr v-model="time" :config="configTimePicker"/>
                     </div>
                 </div>
