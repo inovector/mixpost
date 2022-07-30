@@ -1,4 +1,6 @@
 <script setup>
+import {computed, ref} from "vue";
+import {format} from "date-fns"
 import {Head, useForm} from '@inertiajs/inertia-vue3';
 import EmojiPicker from '@/Components/EmojiPicker.vue'
 import PageHeader from "@/Components/PageHeader.vue";
@@ -8,18 +10,38 @@ import MixpostSocialAccount from "@/Components/SocialAccount.vue"
 import MixpostTwitterPreview from "@/Components/TwitterPreview.vue"
 import MixpostPrimaryButton from "@/Components/PrimaryButton.vue"
 import MixpostSecondaryButton from "@/Components/SecondaryButton.vue"
+import MixpostPickTime from "@/Components/PickTime.vue"
 import TwitterIcon from "@/Icons/Twitter.vue"
 import FacebookIcon from "@/Icons/Facebook.vue"
 import PhotoIcon from "@/Icons/Photo.vue"
 import ChatIcon from "@/Icons/Chat.vue"
 import CalendarIcon from "@/Icons/Calendar.vue"
 import PaperAirplaneIcon from "@/Icons/PaperAirplane.vue"
+import ChevronDownIcon from "@/Icons/ChevronDown.vue"
+import XIcon from "@/Icons/X.vue"
+
+const timePicker = ref(false);
 
 const form = useForm({
-    name: '',
+    body: '',
+    date: '',
+    time: ''
 });
 
-function onSelectEmoji(emoji) {
+const scheduleTime = computed(() => {
+    if (form.date && form.time) {
+        return format(new Date(form.date + ' ' + form.time), "E, MMM do, y 'at' k:mm");
+    }
+
+    return null;
+})
+
+const clearScheduleTime = () => {
+    form.date = '';
+    form.time = '';
+}
+
+const onSelectEmoji = (emoji) => {
     console.log(emoji);
 }
 </script>
@@ -38,7 +60,7 @@ function onSelectEmoji(emoji) {
 
                 <div class="max-w-7xl mx-auto default-x-padding">
                     <MixpostPanel>
-                        <form class="space-y-6">
+                        <div class="space-y-6">
                             <div class="flex items-center space-x-3">
                                 <MixpostSocialAccount
                                     imgUrl="https://pbs.twimg.com/profile_images/1539256262860460034/s69PIJB8_normal.jpg"
@@ -54,27 +76,68 @@ function onSelectEmoji(emoji) {
                                     <FacebookIcon class="text-blue-700 !w-4 !h-4"/>
                                 </MixpostSocialAccount>
                             </div>
+
                             <div>
-                                <MixpostContentEditable min-height="200px" placeholder="Type here something interesting for your audience...">
+                                <MixpostContentEditable min-height="200px"
+                                                        placeholder="Type here something interesting for your audience...">
                                     <div class="flex items-center justify-between border-t border-gray-200 pt-4">
-                                       <div class="flex items-center space-x-2">
-                                           <EmojiPicker @selected="onSelectEmoji"/>
-                                           <div>
-                                               <button type="button" v-tooltip="'Media'"
-                                                       class="text-stone-800 hover:text-indigo-500 transition-colors ease-in-out duration-200">
-                                                   <PhotoIcon/>
-                                               </button>
-                                           </div>
-                                       </div>
-                                        <button  v-tooltip="'Add Comment'" type="button" class="text-stone-800 hover:text-indigo-500 transition-colors ease-in-out duration-200"><ChatIcon/></button>
+                                        <div class="flex items-center space-x-2">
+                                            <EmojiPicker @selected="onSelectEmoji"/>
+                                            <div>
+                                                <button type="button" v-tooltip="'Media'"
+                                                        class="text-stone-800 hover:text-indigo-500 transition-colors ease-in-out duration-200">
+                                                    <PhotoIcon/>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <button v-tooltip="'Add Comment'" type="button"
+                                                class="text-stone-800 hover:text-indigo-500 transition-colors ease-in-out duration-200">
+                                            <ChatIcon/>
+                                        </button>
                                     </div>
                                 </MixpostContentEditable>
-                                <div class="mt-6 space-x-2">
-                                    <MixpostSecondaryButton><CalendarIcon class="mr-2"/>Pick time</MixpostSecondaryButton>
-                                    <MixpostPrimaryButton><PaperAirplaneIcon class="mr-2"/>Post now</MixpostPrimaryButton>
+
+                                <div class="mt-6 flex items-center space-x-2">
+                                    <div class="flex items-center" role="group">
+                                        <MixpostSecondaryButton size="md"
+                                                                :class="{'!normal-case rounded-r-none border-r-indigo-800': scheduleTime}"
+                                                                @click="timePicker = true">
+                                            <CalendarIcon class="mr-2"/>
+                                            <span v-if="!scheduleTime">Pick time</span>
+                                            <span v-if="scheduleTime">{{ scheduleTime }}</span>
+                                        </MixpostSecondaryButton>
+
+                                        <template v-if="scheduleTime">
+                                              <MixpostSecondaryButton size="md"
+                                                                      @click="clearScheduleTime"
+                                                                      v-tooltip="'Clear time'"
+                                                                      class="rounded-l-none border-l-0 hover:text-red-500 !px-2">
+                                                  <XIcon/>
+                                              </MixpostSecondaryButton>
+                                        </template>
+
+                                        <MixpostPickTime :show="timePicker"
+                                                         :date="form.date"
+                                                         :time="form.time"
+                                                         @close="timePicker = false"
+                                                         @update="form.date = $event.date; form.time = $event.time;"/>
+                                    </div>
+
+                                    <div class="flex items-center" role="group">
+                                        <MixpostPrimaryButton size="md"
+                                                              :class="{'rounded-r-none border-r-indigo-400': scheduleTime}">
+                                            <PaperAirplaneIcon class="mr-2"/>
+                                            {{ scheduleTime ? 'Schedule' : 'Post now' }}
+                                        </MixpostPrimaryButton>
+
+                                        <MixpostPrimaryButton v-if="scheduleTime" size="md"
+                                                              class="rounded-l-none border-l-0 !px-2">
+                                            <ChevronDownIcon/>
+                                        </MixpostPrimaryButton>
+                                    </div>
                                 </div>
                             </div>
-                        </form>
+                        </div>
                     </MixpostPanel>
                 </div>
             </div>
@@ -82,6 +145,7 @@ function onSelectEmoji(emoji) {
         <div class="w-2/5 h-full border-l border-gray-200">
             <div class="py-10">
                 <PageHeader title="Preview"/>
+
                 <div class="px-5">
                     <MixpostTwitterPreview/>
                 </div>

@@ -4,8 +4,10 @@ import TwitterIcon from "@/Icons/Twitter.vue"
 </script>
 <template>
     <MixpostPanel class="relative">
-        <div class="absolute right-0 top-0 -mt-3">
-            <TwitterIcon class="text-blue-400"/>
+        <div class="absolute right-0 top-0 -mt-3 -mr-2">
+            <div class="flex items-center justify-center p-2 w-7 h-7 rounded-full bg-white border border-gray-200">
+               <div><TwitterIcon class="text-blue-400 !w-45 !h-5"/></div>
+            </div>
         </div>
         <div class="flex items-start">
             <div class="mr-3">

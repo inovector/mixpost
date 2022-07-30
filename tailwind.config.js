@@ -8,11 +8,10 @@ module.exports = {
         './resources/views/**/*.blade.php',
         './resources/js/**/*.vue',
     ],
-
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Inter var', ...defaultTheme.fontFamily.sans],
+                sans: ['Inter', ...defaultTheme.fontFamily.sans],
             },
             colors: {
                 indigo: {
@@ -57,6 +56,5 @@ module.exports = {
             }
         },
     },
-
     plugins: [require('@tailwindcss/forms')],
 };

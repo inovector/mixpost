@@ -20,7 +20,7 @@ function onBlur() {
 </script>
 <template>
     <div
-        :class="{'ring ring-indigo-200 ring-opacity-50': focused}"
+        :class="{'border-indigo-200 ring ring-indigo-200 ring-opacity-50': focused}"
         class="border border-gray-200 rounded-md p-5 pb-2 transition-colors ease-in-out duration-200">
         <div @focus="onFocus" @blur="onBlur" contenteditable="true" class="focus:outline-none min-h-[150px]" :placeholder="$props.placeholder"></div>
         <slot/>

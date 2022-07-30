@@ -20,4 +20,9 @@ export default defineConfig({
             },
         }),
     ],
+    resolve: {
+        alias: {
+            '@css': '/resources/css',
+        },
+    }
 });

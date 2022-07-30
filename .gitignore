@@ -11,3 +11,4 @@ testbench.yaml
 vendor
 node_modules
 resources/dist/hot
+.DS_Store
