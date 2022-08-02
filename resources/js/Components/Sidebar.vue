@@ -71,7 +71,7 @@ import {Link} from '@inertiajs/inertia-vue3';
                 Configuration
             </MixpostMenuGroupHeader>
             <MixpostMenuGroupBody>
-                <MixpostMenuItem :url="route('mixpost.accounts')" :active="route().current('mixpost.accounts')">
+                <MixpostMenuItem :url="route('mixpost.accounts.index')" :active="route().current('mixpost.accounts.index')">
                     <template #icon>
                         <PackageIcon/>
                     </template>

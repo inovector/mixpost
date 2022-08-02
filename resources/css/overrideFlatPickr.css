@@ -70,6 +70,10 @@
     @apply text-gray-200;
 }
 
+.flatpickr-calendar:before, .flatpickr-calendar:after {
+    display: none;
+}
+
 /* Time Picker */
 
 .flatpickr-time {

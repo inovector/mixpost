@@ -20,7 +20,21 @@ class MixpostServiceProvider extends PackageServiceProvider
             ->hasConfigFile()
             ->hasViews()
             ->hasRoute('web')
-            ->hasMigration('create_mixpost_table')
+            ->hasMigrations([
+                'create_mixpost_accounts_table',
+                'create_mixpost_posts_table',
+                'create_mixpost_categories_table',
+                'create_mixpost_category_post_table'
+            ])
             ->hasCommand(PublishAssetsCommand::class);
+    }
+
+    public function register()
+    {
+        $this->app->singleton('SocialProviderManager', function ($app) {
+            return new SocialProviderManager($app);
+        });
+
+        return parent::register();
     }
 }

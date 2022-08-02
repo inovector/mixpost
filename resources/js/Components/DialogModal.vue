@@ -35,7 +35,7 @@ const close = () => {
                 <slot name="header" />
             </div>
 
-            <div class="mt-4">
+            <div :class="{'mt-4': $slots.header}">
                 <slot name="body" />
             </div>
         </div>

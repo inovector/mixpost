@@ -17,6 +17,7 @@
     ],
     "require": {
         "php": "^8.1",
+        "abraham/twitteroauth": "^4.0",
         "illuminate/contracts": "^9.0",
         "inertiajs/inertia-laravel": "^0.6.3",
         "spatie/laravel-package-tools": "^1.9.2",

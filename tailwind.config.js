@@ -8,6 +8,14 @@ module.exports = {
         './resources/views/**/*.blade.php',
         './resources/js/**/*.vue',
     ],
+    safelist: [
+        'text-twitter',
+        'border-twitter',
+        'bg-twitter',
+        'text-facebook',
+        'border-facebook',
+        'bg-facebook'
+    ],
     theme: {
         extend: {
             fontFamily: {
@@ -49,7 +57,9 @@ module.exports = {
                     "700": "#C76A00",
                     "800": "#854700",
                     "900": "#422300"
-                }
+                },
+                facebook: '#1877f2',
+                twitter: '#1da1f2'
             },
             boxShadow: {
                 'mix': '0 5px 10px rgb(55 55 89 / 8%)',
