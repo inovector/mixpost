@@ -12,7 +12,7 @@ class TwitterProvider implements SocialProvider
     const DEFAULT_API_VERSION = '2';
 
     public TwitterOAuth $connection;
-    protected \Illuminate\Http\Request $request;
+    protected Request $request;
     protected string $redirectUrl;
 
     public function __construct(Request $request, $clientId, $clientSecret, $redirectUrl)
@@ -23,6 +23,13 @@ class TwitterProvider implements SocialProvider
         $this->request = $request;
         $this->redirectUrl = $redirectUrl;
         $this->connection = $connection;
+    }
+
+    public function credentials(array $accountCredentials = []): static
+    {
+        $this->connection->setOauthToken($accountCredentials['oauth_token'], $accountCredentials['oauth_token_secret']);
+
+        return $this;
     }
 
     public function setApiVersion(string $apiVersion = '2'): void

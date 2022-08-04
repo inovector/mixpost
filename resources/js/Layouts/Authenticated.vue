@@ -1,5 +1,6 @@
 <script setup>
 import Sidebar from "@/Components/Sidebar.vue";
+import Notifications from "@/Components/Notifications.vue";
 </script>
 <template>
     <div class="flex flex-row h-screen min-h-full bg-stone-500">
@@ -9,6 +10,7 @@ import Sidebar from "@/Components/Sidebar.vue";
         <div class="w-full ">
             <slot />
         </div>
+        <Notifications/>
     </div>
 </template>
 

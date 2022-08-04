@@ -73,8 +73,8 @@ const onSelectEmoji = (emoji) => {
                                 <template v-for="account in $page.props.accounts" :key="account.id">
                                     <button @click="selectAccount(account.id)">
                                         <MixpostAccount
-                                            :imgUrl="account.image"
                                             :provider="account.provider"
+                                            :img-url="account.image"
                                             :active="form.accounts.includes(account.id)"
                                             v-tooltip="account.name"
                                         />

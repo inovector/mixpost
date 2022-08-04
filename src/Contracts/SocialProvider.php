@@ -11,6 +11,8 @@ interface SocialProvider
 
     public function setApiVersion(): void;
 
+    public function credentials(): static;
+
     public function setCredentials(): void;
 
     public function getAuthUrl(): string;

@@ -1,5 +1,6 @@
 <script setup>
-import {computed} from "vue";
+import useButtonSize from "@/Composables/useButtonSize"
+import CircleLoadingIcon from "@/Icons/CircleLoading.vue"
 
 const props = defineProps({
     type: {
@@ -9,19 +10,21 @@ const props = defineProps({
     size: {
         type: String,
         default: 'lg'
+    },
+    isLoading: {
+        type: Boolean,
+        default: false,
     }
 });
 
-const sizeClass = computed(() => {
-    return {
-        'md': 'py-2',
-        'lg': 'py-3',
-    }[props.size];
-});
+const { sizeClass } = useButtonSize(props.size);
 </script>
 
 <template>
-    <button :type="type" :class="sizeClass" class="inline-flex items-center px-4 bg-indigo-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo transition ease-in-out duration-200">
+    <button :type="type" :class="sizeClass" class="relative inline-flex items-center bg-indigo-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo transition ease-in-out duration-200">
         <slot />
+        <span v-if="isLoading" class="absolute left-0 top-0 flex justify-center items-center w-full h-full bg-red-500">
+             <CircleLoadingIcon class="animate-spin text-white"/>
+        </span>
     </button>
 </template>

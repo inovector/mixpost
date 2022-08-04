@@ -1,18 +1,62 @@
 <script setup>
 import {ref} from "vue";
+import {Inertia} from '@inertiajs/inertia'
 import {Head} from '@inertiajs/inertia-vue3';
+import useNotifications from "@/Composables/useNotifications";
 import MixpostPageHeader from "@/Components/PageHeader.vue";
 import MixpostPanel from "@/Components/Panel.vue";
 import MixpostModal from "@/Components/Modal.vue"
+import MixpostConfirmationModal from "@/Components/ConfirmationModal.vue"
 import MixpostAccount from "@/Components/Account.vue"
 import MixpostAddTwitterAccount from "@/Components/AddTwitterAccount.vue"
 import MixpostAddFacebookAccount from "@/Components/AddFacebookAccount.vue"
+import MixpostSecondaryButton from "@/Components/SecondaryButton.vue"
+import MixpostDangerButton from "@/Components/DangerButton.vue"
+import MixpostDropdown from "@/Components/Dropdown.vue"
+import MixpostDropdownItem from "@/Components/DropdownItem.vue"
 import PlusIcon from "@/Icons/Plus.vue";
 import DotsVerticalIcon from "@/Icons/DotsVertical.vue";
+import RefreshIcon from "@/Icons/Refresh.vue";
+import TrashIcon from "@/Icons/Trash.vue";
 
 const title = 'Social Accounts';
 
-const addSocial = ref(false);
+const {notify} = useNotifications();
+
+const addAccountModal = ref(false);
+const confirmingAccountDeletion = ref(null);
+const accountIsDeleting = ref(false);
+
+const updateAccount = (accountId) => {
+    Inertia.put(route('mixpost.accounts.update', {account: accountId}), {}, {
+        onSuccess() {
+            notify('success', 'Account has been refreshed');
+        }
+    });
+}
+
+const deleteAccount = () => {
+    Inertia.delete(route('mixpost.accounts.delete', {account: confirmingAccountDeletion.value}), {
+        onStart() {
+            accountIsDeleting.value = true;
+        },
+        onSuccess() {
+            confirmingAccountDeletion.value = null;
+            notify('success', 'Account deleted');
+        },
+        onFinish() {
+            accountIsDeleting.value = false;
+        },
+    });
+}
+
+const closeConfirmingAccountDeletion = () => {
+    if (accountIsDeleting.value) {
+        return;
+    }
+
+    confirmingAccountDeletion.value = null
+}
 </script>
 <template>
     <Head :title="title"/>
@@ -28,14 +72,31 @@ const addSocial = ref(false);
             <div class="grid grid-cols-4 gap-6">
                 <template v-for="account in $page.props.accounts" :key="account.id">
                     <MixpostPanel class="relative">
-                        <button class="absolute top-0 right-0 mt-3 mr-3">
-                            <DotsVerticalIcon/>
-                        </button>
+                        <div class="absolute top-0 right-0 mt-3 mr-3">
+                            <MixpostDropdown width-classes="w-32">
+                                <template #trigger>
+                                    <MixpostSecondaryButton size="xs">
+                                        <DotsVerticalIcon/>
+                                    </MixpostSecondaryButton>
+                                </template>
+
+                                <template #content>
+                                    <MixpostDropdownItem @click="updateAccount(account.id)" as="button">
+                                        <RefreshIcon class="!w-4 !h-4 mr-1"/>
+                                        Refresh
+                                    </MixpostDropdownItem>
+                                    <MixpostDropdownItem @click="confirmingAccountDeletion = account.id" as="button">
+                                        <TrashIcon class="!w-4 !h-4 mr-1 text-red-500"/>
+                                        Delete
+                                    </MixpostDropdownItem>
+                                </template>
+                            </MixpostDropdown>
+                        </div>
 
                         <div class="flex flex-col justify-center">
                             <MixpostAccount
                                 size="lg"
-                                :imgUrl="account.image"
+                                :img-url="account.image"
                                 :provider="account.provider"
                                 :active="true"
                             />
@@ -46,8 +107,8 @@ const addSocial = ref(false);
                     </MixpostPanel>
                 </template>
 
-                <button @click="addSocial = true"
-                        class="border border-stone-600 rounded-lg hover:border-indigo-500 hover:text-indigo-500 transition-colors ease-in-out duration-200">
+                <button @click="addAccountModal = true"
+                        class="border border-indigo-800 rounded-lg hover:border-indigo-500 hover:text-indigo-500 transition-colors ease-in-out duration-200">
                     <span class="block p-6">
                         <span class="flex flex-col justify-center items-center">
                             <PlusIcon class="w-7 h-7"/>
@@ -59,12 +120,31 @@ const addSocial = ref(false);
         </div>
     </div>
 
-    <MixpostModal :show="addSocial"
+    <MixpostModal :show="addAccountModal"
                   :closeable="true"
-                  @close="addSocial = false">
+                  @close="addAccountModal = false">
         <div class="flex flex-col">
             <MixpostAddTwitterAccount/>
             <MixpostAddFacebookAccount/>
         </div>
     </MixpostModal>
+
+    <MixpostConfirmationModal :show="confirmingAccountDeletion !== null"
+                              @close="closeConfirmingAccountDeletion"
+                              variant="danger">
+        <template #header>
+            Delete account
+        </template>
+        <template #body>
+            Are you sure you would like to delete this account?
+        </template>
+        <template #footer>
+            <MixpostSecondaryButton @click="closeConfirmingAccountDeletion" :disabled="accountIsDeleting"
+                                    class="mr-2">Cancel
+            </MixpostSecondaryButton>
+            <MixpostDangerButton @click="deleteAccount" :is-loading="accountIsDeleting"
+                                 :disabled="accountIsDeleting">Delete
+            </MixpostDangerButton>
+        </template>
+    </MixpostConfirmationModal>
 </template>

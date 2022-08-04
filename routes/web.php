@@ -17,7 +17,7 @@ Route::middleware(['web', HandleInertiaRequests::class])->prefix('mixpost')->nam
     Route::prefix('accounts')->name('accounts.')->group(function () {
         Route::get('/', [AccountsController::class, 'index'])->name('index');
         Route::post('add/{provider}', AddAccountController::class)->name('add');
-        Route::put('refresh/{account}', [AccountsController::class, 'delete'])->name('delete');
+        Route::put('update/{account}', [AccountsController::class, 'update'])->name('update');
         Route::delete('{account}', [AccountsController::class, 'delete'])->name('delete');
     });
 
