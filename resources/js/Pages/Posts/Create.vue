@@ -1,6 +1,6 @@
 <script setup>
 import {computed, ref} from "vue";
-import {format} from "date-fns"
+import {format, parseISO} from "date-fns"
 import {Head, useForm} from '@inertiajs/inertia-vue3';
 import EmojiPicker from '@/Components/EmojiPicker.vue'
 import MixpostPageHeader from "@/Components/PageHeader.vue";
@@ -29,7 +29,7 @@ const form = useForm({
 
 const scheduleTime = computed(() => {
     if (form.date && form.time) {
-        return format(new Date(form.date + ' ' + form.time), "E, MMM do, y 'at' kk:mm");
+        return format(new Date(parseISO(form.date + ' ' + form.time)), "E, MMM do, y 'at' kk:mm");
     }
 
     return null;
@@ -151,7 +151,7 @@ const onSelectEmoji = (emoji) => {
                 <MixpostPageHeader title="Preview"/>
 
                 <div class="px-5">
-                    <MixpostTwitterPreview :body="form.body" />
+                    <MixpostTwitterPreview :body="form.body"/>
                 </div>
             </div>
         </div>
