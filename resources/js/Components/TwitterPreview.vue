@@ -29,7 +29,7 @@ defineProps({
                     <div class="font-medium mr-2">Inovector</div>
                     <div class="text-gray-400">@inovector</div>
                 </div>
-                <div class="flex flex-wrap mt-2" v-html="$props.body"></div>
+                <div class="ProseMirror mt-2" v-html="$props.body"></div>
                 <div class="mt-5 flex items-center justify-between">
                     <div class="flex items-center">
                         <svg class="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">

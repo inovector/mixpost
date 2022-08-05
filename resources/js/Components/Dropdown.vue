@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, onUnmounted, ref } from 'vue';
+import {computed, onMounted, onUnmounted, ref} from 'vue';
 
 const props = defineProps({
     align: {
@@ -14,15 +14,32 @@ const props = defineProps({
         type: Array,
         default: () => ['py-0', 'bg-white'],
     },
+    closeableOnContent: {
+        type: Boolean,
+        default: true,
+    },
 });
+
+const emit = defineEmits(['close']);
 
 let open = ref(false);
 
 const closeOnEscape = (e) => {
     if (open.value && e.key === 'Escape') {
-        open.value = false;
+        close();
     }
 };
+
+const closeOnContentClick = () => {
+    if (props.closeableOnContent) {
+        close();
+    }
+}
+
+const close = () => {
+    open.value = false;
+    emit('close');
+}
 
 onMounted(() => document.addEventListener('keydown', closeOnEscape));
 onUnmounted(() => document.removeEventListener('keydown', closeOnEscape));
@@ -43,11 +60,11 @@ const alignmentClasses = computed(() => {
 <template>
     <div class="relative">
         <div @click="open = ! open">
-            <slot name="trigger" />
+            <slot name="trigger"/>
         </div>
 
         <!-- Full Screen Dropdown Overlay -->
-        <div v-show="open" class="fixed inset-0 z-40" @click="open = false" />
+        <div v-show="open" class="fixed inset-0 z-40" @click="close"/>
 
         <transition
             enter-active-class="transition ease-out duration-200"
@@ -62,10 +79,10 @@ const alignmentClasses = computed(() => {
                 class="absolute z-50 mt-1 rounded-md shadow-mix"
                 :class="[widthClasses, alignmentClasses]"
                 style="display: none;"
-                @click="open = false"
+                @click="closeOnContentClick"
             >
                 <div class="rounded-md border border-gray-200" :class="contentClasses">
-                    <slot name="content" />
+                    <slot name="content"/>
                 </div>
             </div>
         </transition>

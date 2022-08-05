@@ -1,11 +1,12 @@
 <script setup>
-import {computed, ref} from "vue";
+import {computed, ref, watch} from "vue";
 import {format, parseISO} from "date-fns"
+import useEditors from "@/Composables/useEditor";
 import {Head, useForm} from '@inertiajs/inertia-vue3';
+import Editor from "@/Components/Editor.vue";
 import EmojiPicker from '@/Components/EmojiPicker.vue'
 import MixpostPageHeader from "@/Components/PageHeader.vue";
 import MixpostPanel from "@/Components/Panel.vue";
-import MixpostContentEditable from "@/Components/ContentEditable.vue";
 import MixpostAccount from "@/Components/Account.vue"
 import MixpostTwitterPreview from "@/Components/TwitterPreview.vue"
 import MixpostPrimaryButton from "@/Components/PrimaryButton.vue"
@@ -49,9 +50,7 @@ const clearScheduleTime = () => {
     form.time = '';
 }
 
-const onSelectEmoji = (emoji) => {
-    console.log(emoji);
-}
+const {insertEmoji, focusEditor} = useEditors();
 </script>
 <template>
     <Head title="Create new post"/>
@@ -83,11 +82,15 @@ const onSelectEmoji = (emoji) => {
                             </div>
 
                             <div>
-                                <MixpostContentEditable v-model="form.body" min-height="200px"
+                                <Editor id="postEditor" v-model="form.body"
                                                         placeholder="Type here something interesting for your audience...">
                                     <div class="flex items-center justify-between border-t border-gray-200 pt-4">
                                         <div class="flex items-center space-x-2">
-                                            <EmojiPicker @selected="onSelectEmoji"/>
+                                            <EmojiPicker
+                                                @selected="insertEmoji({editorId: 'postEditor', emoji: $event})"
+                                                @close="focusEditor({editorId: 'postEditor'})"
+                                            />
+
                                             <div>
                                                 <button type="button" v-tooltip="'Media'"
                                                         class="text-stone-800 hover:text-indigo-500 transition-colors ease-in-out duration-200">
@@ -95,12 +98,13 @@ const onSelectEmoji = (emoji) => {
                                                 </button>
                                             </div>
                                         </div>
+
                                         <button v-tooltip="'Add Comment'" type="button"
                                                 class="text-stone-800 hover:text-indigo-500 transition-colors ease-in-out duration-200">
                                             <ChatIcon/>
                                         </button>
                                     </div>
-                                </MixpostContentEditable>
+                                </Editor>
 
                                 <div class="mt-6 flex items-center space-x-2">
                                     <div class="flex items-center" role="group">
