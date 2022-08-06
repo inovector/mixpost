@@ -23,6 +23,7 @@ class AccountsController extends Controller
 
         $account->update([
             'name' => $result['name'],
+            'username' => $result['username'],
             'image' => $result['image']
         ]);
 

@@ -25,6 +25,7 @@ class CallbackSocialProviderController extends Controller
             ],
             [
                 'name' => $account['name'],
+                'username' => $account['username'],
                 'image' => $account['image'],
                 'credentials' => $credentials,
             ]

@@ -66,6 +66,7 @@ class TwitterProvider implements SocialProvider
         return [
             'id' => $response->data->id,
             'name' => $response->data->name,
+            'username' => $response->data->username,
             'image' => str_replace('normal', '400x400', $response->data->profile_image_url)
         ];
     }

@@ -3,7 +3,6 @@
 namespace Lao9s\Mixpost\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Str;
 
 class AccountResource extends JsonResource
 {
@@ -14,6 +13,7 @@ class AccountResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'username' => $this->username,
             'image' => $this->image,
             'provider' => $this->provider,
             'created_at' => $this->created_at->diffForHumans()

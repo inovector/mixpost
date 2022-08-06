@@ -10,6 +10,7 @@ class Account extends Model
 
     protected $fillable = [
         'name',
+        'username',
         'image',
         'provider',
         'provider_id',

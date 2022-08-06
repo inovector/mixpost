@@ -2,16 +2,16 @@
 import {computed, ref, watch} from "vue";
 import {format, parseISO} from "date-fns"
 import useEditors from "@/Composables/useEditor";
-import {Head, useForm} from '@inertiajs/inertia-vue3';
+import {Head, useForm, usePage} from '@inertiajs/inertia-vue3';
 import Editor from "@/Components/Editor.vue";
 import EmojiPicker from '@/Components/EmojiPicker.vue'
 import MixpostPageHeader from "@/Components/PageHeader.vue";
 import MixpostPanel from "@/Components/Panel.vue";
 import MixpostAccount from "@/Components/Account.vue"
-import MixpostTwitterPreview from "@/Components/TwitterPreview.vue"
 import MixpostPrimaryButton from "@/Components/PrimaryButton.vue"
 import MixpostSecondaryButton from "@/Components/SecondaryButton.vue"
 import MixpostPickTime from "@/Components/PickTime.vue"
+import MixpostPreviewProvidersPost from "@/Components/PreviewProvidersPost.vue"
 import PhotoIcon from "@/Icons/Photo.vue"
 import ChatIcon from "@/Icons/Chat.vue"
 import CalendarIcon from "@/Icons/Calendar.vue"
@@ -83,7 +83,7 @@ const {insertEmoji, focusEditor} = useEditors();
 
                             <div>
                                 <Editor id="postEditor" v-model="form.body"
-                                                        placeholder="Type here something interesting for your audience...">
+                                        placeholder="Type here something interesting for your audience...">
                                     <div class="flex items-center justify-between border-t border-gray-200 pt-4">
                                         <div class="flex items-center space-x-2">
                                             <EmojiPicker
@@ -155,7 +155,10 @@ const {insertEmoji, focusEditor} = useEditors();
                 <MixpostPageHeader title="Preview"/>
 
                 <div class="px-5">
-                    <MixpostTwitterPreview :body="form.body"/>
+                    <MixpostPreviewProvidersPost :accounts="$page.props.accounts"
+                                        :selected-accounts="form.accounts"
+                                        :body="form.body"
+                    />
                 </div>
             </div>
         </div>

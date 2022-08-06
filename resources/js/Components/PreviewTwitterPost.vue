@@ -3,6 +3,18 @@ import MixpostPanel from "@/Components/Panel.vue";
 import TwitterIcon from "@/Icons/Twitter.vue"
 
 defineProps({
+    name: {
+        required: true,
+        type: String
+    },
+    username: {
+        required: true,
+        type: String
+    },
+    image: {
+        required: true,
+        type: String
+    },
     body: {
         required: true
     }
@@ -13,21 +25,21 @@ defineProps({
         <div class="absolute right-0 top-0 -mt-3 -mr-2">
             <div class="flex items-center justify-center p-2 w-7 h-7 rounded-full bg-white border border-gray-200">
                 <div>
-                    <TwitterIcon class="text-blue-400 !w-45 !h-5"/>
+                    <TwitterIcon class="text-twitter !w-5 !h-5"/>
                 </div>
             </div>
         </div>
         <div class="flex items-start">
             <div class="mr-3">
                 <span class="inline-flex justify-center items-center flex-shrink-0 w-10 h-10 rounded-full">
-                    <img src="https://pbs.twimg.com/profile_images/1539256262860460034/s69PIJB8_normal.jpg"
+                    <img :src="image"
                          class="object-cover w-full h-full rounded-full" alt=""/>
                 </span>
             </div>
             <div class="w-full">
                 <div class="flex items-center">
-                    <div class="font-medium mr-2">Inovector</div>
-                    <div class="text-gray-400">@inovector</div>
+                    <div class="font-medium mr-2">{{ name }}</div>
+                    <div class="text-gray-400">@{{ username }}</div>
                 </div>
                 <div class="ProseMirror mt-2" v-html="$props.body"></div>
                 <div class="mt-5 flex items-center justify-between">

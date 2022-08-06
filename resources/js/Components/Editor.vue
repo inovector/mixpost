@@ -1,5 +1,5 @@
 <script setup>
-import {ref, onMounted, onUnmounted, useAttrs} from "vue";
+import {ref, onMounted, onUnmounted, useAttrs, watch} from "vue";
 import {useEditor, EditorContent} from '@tiptap/vue-3'
 import emitter from "@/Services/emitter";
 import Document from '@tiptap/extension-document'
@@ -8,6 +8,7 @@ import Text from '@tiptap/extension-text'
 import History from '@tiptap/extension-history'
 import Placeholder from '@tiptap/extension-placeholder'
 import Typography from '@tiptap/extension-typography'
+import CharacterCount from '@tiptap/extension-character-count'
 
 const attrs = useAttrs();
 
@@ -42,11 +43,12 @@ const editor = useEditor({
             closeDoubleQuote: false,
             openSingleQuote: false,
             closeSingleQuote: false
-        })
+        }),
+        CharacterCount
     ],
     editorProps: {
         attributes: {
-            class: 'focus:outline-none text-lg min-h-[150px]',
+            class: 'focus:outline-none min-h-[150px]',
         },
     },
     onUpdate: () => {
@@ -63,6 +65,12 @@ const editor = useEditor({
 const isEditor = (id) => {
     return attrs.hasOwnProperty('id') && id === attrs.id;
 }
+
+watch(() => props.modelValue, () => {
+    const characters = editor.value.storage.characterCount.characters();
+    console.log(characters)
+    // Twitter, No more than 80 characters
+});
 
 onMounted(() => {
     emitter.on('insertEmoji', e => {
@@ -87,7 +95,7 @@ onUnmounted(() => {
 <template>
     <div
         :class="{'border-indigo-200 ring ring-indigo-200 ring-opacity-50': focused}"
-        class="border border-gray-200 rounded-md p-5 pb-2 transition-colors ease-in-out duration-200">
+        class="border border-gray-200 rounded-md p-5 pb-2 text-base transition-colors ease-in-out duration-200">
         <editor-content :editor="editor"/>
         <slot/>
     </div>
