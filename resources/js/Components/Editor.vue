@@ -1,14 +1,11 @@
 <script setup>
-import {ref, onMounted, onUnmounted, useAttrs, watch} from "vue";
+import {ref, onMounted, onUnmounted, useAttrs, computed, inject} from "vue";
 import {useEditor, EditorContent} from '@tiptap/vue-3'
+import useEditorHelper from "@/Composables/useEditor";
 import emitter from "@/Services/emitter";
-import Document from '@tiptap/extension-document'
-import Paragraph from '@tiptap/extension-paragraph'
-import Text from '@tiptap/extension-text'
 import History from '@tiptap/extension-history'
 import Placeholder from '@tiptap/extension-placeholder'
 import Typography from '@tiptap/extension-typography'
-import CharacterCount from '@tiptap/extension-character-count'
 
 const attrs = useAttrs();
 
@@ -22,18 +19,16 @@ const props = defineProps({
     }
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'update']);
 
 const el = ref();
 const focused = ref(false);
-const content = ref('');
+
+const {defaultExtensions} = useEditorHelper();
 
 const editor = useEditor({
     content: props.modelValue,
-    extensions: [
-        Document,
-        Paragraph,
-        Text,
+    extensions: [...defaultExtensions, ...[
         History,
         Placeholder.configure({
             placeholder: 'Start writing your post...',
@@ -43,16 +38,15 @@ const editor = useEditor({
             closeDoubleQuote: false,
             openSingleQuote: false,
             closeSingleQuote: false
-        }),
-        CharacterCount
-    ],
+        })
+    ]],
     editorProps: {
         attributes: {
             class: 'focus:outline-none min-h-[150px]',
         },
     },
     onUpdate: () => {
-        emit('update:modelValue', editor.value.getHTML())
+        emit('update:modelValue', editor.value.getHTML());
     },
     onFocus: () => {
         focused.value = true;
@@ -62,15 +56,13 @@ const editor = useEditor({
     }
 });
 
+const bodyText = computed(()=> {
+    return editor.value && !editor.value.isEmpty ? editor.value.view.dom.innerText : '';
+});
+
 const isEditor = (id) => {
     return attrs.hasOwnProperty('id') && id === attrs.id;
 }
-
-watch(() => props.modelValue, () => {
-    const characters = editor.value.storage.characterCount.characters();
-    console.log(characters)
-    // Twitter, No more than 80 characters
-});
 
 onMounted(() => {
     emitter.on('insertEmoji', e => {
@@ -97,7 +89,7 @@ onUnmounted(() => {
         :class="{'border-indigo-200 ring ring-indigo-200 ring-opacity-50': focused}"
         class="border border-gray-200 rounded-md p-5 pb-2 text-base transition-colors ease-in-out duration-200">
         <editor-content :editor="editor"/>
-        <slot/>
+        <slot :body-text="bodyText"/>
     </div>
 </template>
 <style>
@@ -107,5 +99,9 @@ onUnmounted(() => {
     color: theme('colors.gray.400');
     pointer-events: none;
     height: 0;
+}
+
+.ProseMirror a {
+    color: theme('colors.blue.500');
 }
 </style>

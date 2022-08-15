@@ -1,7 +1,10 @@
 <script setup>
-import {computed} from "vue";
-import MixpostPreviewTwitterPost from "@/Components/PreviewTwitterPost.vue"
+import {computed, inject} from "vue";
+import {get} from "lodash"
+import MixpostPostPreviewTwitter from "@/Components/PostPreviewTwitter.vue"
 import MixpostPanel from "@/Components/Panel.vue";
+
+const postContext = inject('postContext')
 
 const props = defineProps({
     accounts: {
@@ -24,7 +27,7 @@ const previews = computed(() => {
         return {
             account,
             providerComponent: {
-                'twitter': MixpostPreviewTwitterPost,
+                'twitter': MixpostPostPreviewTwitter,
             }[account.provider]
         }
     });
@@ -33,12 +36,15 @@ const previews = computed(() => {
 <template>
     <template v-if="selectedAccounts.length">
         <template v-for="preview in previews" :key="preview.id">
-            <component :is="preview.providerComponent"
-                       :name="preview.account.name"
-                       :username="preview.account.username"
-                       :image="preview.account.image"
-                       :body="body"
-                       class="mb-6 last:mb-0"/>
+            <div class="mb-6 last:mb-0">
+                <component :is="preview.providerComponent"
+                           :name="preview.account.name"
+                           :username="preview.account.username"
+                           :image="preview.account.image"
+                           :body="body"
+                           :reached-max-character-limit="get(postContext.reachedMaxCharacterLimit, preview.account.provider, false)"
+                />
+            </div>
         </template>
     </template>
     <template v-else>

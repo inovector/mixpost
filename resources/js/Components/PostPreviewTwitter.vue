@@ -1,6 +1,9 @@
 <script setup>
+import useProviderIcon from "@/Composables/useProviderIcon";
+import MixpostAlert from "@/Components/Alert.vue";
 import MixpostPanel from "@/Components/Panel.vue";
-import TwitterIcon from "@/Icons/Twitter.vue"
+import EditorReadOnly from "@/Components/EditorReadOnly.vue";
+const {providerIconComponent} = useProviderIcon('twitter');
 
 defineProps({
     name: {
@@ -17,15 +20,20 @@ defineProps({
     },
     body: {
         required: true
+    },
+    reachedMaxCharacterLimit: {
+        type: Boolean,
+        default: false,
     }
 })
 </script>
 <template>
-    <MixpostPanel class="relative">
+    <MixpostAlert v-if="reachedMaxCharacterLimit" variant="error" :closeable="false" class="mb-2">[{{ name }}] : You have reached the maximum character limit</MixpostAlert>
+    <MixpostPanel :class="{'border-red-500': reachedMaxCharacterLimit}" class="relative">
         <div class="absolute right-0 top-0 -mt-3 -mr-2">
             <div class="flex items-center justify-center p-2 w-7 h-7 rounded-full bg-white border border-gray-200">
                 <div>
-                    <TwitterIcon class="text-twitter !w-5 !h-5"/>
+                    <component :is="providerIconComponent" class="text-twitter !w-5 !h-5"/>
                 </div>
             </div>
         </div>
@@ -41,7 +49,10 @@ defineProps({
                     <div class="font-medium mr-2">{{ name }}</div>
                     <div class="text-gray-400">@{{ username }}</div>
                 </div>
-                <div class="ProseMirror mt-2" v-html="$props.body"></div>
+
+                <EditorReadOnly :value="$props.body" class="mt-2"/>
+                <!-- DEFAULT <div class="ProseMirror break-all mt-2" v-html="$props.body"></div>-->
+
                 <div class="mt-5 flex items-center justify-between">
                     <div class="flex items-center">
                         <svg class="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">

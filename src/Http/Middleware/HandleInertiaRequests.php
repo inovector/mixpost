@@ -52,7 +52,7 @@ class HandleInertiaRequests extends Middleware
                 ];
             },
             'mixpost' => [
-                'config' => []
+                'social_provider_options' => config('mixpost.social_provider_options'),
             ]
         ]);
     }

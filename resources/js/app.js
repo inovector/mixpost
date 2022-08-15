@@ -1,6 +1,6 @@
-import './bootstrap';
 import '../css/app.css';
 import 'floating-vue/dist/style.css'
+import '@css/overrideTooltip.css'
 
 import {createApp, h} from 'vue';
 import {createInertiaApp} from '@inertiajs/inertia-vue3';

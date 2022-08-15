@@ -16,6 +16,7 @@ class AccountResource extends JsonResource
             'username' => $this->username,
             'image' => $this->image,
             'provider' => $this->provider,
+            'provider_options' => socialProviderOptions($this->provider),
             'created_at' => $this->created_at->diffForHumans()
         ];
     }

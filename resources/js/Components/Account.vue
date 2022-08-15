@@ -1,7 +1,7 @@
 <script setup>
 import {computed} from "vue";
-import TwitterIcon from "@/Icons/Twitter.vue";
-import FacebookIcon from "@/Icons/Facebook.vue";
+import useProviderIcon from "@/Composables/useProviderIcon";
+import ExclamationCircleIcon from "@/Icons/ExclamationCircle.vue";
 
 const props = defineProps({
     imgUrl: {
@@ -19,6 +19,10 @@ const props = defineProps({
     size: {
         type: String,
         default: 'md'
+    },
+    warningMessage: {
+        type: String,
+        default: ''
     }
 })
 
@@ -49,31 +53,27 @@ const iconWrapperClasses = computed(() => {
 });
 
 const iconClasses = computed(() => {
-    const bySize = {
+    return {
         'md': '!w-4 !h-4'
     }[props.size];
-
-    return [bySize, 'text-' + props.provider]
 });
 
-const providerIcon = computed(() => {
-    return {
-        'twitter': TwitterIcon,
-        'facebook': FacebookIcon,
-    }[props.provider];
-});
+const {providerIconComponent} = useProviderIcon(props.provider);
 </script>
 <template>
-    <span :class="{'grayscale': !active}" class="flex items-center justify-center">
+    <span class="flex items-center justify-center">
         <span :class="borderClasses" class="flex items-center justify-center relative border-2 p-1 rounded-full">
-            <span :class="[activeBgClasses, sizeImgClasses]"
+            <span :class="[activeBgClasses, sizeImgClasses, {'grayscale': !active}]"
                   class="inline-flex justify-center items-center flex-shrink-0 rounded-full">
                 <img :src="imgUrl" class="object-cover w-full h-full rounded-full" alt=""/>
             </span>
-            <span :class="iconWrapperClasses"
+            <span v-if="warningMessage" v-tooltip="warningMessage" class="flex items-center justify-center rounded-full absolute top-0 -ml-12 bg-red-500 text-white">
+                <ExclamationCircleIcon :class="iconClasses"/>
+            </span>
+            <span :class="[iconWrapperClasses, {'grayscale': !active}]"
                   class="flex items-center justify-center absolute bg-white p-2 rounded-full ">
                 <span>
-                    <component :is="providerIcon" :class="iconClasses"/>
+                    <component :is="providerIconComponent" :class="[iconClasses, ('text-' + props.provider)]"/>
                 </span>
             </span>
         </span>

@@ -1,11 +1,12 @@
 <?php
 
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\Arr;
 
-if (! function_exists('mixpostAssets')) {
+if (!function_exists('mixpostAssets')) {
     function mixpostAssets(): HtmlString
     {
-        $hot = __DIR__.'/../resources/dist/hot';
+        $hot = __DIR__ . '/../resources/dist/hot';
 
         $devServerIsRunning = file_exists($hot);
 
@@ -28,5 +29,14 @@ if (! function_exists('mixpostAssets')) {
                 <link rel="stylesheet" href="/vendor/mixpost/{$manifest['resources/js/app.js']['css'][0]}">
             HTML
         );
+    }
+}
+
+if (!function_exists('socialProviderOptions')) {
+    function socialProviderOptions($provider)
+    {
+        $items = config('mixpost.social_provider_options');
+
+        return Arr::get($items, $provider);
     }
 }
