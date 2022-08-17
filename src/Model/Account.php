@@ -14,7 +14,8 @@ class Account extends Model
         'image',
         'provider',
         'provider_id',
-        'credentials'
+        'credentials',
+        'user_id'
     ];
 
     protected $casts = [
