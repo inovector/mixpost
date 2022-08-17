@@ -2,22 +2,26 @@
 
 namespace Lao9s\Mixpost\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Inertia\Inertia;
+use Inertia\Response;
 use Lao9s\Mixpost\Facades\SocialProviderManager;
 use Lao9s\Mixpost\Model\Account;
 use Lao9s\Mixpost\Resources\AccountResource;
 
 class AccountsController extends Controller
 {
-    public function index(): \Inertia\Response
+    public function index(): Response
     {
+        $accounts = Account::where('user_id', auth()->user()->id)->oldest()->get();
+
         return Inertia::render('Accounts', [
-            'accounts' => AccountResource::collection(Account::oldest()->get())->resolve()
+            'accounts' => AccountResource::collection($accounts)->resolve()
         ]);
     }
 
-    public function update(Account $account): \Illuminate\Http\RedirectResponse
+    public function update(Account $account): RedirectResponse
     {
         $result = SocialProviderManager::connect($account->provider)->credentials($account->credentials)->getAccount();
 
@@ -30,7 +34,7 @@ class AccountsController extends Controller
         return redirect()->back();
     }
 
-    public function delete(Account $account): \Illuminate\Http\RedirectResponse
+    public function delete(Account $account): RedirectResponse
     {
         $account->delete();
 
