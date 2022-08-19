@@ -73,7 +73,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- [Dumitru Botezatu](https://github.com/inovector)
+- [Dumitru Botezatu](https://github.com/lao9s)
 - [All Contributors](../../contributors)
 
 ## License
