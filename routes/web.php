@@ -1,15 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Lao9s\Mixpost\Http\Middleware\HandleInertiaRequests;
-use Lao9s\Mixpost\Http\Controllers\DashboardController;
-use Lao9s\Mixpost\Http\Controllers\AccountsController;
-use Lao9s\Mixpost\Http\Controllers\AddAccountController;
-use Lao9s\Mixpost\Http\Controllers\SettingsController;
-use Lao9s\Mixpost\Http\Controllers\PostsController;
-use Lao9s\Mixpost\Http\Controllers\ScheduleController;
-use Lao9s\Mixpost\Http\Controllers\MediaController;
-use Lao9s\Mixpost\Http\Controllers\CallbackSocialProviderController;
+use Inovector\Mixpost\Http\Middleware\HandleInertiaRequests;
+use Inovector\Mixpost\Http\Controllers\DashboardController;
+use Inovector\Mixpost\Http\Controllers\AccountsController;
+use Inovector\Mixpost\Http\Controllers\AddAccountController;
+use Inovector\Mixpost\Http\Controllers\SettingsController;
+use Inovector\Mixpost\Http\Controllers\PostsController;
+use Inovector\Mixpost\Http\Controllers\ScheduleController;
+use Inovector\Mixpost\Http\Controllers\MediaController;
+use Inovector\Mixpost\Http\Controllers\CallbackSocialProviderController;
 
 Route::middleware(['web', HandleInertiaRequests::class])->prefix('mixpost')->name('mixpost.')->group(function () {
     Route::get('/', DashboardController::class)->name('dashboard');

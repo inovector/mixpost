@@ -1,6 +1,6 @@
 <?php
 
-namespace Lao9s\Mixpost\Http\Middleware;
+namespace Inovector\Mixpost\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;

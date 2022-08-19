@@ -1,6 +1,6 @@
 <?php
 
-namespace Lao9s\Mixpost\Resources;
+namespace Inovector\Mixpost\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 

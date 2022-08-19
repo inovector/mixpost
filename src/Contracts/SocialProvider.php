@@ -1,9 +1,9 @@
 <?php
 
-namespace Lao9s\Mixpost\Contracts;
+namespace Inovector\Mixpost\Contracts;
 
 use Illuminate\Http\Request;
-use Lao9s\Mixpost\Model\Post;
+use Inovector\Mixpost\Model\Post;
 
 interface SocialProvider
 {

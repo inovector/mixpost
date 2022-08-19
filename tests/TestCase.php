@@ -1,9 +1,9 @@
 <?php
 
-namespace Lao9s\Mixpost\Tests;
+namespace Inovector\Mixpost\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Lao9s\Mixpost\MixpostServiceProvider;
+use Inovector\Mixpost\MixpostServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
@@ -13,7 +13,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Lao9s\\Mixpost\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn (string $modelName) => 'Inovector\\Mixpost\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
     }
 

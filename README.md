@@ -3,10 +3,10 @@
 
 [<img src="./art/logo.svg" width="300px" alt="Logo Mixpost" />](https://mixpost.app)
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/lao9s/mixpost.svg?style=flat-square)](https://packagist.org/packages/lao9s/mixpost)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/lao9s/mixpost/run-tests?label=tests)](https://github.com/lao9s/mixpost/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/lao9s/mixpost/Check%20&%20fix%20styling?label=code%20style)](https://github.com/lao9s/mixpost/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/lao9s/mixpost.svg?style=flat-square)](https://packagist.org/packages/lao9s/mixpost)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/inovector/mixpost.svg?style=flat-square)](https://packagist.org/packages/inovector/mixpost)
+[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/inovector/mixpost/run-tests?label=tests)](https://github.com/inovector/mixpost/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/inovector/mixpost/Check%20&%20fix%20styling?label=code%20style)](https://github.com/inovector/mixpost/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/inovector/mixpost.svg?style=flat-square)](https://packagist.org/packages/inovector/mixpost)
 
 ## Introduction
 
@@ -20,7 +20,7 @@ Mixpost is a Laravel marketing platform for social networks.
 You can install the package via composer:
 
 ```bash
-composer require lao9s/mixpost
+composer require inovector/mixpost
 ```
 
 You can publish and run the migrations with:
@@ -65,7 +65,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 ## Contributing
 
-Please see [CONTRIBUTING](https://github.com/lao9s/.github/blob/main/CONTRIBUTING.md) for details.
+Please see [CONTRIBUTING](https://github.com/inovector/.github/blob/main/CONTRIBUTING.md) for details.
 
 ## Security Vulnerabilities
 
@@ -73,7 +73,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- [Dumitru Botezatu](https://github.com/lao9s)
+- [Dumitru Botezatu](https://github.com/inovector)
 - [All Contributors](../../contributors)
 
 ## License

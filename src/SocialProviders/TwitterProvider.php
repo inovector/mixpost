@@ -1,11 +1,11 @@
 <?php
 
-namespace Lao9s\Mixpost\SocialProviders;
+namespace Inovector\Mixpost\SocialProviders;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 use Illuminate\Http\Request;
-use Lao9s\Mixpost\Contracts\SocialProvider;
-use Lao9s\Mixpost\Model\Post;
+use Inovector\Mixpost\Contracts\SocialProvider;
+use Inovector\Mixpost\Model\Post;
 
 class TwitterProvider implements SocialProvider
 {

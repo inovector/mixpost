@@ -1,8 +1,8 @@
 <?php
 
-namespace Lao9s\Mixpost;
+namespace Inovector\Mixpost;
 
-use Lao9s\Mixpost\Commands\PublishAssetsCommand;
+use Inovector\Mixpost\Commands\PublishAssetsCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 

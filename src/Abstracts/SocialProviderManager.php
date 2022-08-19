@@ -1,6 +1,6 @@
 <?php
 
-namespace Lao9s\Mixpost\Abstracts;
+namespace Inovector\Mixpost\Abstracts;
 
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Str;

@@ -1,17 +1,18 @@
 {
-    "name": "lao9s/mixpost",
+    "name": "inovector/mixpost",
     "description": "Laravel marketing platform for Social Network",
     "keywords": [
-        "lao9s",
-        "laravel",
-        "mixpost"
+        "inovector",
+        "mixpost",
+        "social",
+        "laravel"
     ],
-    "homepage": "https://github.com/lao9s/mixpost",
+    "homepage": "https://github.com/inovector/mixpost",
     "license": "MIT",
     "authors": [
         {
-            "name": "Dumitru Botezatu",
-            "email": "dima.botezatu@gmail.com",
+            "name": "Dima Botezatu",
+            "email": "dima@inovector.com",
             "role": "Developer"
         }
     ],
@@ -37,8 +38,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Lao9s\\Mixpost\\": "src",
-            "Lao9s\\Mixpost\\Database\\Factories\\": "database/factories"
+            "Inovector\\Mixpost\\": "src",
+            "Inovector\\Mixpost\\Database\\Factories\\": "database/factories"
         },
         "files": [
             "src/helpers.php"
@@ -46,7 +47,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Lao9s\\Mixpost\\Tests\\": "tests"
+            "Inovector\\Mixpost\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -65,10 +66,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Lao9s\\Mixpost\\MixpostServiceProvider"
+                "Inovector\\Mixpost\\MixpostServiceProvider"
             ],
             "aliases": {
-                "Mixpost": "Lao9s\\Mixpost\\Facades\\Mixpost"
+                "Mixpost": "Inovector\\Mixpost\\Facades\\Mixpost"
             }
         }
     },

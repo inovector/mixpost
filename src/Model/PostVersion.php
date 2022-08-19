@@ -1,6 +1,6 @@
 <?php
 
-namespace Lao9s\Mixpost\Model;
+namespace Inovector\Mixpost\Model;
 
 use Illuminate\Database\Eloquent\Model;
 

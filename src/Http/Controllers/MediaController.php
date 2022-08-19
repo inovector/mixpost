@@ -1,6 +1,6 @@
 <?php
 
-namespace Lao9s\Mixpost\Http\Controllers;
+namespace Inovector\Mixpost\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Inertia\Inertia;

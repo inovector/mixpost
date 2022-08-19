@@ -1,11 +1,11 @@
 <?php
 
-namespace Lao9s\Mixpost\Http\Controllers;
+namespace Inovector\Mixpost\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Inertia\Inertia;
-use Lao9s\Mixpost\Model\Account;
-use Lao9s\Mixpost\Resources\AccountResource;
+use Inovector\Mixpost\Model\Account;
+use Inovector\Mixpost\Resources\AccountResource;
 
 class PostsController extends Controller
 {

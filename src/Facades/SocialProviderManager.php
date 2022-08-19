@@ -1,13 +1,13 @@
 <?php
 
-namespace Lao9s\Mixpost\Facades;
+namespace Inovector\Mixpost\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static \Lao9s\Mixpost\Contracts\SocialProvider connect(string $provider)
+ * @method static \Inovector\Mixpost\Contracts\SocialProvider connect(string $provider)
  *
- * @see \Lao9s\Mixpost\Abstracts\SocialProviderManager
+ * @see \Inovector\Mixpost\Abstracts\SocialProviderManager
  */
 class SocialProviderManager extends Facade
 {

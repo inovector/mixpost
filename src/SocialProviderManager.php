@@ -1,9 +1,9 @@
 <?php
 
-namespace Lao9s\Mixpost;
+namespace Inovector\Mixpost;
 
-use Lao9s\Mixpost\Abstracts\SocialProviderManager as SocialProviderManagerAbstract;
-use Lao9s\Mixpost\SocialProviders\TwitterProvider;
+use Inovector\Mixpost\Abstracts\SocialProviderManager as SocialProviderManagerAbstract;
+use Inovector\Mixpost\SocialProviders\TwitterProvider;
 
 class SocialProviderManager extends SocialProviderManagerAbstract
 {

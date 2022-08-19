@@ -1,10 +1,10 @@
 <?php
 
-namespace Lao9s\Mixpost\Http\Controllers;
+namespace Inovector\Mixpost\Http\Controllers;
 
 use Illuminate\Routing\Controller;
-use Lao9s\Mixpost\Facades\SocialProviderManager;
-use Lao9s\Mixpost\Model\Account;
+use Inovector\Mixpost\Facades\SocialProviderManager;
+use Inovector\Mixpost\Model\Account;
 
 class CallbackSocialProviderController extends Controller
 {

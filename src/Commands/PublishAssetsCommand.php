@@ -1,6 +1,6 @@
 <?php
 
-namespace Lao9s\Mixpost\Commands;
+namespace Inovector\Mixpost\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;

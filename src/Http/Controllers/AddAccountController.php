@@ -1,11 +1,11 @@
 <?php
 
-namespace Lao9s\Mixpost\Http\Controllers;
+namespace Inovector\Mixpost\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
-use Lao9s\Mixpost\Facades\SocialProviderManager;
+use Inovector\Mixpost\Facades\SocialProviderManager;
 
 class AddAccountController extends Controller
 {
