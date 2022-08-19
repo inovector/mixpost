@@ -12,8 +12,8 @@ import MixpostAddTwitterAccount from "@/Components/AddTwitterAccount.vue"
 import MixpostAddFacebookAccount from "@/Components/AddFacebookAccount.vue"
 import MixpostSecondaryButton from "@/Components/SecondaryButton.vue"
 import MixpostDangerButton from "@/Components/DangerButton.vue"
-import MixpostDropdown from "@/Components/Dropdown.vue"
-import MixpostDropdownItem from "@/Components/DropdownItem.vue"
+import Dropdown from "@/Components/Dropdown.vue"
+import DropdownItem from "@/Components/DropdownItem.vue"
 import PlusIcon from "@/Icons/Plus.vue";
 import DotsVerticalIcon from "@/Icons/DotsVertical.vue";
 import RefreshIcon from "@/Icons/Refresh.vue";
@@ -73,7 +73,7 @@ const closeConfirmingAccountDeletion = () => {
                 <template v-for="account in $page.props.accounts" :key="account.id">
                     <MixpostPanel class="relative">
                         <div class="absolute top-0 right-0 mt-3 mr-3">
-                            <MixpostDropdown width-classes="w-32">
+                            <Dropdown width-classes="w-32">
                                 <template #trigger>
                                     <MixpostSecondaryButton size="xs">
                                         <DotsVerticalIcon/>
@@ -81,16 +81,16 @@ const closeConfirmingAccountDeletion = () => {
                                 </template>
 
                                 <template #content>
-                                    <MixpostDropdownItem @click="updateAccount(account.id)" as="button">
+                                    <DropdownItem @click="updateAccount(account.id)" as="button">
                                         <RefreshIcon class="!w-4 !h-4 mr-1"/>
                                         Refresh
-                                    </MixpostDropdownItem>
-                                    <MixpostDropdownItem @click="confirmingAccountDeletion = account.id" as="button">
+                                    </DropdownItem>
+                                    <DropdownItem @click="confirmingAccountDeletion = account.id" as="button">
                                         <TrashIcon class="!w-4 !h-4 mr-1 text-red-500"/>
                                         Delete
-                                    </MixpostDropdownItem>
+                                    </DropdownItem>
                                 </template>
-                            </MixpostDropdown>
+                            </Dropdown>
                         </div>
 
                         <div class="flex flex-col justify-center">

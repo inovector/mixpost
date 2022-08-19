@@ -23,6 +23,7 @@ export default defineConfig({
     resolve: {
         alias: {
             '@css': '/resources/css',
+            '@img': 'resources/img'
         },
     }
 });

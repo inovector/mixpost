@@ -1,7 +1,9 @@
 <script setup>
 import {computed, inject} from "vue";
 import {get} from "lodash"
+import usePostVersions from "@/Composables/usePostVersions";
 import MixpostPostPreviewTwitter from "@/Components/PostPreviewTwitter.vue"
+import MixpostPostPreviewFacebook from "@/Components/PostPreviewFacebook.vue"
 import MixpostPanel from "@/Components/Panel.vue";
 
 const postContext = inject('postContext')
@@ -15,19 +17,30 @@ const props = defineProps({
         required: true,
         type: Array,
     },
-    body: {
+    versions: {
         required: true,
+        type: Array,
     }
+});
+
+const {getDefaultVersion, getAccountVersion} = usePostVersions();
+
+const defaultVersion = computed(() => {
+    return getDefaultVersion(props.versions);
 });
 
 const previews = computed(() => {
     return props.accounts.filter((account) => {
         return props.selectedAccounts.includes(account.id);
     }).map((account) => {
+        const accountVersion = getAccountVersion(props.versions, account.id);
+
         return {
             account,
+            content: accountVersion ? accountVersion.content : defaultVersion.value.content,
             providerComponent: {
                 'twitter': MixpostPostPreviewTwitter,
+                'facebook': MixpostPostPreviewFacebook,
             }[account.provider]
         }
     });
@@ -41,7 +54,7 @@ const previews = computed(() => {
                            :name="preview.account.name"
                            :username="preview.account.username"
                            :image="preview.account.image"
-                           :body="body"
+                           :content="preview.content"
                            :reached-max-character-limit="get(postContext.reachedMaxCharacterLimit, preview.account.provider, false)"
                 />
             </div>
@@ -60,8 +73,8 @@ const previews = computed(() => {
                 </div>
                 <div class="w-full">
                     <div class="flex items-center">
-                        <div class="mr-2 bg-gray-100 w-32 h-4"></div>
-                        <div class="bg-gray-100 w-24 h-4"></div>
+                        <div class="mr-2 bg-gray-100 w-2/12 h-4"></div>
+                        <div class="bg-gray-100 w-3/12 h-4"></div>
                     </div>
                     <div class="mt-5">
                         <div class="bg-gray-100 w-3/4 h-4"></div>

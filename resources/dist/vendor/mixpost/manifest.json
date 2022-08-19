@@ -1,6 +1,10 @@
 {
+  "resources/img/fb-wow.svg": {
+    "file": "assets/fb-wow.ca50712c.svg",
+    "src": "resources/img/fb-wow.svg"
+  },
   "resources/js/app.js": {
-    "file": "assets/app.ac3977ae.js",
+    "file": "assets/app.0406e204.js",
     "src": "resources/js/app.js",
     "isEntry": true,
     "dynamicImports": [
@@ -13,19 +17,29 @@
       "resources/js/Pages/Settings.vue"
     ],
     "css": [
-      "assets/app.82d999d5.css"
+      "assets/app.6dfc249f.css"
     ]
   },
   "resources/js/Pages/Accounts.vue": {
-    "file": "assets/Accounts.7432e66d.js",
+    "file": "assets/Accounts.85a53d2d.js",
     "src": "resources/js/Pages/Accounts.vue",
     "isDynamicEntry": true,
     "imports": [
+      "resources/js/app.js",
+      "_DropdownItem.139e38ac.js"
+    ]
+  },
+  "_DropdownItem.139e38ac.js": {
+    "file": "assets/DropdownItem.139e38ac.js",
+    "imports": [
       "resources/js/app.js"
+    ],
+    "css": [
+      "assets/DropdownItem.b54678c7.css"
     ]
   },
   "resources/js/Pages/Dashboard.vue": {
-    "file": "assets/Dashboard.a07ea94c.js",
+    "file": "assets/Dashboard.9ad1555c.js",
     "src": "resources/js/Pages/Dashboard.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -33,7 +47,7 @@
     ]
   },
   "resources/js/Pages/Media.vue": {
-    "file": "assets/Media.7c2f72e4.js",
+    "file": "assets/Media.896c60ca.js",
     "src": "resources/js/Pages/Media.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -41,18 +55,22 @@
     ]
   },
   "resources/js/Pages/Posts/Create.vue": {
-    "file": "assets/Create.e5b93429.js",
+    "file": "assets/Create.41882140.js",
     "src": "resources/js/Pages/Posts/Create.vue",
     "isDynamicEntry": true,
     "imports": [
-      "resources/js/app.js"
+      "resources/js/app.js",
+      "_DropdownItem.139e38ac.js"
     ],
     "css": [
-      "assets/Create.ba166418.css"
+      "assets/Create.8483be18.css"
+    ],
+    "assets": [
+      "assets/fb-wow.ca50712c.svg"
     ]
   },
   "resources/js/Pages/Posts/Index.vue": {
-    "file": "assets/Index.26e53946.js",
+    "file": "assets/Index.06ab43d8.js",
     "src": "resources/js/Pages/Posts/Index.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -60,7 +78,7 @@
     ]
   },
   "resources/js/Pages/Schedule.vue": {
-    "file": "assets/Schedule.98695d94.js",
+    "file": "assets/Schedule.59fa0735.js",
     "src": "resources/js/Pages/Schedule.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -68,19 +86,23 @@
     ]
   },
   "resources/js/Pages/Settings.vue": {
-    "file": "assets/Settings.f1600f1f.js",
+    "file": "assets/Settings.e6d65b4c.js",
     "src": "resources/js/Pages/Settings.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js"
     ]
   },
+  "DropdownItem.css": {
+    "file": "assets/DropdownItem.b54678c7.css",
+    "src": "DropdownItem.css"
+  },
   "resources/js/Pages/Posts/Create.css": {
-    "file": "assets/Create.ba166418.css",
+    "file": "assets/Create.8483be18.css",
     "src": "resources/js/Pages/Posts/Create.css"
   },
   "resources/js/app.css": {
-    "file": "assets/app.82d999d5.css",
+    "file": "assets/app.6dfc249f.css",
     "src": "resources/js/app.css"
   }
 }

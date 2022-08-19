@@ -18,8 +18,9 @@ defineProps({
         required: true,
         type: String
     },
-    body: {
-        required: true
+    content: {
+        required: true,
+        type: Array,
     },
     reachedMaxCharacterLimit: {
         type: Boolean,
@@ -50,7 +51,7 @@ defineProps({
                     <div class="text-gray-400">@{{ username }}</div>
                 </div>
 
-                <EditorReadOnly :value="$props.body" class="mt-2"/>
+                <EditorReadOnly :value="$props.content[0].body" class="mt-2"/>
                 <!-- DEFAULT <div class="ProseMirror break-all mt-2" v-html="$props.body"></div>-->
 
                 <div class="mt-5 flex items-center justify-between">

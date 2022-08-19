@@ -2,7 +2,7 @@
 import data from "emoji-mart-vue-fast/data/apple.json";
 import "emoji-mart-vue-fast/css/emoji-mart.css";
 import {Picker, EmojiIndex} from "emoji-mart-vue-fast/src";
-import MixpostDropdown from "@/Components/Dropdown.vue"
+import Dropdown from "@/Components/Dropdown.vue"
 import EmojiIcon from "@/Icons/Emoji.vue"
 
 const emojiIndex = new EmojiIndex(data);
@@ -14,7 +14,7 @@ function showEmoji(emoji) {
 }
 </script>
 <template>
-    <MixpostDropdown align="left" :closeable-on-content="false" @close="$emit('close')">
+    <Dropdown placement="bottom-start" :closeable-on-content="false" width-classes="w-auto" @close="$emit('close')">
         <template #trigger>
             <button type="button" v-tooltip="'Emoji'"
                     class="hover:text-orange-500 transition-colors ease-in-out duration-200 outline-none text-stone-800">
@@ -29,5 +29,5 @@ function showEmoji(emoji) {
                     @select="showEmoji"
             />
         </template>
-    </MixpostDropdown>
+    </Dropdown>
 </template>

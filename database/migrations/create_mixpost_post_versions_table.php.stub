@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('mixpost_posts', function (Blueprint $table) {
+        Schema::create('mixpost_post_versions', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('post_id')->unsigned();
+            $table->foreign('post_id')->references('id')->on('mixpost_posts')->onDelete('cascade');
             $table->bigInteger('account_id');
-            $table->tinyInteger('status')->default(0);
-            $table->tinyInteger('schedule_status')->default(0);
-            $table->dateTime('scheduled_at')->nullable();
-            $table->dateTime('delivered_at')->nullable();
-            $table->timestamps();
+            $table->tinyInteger('is_default')->default(0);
+            $table->json('content')->nullable();
         });
     }
 
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mixpost_posts');
+        Schema::dropIfExists('mixpost_post_versions');
     }
 };

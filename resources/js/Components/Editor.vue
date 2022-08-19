@@ -1,5 +1,5 @@
 <script setup>
-import {ref, onMounted, onUnmounted, useAttrs, computed, inject} from "vue";
+import {ref, onMounted, onUnmounted, useAttrs, computed, watch} from "vue";
 import {useEditor, EditorContent} from '@tiptap/vue-3'
 import useEditorHelper from "@/Composables/useEditor";
 import emitter from "@/Services/emitter";
@@ -10,7 +10,7 @@ import Typography from '@tiptap/extension-typography'
 const attrs = useAttrs();
 
 const props = defineProps({
-    modelValue: {
+    value: {
         required: true,
     },
     placeholder: {
@@ -19,7 +19,7 @@ const props = defineProps({
     }
 });
 
-const emit = defineEmits(['update:modelValue', 'update']);
+const emit = defineEmits(['update']);
 
 const el = ref();
 const focused = ref(false);
@@ -27,7 +27,7 @@ const focused = ref(false);
 const {defaultExtensions} = useEditorHelper();
 
 const editor = useEditor({
-    content: props.modelValue,
+    content: props.value,
     extensions: [...defaultExtensions, ...[
         History,
         Placeholder.configure({
@@ -46,7 +46,7 @@ const editor = useEditor({
         },
     },
     onUpdate: () => {
-        emit('update:modelValue', editor.value.getHTML());
+        emit('update', editor.value.getHTML());
     },
     onFocus: () => {
         focused.value = true;
@@ -56,7 +56,7 @@ const editor = useEditor({
     }
 });
 
-const bodyText = computed(()=> {
+const bodyText = computed(() => {
     return editor.value && !editor.value.isEmpty ? editor.value.view.dom.innerText : '';
 });
 
@@ -83,6 +83,12 @@ onUnmounted(() => {
     emitter.off('insertEmoji');
     emitter.off('focusEditor');
 });
+
+watch(() => props.value, (value) => {
+    if (value !== editor.value.getHTML()) {
+        editor.value.commands.setContent(value);
+    }
+})
 </script>
 <template>
     <div

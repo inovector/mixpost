@@ -1,14 +1,19 @@
 <script setup>
-import {computed, onMounted, onUnmounted, ref} from 'vue';
+import {Dropdown as VDropdown} from "floating-vue";
+import '@css/overrideVDropdown.css'
 
 const props = defineProps({
-    align: {
+    placement: {
         type: String,
-        default: 'right',
+        default: 'bottom',
     },
     widthClasses: {
         type: String,
         default: 'w-48',
+    },
+    headerPadding: {
+        type: String,
+        default: 'p-3'
     },
     contentClasses: {
         type: Array,
@@ -22,69 +27,30 @@ const props = defineProps({
 
 const emit = defineEmits(['close']);
 
-let open = ref(false);
-
-const closeOnEscape = (e) => {
-    if (open.value && e.key === 'Escape') {
-        close();
-    }
-};
-
-const closeOnContentClick = () => {
+const closeOnContentClick = (hide) => {
     if (props.closeableOnContent) {
-        close();
+        close(hide);
     }
 }
 
-const close = () => {
-    open.value = false;
+const close = (hide) => {
+    if(hide !== undefined) {
+        hide();
+    }
+
     emit('close');
 }
-
-onMounted(() => document.addEventListener('keydown', closeOnEscape));
-onUnmounted(() => document.removeEventListener('keydown', closeOnEscape));
-
-const alignmentClasses = computed(() => {
-    if (props.align === 'left') {
-        return 'origin-top-left left-0';
-    }
-
-    if (props.align === 'right') {
-        return 'origin-top-right right-0';
-    }
-
-    return 'origin-top';
-});
 </script>
-
 <template>
-    <div class="relative">
-        <div @click="open = ! open">
-            <slot name="trigger"/>
-        </div>
-
-        <!-- Full Screen Dropdown Overlay -->
-        <div v-show="open" class="fixed inset-0 z-40" @click="close"/>
-
-        <transition
-            enter-active-class="transition ease-out duration-200"
-            enter-from-class="transform opacity-0 scale-95"
-            enter-to-class="transform opacity-100 scale-100"
-            leave-active-class="transition ease-in duration-75"
-            leave-from-class="transform opacity-100 scale-100"
-            leave-to-class="transform opacity-0 scale-95"
-        >
-            <div
-                v-show="open"
-                class="absolute z-50 mt-1 rounded-md shadow-mix"
-                :class="[widthClasses, alignmentClasses]"
-                style="display: none;"
-                @click="closeOnContentClick"
-            >
-                <div class="rounded-md border border-gray-200" :class="contentClasses">
-                    <slot name="content"/>
-                </div>
+    <VDropdown @apply-hide="close" :placement="placement">
+        <slot name="trigger"/>
+        <template #popper="{ hide }">
+            <div v-if="$slots.header" :class="[headerPadding]" class="border-b border-gray-200">
+                <slot name="header"/>
             </div>
-        </transition>
-    </div>
+            <div @click="closeOnContentClick(hide)" :class="[contentClasses, widthClasses]">
+                <slot name="content"/>
+            </div>
+        </template>
+    </VDropdown>
 </template>

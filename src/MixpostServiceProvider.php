@@ -23,6 +23,7 @@ class MixpostServiceProvider extends PackageServiceProvider
             ->hasMigrations([
                 'create_mixpost_accounts_table',
                 'create_mixpost_posts_table',
+                'create_mixpost_post_versions_table',
                 'create_mixpost_categories_table',
                 'create_mixpost_category_post_table'
             ])
