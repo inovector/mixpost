@@ -4,12 +4,13 @@ namespace Inovector\Mixpost\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Inertia\Inertia;
+use Inertia\Response;
 use Inovector\Mixpost\Model\Account;
 use Inovector\Mixpost\Resources\AccountResource;
 
 class PostsController extends Controller
 {
-    public function index(): \Inertia\Response
+    public function index(): Response
     {
         return Inertia::render('Posts/Index');
     }

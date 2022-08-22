@@ -2,13 +2,14 @@
 
 namespace Inovector\Mixpost\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Inovector\Mixpost\Facades\SocialProviderManager;
 use Inovector\Mixpost\Model\Account;
 
 class CallbackSocialProviderController extends Controller
 {
-    public function __invoke(string $providerName): \Illuminate\Http\RedirectResponse
+    public function __invoke(string $providerName): RedirectResponse
     {
         $provider = SocialProviderManager::connect($providerName);
 
