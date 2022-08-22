@@ -12,7 +12,7 @@ const props = defineProps({
 const {defaultExtensions} = useEditorHelper();
 
 const editor = useEditor({
-    editable: true,
+    editable: false,
     content: props.value,
     extensions: defaultExtensions,
 });
