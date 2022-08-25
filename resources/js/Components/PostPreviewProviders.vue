@@ -23,10 +23,10 @@ const props = defineProps({
     }
 });
 
-const {getDefaultVersion, getAccountVersion} = usePostVersions();
+const {getOriginalVersion, getAccountVersion} = usePostVersions();
 
 const defaultVersion = computed(() => {
-    return getDefaultVersion(props.versions);
+    return getOriginalVersion(props.versions);
 });
 
 const previews = computed(() => {

@@ -72,7 +72,7 @@ const isAccountUnselectable = (account) => {
 /**
  * Post content versions & Editor
  */
-const {versionObject, getDefaultVersion, getAccountVersion} = usePostVersions();
+const {versionObject, getOriginalVersion, getAccountVersion} = usePostVersions();
 
 const activeVersion = ref(0);
 
@@ -94,7 +94,7 @@ const addVersion = (accountId) => {
     let newVersion = versionObject(accountId);
 
     // Copy content from the default version to the new version
-    newVersion.content = cloneDeep(getDefaultVersion(props.form.versions).content);
+    newVersion.content = cloneDeep(getOriginalVersion(props.form.versions).content);
 
     props.form.versions.push(newVersion);
 

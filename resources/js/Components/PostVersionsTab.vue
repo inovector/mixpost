@@ -39,10 +39,10 @@ const availableAccounts = computed(() => {
     })
 });
 
-const {getDefaultVersion} = usePostVersions();
+const {getOriginalVersion} = usePostVersions();
 
 const versionsWithAccountData = computed(() => {
-    const defaultVersion = {...getDefaultVersion(props.versions), ...{account: {name: 'Default'}}};
+    const defaultVersion = {...getOriginalVersion(props.versions), ...{account: {name: 'Original'}}};
 
     const versionsBelongsToAccount = props.versions.map((version) => {
         const account = props.accounts.find(account => account.id === version.account_id);
@@ -62,7 +62,7 @@ const versionsWithAccountData = computed(() => {
         <template v-for="version in versionsWithAccountData" :key="version.account_id">
             <MixpostTabItem @click="$emit('select', version.account_id)" :active="activeVersion === version.account_id">
                 <component
-                    v-if="!version.is_default"
+                    v-if="!version.is_original"
                     :is="providerIconComponentFnc(version.account.provider)"
                     :class="['!w-4', '!h-4', ('text-' + version.account.provider)]"
                     class="mr-2"

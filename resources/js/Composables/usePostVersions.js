@@ -6,17 +6,17 @@ const usePostVersions = () => {
         };
     }
 
-    const versionObject = (accountId = 0, isDefault = false) => {
+    const versionObject = (accountId = 0, isOriginal = false) => {
         return {
             account_id: accountId,
-            is_default: isDefault,
+            is_original: isOriginal,
             content: [versionContentObject()]
         }
     }
 
-    const getDefaultVersion = (versions) => {
+    const getOriginalVersion = (versions) => {
         const find = versions.find((version) => {
-            return version.is_default && version.account_id === 0;
+            return version.is_original && version.account_id === 0;
         })
 
         return find ? find : null;
@@ -33,7 +33,7 @@ const usePostVersions = () => {
     return {
         versionContentObject,
         versionObject,
-        getDefaultVersion,
+        getOriginalVersion,
         getAccountVersion
     }
 }
