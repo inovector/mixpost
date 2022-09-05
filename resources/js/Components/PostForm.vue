@@ -8,7 +8,8 @@ import EmojiPicker from '@/Components/EmojiPicker.vue'
 import MixpostPanel from "@/Components/Panel.vue";
 import MixpostAccount from "@/Components/Account.vue"
 import MixpostPostVersionsTab from "@/Components/PostVersionsTab.vue"
-import MixpostProviderPostCharacterCount from "@/Components/ProviderPostCharacterCount.vue"
+import MixpostAddMedia from "@/Components/Media/AddMedia.vue"
+// import MixpostProviderPostCharacterCount from "@/Components/ProviderPostCharacterCount.vue"
 import PhotoIcon from "@/Icons/Photo.vue"
 import ChatIcon from "@/Icons/Chat.vue"
 
@@ -157,23 +158,24 @@ const {insertEmoji, focusEditor} = useEditor();
                                 @close="focusEditor({editorId: 'postEditor'})"
                             />
 
-                            <div>
+                            <MixpostAddMedia>
                                 <button type="button" v-tooltip="'Media'"
                                         class="text-stone-800 hover:text-indigo-500 transition-colors ease-in-out duration-200">
                                     <PhotoIcon/>
                                 </button>
-                            </div>
+                            </MixpostAddMedia>
                         </div>
 
                         <div class="flex items-center justify-center">
-                            <div class="flex items-center justify-center mr-5">
-                                <template v-for="item in providersWithPostCharactersLimit" :key="item.provider">
-                                    <MixpostProviderPostCharacterCount :provider="item.provider"
-                                                                       :character-limit="item.limit"
-                                                                       :text="props.bodyText"
-                                                                       @reached="postContext.reachedMaxCharacterLimit[item.provider] = $event"/>
-                                </template>
-                            </div>
+<!--                            In development-->
+<!--                            <div class="flex items-center justify-center mr-5">-->
+<!--                                <template v-for="item in providersWithPostCharactersLimit" :key="item.provider">-->
+<!--                                    <MixpostProviderPostCharacterCount :provider="item.provider"-->
+<!--                                                                       :character-limit="item.limit"-->
+<!--                                                                       :text="props.bodyText"-->
+<!--                                                                       @reached="postContext.reachedMaxCharacterLimit[item.provider] = $event"/>-->
+<!--                                </template>-->
+<!--                            </div>-->
 
                             <button v-tooltip="'Add Comment'" type="button"
                                     class="text-stone-800 hover:text-indigo-500 transition-colors ease-in-out duration-200">
@@ -184,6 +186,5 @@ const {insertEmoji, focusEditor} = useEditor();
                 </template>
             </Editor>
         </template>
-
     </MixpostPanel>
 </template>

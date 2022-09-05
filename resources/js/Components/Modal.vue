@@ -14,6 +14,9 @@ const props = defineProps({
         type: Boolean,
         default: true,
     },
+    dialogClass: {
+        type: String,
+    }
 });
 
 const emit = defineEmits(['close']);
@@ -81,8 +84,10 @@ const maxWidthClass = computed(() => {
                     leave-from-class="opacity-100 translate-y-0 sm:scale-100"
                     leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                 >
-                    <div v-show="show" class="mb-10 bg-white rounded-lg overflow-hidden transform transition-all sm:w-full sm:mx-auto" :class="maxWidthClass">
-                        <slot v-if="show" />
+                    <div v-show="show" class="flex flex-col h-full">
+                        <div class="mb-10 bg-white rounded-lg transform transition-all sm:w-full sm:mx-auto" :class="[maxWidthClass, dialogClass]">
+                            <slot v-if="show" />
+                        </div>
                     </div>
                 </transition>
             </div>

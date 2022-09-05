@@ -5,7 +5,7 @@ import usePostVersions from "@/Composables/usePostVersions";
 import Dropdown from "@/Components/Dropdown.vue";
 import MixpostDropdownItem from "@/Components/DropdownItem.vue";
 import MixpostAccount from "@/Components/Account.vue"
-import MixpostTabItem from "@/Components/TabItem.vue"
+import MixpostTab from "@/Components/Tabs/Tab.vue"
 import MixpostPureButton from "@/Components/PureButton.vue"
 import PlusIcon from "@/Icons/Plus.vue"
 
@@ -60,7 +60,7 @@ const versionsWithAccountData = computed(() => {
 <template>
     <div class="flex flex-wrap items-start">
         <template v-for="version in versionsWithAccountData" :key="version.account_id">
-            <MixpostTabItem @click="$emit('select', version.account_id)" :active="activeVersion === version.account_id">
+            <MixpostTab @click="$emit('select', version.account_id)" :active="activeVersion === version.account_id" class="mb-2">
                 <component
                     v-if="!version.is_original"
                     :is="providerIconComponentFnc(version.account.provider)"
@@ -68,7 +68,7 @@ const versionsWithAccountData = computed(() => {
                     class="mr-2"
                 />
                 <span>{{ version.account.name }}</span>
-            </MixpostTabItem>
+            </MixpostTab>
         </template>
 
         <Dropdown>

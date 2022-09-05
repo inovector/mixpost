@@ -1,3 +1,4 @@
+import './bootstrap';
 import '../css/app.css';
 import 'floating-vue/dist/style.css'
 import '@css/overrideTooltip.css'

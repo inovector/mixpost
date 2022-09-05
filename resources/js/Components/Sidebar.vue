@@ -59,7 +59,7 @@ import {Link} from '@inertiajs/inertia-vue3';
                     </template>
                     Schedule
                 </MixpostMenuItem>
-                <MixpostMenuItem :url="route('mixpost.media')" :active="route().current('mixpost.media')">
+                <MixpostMenuItem :url="route('mixpost.media.index')" :active="route().current('mixpost.media.index')">
                     <template #icon>
                         <PhotoIcon/>
                     </template>

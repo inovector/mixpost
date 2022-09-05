@@ -10,12 +10,12 @@ class PostVersion extends Model
 
     protected $fillable = [
         'account_id',
-        'is_default',
+        'is_original',
         'content'
     ];
 
     protected $casts = [
-        'is_default' => 'boolean',
+        'is_original' => 'boolean',
         'content' => 'array',
     ];
 }

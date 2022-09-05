@@ -2,6 +2,7 @@
 
 namespace Inovector\Mixpost;
 
+use Illuminate\Support\Facades\Gate;
 use Inovector\Mixpost\Commands\PublishAssetsCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -25,7 +26,8 @@ class MixpostServiceProvider extends PackageServiceProvider
                 'create_mixpost_posts_table',
                 'create_mixpost_post_versions_table',
                 'create_mixpost_categories_table',
-                'create_mixpost_category_post_table'
+                'create_mixpost_category_post_table',
+                'create_mixpost_media_table',
             ])
             ->hasCommand(PublishAssetsCommand::class);
     }
@@ -37,5 +39,14 @@ class MixpostServiceProvider extends PackageServiceProvider
         });
 
         return parent::register();
+    }
+
+    public function boot()
+    {
+        Gate::define('viewMixpost', function () {
+            return true;
+        });
+
+        return parent::boot();
     }
 }

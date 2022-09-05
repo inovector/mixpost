@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Inovector\Mixpost\Http\Middleware\HandleInertiaRequests;
+use Inovector\Mixpost\Http\Middleware\Auth as MixpostAuthMiddleware;
 use Inovector\Mixpost\Http\Controllers\DashboardController;
 use Inovector\Mixpost\Http\Controllers\AccountsController;
 use Inovector\Mixpost\Http\Controllers\AddAccountController;
@@ -9,9 +10,10 @@ use Inovector\Mixpost\Http\Controllers\SettingsController;
 use Inovector\Mixpost\Http\Controllers\PostsController;
 use Inovector\Mixpost\Http\Controllers\ScheduleController;
 use Inovector\Mixpost\Http\Controllers\MediaController;
+use Inovector\Mixpost\Http\Controllers\MediaUploadFileController;
 use Inovector\Mixpost\Http\Controllers\CallbackSocialProviderController;
 
-Route::middleware(['web', HandleInertiaRequests::class])->prefix('mixpost')->name('mixpost.')->group(function () {
+Route::middleware(['web', MixpostAuthMiddleware::class, HandleInertiaRequests::class])->prefix('mixpost')->name('mixpost.')->group(function () {
     Route::get('/', DashboardController::class)->name('dashboard');
 
     Route::prefix('accounts')->name('accounts.')->group(function () {
@@ -30,7 +32,10 @@ Route::middleware(['web', HandleInertiaRequests::class])->prefix('mixpost')->nam
     });
 
     Route::get('schedule', [ScheduleController::class, 'index'])->name('schedule');
-    Route::get('media', [MediaController::class, 'index'])->name('media');
+    Route::prefix('media')->name('media.')->group(function () {
+        Route::get('/', [MediaController::class, 'index'])->name('index');
+        Route::post('upload', MediaUploadFileController::class)->name('upload');
+    });
     Route::get('settings', [SettingsController::class, 'index'])->name('settings');
 
     Route::get('callback/{provider}', CallbackSocialProviderController::class);

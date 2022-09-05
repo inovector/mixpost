@@ -18,7 +18,7 @@ return new class extends Migration
             $table->bigInteger('post_id')->unsigned();
             $table->foreign('post_id')->references('id')->on('mixpost_posts')->onDelete('cascade');
             $table->bigInteger('account_id');
-            $table->tinyInteger('is_default')->default(0);
+            $table->tinyInteger('is_original')->default(0);
             $table->json('content')->nullable();
         });
     }
