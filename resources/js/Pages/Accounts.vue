@@ -3,17 +3,17 @@ import {ref} from "vue";
 import {Inertia} from '@inertiajs/inertia'
 import {Head} from '@inertiajs/inertia-vue3';
 import useNotifications from "@/Composables/useNotifications";
-import MixpostPageHeader from "@/Components/PageHeader.vue";
-import MixpostPanel from "@/Components/Panel.vue";
-import MixpostModal from "@/Components/Modal.vue"
-import MixpostConfirmationModal from "@/Components/ConfirmationModal.vue"
-import MixpostAccount from "@/Components/Account.vue"
-import MixpostAddTwitterAccount from "@/Components/AddTwitterAccount.vue"
-import MixpostAddFacebookAccount from "@/Components/AddFacebookAccount.vue"
-import MixpostSecondaryButton from "@/Components/SecondaryButton.vue"
-import MixpostDangerButton from "@/Components/DangerButton.vue"
-import Dropdown from "@/Components/Dropdown.vue"
-import DropdownItem from "@/Components/DropdownItem.vue"
+import PageHeader from "@/Components/DataDisplay/PageHeader.vue";
+import Panel from "@/Components/Surface/Panel.vue";
+import Modal from "@/Components/Modal/Modal.vue"
+import ConfirmationModal from "@/Components/Modal/ConfirmationModal.vue"
+import Account from "@/Components/Account/Account.vue"
+import AddTwitterAccount from "@/Components/Account/AddTwitterAccount.vue"
+import AddFacebookAccount from "@/Components/Account/AddFacebookAccount.vue"
+import SecondaryButton from "@/Components/Button/SecondaryButton.vue"
+import DangerButton from "@/Components/Button/DangerButton.vue"
+import Dropdown from "@/Components/Dropdown/Dropdown.vue"
+import DropdownItem from "@/Components/Dropdown/DropdownItem.vue"
 import PlusIcon from "@/Icons/Plus.vue";
 import DotsVerticalIcon from "@/Icons/DotsVertical.vue";
 import RefreshIcon from "@/Icons/Refresh.vue";
@@ -24,7 +24,7 @@ const title = 'Social Accounts';
 const {notify} = useNotifications();
 
 const addAccountModal = ref(false);
-const confirmingAccountDeletion = ref(null);
+const confirmationAccountDeletion = ref(null);
 const accountIsDeleting = ref(false);
 
 const updateAccount = (accountId) => {
@@ -36,12 +36,12 @@ const updateAccount = (accountId) => {
 }
 
 const deleteAccount = () => {
-    Inertia.delete(route('mixpost.accounts.delete', {account: confirmingAccountDeletion.value}), {
+    Inertia.delete(route('mixpost.accounts.delete', {account: confirmationAccountDeletion.value}), {
         onStart() {
             accountIsDeleting.value = true;
         },
         onSuccess() {
-            confirmingAccountDeletion.value = null;
+            confirmationAccountDeletion.value = null;
             notify('success', 'Account deleted');
         },
         onFinish() {
@@ -50,34 +50,34 @@ const deleteAccount = () => {
     });
 }
 
-const closeConfirmingAccountDeletion = () => {
+const closeConfirmationAccountDeletion = () => {
     if (accountIsDeleting.value) {
         return;
     }
 
-    confirmingAccountDeletion.value = null
+    confirmationAccountDeletion.value = null
 }
 </script>
 <template>
     <Head :title="title"/>
 
     <div class="max-w-5xl mx-auto default-y-padding">
-        <MixpostPageHeader :title="title">
+        <PageHeader :title="title">
             <template #description>
                 Connect a social account you'd like to manage.
             </template>
-        </MixpostPageHeader>
+        </PageHeader>
 
         <div class="mt-6 default-x-padding">
             <div class="grid grid-cols-4 gap-6">
                 <template v-for="account in $page.props.accounts" :key="account.id">
-                    <MixpostPanel class="relative">
+                    <Panel class="relative">
                         <div class="absolute top-0 right-0 mt-3 mr-3">
                             <Dropdown width-classes="w-32">
                                 <template #trigger>
-                                    <MixpostSecondaryButton size="xs">
+                                    <SecondaryButton size="xs">
                                         <DotsVerticalIcon/>
-                                    </MixpostSecondaryButton>
+                                    </SecondaryButton>
                                 </template>
 
                                 <template #content>
@@ -85,7 +85,7 @@ const closeConfirmingAccountDeletion = () => {
                                         <RefreshIcon class="!w-4 !h-4 mr-1"/>
                                         Refresh
                                     </DropdownItem>
-                                    <DropdownItem @click="confirmingAccountDeletion = account.id" as="button">
+                                    <DropdownItem @click="confirmationAccountDeletion = account.id" as="button">
                                         <TrashIcon class="!w-4 !h-4 mr-1 text-red-500"/>
                                         Delete
                                     </DropdownItem>
@@ -94,7 +94,7 @@ const closeConfirmingAccountDeletion = () => {
                         </div>
 
                         <div class="flex flex-col justify-center">
-                            <MixpostAccount
+                            <Account
                                 size="lg"
                                 :img-url="account.image"
                                 :provider="account.provider"
@@ -104,7 +104,7 @@ const closeConfirmingAccountDeletion = () => {
                             <div class="mt-3 font-semibold text-center">{{ account.name }}</div>
                             <div class="mt-1 text-center text-stone-800">Added: {{ account.created_at }}</div>
                         </div>
-                    </MixpostPanel>
+                    </Panel>
                 </template>
 
                 <button @click="addAccountModal = true"
@@ -120,17 +120,17 @@ const closeConfirmingAccountDeletion = () => {
         </div>
     </div>
 
-    <MixpostModal :show="addAccountModal"
+    <Modal :show="addAccountModal"
                   :closeable="true"
                   @close="addAccountModal = false">
         <div class="flex flex-col">
-            <MixpostAddTwitterAccount/>
-            <MixpostAddFacebookAccount/>
+            <AddTwitterAccount/>
+            <AddFacebookAccount/>
         </div>
-    </MixpostModal>
+    </Modal>
 
-    <MixpostConfirmationModal :show="confirmingAccountDeletion !== null"
-                              @close="closeConfirmingAccountDeletion"
+    <ConfirmationModal :show="confirmationAccountDeletion !== null"
+                              @close="closeConfirmationAccountDeletion"
                               variant="danger">
         <template #header>
             Delete account
@@ -139,12 +139,12 @@ const closeConfirmingAccountDeletion = () => {
             Are you sure you would like to delete this account?
         </template>
         <template #footer>
-            <MixpostSecondaryButton @click="closeConfirmingAccountDeletion" :disabled="accountIsDeleting"
+            <SecondaryButton @click="closeConfirmationAccountDeletion" :disabled="accountIsDeleting"
                                     class="mr-2">Cancel
-            </MixpostSecondaryButton>
-            <MixpostDangerButton @click="deleteAccount" :is-loading="accountIsDeleting"
+            </SecondaryButton>
+            <DangerButton @click="deleteAccount" :is-loading="accountIsDeleting"
                                  :disabled="accountIsDeleting">Delete
-            </MixpostDangerButton>
+            </DangerButton>
         </template>
-    </MixpostConfirmationModal>
+    </ConfirmationModal>
 </template>

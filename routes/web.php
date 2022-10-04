@@ -34,6 +34,7 @@ Route::middleware(['web', MixpostAuthMiddleware::class, HandleInertiaRequests::c
     Route::get('schedule', [ScheduleController::class, 'index'])->name('schedule');
     Route::prefix('media')->name('media.')->group(function () {
         Route::get('/', [MediaController::class, 'index'])->name('index');
+        Route::get('fetch', [MediaController::class, 'fetch'])->name('fetch');
         Route::post('upload', MediaUploadFileController::class)->name('upload');
     });
     Route::get('settings', [SettingsController::class, 'index'])->name('settings');

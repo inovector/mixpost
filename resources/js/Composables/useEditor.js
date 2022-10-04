@@ -22,10 +22,19 @@ const useEditor = () => {
         emitter.emit('focusEditor', {editorId});
     }
 
+    const isDocEmpty = (text) => {
+        if (text === '<div></div>') {
+            return true;
+        }
+
+        return text === '';
+    }
+
     return {
         defaultExtensions,
         insertEmoji,
         focusEditor,
+        isDocEmpty
     }
 }
 

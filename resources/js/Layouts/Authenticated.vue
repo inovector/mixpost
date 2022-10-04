@@ -1,7 +1,7 @@
 <script setup>
-import MixpostSidebar from "@/Components/Sidebar.vue";
-import MixpostNavigation from "@/Components/Navigation.vue";
-import MixpostNotifications from "@/Components/Notifications.vue";
+import Sidebar from "@/Components/Sidebar/Sidebar.vue";
+import Navigation from "@/Components/Navigation/NavBar.vue";
+import Notifications from "@/Components/Util/Notifications.vue";
 
 import {provide, reactive} from "vue";
 
@@ -14,11 +14,11 @@ provide('appContext', context);
 <template>
     <div class="flex flex-row h-screen min-h-full bg-stone-500">
         <aside :class="{'translate-x-0': context.showAside, '-translate-x-full md:translate-x-0': !context.showAside}" class="aside fixed md:relative h-full z-50 transition-transform ease-in-out duration-200">
-            <MixpostSidebar/>
+            <Sidebar/>
         </aside>
 
         <main class="w-full md:main flex flex-col overflow-y-auto">
-            <MixpostNavigation/>
+            <Navigation/>
             <slot />
         </main>
 
@@ -35,7 +35,7 @@ provide('appContext', context);
             </div>
         </transition>
 
-        <MixpostNotifications/>
+        <Notifications/>
     </div>
 </template>
 

@@ -1,4 +1,5 @@
 <script setup>
+import CheckIcon from "@/Icons/Check.vue"
 defineProps({
     active: {
         type: Boolean,
@@ -9,7 +10,10 @@ defineProps({
 defineEmits(['click'])
 </script>
 <template>
-    <div @click="$emit('click')" class="relative p-1 cursor-pointer box-border">
+    <div @click="$emit('click')" class="w-full relative cursor-pointer box-border">
         <slot></slot>
+        <div class="absolute flex items-center justify-center top-0 right-0 mr-3 mt-3 w-7 h-7 rounded-full border border-white" :class="{'bg-indigo-500': active, 'bg-black bg-opacity-20': !active}">
+            <CheckIcon v-if="active" class="text-white"/>
+        </div>
     </div>
 </template>

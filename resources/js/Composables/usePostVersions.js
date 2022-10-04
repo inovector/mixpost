@@ -30,11 +30,16 @@ const usePostVersions = () => {
         return find ? find : null;
     }
 
+    const getIndexAccountVersion = (versions, accountId) => {
+        return versions.findIndex(version => version.account_id === accountId);
+    }
+
     return {
         versionContentObject,
         versionObject,
         getOriginalVersion,
-        getAccountVersion
+        getAccountVersion,
+        getIndexAccountVersion
     }
 }
 

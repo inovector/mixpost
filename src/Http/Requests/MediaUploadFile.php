@@ -31,7 +31,7 @@ class MediaUploadFile extends FormRequest
         return MediaUploader::fromFile($this->file('file'))
             ->path("mixpost/$now")
             ->conversions([
-                MediaImageResizeConversion::name('thumb')->width(280),
+                MediaImageResizeConversion::name('thumb')->width(430),
                 MediaVideoThumbConversion::name('thumb')->atSecond(5)
             ])
             ->uploadAndInsert();

@@ -2,8 +2,10 @@
 import {computed, ref, watch} from "vue";
 import {usePage} from "@inertiajs/inertia-vue3";
 import {nanoid} from 'nanoid'
-import MixpostMediaFile from "@/Components/Media/MediaFile.vue";
-import MixpostMediaSelectable from "@/Components/Media/MediaSelectable.vue";
+import Masonry from "@/Components/Layout/Masonry.vue";
+import MediaFile from "@/Components/Media/MediaFile.vue";
+import MediaSelectable from "@/Components/Media/MediaSelectable.vue";
+import Preloader from "@/Components/Util/Preloader.vue"
 import PhotoIcon from "@/icons/Photo.vue"
 
 const props = defineProps({
@@ -14,10 +16,20 @@ const props = defineProps({
     combinesMimeTypes: {
         type: String,
         default: '',
+    },
+    selected: {
+        type: Array,
+        default: []
+    },
+    toggleSelect: {
+        type: Function
+    },
+    isSelected: {
+        type: Function
     }
 })
 
-const emit = defineEmits(['updateSelect'])
+const emit = defineEmits(['mediaSelect'])
 
 const mimeTypes = usePage().props.value.mixpost.mime_types;
 
@@ -26,6 +38,10 @@ const input = ref(null);
 const dragEnter = ref(false);
 
 const onDrop = (e) => {
+    if (isLoading.value) {
+        return;
+    }
+
     dragEnter.value = false;
 
     const files = filterFiles(e.dataTransfer.files);
@@ -50,30 +66,21 @@ const filterFiles = (files) => {
     });
 }
 
+const isLoading = ref(false);
 const pending = ref([]);
 const completed = ref([]);
 const active = ref({});
 
 watch(active, () => {
     processJob();
+
+    isLoading.value = Object.keys(active.value).length > 0;
 });
 
 const processJob = () => {
     if (active.value.handler) {
         active.value.handler();
     }
-}
-
-const dispatch = (files) => {
-    files.forEach((file) => {
-        addJob({
-            id: nanoid(),
-            handler: async () => {
-                const media = await uploadFile(file);
-                startNextJob(media);
-            }
-        })
-    });
 }
 
 const addJob = (job) => {
@@ -87,7 +94,10 @@ const addJob = (job) => {
 const startNextJob = (media) => {
     if (Object.keys(active.value).length > 0) {
         addCompletedJob(active.value, media);
-        toggleSelect(media);
+
+        if(props.toggleSelect) {
+            props.toggleSelect(media);
+        }
     }
 
     if (pending.value.length > 0) {
@@ -110,6 +120,23 @@ const addCompletedJob = (job, media) => {
     completed.value.push(Object.assign(job, {media}));
 }
 
+const dispatch = (files) => {
+    files.forEach((file) => {
+        addJob({
+            id: nanoid(),
+            handler: async () => {
+                await uploadFile(file).then((media) => {
+                    startNextJob(media);
+                }).catch((error) => {
+                    startNextJob({
+                        error: error.response.data.message
+                    });
+                });
+            }
+        })
+    });
+}
+
 const uploadFile = (file) => {
     const formData = new FormData();
     formData.append("file", file);
@@ -126,33 +153,17 @@ const uploadFile = (file) => {
 }
 
 const completedJobs = computed(() => {
-    return completed.value.reverse();
+    return completed.value.filter(job => !job.media.error).reverse();
 });
 
 const selected = ref([]);
-
-const toggleSelect = (media) => {
-    const index = selected.value.findIndex(item => item.id === media.id);
-
-    if (index < 0) {
-        selected.value.push(media);
-    }
-
-    if (index >= 0) {
-        selected.value.splice(index, 1);
-    }
-}
-
-watch(selected.value, () => {
-    emit('updateSelect', selected.value);
-});
 </script>
 <template>
-    <div @dragenter.prevent="dragEnter = true"
+    <div @dragenter.prevent="dragEnter = !isLoading"
          @drop.prevent="onDrop"
          @dragover.prevent
-         :class="{'border-black bg-white': !dragEnter, 'border-cyan-500 bg-cyan-50': dragEnter}"
-         class="w-full flex items-center justify-center rounded-lg p-10 border border-dashed transition-colors ease-in-out duration-200">
+         :class="{'border-gray-400 bg-white': !dragEnter, 'border-cyan-500 bg-cyan-50': dragEnter}"
+         class="relative w-full flex items-center justify-center rounded-lg p-10 border-2 border-dashed transition-colors ease-in-out duration-200">
         <div class="relative flex flex-col justify-center">
             <div v-if="dragEnter"
                  @dragleave.prevent="dragEnter = false"
@@ -168,7 +179,9 @@ watch(selected.value, () => {
             </div>
             <div class="text-sm text-gray-400 text-center">{{ mimeTypes.join(', ') }}</div>
         </div>
+        <Preloader v-if="isLoading" size="xl" class="rounded-lg"/>
     </div>
+
     <input
         ref="input"
         id="browse"
@@ -179,11 +192,13 @@ watch(selected.value, () => {
         @change="onBrowse"
     />
 
-    <div class="mt-6 grid grid-cols-2 sm:grid-cols-3">
-        <template v-for="job in completedJobs" :key="job.media.id">
-            <MixpostMediaSelectable :active="true" @click="toggleSelect(job.media)">
-                <MixpostMediaFile :media="job.media"/>
-            </MixpostMediaSelectable>
-        </template>
+    <div class="mt-6">
+        <Masonry :items="completedJobs">
+            <template #default="{item}">
+                <MediaSelectable :active="isSelected(item.media)" @click="toggleSelect(item.media)">
+                    <MediaFile :media="item.media"/>
+                </MediaSelectable>
+            </template>
+        </Masonry>
     </div>
 </template>
