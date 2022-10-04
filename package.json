@@ -32,8 +32,6 @@
         "date-fns": "^2.29.1",
         "emoji-mart-vue-fast": "^11.1.1",
         "floating-vue": "^2.0.0-beta.17",
-        "imagesloaded": "^5.0.0",
-        "masonry-layout": "^4.2.2",
         "mitt": "^3.0.0",
         "nanoid": "^4.0.0",
         "twitter-text": "^3.1.0",
