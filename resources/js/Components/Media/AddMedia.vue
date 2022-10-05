@@ -155,17 +155,19 @@ const insert = () => {
                 />
             </div>
 
-            <div class="mt-8">
-                <SectionTitle class="mb-4">Library</SectionTitle>
+            <div :class="{'mt-8': items.length}">
+                <template v-if="items.length">
+                    <SectionTitle class="mb-4">Library</SectionTitle>
 
-                <Masonry :items="items" v-if="show">
-                    <template #default="{item}">
-                        <MediaSelectable :active="isSelected(item)" @click="toggleSelect(item)">
-                            <MediaFile :media="item"/>
-                        </MediaSelectable>
-                    </template>
-                </Masonry>
-                <div ref="endlessPagination" class="-z-10 w-full -mt-20"/>
+                    <Masonry :items="items" v-if="show">
+                        <template #default="{item}">
+                            <MediaSelectable :active="isSelected(item)" @click="toggleSelect(item)">
+                                <MediaFile :media="item"/>
+                            </MediaSelectable>
+                        </template>
+                    </Masonry>
+                </template>
+                <div ref="endlessPagination" class="-z-10 w-full" :class="{'-mt-20': items.length}"/>
             </div>
         </template>
 

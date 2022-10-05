@@ -105,13 +105,13 @@ const addVersion = (accountId) => {
 }
 
 const removeVersion = (accountId) => {
-    if(!accountId) {
+    if (!accountId) {
         return;
     }
 
     const versionIndex = getIndexAccountVersion(props.form.versions, accountId);
 
-    if(versionIndex < 0) {
+    if (versionIndex < 0) {
         return;
     }
 
@@ -125,6 +125,15 @@ watch(() => props.form.accounts, (val) => {
 
     if (!isAccountSelected) {
         resetActiveVersion();
+    }
+
+    // If is only one account selected and if is original active version, we switch active version for that account.
+    if (val.length === 1 && activeVersion.value === 0) {
+        const firstAccountId = val[0];
+
+        if (firstAccountId !== 0 && getAccountVersion(props.form.versions, firstAccountId)) {
+            activeVersion.value = firstAccountId;
+        }
     }
 });
 
@@ -148,14 +157,14 @@ const {insertEmoji, focusEditor} = useEditor();
 
     <Panel>
         <PostVersionsTab v-if="form.accounts.length > 1"
-                                @add="addVersion"
-                                @remove="removeVersion"
-                                @select="activeVersion = $event"
-                                :versions="form.versions"
-                                :active-version="activeVersion"
-                                :accounts="$page.props.accounts"
-                                :selected-accounts="form.accounts"
-                                class="mb-3"/>
+                         @add="addVersion"
+                         @remove="removeVersion"
+                         @select="activeVersion = $event"
+                         :versions="form.versions"
+                         :active-version="activeVersion"
+                         :accounts="$page.props.accounts"
+                         :selected-accounts="form.accounts"
+                         class="mb-3"/>
 
         <template v-for="(item, index) in content" :key="index">
             <Editor id="postEditor"
