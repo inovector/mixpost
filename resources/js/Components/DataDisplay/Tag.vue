@@ -33,7 +33,7 @@ const props = defineProps({
 
 const {notify} = useNotifications();
 
-const chipClass = 'min-w-[48px] px-2 rounded-md';
+const chipClass = 'tag min-w-[48px] px-2 rounded-md';
 const colorLight = '#0f172a';
 const colorDark = '#f8fafc';
 

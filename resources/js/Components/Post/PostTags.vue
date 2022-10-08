@@ -37,8 +37,10 @@ const availableTags = computed(() => {
     })
 })
 
-const select = (tag) => {
-    emit('update', [...props.items.slice(0), ...[tag]]);
+const select = (tag, $event = null) => {
+    if (!$event.target.closest('.tag')) {
+        emit('update', [...props.items.slice(0), ...[tag]]);
+    }
 }
 
 const remove = (tag) => {
@@ -135,7 +137,7 @@ const store = () => {
 
                     <div v-if="availableTags.length" class="mt-2 border border-gray-300 rounded-md">
                         <template v-for="item in availableTags">
-                            <div @click="select(item)"
+                            <div @click="select(item, $event)"
                                  tabindex="0"
                                  role="button"
                                  class="flex items-center justify-between p-2 rounded-t-md last:rounded-t-none last:rounded-b-md border-b last:border-none hover:bg-gray-100 transition-colors ease-in-out duration-200">
