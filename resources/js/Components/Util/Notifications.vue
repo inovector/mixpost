@@ -67,7 +67,7 @@ const variantColorClasses = computed(() => {
                     leave-active-class="transition ease-in duration-75"
                     leave-from-class="transform opacity-100 scale-100"
                     leave-to-class="transform opacity-0 scale-95">
-            <div v-show="show" class="absolute bottom-0 right-0 mr-8 mb-10 flex px-5 py-4 rounded-md bg-indigo-800"
+            <div v-show="show" class="absolute bottom-0 right-0 mr-8 mb-10 flex px-5 py-4 rounded-md bg-indigo-800 z-50"
                  aria-live="polite">
                 <div class="flex items-center">
                     <div>

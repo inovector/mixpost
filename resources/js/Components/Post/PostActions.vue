@@ -42,8 +42,8 @@ const clearScheduleTime = () => {
                 <SecondaryButton size="md"
                                         :class="{'!normal-case rounded-r-none border-r-indigo-800': scheduleTime}"
                                         @click="timePicker = true">
-                    <CalendarIcon class="mr-2"/>
-                    <span>{{ scheduleTime ? scheduleTime : 'Pick time' }}</span>
+                    <CalendarIcon class="lg:mr-2"/>
+                    <span class="hidden lg:block">{{ scheduleTime ? scheduleTime : 'Pick time' }}</span>
                 </SecondaryButton>
 
                 <template v-if="scheduleTime">

@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('mixpost_posts', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('account_id');
             $table->tinyInteger('status')->default(0);
             $table->tinyInteger('schedule_status')->default(0);
             $table->dateTime('scheduled_at')->nullable();

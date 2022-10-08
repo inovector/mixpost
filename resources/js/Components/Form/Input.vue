@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, ref} from 'vue';
+import {nextTick, onMounted, ref} from 'vue';
 
 defineProps(['modelValue']);
 
@@ -9,7 +9,9 @@ const input = ref(null);
 
 onMounted(() => {
     if (input.value.hasAttribute('autofocus')) {
-        input.value.focus();
+        nextTick(() => {
+            input.value.focus();
+        })
     }
 });
 </script>

@@ -8,6 +8,7 @@ use Inovector\Mixpost\Http\Controllers\AccountsController;
 use Inovector\Mixpost\Http\Controllers\AddAccountController;
 use Inovector\Mixpost\Http\Controllers\SettingsController;
 use Inovector\Mixpost\Http\Controllers\PostsController;
+use Inovector\Mixpost\Http\Controllers\TagsController;
 use Inovector\Mixpost\Http\Controllers\ScheduleController;
 use Inovector\Mixpost\Http\Controllers\MediaController;
 use Inovector\Mixpost\Http\Controllers\MediaUploadFileController;
@@ -27,16 +28,25 @@ Route::middleware(['web', MixpostAuthMiddleware::class, HandleInertiaRequests::c
         Route::get('/', [PostsController::class, 'index'])->name('index');
         Route::get('create', [PostsController::class, 'create'])->name('create');
         Route::post('store', [PostsController::class, 'store'])->name('store');
+        Route::get('{post}', [PostsController::class, 'edit'])->name('edit');
         Route::put('{post}', [PostsController::class, 'update'])->name('update');
         Route::delete('{post}', [PostsController::class, 'destroy'])->name('delete');
     });
 
     Route::get('schedule', [ScheduleController::class, 'index'])->name('schedule');
+
     Route::prefix('media')->name('media.')->group(function () {
         Route::get('/', [MediaController::class, 'index'])->name('index');
         Route::get('fetch', [MediaController::class, 'fetch'])->name('fetch');
         Route::post('upload', MediaUploadFileController::class)->name('upload');
     });
+
+    Route::prefix('tags')->name('tags.')->group(function () {
+        Route::post('/', [TagsController::class, 'store'])->name('store');
+        Route::put('{tag}', [TagsController::class, 'update'])->name('update');
+        Route::delete('{tag}', [TagsController::class, 'destroy'])->name('delete');
+    });
+
     Route::get('settings', [SettingsController::class, 'index'])->name('settings');
 
     Route::get('callback/{provider}', CallbackSocialProviderController::class);

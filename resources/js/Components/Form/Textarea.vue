@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, ref} from 'vue';
+import {nextTick, onMounted, ref} from 'vue';
 
 defineProps(['modelValue']);
 
@@ -9,7 +9,9 @@ const textarea = ref(null);
 
 onMounted(() => {
     if (textarea.value.hasAttribute('autofocus')) {
-        textarea.value.focus();
+        nextTick(() => {
+            textarea.value.focus();
+        })
     }
 });
 </script>

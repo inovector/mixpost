@@ -15,7 +15,7 @@ import DangerButton from "@/Components/Button/DangerButton.vue"
 import Dropdown from "@/Components/Dropdown/Dropdown.vue"
 import DropdownItem from "@/Components/Dropdown/DropdownItem.vue"
 import PlusIcon from "@/Icons/Plus.vue";
-import DotsVerticalIcon from "@/Icons/DotsVertical.vue";
+import EllipsisVerticalIcon from "@/Icons/EllipsisVertical.vue";
 import RefreshIcon from "@/Icons/Refresh.vue";
 import TrashIcon from "@/Icons/Trash.vue";
 
@@ -76,7 +76,7 @@ const closeConfirmationAccountDeletion = () => {
                             <Dropdown width-classes="w-32">
                                 <template #trigger>
                                     <SecondaryButton size="xs">
-                                        <DotsVerticalIcon/>
+                                        <EllipsisVerticalIcon/>
                                     </SecondaryButton>
                                 </template>
 

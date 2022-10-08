@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('mixpost_post_versions', function (Blueprint $table) {
+        Schema::create('mixpost_post_accounts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('post_id')->constrained('mixpost_posts')->onDelete('cascade');
-            $table->bigInteger('account_id');
-            $table->tinyInteger('is_original')->default(0);
-            $table->json('content')->nullable();
+            $table->foreignId('account_id')->constrained('mixpost_accounts')->onDelete('cascade');
         });
     }
 
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mixpost_post_versions');
+        Schema::dropIfExists('mixpost_post_accounts');
     }
 };

@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('mixpost_category_post', function (Blueprint $table) {
+        Schema::create('mixpost_tag_post', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('category_id')->unsigned();
-            $table->foreign('category_id')->references('id')->on('mixpost_categories')->onDelete('cascade');
+            $table->bigInteger('tag_id')->unsigned();
+            $table->foreign('tag_id')->references('id')->on('mixpost_tags')->onDelete('cascade');
             $table->bigInteger('post_id')->unsigned();
             $table->foreign('post_id')->references('id')->on('mixpost_posts')->onDelete('cascade');
         });
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mixpost_category_post');
+        Schema::dropIfExists('mixpost_tag_post');
     }
 };

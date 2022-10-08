@@ -24,9 +24,10 @@ class MixpostServiceProvider extends PackageServiceProvider
             ->hasMigrations([
                 'create_mixpost_accounts_table',
                 'create_mixpost_posts_table',
+                'create_mixpost_post_accounts_table',
                 'create_mixpost_post_versions_table',
-                'create_mixpost_categories_table',
-                'create_mixpost_category_post_table',
+                'create_mixpost_tags_table',
+                'create_mixpost_tag_post_table',
                 'create_mixpost_media_table',
             ])
             ->hasCommand(PublishAssetsCommand::class);

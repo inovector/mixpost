@@ -1,6 +1,7 @@
 <script setup>
 import {computed, nextTick, ref, watch} from "vue";
 import NProgress from 'nprogress'
+import useNotifications from "@/Composables/useNotifications";
 import DialogModal from "@/Components/Modal/DialogModal.vue"
 import UploadMedia from "@/Components/Media/UploadMedia.vue"
 import Tabs from "@/Components/Navigation/Tabs.vue"
@@ -24,6 +25,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['insert']);
+
+const {notify} = useNotifications();
 
 const show = ref(false);
 
@@ -72,9 +75,9 @@ const fetchItems = () => {
         }
 
         items.value = [...items.value, ...response.data.data];
-    }).catch(function (error) {
-        console.log(error);
-    }).finally(()=> {
+    }).catch(() => {
+        notify('error', 'Error retrieving media. Try again!');
+    }).finally(() => {
         NProgress.done();
     });
 }
@@ -173,7 +176,7 @@ const insert = () => {
 
         <template #footer>
             <SecondaryButton @click="close" class="mr-2">Cancel</SecondaryButton>
-            <PrimaryButton v-if="selected.length" @click="insert">Insert {{ selected.length }} files
+            <PrimaryButton v-if="selected.length" @click="insert">Insert {{ selected.length }} items
             </PrimaryButton>
         </template>
     </DialogModal>

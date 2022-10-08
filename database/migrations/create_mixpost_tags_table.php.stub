@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('mixpost_categories', function (Blueprint $table) {
+        Schema::create('mixpost_tags', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('hex_color', 6);
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mixpost_categories');
+        Schema::dropIfExists('mixpost_tags');
     }
 };

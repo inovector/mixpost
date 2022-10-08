@@ -80,7 +80,7 @@ const remove = () => {
           <Tabs class="mr-2">
               <template v-for="(version, index) in versionsWithAccountData" :key="version.account_id">
                   <Tab @click="$emit('select', version.account_id)" :active="activeVersion === version.account_id"
-                       :tab-index="index" class="mb-2 group">
+                       :tab-index="index" class="relative mb-2 group">
                       <component
                           v-if="!version.is_original"
                           :is="providerIconComponentFnc(version.account.provider)"
@@ -88,11 +88,12 @@ const remove = () => {
                           class="mr-2"
                       />
                       <span class="mr-2">{{ version.account.name }}</span>
-                      <button @click.prevent="confirmationRemoval = version"
-                              v-if="!version.is_original && activeVersion === version.account_id"
-                              class="inline-flex text-gray-300 group-hover:text-gray-500 hover:!text-red-500 transition-colors ease-in-out duration-200">
-                          <XIcon class="!w-4 !h-4"/>
-                      </button>
+                      <div v-if="!version.is_original" class="absolute hidden group-hover:flex items-center top-0 right-0 pb-2 pl-0.5 h-full bg-white">
+                          <button @click.prevent="confirmationRemoval = version"
+                                  class="inline-flex text-gray-300 group-hover:text-gray-500 hover:!text-red-500 transition-colors ease-in-out duration-200">
+                              <XIcon class="!w-4 !h-4"/>
+                          </button>
+                      </div>
                   </Tab>
               </template>
           </Tabs>
@@ -130,7 +131,9 @@ const remove = () => {
               Remove version
           </template>
           <template #body>
-              Are you sure you would like to delete this version?
+              <span v-if="confirmationRemoval">
+                  Are you sure you would like to delete version for  <span class="capitalize">[{{ confirmationRemoval.account.provider }}]</span> {{ confirmationRemoval.account.name }}?
+              </span>
           </template>
           <template #footer>
               <SecondaryButton @click="closeConfirmationRemoval" class="mr-2">Cancel</SecondaryButton>

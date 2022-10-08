@@ -30,7 +30,7 @@ provide('appContext', context);
             leave-from-class="opacity-100"
             leave-to-class="opacity-0"
         >
-            <div v-show="context.showAside" @click="context.showAside = false" class="fixed inset-0 transform transition-all">
+            <div v-show="context.showAside" @click="context.showAside = false" class="fixed inset-0 z-10 transform transition-all">
                 <div class="absolute inset-0 bg-indigo-900 opacity-60" />
             </div>
         </transition>

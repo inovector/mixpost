@@ -4,9 +4,9 @@ namespace Inovector\Mixpost\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class Tag extends Model
 {
-    public $table = 'mixpost_categories';
+    public $table = 'mixpost_tags';
 
     protected $fillable = [
         'name',

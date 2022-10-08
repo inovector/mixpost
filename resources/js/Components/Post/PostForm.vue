@@ -1,5 +1,5 @@
 <script setup>
-import {computed, inject, ref, watch} from "vue";
+import {computed, inject, onMounted, ref, watch} from "vue";
 import {capitalize, clone, cloneDeep} from "lodash";
 import usePostVersions from "@/Composables/usePostVersions";
 import useEditor from "@/Composables/useEditor";
@@ -12,7 +12,6 @@ import AddMedia from "@/Components/Media/AddMedia.vue"
 import PostMedia from "@/Components/Post/PostMedia.vue"
 // import ProviderPostCharacterCount from "@/Components/Post/ProviderPostCharacterCount.vue"
 import PhotoIcon from "@/Icons/Photo.vue"
-import ChatIcon from "@/Icons/Chat.vue"
 
 const postContext = inject('postContext')
 
@@ -119,22 +118,30 @@ const removeVersion = (accountId) => {
     resetActiveVersion();
 }
 
-watch(() => props.form.accounts, (val) => {
+const setupVersions = () => {
     // If an account was deselected, we're make sure to change the active version to the default version
-    const isAccountSelected = val.includes(activeVersion.value);
+    const isAccountSelected = props.form.accounts.includes(activeVersion.value);
 
     if (!isAccountSelected) {
         resetActiveVersion();
     }
 
     // If is only one account selected and if is original active version, we switch active version for that account.
-    if (val.length === 1 && activeVersion.value === 0) {
-        const firstAccountId = val[0];
+    if (props.form.accounts.length === 1 && activeVersion.value === 0) {
+        const firstAccountId = props.form.accounts[0];
 
         if (firstAccountId !== 0 && getAccountVersion(props.form.versions, firstAccountId)) {
             activeVersion.value = firstAccountId;
         }
     }
+}
+
+onMounted(() => {
+    setupVersions();
+})
+
+watch(() => props.form.accounts, () => {
+    setupVersions();
 });
 
 const {insertEmoji, focusEditor} = useEditor();
@@ -197,11 +204,6 @@ const {insertEmoji, focusEditor} = useEditor();
                             <!--                                                                       @reached="postContext.reachedMaxCharacterLimit[item.provider] = $event"/>-->
                             <!--                                </template>-->
                             <!--                            </div>-->
-
-                            <button v-tooltip="'Add Comment'" type="button"
-                                    class="text-stone-800 hover:text-indigo-500 transition-colors ease-in-out duration-200">
-                                <ChatIcon/>
-                            </button>
                         </div>
                     </div>
                 </template>
