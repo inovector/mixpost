@@ -31,7 +31,6 @@ const onColorPickerChange = (val) => {
 const onChange = (val) => {
     emit('update:modelValue', val)
     colorPicker.color.set(val);
-    colorPicker.emit('input:change', val);
 }
 
 onMounted(() => {
