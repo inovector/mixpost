@@ -38,7 +38,7 @@ const availableTags = computed(() => {
 })
 
 const select = (tag, $event = null) => {
-    if (!$event.target.closest('.tag')) {
+    if (!$event || ($event && !$event.target.closest('.tag'))) {
         emit('update', [...props.items.slice(0), ...[tag]]);
     }
 }

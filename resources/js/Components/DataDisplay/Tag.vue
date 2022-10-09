@@ -118,7 +118,7 @@ const deleteTag = () => {
         },
         onSuccess() {
             confirmationTagDeletion.value = false;
-            notify('success', 'Tag deleted');
+            notify('success', 'Label deleted');
         },
         onFinish() {
             isDeleting.value = false;

@@ -2,7 +2,7 @@
 import {ref, watch} from "vue";
 import {Head, useForm} from '@inertiajs/inertia-vue3';
 import {Inertia} from "@inertiajs/inertia";
-import {cloneDeep, debounce, differenceBy} from "lodash";
+import {cloneDeep, debounce} from "lodash";
 import useMounted from "@/Composables/useMounted";
 import usePostVersions from "@/Composables/usePostVersions";
 import PageHeader from "@/Components/DataDisplay/PageHeader.vue";
@@ -34,6 +34,28 @@ const form = useForm({
     time: post ? post.scheduled_at.time : '',
 });
 
+const store = (data) => {
+    Inertia.post(route('mixpost.posts.store'), data, {
+        onSuccess() {
+            // After redirect to the edit mode, it's necessary to track the tag changes
+            watchTags();
+        }
+    });
+}
+
+const update = (data) => {
+    isLoading.value = true;
+
+    axios.put(route('mixpost.posts.update', {post: props.post.id}), data)
+        .then(() => {
+            hasError.value = false;
+        }).catch(() => {
+        hasError.value = true;
+    }).finally(() => {
+        isLoading.value = false;
+    });
+}
+
 const save = () => {
     const data = {
         accounts: form.accounts.slice(0),
@@ -63,28 +85,17 @@ const save = () => {
     }
 }
 
-const store = (data) => {
-    Inertia.post(route('mixpost.posts.store'), data);
-}
-
-const update = (data) => {
-    isLoading.value = true;
-
-    axios.put(route('mixpost.posts.update', {post: props.post.id}), data)
-        .then(() => {
-            hasError.value = false;
-        }).catch(() => {
-        hasError.value = true;
-    }).finally(() => {
-        isLoading.value = false;
-    });
-}
-
-// Since we are cloning the post tag props, we need to track the post tags and update them
-if (props.post) {
+const watchTags = () => {
     watch(() => props.post.tags, (val) => {
         form.tags = val;
     })
+}
+
+// PostTags component deal directly with tag itself, such as renaming & changing the color,
+// in this case, it's necessary to track the 'post.tags' props and update them.
+// This if statement will only work in edit mode and when the page is loaded directly.
+if (props.post) {
+    watchTags();
 }
 
 watch(form, debounce(() => {
