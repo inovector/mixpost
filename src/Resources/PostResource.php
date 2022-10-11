@@ -18,9 +18,12 @@ class PostResource extends JsonResource
             'tags' => TagResource::collection($this->whenLoaded('tags')),
             'scheduled_at' => [
                 'date' => $this->scheduled_at?->toDateString(),
-                'time' => $this->scheduled_at?->format('H:i')
+                'time' => $this->scheduled_at?->format('H:i'),
+                'human' => $this->scheduled_at?->format("D, M j, H:i")
             ],
-            'created_at' => $this->created_at->diffForHumans()
+            'delivered_at' => [
+                'human' => $this->delivered_at?->format("D, M j, H:i")
+            ]
         ];
     }
 }

@@ -55,7 +55,6 @@ const previews = computed(() => {
                            :username="preview.account.username"
                            :image="preview.account.image"
                            :content="preview.content"
-                           :reached-max-character-limit="get(postContext.reachedMaxCharacterLimit, preview.account.provider, false)"
                 />
             </div>
         </template>

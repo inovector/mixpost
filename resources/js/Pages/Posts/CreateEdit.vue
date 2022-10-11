@@ -12,6 +12,7 @@ import PostActions from "@/Components/Post/PostActions.vue";
 import PostTags from "@/Components/Post/PostTags.vue"
 import PostPreviewProviders from "@/Components/Post/PostPreviewProviders.vue"
 import SecondaryButton from "@/Components/Button/SecondaryButton.vue"
+import PostStatus from "@/Components/Post/PostStatus.vue";
 import EyeIcon from "@/Icons/Eye.vue"
 import EyeOffIcon from "@/Icons/EyeOff.vue"
 
@@ -112,11 +113,8 @@ watch(form, debounce(() => {
                     <div class="default-y-padding">
                         <PageHeader title="Your post">
                             <div v-if="$page.props.post" class="flex items-center">
-                                <div class="flex items-center mr-6">
-                                    <div class="w-4 h-4 mr-2 rounded-full bg-gray-500"></div>
-                                    <div>Draft</div>
-                                </div>
-                                <div class="flex items-center">
+                                <PostStatus :value="$page.props.post.status"/>
+                                <div class="flex items-center ml-6">
                                     <div
                                         :class="{'animate-ping': isLoading, 'bg-lime-500': !hasError, 'bg-red-500': hasError}"
                                         class="w-4 h-4 mr-2 rounded-full"></div>

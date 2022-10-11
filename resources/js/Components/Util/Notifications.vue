@@ -53,7 +53,7 @@ const variantIcon = computed(() => {
 const variantColorClasses = computed(() => {
     return {
         'info': 'bg-cyan-100 text-cyan-600',
-        'success': 'bg-green-100 text-green-600',
+        'success': 'bg-lime-100 text-lime-600',
         'warning': 'bg-orange-100 text-orange-600',
         'error': 'bg-red-100 text-red-600',
     }[variant.value]

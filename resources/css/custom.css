@@ -16,4 +16,12 @@
     .default-y-padding {
         @apply py-10;
     }
+
+    .default-t-margin {
+        @apply mt-6;
+    }
+
+    .default-b-margin {
+        @apply mb-6;
+    }
 }

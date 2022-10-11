@@ -1,6 +1,6 @@
 <script setup>
 import {computed, watch} from "vue";
-import useProviderIcon from "@/Composables/useProviderIcon";
+import ProviderIcon from "@/Components/Account/ProviderIcon.vue";
 import Twitter from "twitter-text";
 
 const props = defineProps({
@@ -20,8 +20,6 @@ const props = defineProps({
 
 const emit = defineEmits(['reached']);
 
-const {providerIconComponent} = useProviderIcon(props.provider);
-
 const characterUsed = computed(() => {
     return {
         'twitter': Twitter.getTweetLength(props.text),
@@ -40,7 +38,7 @@ watch(remaining, () => {
 <template>
     <div class="flex items-center justify-center">
         <div class="mr-1">
-            <component :is="providerIconComponent" :class="'text-' + $props.provider"/>
+            <ProviderIcon :provider="provider"/>
         </div>
         <div :class="{'text-stone-800': remaining >= 0, 'text-red-500': remaining < 0}">{{ remaining }}</div>
     </div>

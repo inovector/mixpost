@@ -3,6 +3,8 @@
 namespace Inovector\Mixpost\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Inovector\Mixpost\Model\Media;
 
 class PostVersionResource extends JsonResource
@@ -11,27 +13,43 @@ class PostVersionResource extends JsonResource
 
     public function toArray($request)
     {
-        $mediaCollection = $this->mediaCollection();
-
         return [
             'post_id' => $this->post_id,
             'account_id' => $this->account_id,
             'is_original' => $this->is_original,
-            'content' => collect($this->content)->map(function ($item) use ($mediaCollection) {
-                return [
-                    'body' => (string)$item['body'],
-                    'media' => collect($item['media'])->map(function ($mediaId) use ($mediaCollection) {
-                        $media = $mediaCollection->where('id', $mediaId)->first();
-
-                        if (!$media) {
-                            return null;
-                        }
-
-                        return new MediaResource($media);
-                    })->filter()->values()
-                ];
-            })
+            'content' => $this->content()
         ];
+    }
+
+    protected function isIndexPage(): bool
+    {
+        return request()->route()->getName() === 'mixpost.posts.index';
+    }
+
+    protected function content(): Collection
+    {
+        $mediaCollection = $this->mediaCollection();
+
+        return collect($this->content)->map(function ($item) use ($mediaCollection) {
+            $data = [
+                'body' => (string)$item['body'],
+                'media' => collect($item['media'])->map(function ($mediaId) use ($mediaCollection) {
+                    $media = $mediaCollection->where('id', $mediaId)->first();
+
+                    if (!$media) {
+                        return null;
+                    }
+
+                    return new MediaResource($media);
+                })->filter()->values()
+            ];
+
+            if ($this->isIndexPage()) {
+                $data['excerpt'] = Str::limit(removeHtmlTags($item['body']), 150);
+            }
+
+            return $data;
+        });
     }
 
     protected function mediaCollection()

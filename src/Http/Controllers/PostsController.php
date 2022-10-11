@@ -3,10 +3,13 @@
 namespace Inovector\Mixpost\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Routing\Controller;
 use Inertia\Inertia;
 use Inertia\Response;
-use \Illuminate\Http\Response as HttpResponse;
+use Illuminate\Http\Response as HttpResponse;
+use Inovector\Mixpost\Builders\PostQuery;
 use Inovector\Mixpost\Http\Requests\StorePost;
 use Inovector\Mixpost\Http\Requests\UpdatePost;
 use Inovector\Mixpost\Model\Account;
@@ -18,9 +21,25 @@ use Inovector\Mixpost\Resources\TagResource;
 
 class PostsController extends Controller
 {
-    public function index(): Response
+    public function index(Request $request): AnonymousResourceCollection|Response
     {
-        return Inertia::render('Posts/Index');
+        $posts = PostResource::collection(PostQuery::apply($request)->latest('created_at')->simplePaginate(20));
+
+        if ($request->wantsJson()) {
+            return $posts;
+        }
+
+        return Inertia::render('Posts/Index', [
+            'accounts' => AccountResource::collection(Account::oldest()->get())->resolve(),
+            'tags' => TagResource::collection(Tag::all())->resolve(),
+            'filter' => [
+                'keyword' => $request->get('keyword', ''),
+                'status' => $request->get('status'),
+                'tags' => $request->get('tags', []),
+                'accounts' => $request->get('accounts', [])
+            ],
+            'posts' => $posts,
+        ]);
     }
 
     public function create(): Response

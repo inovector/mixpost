@@ -40,3 +40,12 @@ if (!function_exists('socialProviderOptions')) {
         return Arr::get($items, $provider);
     }
 }
+
+if (!function_exists('removeHtmlTags')) {
+    function removeHtmlTags($string): string
+    {
+        $text = trim(strip_tags($string));
+
+        return html_entity_decode($text);
+    }
+}

@@ -1,6 +1,6 @@
 <script setup>
 import {computed} from "vue";
-import useProviderIcon from "@/Composables/useProviderIcon";
+import ProviderIcon from "@/Components/Account/ProviderIcon.vue";
 import ExclamationCircleIcon from "@/Icons/ExclamationCircle.vue";
 
 const props = defineProps({
@@ -57,8 +57,6 @@ const iconClasses = computed(() => {
         'md': '!w-4 !h-4'
     }[props.size];
 });
-
-const {providerIconComponent} = useProviderIcon(props.provider);
 </script>
 <template>
     <span class="flex items-center justify-center">
@@ -67,13 +65,14 @@ const {providerIconComponent} = useProviderIcon(props.provider);
                   class="inline-flex justify-center items-center flex-shrink-0 rounded-full">
                 <img :src="imgUrl" class="object-cover w-full h-full rounded-full" alt=""/>
             </span>
-            <span v-if="warningMessage" v-tooltip="warningMessage" class="flex items-center justify-center rounded-full absolute top-0 -ml-12 bg-red-500 text-white">
+            <span v-if="warningMessage" v-tooltip="warningMessage"
+                  class="flex items-center justify-center rounded-full absolute top-0 -ml-12 bg-red-500 text-white">
                 <ExclamationCircleIcon :class="iconClasses"/>
             </span>
             <span :class="[iconWrapperClasses, {'grayscale': !active}]"
                   class="flex items-center justify-center absolute bg-white p-2 rounded-full ">
                 <span>
-                    <component :is="providerIconComponent" :class="[iconClasses, ('text-' + props.provider)]"/>
+                    <ProviderIcon :provider="props.provider" :class="[iconClasses]"/>
                 </span>
             </span>
         </span>

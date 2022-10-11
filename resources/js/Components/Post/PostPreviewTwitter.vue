@@ -1,13 +1,11 @@
 <script setup>
 import {computed} from "vue";
 import useEditor from "@/Composables/useEditor";
-import useProviderIcon from "@/Composables/useProviderIcon";
+import ProviderIcon from "@/Components/Account/ProviderIcon.vue";
 import Alert from "@/Components/Util/Alert.vue";
 import Panel from "@/Components/Surface/Panel.vue";
 import Gallery from "@/Components/ProviderGallery/Twitter/TwitterGallery.vue"
 import EditorReadOnly from "@/Components/Package/EditorReadOnly.vue";
-
-const {providerIconComponent} = useProviderIcon('twitter');
 
 const props = defineProps({
     name: {
@@ -49,7 +47,7 @@ const mainContent = computed(()=> {
         <div class="absolute right-0 top-0 -mt-3 -mr-2">
             <div class="flex items-center justify-center p-2 w-7 h-7 rounded-full bg-white border border-gray-200">
                 <div>
-                    <component :is="providerIconComponent" class="text-twitter !w-5 !h-5"/>
+                    <ProviderIcon provider="twitter" class="!w-5 !h-5"/>
                 </div>
             </div>
         </div>

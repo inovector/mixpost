@@ -28,12 +28,16 @@ const props = defineProps({
     removable: {
         type: Boolean,
         default: true
+    },
+    editable: {
+        type: Boolean,
+        default: true
     }
 })
 
 const {notify} = useNotifications();
 
-const chipClass = 'tag min-w-[48px] px-2 rounded-md';
+const badgeClass = 'min-w-[48px] px-2 rounded-md';
 const colorLight = '#0f172a';
 const colorDark = '#f8fafc';
 
@@ -127,40 +131,43 @@ const deleteTag = () => {
 }
 </script>
 <template>
+<div>
     <div
         :style="{backgroundColor: item.hex_color, color: lightOrDark(item.hex_color) === 'light' ? colorLight : colorDark}"
-        :class="chipClass"
+        :class="badgeClass"
         class="relative group">
         <Preloader v-if="isRenaming" size="sm" :opacity="50"/>
 
         <div
+            v-if="removable || editable"
             :style="{backgroundColor: item.hex_color}"
-            class="absolute right-0 top-0 h-full pl-0.5 hidden items-center rounded-r-md group-hover:flex">
-            <Dropdown width-classes="w-48">
-                <template #trigger>
-                    <div tabindex="0" role="button" class="group-btn">
-                        <EllipsisHorizontalIcon class="!w-5 !h-5 opacity-75 [.group-btn:hover_&]:opacity-100"/>
-                    </div>
-                </template>
+            class="tag-actions absolute right-0 top-0 h-full pl-0.5 hidden items-center rounded-r-md group-hover:flex">
+            <template v-if="editable">
+                <Dropdown width-classes="w-48">
+                    <template #trigger>
+                        <div tabindex="0" role="button" class="group-btn">
+                            <EllipsisHorizontalIcon class="!w-5 !h-5 opacity-75 [.group-btn:hover_&]:opacity-100"/>
+                        </div>
+                    </template>
 
-                <template #content>
-                    <DropdownItem @click="openRename" as="button">
-                        <PencilSquareIcon class="!w-4 !h-4 mr-1"/>
-                        Rename
-                    </DropdownItem>
+                    <template #content>
+                        <DropdownItem @click="openRename" as="button">
+                            <PencilSquareIcon class="!w-5 !h-5 mr-1"/>
+                            Rename
+                        </DropdownItem>
 
-                    <DropdownItem @click="openChangeColorModal" as="button">
-                        <SwatchIcon class="!w-4 !h-4 mr-1"/>
-                        Change color
-                    </DropdownItem>
+                        <DropdownItem @click="openChangeColorModal" as="button">
+                            <SwatchIcon class="!w-5 !h-5 mr-1"/>
+                            Change color
+                        </DropdownItem>
 
-                    <DropdownItem @click="confirmationTagDeletion = true" as="button">
-                        <TrashIcon class="!w-4 !h-4 mr-1 text-red-500"/>
-                        Delete
-                    </DropdownItem>
-                </template>
-            </Dropdown>
-
+                        <DropdownItem @click="confirmationTagDeletion = true" as="button">
+                            <TrashIcon class="!w-5 !h-5 mr-1 text-red-500"/>
+                            Delete
+                        </DropdownItem>
+                    </template>
+                </Dropdown>
+            </template>
 
             <div v-if="removable" @click="$emit('remove')" tabindex="0" role="button" class="ml-1 group-btn">
                 <XIcon class="!w-5 !h-5 opacity-75 [.group-btn:hover_&]:opacity-100"/>
@@ -180,43 +187,45 @@ const deleteTag = () => {
         </div>
     </div>
 
-    <DialogModal :show="changeColorModal" max-width="md" @close="closeChangeColorModal">
-        <template #header>
-            Change label color
-        </template>
-        <template #body>
-            <template v-if="changeColorModal" class="flex flex-col">
-                <div
-                    :style="{backgroundColor: changeColorHex, color: lightOrDark(changeColorHex) === 'light' ? colorLight : colorDark}"
-                    :class="chipClass" class="w-fit">{{ item.name }}
-                </div>
-                <div class="mt-4">
-                    <ColorPicker v-model="changeColorHex"/>
-                </div>
+    <template v-if="editable">
+        <DialogModal :show="changeColorModal" max-width="md" @close="closeChangeColorModal">
+            <template #header>
+                Change label color
             </template>
-        </template>
-        <template #footer>
-            <SecondaryButton @click="closeChangeColorModal" :disabled="isColorChanging" class="mr-2">Cancel
-            </SecondaryButton>
-            <PrimaryButton @click="changeTagColor" :is-loading="isColorChanging"
-                           :disabled="isColorChanging">Save changes
-            </PrimaryButton>
-        </template>
-    </DialogModal>
-
-    <ConfirmationModal :show="confirmationTagDeletion" variant="danger" @close="confirmationTagDeletion = false">
-        <template #header>
-            Delete label
-        </template>
-        <template #body>
-            Are you sure you want to delete the {{ item.name }} label from everywhere?
-        </template>
-        <template #footer>
-            <SecondaryButton @click="confirmationTagDeletion = false" :disabled="isDeleting" class="mr-2">Cancel
-            </SecondaryButton>
-            <DangerButton @click="deleteTag" :is-loading="isDeleting"
-                          :disabled="isDeleting">Delete
-            </DangerButton>
-        </template>
-    </ConfirmationModal>
+            <template #body>
+                <template v-if="changeColorModal" class="flex flex-col">
+                    <div
+                        :style="{backgroundColor: changeColorHex, color: lightOrDark(changeColorHex) === 'light' ? colorLight : colorDark}"
+                        :class="badgeClass" class="w-fit">{{ item.name }}
+                    </div>
+                    <div class="mt-4">
+                        <ColorPicker v-model="changeColorHex"/>
+                    </div>
+                </template>
+            </template>
+            <template #footer>
+                <SecondaryButton @click="closeChangeColorModal" :disabled="isColorChanging" class="mr-2">Cancel
+                </SecondaryButton>
+                <PrimaryButton @click="changeTagColor" :is-loading="isColorChanging"
+                               :disabled="isColorChanging">Save changes
+                </PrimaryButton>
+            </template>
+        </DialogModal>
+        <ConfirmationModal :show="confirmationTagDeletion" variant="danger" @close="confirmationTagDeletion = false">
+            <template #header>
+                Delete label
+            </template>
+            <template #body>
+                Are you sure you want to delete the {{ item.name }} label from everywhere?
+            </template>
+            <template #footer>
+                <SecondaryButton @click="confirmationTagDeletion = false" :disabled="isDeleting" class="mr-2">Cancel
+                </SecondaryButton>
+                <DangerButton @click="deleteTag" :is-loading="isDeleting"
+                              :disabled="isDeleting">Delete
+                </DangerButton>
+            </template>
+        </ConfirmationModal>
+    </template>
+</div>
 </template>
