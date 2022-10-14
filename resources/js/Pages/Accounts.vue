@@ -61,18 +61,27 @@ const closeConfirmationAccountDeletion = () => {
 <template>
     <Head :title="title"/>
 
-    <div class="max-w-5xl mx-auto default-y-padding">
+    <div class="max-w-5xl mx-auto row-py">
         <PageHeader :title="title">
             <template #description>
                 Connect a social account you'd like to manage.
             </template>
         </PageHeader>
 
-        <div class="mt-6 default-x-padding">
+        <div class="mt-lg row-px">
             <div class="grid grid-cols-4 gap-6">
+                <button @click="addAccountModal = true"
+                        class="border border-indigo-800 rounded-lg hover:border-indigo-500 hover:text-indigo-500 transition-colors ease-in-out duration-200">
+                    <span class="block p-lg">
+                        <span class="flex flex-col justify-center items-center">
+                            <PlusIcon class="w-7 h-7"/>
+                            <span class="mt-xs text-lg">Add account</span>
+                        </span>
+                    </span>
+                </button>
                 <template v-for="account in $page.props.accounts" :key="account.id">
                     <Panel class="relative">
-                        <div class="absolute top-0 right-0 mt-3 mr-3">
+                        <div class="absolute top-0 right-0 mt-sm mr-sm">
                             <Dropdown width-classes="w-32">
                                 <template #trigger>
                                     <SecondaryButton size="xs">
@@ -101,21 +110,11 @@ const closeConfirmationAccountDeletion = () => {
                                 :active="true"
                             />
 
-                            <div class="mt-3 font-semibold text-center">{{ account.name }}</div>
+                            <div class="mt-sm font-semibold text-center">{{ account.name }}</div>
                             <div class="mt-1 text-center text-stone-800">Added: {{ account.created_at }}</div>
                         </div>
                     </Panel>
                 </template>
-
-                <button @click="addAccountModal = true"
-                        class="border border-indigo-800 rounded-lg hover:border-indigo-500 hover:text-indigo-500 transition-colors ease-in-out duration-200">
-                    <span class="block p-6">
-                        <span class="flex flex-col justify-center items-center">
-                            <PlusIcon class="w-7 h-7"/>
-                            <span class="mt-2 text-lg">Add account</span>
-                        </span>
-                    </span>
-                </button>
             </div>
         </div>
     </div>
@@ -140,7 +139,7 @@ const closeConfirmationAccountDeletion = () => {
         </template>
         <template #footer>
             <SecondaryButton @click="closeConfirmationAccountDeletion" :disabled="accountIsDeleting"
-                                    class="mr-2">Cancel
+                                    class="mr-xs">Cancel
             </SecondaryButton>
             <DangerButton @click="deleteAccount" :is-loading="accountIsDeleting"
                                  :disabled="accountIsDeleting">Delete

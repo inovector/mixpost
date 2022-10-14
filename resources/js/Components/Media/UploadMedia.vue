@@ -170,7 +170,7 @@ const selected = ref([]);
                  @dragover.prevent
                  class="w-full h-full absolute"></div>
             <PhotoIcon :class="{'text-stone-700': !dragEnter, 'text-cyan-500': dragEnter}"
-                       class="!w-16 !h-16 mx-auto mb-2 transition-colors ease-in-out duration-200"/>
+                       class="!w-16 !h-16 mx-auto mb-xs transition-colors ease-in-out duration-200"/>
             <div class="text-center mb-1">Drag & drop files here, or
                 <label for="browse"
                        class="text-indigo-500 hover:text-indigo-700 active:text-indigo-700 focus:outline-none focus:text-indigo-700 transition-colors ease-in-out duration-200">
@@ -192,7 +192,7 @@ const selected = ref([]);
         @change="onBrowse"
     />
 
-    <div class="mt-6">
+    <div class="mt-lg">
         <Masonry :items="completedJobs">
             <template #default="{item}">
                 <MediaSelectable :active="isSelected(item.media)" @click="toggleSelect(item.media)">

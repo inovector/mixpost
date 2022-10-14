@@ -88,6 +88,14 @@ module.exports = {
             },
             boxShadow: {
                 'mix': '0 5px 10px rgb(55 55 89 / 8%)',
+            },
+            spacing: {
+                'xs': '0.5rem', // 2
+                'sm': '0.75rem', // 3
+                'md': '1rem', // 4
+                'lg': '1.5rem', // 6
+                'xl': '2rem', // 8
+                '2xl': '2.5rem', // 10
             }
         },
     },

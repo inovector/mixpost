@@ -36,13 +36,13 @@ const clearScheduleTime = () => {
 </script>
 <template>
     <div class="w-full flex items-center justify-end bg-stone-500 border-t border-gray-200 z-10">
-        <div class="py-4 flex items-center space-x-2 default-x-padding">
+        <div class="py-4 flex items-center space-x-xs row-px">
             <slot/>
             <div class="flex items-center" role="group">
                 <SecondaryButton size="md"
                                         :class="{'!normal-case rounded-r-none border-r-indigo-800': scheduleTime}"
                                         @click="timePicker = true">
-                    <CalendarIcon class="lg:mr-2"/>
+                    <CalendarIcon class="lg:mr-xs"/>
                     <span class="hidden lg:block">{{ scheduleTime ? scheduleTime : 'Pick time' }}</span>
                 </SecondaryButton>
 
@@ -65,7 +65,7 @@ const clearScheduleTime = () => {
             <div class="flex items-center" role="group">
                 <PrimaryButton @click="$emit('submit', scheduleTime ? 'schedule' : 'now')" size="md"
                                       :class="{'rounded-r-none border-r-indigo-400': scheduleTime}">
-                    <PaperAirplaneIcon class="mr-2"/>
+                    <PaperAirplaneIcon class="mr-xs"/>
                     {{ scheduleTime ? 'Schedule' : 'Post now' }}
                 </PrimaryButton>
 

@@ -204,7 +204,7 @@ const deleteTag = () => {
                 </template>
             </template>
             <template #footer>
-                <SecondaryButton @click="closeChangeColorModal" :disabled="isColorChanging" class="mr-2">Cancel
+                <SecondaryButton @click="closeChangeColorModal" :disabled="isColorChanging" class="mr-xs">Cancel
                 </SecondaryButton>
                 <PrimaryButton @click="changeTagColor" :is-loading="isColorChanging"
                                :disabled="isColorChanging">Save changes
@@ -219,7 +219,7 @@ const deleteTag = () => {
                 Are you sure you want to delete the {{ item.name }} label from everywhere?
             </template>
             <template #footer>
-                <SecondaryButton @click="confirmationTagDeletion = false" :disabled="isDeleting" class="mr-2">Cancel
+                <SecondaryButton @click="confirmationTagDeletion = false" :disabled="isDeleting" class="mr-xs">Cancel
                 </SecondaryButton>
                 <DangerButton @click="deleteTag" :is-loading="isDeleting"
                               :disabled="isDeleting">Delete

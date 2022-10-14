@@ -15,6 +15,10 @@ const firstImageRef = ref(null);
 const firstImageOrientation = ref(null);
 
 const handleImageLoad = () => {
+    if(!firstImageRef.value) {
+        return;
+    }
+
     const orientation = firstImageRef.value.naturalHeight > firstImageRef.value.naturalWidth ? 'VERTICAL' : 'HORIZONTAL';
 
     if(firstImageOrientation.value !== orientation) {

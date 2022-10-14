@@ -60,7 +60,7 @@ const iconClasses = computed(() => {
 </script>
 <template>
     <span class="flex items-center justify-center">
-        <span :class="borderClasses" class="flex items-center justify-center relative border-2 p-1 rounded-full">
+        <span :class="borderClasses" class="flex items-center justify-center relative border-2 p-1 rounded-full bg-white">
             <span :class="[activeBgClasses, sizeImgClasses, {'grayscale': !active}]"
                   class="inline-flex justify-center items-center flex-shrink-0 rounded-full">
                 <img :src="imgUrl" class="object-cover w-full h-full rounded-full" alt=""/>

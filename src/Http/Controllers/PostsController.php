@@ -23,15 +23,15 @@ class PostsController extends Controller
 {
     public function index(Request $request): AnonymousResourceCollection|Response
     {
-        $posts = PostResource::collection(PostQuery::apply($request)->latest('created_at')->simplePaginate(20));
+        $posts = PostResource::collection(PostQuery::apply($request)->latest('id')->paginate(20)->onEachSide(1)->withQueryString());
 
         if ($request->wantsJson()) {
             return $posts;
         }
 
         return Inertia::render('Posts/Index', [
-            'accounts' => AccountResource::collection(Account::oldest()->get())->resolve(),
-            'tags' => TagResource::collection(Tag::all())->resolve(),
+            'accounts' => fn() => AccountResource::collection(Account::oldest()->get())->resolve(),
+            'tags' => fn() => TagResource::collection(Tag::latest()->get())->resolve(),
             'filter' => [
                 'keyword' => $request->get('keyword', ''),
                 'status' => $request->get('status'),
@@ -46,7 +46,7 @@ class PostsController extends Controller
     {
         return Inertia::render('Posts/CreateEdit', [
             'accounts' => AccountResource::collection(Account::oldest()->get())->resolve(),
-            'tags' => TagResource::collection(Tag::all())->resolve(),
+            'tags' => TagResource::collection(Tag::latest()->get())->resolve(),
             'post' => null,
         ]);
     }
@@ -64,7 +64,7 @@ class PostsController extends Controller
 
         return Inertia::render('Posts/CreateEdit', [
             'accounts' => AccountResource::collection(Account::oldest()->get())->resolve(),
-            'tags' => TagResource::collection(Tag::all())->resolve(),
+            'tags' => TagResource::collection(Tag::latest()->get())->resolve(),
             'post' => new PostResource($post)
         ]);
     }
@@ -80,6 +80,6 @@ class PostsController extends Controller
     {
         Post::where('id', $id)->delete();
 
-        return redirect()->route('mixpost.posts.index');
+        return redirect()->back();
     }
 }

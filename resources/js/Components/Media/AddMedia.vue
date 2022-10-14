@@ -149,7 +149,7 @@ const insert = () => {
                 </template>
             </Tabs>
 
-            <div class="mt-8">
+            <div class="mt-lg">
                 <UploadMedia :max-selection="maxSelection"
                              :combines-mime-types="combinesMimeTypes"
                              :selected="selected"
@@ -158,7 +158,7 @@ const insert = () => {
                 />
             </div>
 
-            <div :class="{'mt-8': items.length}">
+            <div :class="{'mt-lg': items.length}">
                 <template v-if="items.length">
                     <SectionTitle class="mb-4">Library</SectionTitle>
 
@@ -175,7 +175,7 @@ const insert = () => {
         </template>
 
         <template #footer>
-            <SecondaryButton @click="close" class="mr-2">Cancel</SecondaryButton>
+            <SecondaryButton @click="close" class="mr-xs">Cancel</SecondaryButton>
             <PrimaryButton v-if="selected.length" @click="insert">Insert {{ selected.length }} items
             </PrimaryButton>
         </template>

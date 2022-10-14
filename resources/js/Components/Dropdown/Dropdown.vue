@@ -13,7 +13,7 @@ const props = defineProps({
     },
     headerPadding: {
         type: String,
-        default: 'p-3'
+        default: 'p-md'
     },
     contentClasses: {
         type: Array,

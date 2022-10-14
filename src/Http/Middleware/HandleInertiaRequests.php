@@ -23,6 +23,10 @@ class HandleInertiaRequests extends Middleware
      */
     public function version(Request $request)
     {
+        if (file_exists($manifest = public_path('vendor/mixpost/manifest.json'))) {
+            return md5_file($manifest);
+        }
+
         return parent::version($request);
     }
 

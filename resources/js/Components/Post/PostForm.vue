@@ -147,7 +147,7 @@ watch(() => props.form.accounts, () => {
 const {insertEmoji, focusEditor} = useEditor();
 </script>
 <template>
-    <div class="flex items-center space-x-3 mb-6">
+    <div class="flex flex-wrap items-center gap-sm mb-lg">
         <template v-for="account in $page.props.accounts" :key="account.id">
             <button @click="selectAccount(account.id)"
                     :disabled="isAccountUnselectable(account)">
@@ -171,7 +171,7 @@ const {insertEmoji, focusEditor} = useEditor();
                          :active-version="activeVersion"
                          :accounts="$page.props.accounts"
                          :selected-accounts="form.accounts"
-                         class="mb-3"/>
+                         class="mb-sm"/>
 
         <template v-for="(item, index) in content" :key="index">
             <Editor id="postEditor"
@@ -180,7 +180,7 @@ const {insertEmoji, focusEditor} = useEditor();
                     placeholder="Type here something interesting for your audience...">
                 <template #default="props">
                     <div class="flex items-center justify-between border-t border-gray-200 pt-4">
-                        <div class="flex items-center space-x-2">
+                        <div class="flex items-center space-x-xs">
                             <EmojiPicker
                                 @selected="insertEmoji({editorId: 'postEditor', emoji: $event})"
                                 @close="focusEditor({editorId: 'postEditor'})"

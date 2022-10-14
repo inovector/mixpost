@@ -9,19 +9,11 @@
 }
 
 @layer utilities {
-    .default-x-padding {
+    .row-px {
         @apply px-3 sm:px-6 lg:px-8;
     }
 
-    .default-y-padding {
+    .row-py {
         @apply py-10;
-    }
-
-    .default-t-margin {
-        @apply mt-6;
-    }
-
-    .default-b-margin {
-        @apply mb-6;
     }
 }

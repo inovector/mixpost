@@ -8,6 +8,8 @@ use Inovector\Mixpost\Http\Controllers\AccountsController;
 use Inovector\Mixpost\Http\Controllers\AddAccountController;
 use Inovector\Mixpost\Http\Controllers\SettingsController;
 use Inovector\Mixpost\Http\Controllers\PostsController;
+use Inovector\Mixpost\Http\Controllers\DuplicatePostController;
+use Inovector\Mixpost\Http\Controllers\DeletePostsController;
 use Inovector\Mixpost\Http\Controllers\TagsController;
 use Inovector\Mixpost\Http\Controllers\ScheduleController;
 use Inovector\Mixpost\Http\Controllers\MediaController;
@@ -31,6 +33,9 @@ Route::middleware(['web', MixpostAuthMiddleware::class, HandleInertiaRequests::c
         Route::get('{post}', [PostsController::class, 'edit'])->name('edit');
         Route::put('{post}', [PostsController::class, 'update'])->name('update');
         Route::delete('{post}', [PostsController::class, 'destroy'])->name('delete');
+
+        Route::post('duplicate/{post}', DuplicatePostController::class)->name('duplicate');
+        Route::delete('/', DeletePostsController::class)->name('multipleDelete');
     });
 
     Route::get('schedule', [ScheduleController::class, 'index'])->name('schedule');

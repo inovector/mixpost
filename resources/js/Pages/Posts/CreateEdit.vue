@@ -110,21 +110,21 @@ watch(form, debounce(() => {
         <div class="flex flex-col grow h-full">
             <div class="flex flex-row h-full overflow-y-auto">
                 <div class="w-full md:w-3/5 h-full flex flex-col overflow-x-hidden overflow-y-auto">
-                    <div class="default-y-padding">
+                    <div class="row-py">
                         <PageHeader title="Your post">
                             <div v-if="$page.props.post" class="flex items-center">
                                 <PostStatus :value="$page.props.post.status"/>
-                                <div class="flex items-center ml-6">
+                                <div class="flex items-center ml-lg">
                                     <div
                                         :class="{'animate-ping': isLoading, 'bg-lime-500': !hasError, 'bg-red-500': hasError}"
-                                        class="w-4 h-4 mr-2 rounded-full"></div>
+                                        class="w-4 h-4 mr-xs rounded-full"></div>
                                     <div v-if="!hasError">Saved</div>
                                     <div v-if="hasError">Error on saving</div>
                                 </div>
                             </div>
                         </PageHeader>
 
-                        <div class="w-full max-w-7xl mx-auto default-x-padding">
+                        <div class="w-full max-w-7xl mx-auto row-px">
                             <PostForm :form="form" :accounts="$page.props.accounts"/>
                         </div>
                     </div>
@@ -133,7 +133,7 @@ watch(form, debounce(() => {
                      class="fixed md:relative w-full md:w-2/5 h-full overflow-x-hidden overflow-y-auto flex flex-col border-l border-gray-200 bg-stone-500 transition-transform ease-in-out duration-200">
                     <Teleport v-if="isMounted && form.accounts.length" to="#navRightButton">
                         <SecondaryButton @click="showPreview = !showPreview" size="xs">
-                            <span class="mr-2">
+                            <span class="mr-xs">
                                 <EyeOffIcon v-if="showPreview"/>
                                 <EyeIcon v-else/>
                             </span>
@@ -141,10 +141,10 @@ watch(form, debounce(() => {
                         </SecondaryButton>
                     </Teleport>
 
-                    <div class="py-10">
+                    <div class="py-2xl">
                         <PageHeader title="Preview"/>
 
-                        <div class="default-x-padding">
+                        <div class="row-px">
                             <PostPreviewProviders :accounts="$page.props.accounts"
                                                   :selected-accounts="form.accounts"
                                                   :versions="form.versions"

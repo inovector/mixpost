@@ -24,7 +24,7 @@ const props = defineProps({
 
 defineEmits(['click'])
 
-const commonClass = 'px-6 py-3';
+const commonClass = 'px-lg py-sm';
 
 const alignClass = computed(() => {
     return {

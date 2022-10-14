@@ -17,7 +17,7 @@ provide('appContext', context);
             <Sidebar/>
         </aside>
 
-        <main class="w-full md:main flex flex-col overflow-y-auto">
+        <main class="w-full md:main flex flex-col overflow-y-auto" scroll-region>
             <Navigation/>
             <slot />
         </main>

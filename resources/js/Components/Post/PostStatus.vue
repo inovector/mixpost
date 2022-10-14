@@ -26,7 +26,7 @@ const name = computed(() => {
 </script>
 <template>
     <div class="flex items-center">
-        <div :class="[classNames]" class="w-4 h-4 mr-2 rounded-full"></div>
+        <div :class="[classNames]" class="w-4 h-4 mr-xs rounded-full"></div>
         <div>{{ name }}</div>
     </div>
 </template>

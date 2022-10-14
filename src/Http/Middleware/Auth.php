@@ -3,10 +3,10 @@
 namespace Inovector\Mixpost\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Response;
 
 class Auth
@@ -24,10 +24,12 @@ class Auth
         return $next($request);
     }
 
-    protected function redirect(Request $request): JsonResponse|RedirectResponse
+    protected function redirect(Request $request): JsonResponse|Response
     {
         if (!$request->expectsJson()) {
-            return redirect()->setIntendedUrl(url()->current())->route(config('mixpost.redirect_unauthorized_users_to_route'));
+            $request->session()->put('url.intended', url()->current());
+
+            return Inertia::location(route(config('mixpost.redirect_unauthorized_users_to_route')));
         }
 
         return response()->json('Unauthenticated.', Response::HTTP_UNAUTHORIZED);

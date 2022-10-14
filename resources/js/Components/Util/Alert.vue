@@ -45,7 +45,7 @@ const variantColorClasses = computed(() => {
            <div class="flex items-center">
                <div>
                    <div :class="variantColorClasses"
-                        class="w-8 h-8 rounded-full flex items-center justify-center mr-3">
+                        class="w-8 h-8 rounded-full flex items-center justify-center mr-sm">
                        <component :is="variantIcon"/>
                    </div>
                </div>
@@ -54,7 +54,7 @@ const variantColorClasses = computed(() => {
                </div>
            </div>
             <template v-if="closeable">
-                <button @click="close" class="ml-10">
+                <button @click="close" class="ml-2xl">
                     <XIcon class="text-gray-200"/>
                 </button>
             </template>

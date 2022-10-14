@@ -56,9 +56,9 @@ const close = () => {
                    <ExclamationIcon :class="exclamationIconClasses"/>
                 </div>
 
-                <div class="flex flex-col text-center sm:mt-0 sm:ml-4 mt-4 sm:mt-0 sm:text-left">
+                <div class="flex flex-col text-center sm:mt-0 sm:ml-md mt-md sm:mt-0 sm:text-left">
                     <div class="text-lg"><slot name="header"/></div>
-                    <div class="mt-2"><slot name="body"/></div>
+                    <div class="mt-xs"><slot name="body"/></div>
                 </div>
             </div>
         </template>

@@ -39,11 +39,11 @@ const mainContent = computed(() => {
 });
 </script>
 <template>
-    <Alert v-if="reachedMaxCharacterLimit" variant="error" :closeable="false" class="mb-2">[{{ name }}] : You have
+    <Alert v-if="reachedMaxCharacterLimit" variant="error" :closeable="false" class="mb-xs">[{{ name }}] : You have
         reached the maximum character limit
     </Alert>
     <Panel :class="{'border-red-500': reachedMaxCharacterLimit}" class="relative">
-        <div class="absolute right-0 top-0 -mt-3 -mr-2">
+        <div class="absolute right-0 top-0 -mt-sm -mr-xs">
             <div class="flex items-center justify-center p-2 w-7 h-7 rounded-full bg-white border border-gray-200">
                 <div>
                     <ProviderIcon provider="facebook" class="!w-5 !h-5"/>
@@ -52,26 +52,26 @@ const mainContent = computed(() => {
         </div>
 
         <div class="flex items-center">
-            <span class="inline-flex justify-center items-center flex-shrink-0 w-10 h-10 rounded-full mr-3">
+            <span class="inline-flex justify-center items-center flex-shrink-0 w-10 h-10 rounded-full mr-sm">
                 <img :src="image"
                      class="object-cover w-full h-full rounded-full" alt=""/>
             </span>
             <div class="flex flex-col">
-                <div class="font-medium mr-2">{{ name }}</div>
+                <div class="font-medium mr-xs">{{ name }}</div>
                 <div class="text-gray-400 text-sm">19h</div>
             </div>
         </div>
 
         <div class="w-full">
             <EditorReadOnly :value="mainContent.body"
-                            :class="{'mt-2': !isDocEmpty(mainContent.body), 'mb-2': mainContent.media.length}"/>
+                            :class="{'mt-xs': !isDocEmpty(mainContent.body), 'mb-xs': mainContent.media.length}"/>
 
             <Gallery :media="mainContent.media"/>
         </div>
 
         <div class="mt-5 flex items-center justify-between">
             <div class="flex items-center">
-                <div class="flex mr-2">
+                <div class="flex mr-xs">
                     <img src="@img/fb-like.svg" class="w-5 h-5 z-10" alt=""/>
                     <img src="@img/fb-wow.svg" class="w-5 h-5 -ml-1" alt=""/>
                 </div>

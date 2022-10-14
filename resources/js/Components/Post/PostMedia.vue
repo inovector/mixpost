@@ -39,7 +39,7 @@ const remove = (id) => {
 }
 </script>
 <template>
-    <div class="mt-6">
+    <div class="mt-lg">
         <Draggable
             :list="media"
             v-bind="{
@@ -47,7 +47,7 @@ const remove = (id) => {
                 group: 'media',
             }"
             item-key="id"
-            class="flex flex-wrap gap-2"
+            class="flex flex-wrap gap-xs"
         >
             <template #item="{element}">
                 <div role="button" class="cursor-pointer" @click="open(element)">
@@ -72,7 +72,7 @@ const remove = (id) => {
         </template>
 
         <template #footer>
-            <SecondaryButton @click="close" class="mr-2">Close</SecondaryButton>
+            <SecondaryButton @click="close" class="mr-xs">Close</SecondaryButton>
             <DangerButton @click="remove(openedItem.id)">Remove</DangerButton>
         </template>
     </DialogModal>

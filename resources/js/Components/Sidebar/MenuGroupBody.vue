@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col space-y-2">
+    <div class="flex flex-col space-y-xs">
         <slot/>
     </div>
 </template>

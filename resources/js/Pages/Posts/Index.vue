@@ -1,9 +1,11 @@
 <script setup>
-import {ref, watch} from "vue";
+import {onMounted, onUnmounted, ref, watch} from "vue";
 import {Head} from '@inertiajs/inertia-vue3';
 import {Inertia} from "@inertiajs/inertia";
+import emitter from "@/Services/emitter";
+import useNotifications from "@/Composables/useNotifications";
 import {cloneDeep, pickBy, throttle} from "lodash";
-import NProgress from 'nprogress'
+import useSelectable from "@/Composables/useSelectable";
 import PageHeader from '@/Components/DataDisplay/PageHeader.vue';
 import PostsFilter from '@/Components/Post/PostsFilter.vue';
 import Tabs from "@/Components/Navigation/Tabs.vue"
@@ -14,7 +16,13 @@ import Table from "@/Components/DataDisplay/Table.vue";
 import TableRow from "@/Components/DataDisplay/TableRow.vue";
 import TableCell from "@/Components/DataDisplay/TableCell.vue";
 import SecondaryButton from "@/Components/Button/SecondaryButton.vue";
+import PureDangerButton from "@/Components/Button/PureDangerButton.vue";
+import DangerButton from "@/Components/Button/DangerButton.vue"
 import PostItem from "@/Components/Post/PostItem.vue";
+import SelectableBar from "@/Components/DataDisplay/SelectableBar.vue";
+import ConfirmationModal from "@/Components/Modal/ConfirmationModal.vue";
+import Pagination from "@/Components/Navigation/Pagination.vue";
+import TrashIcon from "@/Icons/Trash.vue";
 
 const props = defineProps({
     filter: {
@@ -26,9 +34,6 @@ const props = defineProps({
     }
 });
 
-const items = ref(props.posts.data.slice())
-const pagination = ref(props.posts.links);
-const isLoading = ref(false);
 const filter = ref({
     keyword: props.filter.keyword,
     status: props.filter.status,
@@ -36,40 +41,68 @@ const filter = ref({
     accounts: props.filter.accounts
 })
 
-const loadMore = () => {
-    if (isLoading.value) return;
+const {
+    selectedRecords,
+    putPageRecords,
+    toggleSelectRecordsOnPage,
+    deselectRecord,
+    deselectAllRecords
+} = useSelectable();
 
-    isLoading.value = true;
-    NProgress.start();
-
-    axios.get(props.posts.links.next).then((response) => {
-        items.value = [...items.value, ...response.data.data];
-        pagination.value = response.data.links;
-    }).finally(() => {
-        isLoading.value = false;
-        NProgress.done();
-    })
+const itemsId = () => {
+    return props.posts.data.map(item => item.id);
 }
+
+onMounted(() => {
+    putPageRecords(itemsId());
+
+    emitter.on('postDelete', id => {
+        deselectRecord(id);
+    });
+});
+
+onUnmounted(() => {
+    emitter.off('postDelete');
+})
 
 watch(() => cloneDeep(filter.value), throttle(() => {
     Inertia.get(route('mixpost.posts.index'), pickBy(filter.value), {
         preserveState: true,
-        onSuccess() {
-            items.value = props.posts.data;
-            pagination.value = props.posts.links
-        }
+        only: ['posts', 'filter']
     });
 }, 300))
+
+watch(() => props.posts.data, () => {
+    putPageRecords(itemsId());
+})
+
+const {notify} = useNotifications();
+const confirmationDeletion = ref(false);
+
+const deletePosts = () => {
+    Inertia.delete(route('mixpost.posts.multipleDelete'), {
+        data: {
+            posts: selectedRecords.value
+        },
+        onSuccess() {
+            deselectAllRecords();
+            notify('success', 'Selected posts deleted')
+        },
+        onFinish() {
+            confirmationDeletion.value = false;
+        }
+    });
+}
 </script>
 <template>
     <Head title="Posts"/>
 
-    <div class="default-y-padding">
+    <div class="row-py">
         <PageHeader title="Posts">
             <PostsFilter v-model="filter"/>
         </PageHeader>
 
-        <div class="w-full default-x-padding">
+        <div class="w-full row-px">
             <Tabs>
                 <Tab @click="filter.status = null" :active="!filter.status">All</Tab>
                 <Tab @click="filter.status = 'draft'" :active="filter.status === 'draft'">Drafts</Tab>
@@ -78,33 +111,57 @@ watch(() => cloneDeep(filter.value), throttle(() => {
             </Tabs>
         </div>
 
-        <div class="w-full default-x-padding default-t-margin">
+        <div class="w-full row-px mt-lg">
+            <SelectableBar :count="selectedRecords.length" @close="deselectAllRecords">
+                <PureDangerButton @click="confirmationDeletion = true" v-tooltip="'Delete'">
+                    <TrashIcon/>
+                </PureDangerButton>
+            </SelectableBar>
+
             <Panel :with-padding="false">
                 <Table>
                     <template #head>
                         <TableRow>
                             <TableCell component="th" scope="col" class="w-10">
-                                <Checkbox/>
+                                <Checkbox v-model:checked="toggleSelectRecordsOnPage"/>
                             </TableCell>
                             <TableCell component="th" scope="col">Status</TableCell>
                             <TableCell component="th" scope="col">Content</TableCell>
-                            <TableCell component="th" scope="col" class="w-20">Media</TableCell>
+                            <TableCell component="th" scope="col">Media</TableCell>
                             <TableCell component="th" scope="col">Labels</TableCell>
                             <TableCell component="th" scope="col">Accounts</TableCell>
                             <TableCell component="th" scope="col"/>
                         </TableRow>
                     </template>
                     <template #body>
-                        <template v-for="item in items" :key="item.id">
-                            <PostItem :item="item" :accounts="filter.accounts"/>
+                        <template v-for="item in posts.data" :key="item.id">
+                            <PostItem :item="item" :accounts="filter.accounts"
+                                      @onDelete="()=> {deselectRecord(item.id)}">
+                                <template #checkbox>
+                                    <Checkbox v-model:checked="selectedRecords" number :value="item.id"/>
+                                </template>
+                            </PostItem>
                         </template>
                     </template>
                 </Table>
             </Panel>
 
-            <div v-if="pagination.next" class="flex justify-center default-t-margin">
-                <SecondaryButton @click="loadMore" :disabled="isLoading">Load more</SecondaryButton>
+            <div v-if="posts.meta.links.length > 3" class="mt-lg">
+                <Pagination :meta="posts.meta" :links="posts.links"/>
             </div>
         </div>
     </div>
+
+    <ConfirmationModal :show="confirmationDeletion" variant="danger" @close="confirmationDeletion = false">
+        <template #header>
+            Delete posts
+        </template>
+        <template #body>
+            Are you sure you want to delete selected posts?
+        </template>
+        <template #footer>
+            <SecondaryButton @click="confirmationDeletion = false" class="mr-xs">Cancel</SecondaryButton>
+            <DangerButton @click="deletePosts">Delete</DangerButton>
+        </template>
+    </ConfirmationModal>
 </template>

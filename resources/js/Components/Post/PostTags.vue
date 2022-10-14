@@ -2,7 +2,7 @@
 import {computed, ref} from "vue";
 import {usePage} from '@inertiajs/inertia-vue3';
 import {Inertia} from "@inertiajs/inertia";
-import {difference, last, random} from "lodash";
+import {difference, first, random} from "lodash";
 import {decomposeString} from "@/helpers";
 import {COLOR_PALLET_LIST} from "@/Constants/ColorPallet";
 import Tag from "@/Components/DataDisplay/Tag.vue";
@@ -36,6 +36,15 @@ const availableTags = computed(() => {
         return !props.items.some(item => item.id === tag.id) && search;
     })
 })
+
+const openManager = () => {
+    showManager.value = true;
+}
+
+const closeManager = () => {
+    showManager.value = false;
+    searchText.value = '';
+}
 
 const select = (tag, $event = null) => {
     if (!$event || ($event && !$event.target.closest('.tag-actions'))) {
@@ -84,7 +93,7 @@ const store = () => {
         },
         onSuccess() {
             searchText.value = '';
-            select(last(tags.value));
+            select(first(tags.value));
         },
         onFinish() {
             isLoading.value = false
@@ -95,14 +104,14 @@ const store = () => {
 <template>
     <div>
         <div class="flex items-center">
-            <div class="hidden lg:flex items-center space-x-2 mr-2">
+            <div class="hidden lg:flex items-center space-x-xs mr-xs">
                 <template v-for="item in items" :key="item.id">
                     <Tag :item="item" @remove="remove(item)"/>
                 </template>
             </div>
 
-            <SecondaryButton @click="showManager = true" size="md">
-                <TagIcon class="lg:mr-2"/>
+            <SecondaryButton @click="openManager" size="md">
+                <TagIcon class="lg:mr-xs"/>
                 <span class="hidden lg:block">Labels</span>
             </SecondaryButton>
         </div>
@@ -111,7 +120,7 @@ const store = () => {
                      max-width="sm"
                      :closeable="true"
                      :scrollable-body="true"
-                     @close="showManager = false">
+                     @close="closeManager">
             <template #header>
                 Labels
             </template>
@@ -120,7 +129,7 @@ const store = () => {
                 <div class="relative">
                     <Preloader v-if="isLoading" :opacity="50"/>
 
-                    <div class="flex flex-wrap items-center gap-2">
+                    <div class="flex flex-wrap items-center gap-xs">
                         <div v-for="item in items" :key="item.id">
                             <Tag :item="item" @remove="remove(item)"/>
                         </div>
@@ -135,7 +144,7 @@ const store = () => {
                                class="w-full"/>
                     </div>
 
-                    <div v-if="availableTags.length" class="mt-2 border border-gray-300 rounded-md">
+                    <div v-if="availableTags.length" class="mt-xs border border-gray-300 rounded-md">
                         <template v-for="item in availableTags">
                             <div @click="select(item, $event)"
                                  tabindex="0"
@@ -153,7 +162,7 @@ const store = () => {
             </template>
 
             <template #footer>
-                <SecondaryButton @click="showManager = false" class="mr-2">Done</SecondaryButton>
+                <SecondaryButton @click="closeManager" class="mr-xs">Done</SecondaryButton>
             </template>
         </DialogModal>
     </div>

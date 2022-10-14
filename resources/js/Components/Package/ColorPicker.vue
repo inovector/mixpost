@@ -49,7 +49,7 @@ onUnmounted(() => {
 <template>
     <div class="flex items-center justify-between">
         <div>
-            <div class="grid grid-cols-4 gap-3">
+            <div class="grid grid-cols-4 gap-sm">
                 <template v-for="(colorHex, index) in colors" :key="index">
                     <button @click="onChange(colorHex)" role="button" type="button"
                             :style="{backgroundColor: colorHex}"

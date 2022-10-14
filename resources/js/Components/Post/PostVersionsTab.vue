@@ -8,6 +8,7 @@ import ProviderIcon from "@/Components/Account/ProviderIcon.vue";
 import Tabs from "@/Components/Navigation/Tabs.vue";
 import Tab from "@/Components/Navigation/Tab.vue"
 import ConfirmationModal from "@/Components/Modal/ConfirmationModal.vue"
+import VerticallyScrollableContent from "@/Components/Surface/VerticallyScrollableContent.vue";
 import SecondaryButton from "@/Components/Button/SecondaryButton.vue"
 import DangerButton from "@/Components/Button/DangerButton.vue"
 import PureButton from "@/Components/Button/PureButton.vue"
@@ -74,13 +75,13 @@ const remove = () => {
 <template>
     <div>
         <div class="flex flex-wrap items-start">
-            <Tabs class="mr-2">
+            <Tabs class="mr-xs">
                 <template v-for="(version, index) in versionsWithAccountData" :key="version.account_id">
                     <Tab @click="$emit('select', version.account_id)" :active="activeVersion === version.account_id"
-                         :tab-index="index" class="relative mb-2 group">
+                         :tab-index="index" class="relative mb-xs group">
                         <ProviderIcon v-if="!version.is_original" :provider="version.account.provider"
-                                      :class="['!w-4', '!h-4']" class="mr-2"/>
-                        <span class="mr-2">{{ version.account.name }}</span>
+                                      :class="['!w-4', '!h-4']" class="mr-xs"/>
+                        <span class="mr-xs">{{ version.account.name }}</span>
                         <div v-if="!version.is_original"
                              class="absolute hidden group-hover:flex items-center top-0 right-0 pb-2 pl-0.5 h-full bg-white">
                             <button @click.prevent="confirmationRemoval = version"
@@ -92,7 +93,7 @@ const remove = () => {
                 </template>
             </Tabs>
 
-            <Dropdown>
+            <Dropdown width-classes="w-64">
                 <template #trigger>
                     <PureButton v-if="availableAccounts.length" v-tooltip="'Create version'">
                         <PlusIcon/>
@@ -104,16 +105,18 @@ const remove = () => {
                 </template>
 
                 <template #content>
-                    <template v-for="account in availableAccounts">
-                        <DropdownItem @click="$emit('add', account.id)" as="button" class="!py-3">
-                      <span class="mr-3">
-                          <Account :provider="account.provider"
-                                   :img-url="account.image"
-                                   :active="true"/>
-                      </span>
-                            <span class="text-left">{{ account.name }}</span>
-                        </DropdownItem>
-                    </template>
+                    <VerticallyScrollableContent max-height="xl">
+                        <template v-for="account in availableAccounts">
+                            <DropdownItem @click="$emit('add', account.id)" as="button">
+                                  <span class="mr-xs">
+                                      <Account :provider="account.provider"
+                                               :img-url="account.image"
+                                               :active="true"/>
+                                  </span>
+                                <span class="text-left">{{ account.name }}</span>
+                            </DropdownItem>
+                        </template>
+                    </VerticallyScrollableContent>
                 </template>
             </Dropdown>
         </div>
@@ -132,7 +135,7 @@ const remove = () => {
               </span>
             </template>
             <template #footer>
-                <SecondaryButton @click="closeConfirmationRemoval" class="mr-2">Cancel</SecondaryButton>
+                <SecondaryButton @click="closeConfirmationRemoval" class="mr-xs">Cancel</SecondaryButton>
                 <DangerButton @click="remove">Remove</DangerButton>
             </template>
         </ConfirmationModal>

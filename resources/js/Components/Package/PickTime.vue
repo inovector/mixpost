@@ -127,8 +127,8 @@ const configTimePicker = {
             <div v-if="show" class="pickTime flex flex-col">
                 <FlatPickr v-model="date" :config="configDatePicker"/>
 
-                <div class="flex items-center justify-center mx-auto mt-6">
-                    <div class="mr-2 text-gray-400">Time</div>
+                <div class="flex items-center justify-center mx-auto mt-lg">
+                    <div class="mr-xs text-gray-400">Time</div>
                     <div class="w-auto" ref="timePicker">
                         <FlatPickr v-model="time" :config="configTimePicker"/>
                     </div>
@@ -139,7 +139,7 @@ const configTimePicker = {
         </template>
 
         <template #footer>
-            <SecondaryButton @click="close" class="mr-2">Cancel</SecondaryButton>
+            <SecondaryButton @click="close" class="mr-xs">Cancel</SecondaryButton>
             <PrimaryButton @click="confirm" :disabled="hasErrors">Pick time</PrimaryButton>
         </template>
     </DialogModal>

@@ -2,7 +2,7 @@
 import FacebookIcon from "@/Icons/Facebook.vue";
 </script>
 <template>
-    <button class="w-full flex items-center px-6 py-4 hover:bg-facebook hover:bg-opacity-20 ease-in-out duration-200">
+    <button class="w-full flex items-center px-lg py-4 hover:bg-facebook hover:bg-opacity-20 ease-in-out duration-200">
         <span class="flex mr-4">
             <FacebookIcon class="text-facebook"/>
         </span>
