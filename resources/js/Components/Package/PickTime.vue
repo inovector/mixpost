@@ -33,10 +33,10 @@ const timePicker = ref();
 
 const setDateTime = () => {
     if (props.show) {
-        date.value = props.date ? props.date : format(new Date(), 'Y-MM-dd');
+        const nextHour = format(addHours(new Date(), 1), 'Y-MM-dd H');
 
-        const nextHour = format(addHours(new Date(), 1), 'H');
-        time.value = props.time ? props.time : (nextHour + ':00');
+        date.value = props.date ? props.date : nextHour.split(' ')[0];
+        time.value = props.time ? props.time : (nextHour.split(' ')[1] + ':00');
     }
 }
 

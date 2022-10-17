@@ -1,4 +1,5 @@
 <script setup>
+import {Link} from '@inertiajs/inertia-vue3';
 import Logo from "@/Components/DataDisplay/Logo.vue"
 import MenuItem from "@/Components/Sidebar/MenuItem.vue"
 import MenuDelimiter from "@/Components/Sidebar/MenuDelimiter.vue"
@@ -11,7 +12,6 @@ import CalendarIcon from "@/Icons/Calendar.vue"
 import PhotoIcon from "@/Icons/Photo.vue"
 import PackageIcon from "@/Icons/Package.vue"
 import CogIcon from "@/Icons/Cog.vue"
-import {Link} from '@inertiajs/inertia-vue3';
 </script>
 <template>
     <div class="w-full h-full flex flex-col py-2xl bg-white border-r border-gray-200">
@@ -47,19 +47,19 @@ import {Link} from '@inertiajs/inertia-vue3';
             </MenuGroupHeader>
             <MenuGroupBody>
                 <MenuItem :url="route('mixpost.posts.index')"
-                          :active="route().current('mixpost.posts.index')">
+                          :active="$page.component === 'Posts/Index'">
                     <template #icon>
                         <GridIcon/>
                     </template>
                     Posts
                 </MenuItem>
-                <MenuItem :url="route('mixpost.schedule')" :active="route().current('mixpost.schedule')">
+                <MenuItem :url="route('mixpost.schedule')" :active="$page.component === 'Schedule'">
                     <template #icon>
                         <CalendarIcon/>
                     </template>
                     Schedule
                 </MenuItem>
-                <MenuItem :url="route('mixpost.media.index')" :active="route().current('mixpost.media.index')">
+                <MenuItem :url="route('mixpost.media.index')" :active="$page.component === 'Media'">
                     <template #icon>
                         <PhotoIcon/>
                     </template>
@@ -71,13 +71,13 @@ import {Link} from '@inertiajs/inertia-vue3';
                 Configuration
             </MenuGroupHeader>
             <MenuGroupBody>
-                <MenuItem :url="route('mixpost.accounts.index')" :active="route().current('mixpost.accounts.index')">
+                <MenuItem :url="route('mixpost.accounts.index')" :active="$page.component === 'Accounts'">
                     <template #icon>
                         <PackageIcon/>
                     </template>
                     Accounts
                 </MenuItem>
-                <MenuItem :url="route('mixpost.settings')" :active="route().current('mixpost.settings')">
+                <MenuItem :url="route('mixpost.settings')" :active="$page.component === 'Settings'">
                     <template #icon>
                         <CogIcon/>
                     </template>

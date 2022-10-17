@@ -1,8 +1,4 @@
 {
-  "resources/img/fb-wow.svg": {
-    "file": "assets/fb-wow.ca50712c.svg",
-    "src": "resources/img/fb-wow.svg"
-  },
   "resources/img/fb-like.svg": {
     "file": "assets/fb-like.59c2ede2.svg",
     "src": "resources/img/fb-like.svg"
@@ -10,6 +6,10 @@
   "resources/img/fb-icons.png": {
     "file": "assets/fb-icons.855a0fcf.png",
     "src": "resources/img/fb-icons.png"
+  },
+  "resources/img/fb-wow.svg": {
+    "file": "assets/fb-wow.ca50712c.svg",
+    "src": "resources/img/fb-wow.svg"
   },
   "resources/js/app.js": {
     "file": "assets/app.41db6d65.js",
@@ -147,20 +147,20 @@
       "resources/js/app.js"
     ]
   },
-  "Trash.css": {
-    "file": "assets/Trash.b54678c7.css",
-    "src": "Trash.css"
-  },
   "PostStatus.css": {
     "file": "assets/PostStatus.eda7d8b2.css",
     "src": "PostStatus.css"
   },
-  "resources/js/Pages/Posts/CreateEdit.css": {
-    "file": "assets/CreateEdit.8483be18.css",
-    "src": "resources/js/Pages/Posts/CreateEdit.css"
+  "Trash.css": {
+    "file": "assets/Trash.b54678c7.css",
+    "src": "Trash.css"
   },
   "resources/js/app.css": {
     "file": "assets/app.1f04445f.css",
     "src": "resources/js/app.css"
+  },
+  "resources/js/Pages/Posts/CreateEdit.css": {
+    "file": "assets/CreateEdit.8483be18.css",
+    "src": "resources/js/Pages/Posts/CreateEdit.css"
   }
 }
