@@ -6,6 +6,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Arr;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\Response as HttpResponse;
@@ -23,11 +24,7 @@ class PostsController extends Controller
 {
     public function index(Request $request): AnonymousResourceCollection|Response
     {
-        $posts = PostResource::collection(PostQuery::apply($request)->latest('id')->paginate(20)->onEachSide(1)->withQueryString());
-
-        if ($request->wantsJson()) {
-            return $posts;
-        }
+        $query = PostQuery::apply($request)->latest('id')->paginate(20)->onEachSide(1)->withQueryString();
 
         return Inertia::render('Posts/Index', [
             'accounts' => fn() => AccountResource::collection(Account::oldest()->get())->resolve(),
@@ -38,7 +35,11 @@ class PostsController extends Controller
                 'tags' => $request->get('tags', []),
                 'accounts' => $request->get('accounts', [])
             ],
-            'posts' => $posts,
+            'posts' => PostResource::collection($query)->additional([
+                'filter' => [
+                    'accounts' => Arr::map($request->get('accounts', []), 'intval')
+                ]
+            ]),
         ]);
     }
 

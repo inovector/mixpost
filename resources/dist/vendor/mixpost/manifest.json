@@ -1,4 +1,8 @@
 {
+  "resources/img/fb-wow.svg": {
+    "file": "assets/fb-wow.ca50712c.svg",
+    "src": "resources/img/fb-wow.svg"
+  },
   "resources/img/fb-like.svg": {
     "file": "assets/fb-like.59c2ede2.svg",
     "src": "resources/img/fb-like.svg"
@@ -7,12 +11,8 @@
     "file": "assets/fb-icons.855a0fcf.png",
     "src": "resources/img/fb-icons.png"
   },
-  "resources/img/fb-wow.svg": {
-    "file": "assets/fb-wow.ca50712c.svg",
-    "src": "resources/img/fb-wow.svg"
-  },
   "resources/js/app.js": {
-    "file": "assets/app.41db6d65.js",
+    "file": "assets/app.4763695b.js",
     "src": "resources/js/app.js",
     "isEntry": true,
     "dynamicImports": [
@@ -25,61 +25,61 @@
       "resources/js/Pages/Settings.vue"
     ],
     "css": [
-      "assets/app.1f04445f.css"
+      "assets/app.d7a08fb0.css"
     ]
   },
   "resources/js/Pages/Accounts.vue": {
-    "file": "assets/Accounts.656240b8.js",
+    "file": "assets/Accounts.bef9295d.js",
     "src": "resources/js/Pages/Accounts.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_Trash.ee9b2dea.js",
-      "_CircleLoading.6fb0ebb5.js",
-      "_EllipsisVertical.46dbc4f6.js"
+      "_Trash.00477c49.js",
+      "_CircleLoading.81fc7556.js",
+      "_EllipsisVertical.3ceafc7c.js"
     ]
   },
-  "_Trash.ee9b2dea.js": {
-    "file": "assets/Trash.ee9b2dea.js",
+  "_Trash.00477c49.js": {
+    "file": "assets/Trash.00477c49.js",
     "imports": [
       "resources/js/app.js",
-      "_CircleLoading.6fb0ebb5.js"
+      "_CircleLoading.81fc7556.js"
     ],
     "css": [
       "assets/Trash.b54678c7.css"
     ]
   },
-  "_CircleLoading.6fb0ebb5.js": {
-    "file": "assets/CircleLoading.6fb0ebb5.js",
+  "_CircleLoading.81fc7556.js": {
+    "file": "assets/CircleLoading.81fc7556.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_EllipsisVertical.46dbc4f6.js": {
-    "file": "assets/EllipsisVertical.46dbc4f6.js",
+  "_EllipsisVertical.3ceafc7c.js": {
+    "file": "assets/EllipsisVertical.3ceafc7c.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
   "resources/js/Pages/Dashboard.vue": {
-    "file": "assets/Dashboard.7a73f198.js",
+    "file": "assets/Dashboard.e8d0af83.js",
     "src": "resources/js/Pages/Dashboard.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_PrimaryButton.3700d285.js",
-      "_CircleLoading.6fb0ebb5.js"
+      "_PrimaryButton.33696edc.js",
+      "_CircleLoading.81fc7556.js"
     ]
   },
-  "_PrimaryButton.3700d285.js": {
-    "file": "assets/PrimaryButton.3700d285.js",
+  "_PrimaryButton.33696edc.js": {
+    "file": "assets/PrimaryButton.33696edc.js",
     "imports": [
       "resources/js/app.js",
-      "_CircleLoading.6fb0ebb5.js"
+      "_CircleLoading.81fc7556.js"
     ]
   },
   "resources/js/Pages/Media.vue": {
-    "file": "assets/Media.e63e7067.js",
+    "file": "assets/Media.bbe6cd75.js",
     "src": "resources/js/Pages/Media.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -87,27 +87,27 @@
     ]
   },
   "resources/js/Pages/Posts/CreateEdit.vue": {
-    "file": "assets/CreateEdit.509f8a60.js",
+    "file": "assets/CreateEdit.2c6af014.js",
     "src": "resources/js/Pages/Posts/CreateEdit.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_PostStatus.db7fde0b.js",
-      "_Trash.ee9b2dea.js",
-      "_CircleLoading.6fb0ebb5.js",
-      "_PrimaryButton.3700d285.js"
+      "_PostStatus.eb9ca5a0.js",
+      "_Trash.00477c49.js",
+      "_CircleLoading.81fc7556.js",
+      "_PrimaryButton.33696edc.js"
     ],
     "css": [
       "assets/CreateEdit.8483be18.css"
     ]
   },
-  "_PostStatus.db7fde0b.js": {
-    "file": "assets/PostStatus.db7fde0b.js",
+  "_PostStatus.eb9ca5a0.js": {
+    "file": "assets/PostStatus.eb9ca5a0.js",
     "imports": [
       "resources/js/app.js",
-      "_Trash.ee9b2dea.js",
-      "_PrimaryButton.3700d285.js",
-      "_CircleLoading.6fb0ebb5.js"
+      "_Trash.00477c49.js",
+      "_PrimaryButton.33696edc.js",
+      "_CircleLoading.81fc7556.js"
     ],
     "css": [
       "assets/PostStatus.eda7d8b2.css"
@@ -119,20 +119,20 @@
     ]
   },
   "resources/js/Pages/Posts/Index.vue": {
-    "file": "assets/Index.83356fbc.js",
+    "file": "assets/Index.1818aef3.js",
     "src": "resources/js/Pages/Posts/Index.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_Trash.ee9b2dea.js",
-      "_PostStatus.db7fde0b.js",
-      "_PrimaryButton.3700d285.js",
-      "_CircleLoading.6fb0ebb5.js",
-      "_EllipsisVertical.46dbc4f6.js"
+      "_Trash.00477c49.js",
+      "_PostStatus.eb9ca5a0.js",
+      "_PrimaryButton.33696edc.js",
+      "_CircleLoading.81fc7556.js",
+      "_EllipsisVertical.3ceafc7c.js"
     ]
   },
   "resources/js/Pages/Schedule.vue": {
-    "file": "assets/Schedule.aff58d96.js",
+    "file": "assets/Schedule.d1009936.js",
     "src": "resources/js/Pages/Schedule.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -140,27 +140,27 @@
     ]
   },
   "resources/js/Pages/Settings.vue": {
-    "file": "assets/Settings.3e541665.js",
+    "file": "assets/Settings.d9cd4548.js",
     "src": "resources/js/Pages/Settings.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "PostStatus.css": {
-    "file": "assets/PostStatus.eda7d8b2.css",
-    "src": "PostStatus.css"
-  },
   "Trash.css": {
     "file": "assets/Trash.b54678c7.css",
     "src": "Trash.css"
   },
-  "resources/js/app.css": {
-    "file": "assets/app.1f04445f.css",
-    "src": "resources/js/app.css"
+  "PostStatus.css": {
+    "file": "assets/PostStatus.eda7d8b2.css",
+    "src": "PostStatus.css"
   },
   "resources/js/Pages/Posts/CreateEdit.css": {
     "file": "assets/CreateEdit.8483be18.css",
     "src": "resources/js/Pages/Posts/CreateEdit.css"
+  },
+  "resources/js/app.css": {
+    "file": "assets/app.d7a08fb0.css",
+    "src": "resources/js/app.css"
   }
 }

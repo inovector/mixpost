@@ -125,9 +125,9 @@ const deletePosts = () => {
                             <TableCell component="th" scope="col" class="w-10">
                                 <Checkbox v-model:checked="toggleSelectRecordsOnPage"/>
                             </TableCell>
-                            <TableCell component="th" scope="col">Status</TableCell>
-                            <TableCell component="th" scope="col">Content</TableCell>
-                            <TableCell component="th" scope="col">Media</TableCell>
+                            <TableCell component="th" scope="col" class="w-44">Status</TableCell>
+                            <TableCell component="th" scope="col" class="!pl-0 text-left">Content</TableCell>
+                            <TableCell component="th" scope="col" class="w-48">Media</TableCell>
                             <TableCell component="th" scope="col">Labels</TableCell>
                             <TableCell component="th" scope="col">Accounts</TableCell>
                             <TableCell component="th" scope="col"/>
@@ -135,10 +135,10 @@ const deletePosts = () => {
                     </template>
                     <template #body>
                         <template v-for="item in posts.data" :key="item.id">
-                            <PostItem :item="item" :accounts="filter.accounts"
+                            <PostItem :item="item" :filter="posts.filter"
                                       @onDelete="()=> {deselectRecord(item.id)}">
                                 <template #checkbox>
-                                    <Checkbox v-model:checked="selectedRecords" number :value="item.id"/>
+                                    <Checkbox v-model:checked="selectedRecords" :value="item.id" number/>
                                 </template>
                             </PostItem>
                         </template>

@@ -25,7 +25,7 @@ class Post extends Model
 
     public function accounts(): BelongsToMany
     {
-        return $this->belongsToMany(Account::class, 'mixpost_post_accounts', 'post_id', 'account_id');
+        return $this->belongsToMany(Account::class, 'mixpost_post_accounts', 'post_id', 'account_id')->orderByPivot('id');
     }
 
     public function versions(): HasMany
@@ -35,6 +35,6 @@ class Post extends Model
 
     public function tags(): BelongsToMany
     {
-        return $this->belongsToMany(Tag::class, 'mixpost_tag_post', 'post_id', 'tag_id');
+        return $this->belongsToMany(Tag::class, 'mixpost_tag_post', 'post_id', 'tag_id')->orderByPivot('id');
     }
 }

@@ -1,5 +1,6 @@
 <script setup>
 import {computed, ref} from "vue";
+import usePostVersions from "@/Composables/usePostVersions";
 import TableRow from "@/Components/DataDisplay/TableRow.vue";
 import TableCell from "@/Components/DataDisplay/TableCell.vue";
 import MediaFile from "@/Components/Media/MediaFile.vue";
@@ -20,13 +21,15 @@ const props = defineProps({
         type: Object,
         required: true
     },
-    accounts: {
-        type: Array,
-        default: []
+    filter: {
+        type: Object,
+        default: {
+            accounts: [],
+        }
     }
 })
 
-// const emit = defineEmits(['onDelete'])
+const {getOriginalVersion, getAccountVersion} = usePostVersions();
 
 const content = computed(() => {
     if (!props.item.versions.length) {
@@ -36,13 +39,23 @@ const content = computed(() => {
         }
     }
 
-    if (!props.accounts.length) {
-        const first = props.item.versions[0].content[0];
+    let accounts = props.item.accounts;
 
-        return {
-            excerpt: first.excerpt,
-            media: first.media.length ? first.media[0] : null,
-        }
+    if (props.filter.accounts.length) {
+        accounts = accounts.filter(account => props.filter.accounts.includes(account.id))
+    }
+
+    const accountVersions = accounts.map((account) => {
+        const accountVersion = getAccountVersion(props.item.versions, account.id);
+
+        return accountVersion ? accountVersion.content[0] : getOriginalVersion(props.item.versions).content[0];
+    })
+
+    const record = accountVersions.length ? accountVersions[0] : props.item.versions[0].content[0];
+
+    return {
+        excerpt: record.excerpt,
+        media: record.media.length ? record.media[0] : null,
     }
 });
 
@@ -78,7 +91,7 @@ const closePreview = () => {
             <div class="w-96 text-left">{{ content.excerpt }}</div>
         </TableCell>
         <TableCell :clickable="true" @click="openPreview">
-            <div class="flex">
+            <div v-if="content.media" class="w-48 flex">
                 <MediaFile v-if="content.media" :media="content.media" img-height="sm"/>
             </div>
         </TableCell>

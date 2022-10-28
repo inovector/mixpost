@@ -25,11 +25,11 @@ class PostQuery implements Query
             $query = PostKeyword::apply($query, $request->get('keyword'));
         }
 
-        if ($request->has('accounts' && !empty($request->get('accounts')))) {
+        if ($request->has('accounts') && !empty($request->get('accounts'))) {
             $query = PostAccounts::apply($query, $request->get('accounts', []));
         }
 
-        if ($request->has('tags' && !empty($request->get('tags')))) {
+        if ($request->has('tags') && !empty($request->get('tags'))) {
             $query = PostTags::apply($query, $request->get('tags', []));
         }
 

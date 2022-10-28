@@ -12,6 +12,7 @@ import VerticallyScrollableContent from "@/Components/Surface/VerticallyScrollab
 import FunnelIcon from "@/Icons/Funnel.vue";
 import MagnifyingGlassIcon from "@/Icons/MagnifyingGlass.vue"
 import XIcon from "@/Icons/X.vue"
+import Checkbox from "@/Components//Form/Checkbox.vue";
 
 const props = defineProps({
     modelValue: {
@@ -71,9 +72,10 @@ const clear = () => {
                         <div class="font-semibold">Labels</div>
                         <div class="mt-sm flex flex-wrap items-center gap-xs">
                             <template v-for="tag in tags" :key="tag.id">
-                                <button>
+                                <label class="flex items-center cursor-pointer">
+                                    <Checkbox v-model:checked="modelValue.tags" :value="tag.id" number class="mr-1"/>
                                     <Tag :item="tag" :removable="false" :editable="false"/>
-                                </button>
+                                </label>
                             </template>
                         </div>
                     </div>
@@ -82,12 +84,13 @@ const clear = () => {
                         <div class="font-semibold">Accounts</div>
                         <div class="mt-sm flex flex-wrap items-center gap-xs">
                             <template v-for="account in accounts" :key="account.id">
-                                <button>
+                                <label class="flex items-center cursor-pointer">
+                                    <Checkbox v-model:checked="modelValue.accounts" :value="account.id" number class="mr-1"/>
                                     <Badge class="inline-flex items-center">
                                         <ProviderIcon :provider="account.provider" class="!w-4 !h-4 mr-xs"/>
                                         {{ account.name }}
                                     </Badge>
-                                </button>
+                                </label>
                             </template>
                         </div>
                     </div>
