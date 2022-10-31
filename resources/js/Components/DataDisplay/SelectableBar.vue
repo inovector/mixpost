@@ -16,7 +16,7 @@ defineProps({
                 leave-from-class="transform opacity-100 scale-100"
                 leave-to-class="transform opacity-0 scale-95">
         <div v-show="count"
-             class="fixed bottom-0 mb-1 px-lg py-md px-sm flex items-center bg-indigo-800 text-white rounded-md mt-1 z-50">
+             class="fixed bottom-0 mb-sm px-lg py-md px-sm flex items-center bg-indigo-800 text-white rounded-md mt-1 z-10">
             <div class="flex w-full items-center">
                 <div class="flex items-center">
                     <button @click="$emit('close')" v-tooltip.top="'Dismiss'"

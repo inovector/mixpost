@@ -98,7 +98,7 @@ const deletePosts = () => {
 <template>
     <Head title="Posts"/>
 
-    <div class="row-py">
+    <div class="row-py mb-2xl">
         <PageHeader title="Posts">
             <PostsFilter v-model="filter"/>
         </PageHeader>
@@ -124,7 +124,7 @@ const deletePosts = () => {
                     <template #head>
                         <TableRow>
                             <TableCell component="th" scope="col" class="w-10">
-                                <Checkbox v-model:checked="toggleSelectRecordsOnPage"/>
+                                <Checkbox v-model:checked="toggleSelectRecordsOnPage" :disabled="!posts.meta.total"/>
                             </TableCell>
                             <TableCell component="th" scope="col" class="w-44">Status</TableCell>
                             <TableCell component="th" scope="col" class="!pl-0 text-left">Content</TableCell>

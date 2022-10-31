@@ -1,6 +1,7 @@
 <script setup>
 import {computed} from "vue";
 import {usePage} from "@inertiajs/inertia-vue3";
+import {filter} from "lodash";
 import Input from "@/Components/Form/Input.vue";
 import PrimaryButton from "@/Components/Button/PrimaryButton.vue";
 import Dropdown from "@/Components/Dropdown/Dropdown.vue";
@@ -31,6 +32,10 @@ const tags = computed(() => {
     return usePage().props.value.tags;
 })
 
+const total = computed(() => {
+    return props.modelValue.tags.length + props.modelValue.accounts.length;
+})
+
 const clear = () => {
     emit('update:modelValue', Object.assign(props.modelValue, {
         keyword: '',
@@ -58,7 +63,7 @@ const clear = () => {
             <template #trigger>
                 <PrimaryButton size="md">
                     <FunnelIcon/>
-                    <span class="ml-xs hidden sm:inline-block">Filters</span>
+                    <span class="ml-xs hidden sm:inline-block">Filters <span v-if="total" class="px-2 py-1 rounded-md bg-white text-black font-bold">{{ total }}</span></span>
                 </PrimaryButton>
             </template>
 
@@ -85,7 +90,8 @@ const clear = () => {
                         <div class="mt-sm flex flex-wrap items-center gap-xs">
                             <template v-for="account in accounts" :key="account.id">
                                 <label class="flex items-center cursor-pointer">
-                                    <Checkbox v-model:checked="modelValue.accounts" :value="account.id" number class="mr-1"/>
+                                    <Checkbox v-model:checked="modelValue.accounts" :value="account.id" number
+                                              class="mr-1"/>
                                     <Badge class="inline-flex items-center">
                                         <ProviderIcon :provider="account.provider" class="!w-4 !h-4 mr-xs"/>
                                         {{ account.name }}

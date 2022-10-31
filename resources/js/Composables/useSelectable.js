@@ -58,6 +58,10 @@ const useSelectable = () => {
     }
 
     const areRecordsSelected = (keys) => {
+        if(!keys.length) {
+            return false;
+        }
+
         return keys.every(key => isRecordSelected(key))
     }
 
