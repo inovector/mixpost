@@ -22,6 +22,7 @@ import PostItem from "@/Components/Post/PostItem.vue";
 import SelectableBar from "@/Components/DataDisplay/SelectableBar.vue";
 import ConfirmationModal from "@/Components/Modal/ConfirmationModal.vue";
 import Pagination from "@/Components/Navigation/Pagination.vue";
+import NoResult from "@/Components/Util/NoResult.vue";
 import TrashIcon from "@/Icons/Trash.vue";
 
 const props = defineProps({
@@ -144,6 +145,8 @@ const deletePosts = () => {
                         </template>
                     </template>
                 </Table>
+
+                <NoResult v-if="!posts.meta.total">No posts found.</NoResult>
             </Panel>
 
             <div v-if="posts.meta.links.length > 3" class="mt-lg">
