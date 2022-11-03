@@ -5,7 +5,7 @@ namespace Inovector\Mixpost\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use Inovector\Mixpost\Model\Tag;
+use Inovector\Mixpost\Models\Tag;
 use Inovector\Mixpost\Rules\HexRule;
 
 class UpdateTag extends FormRequest

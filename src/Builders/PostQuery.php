@@ -9,7 +9,7 @@ use Inovector\Mixpost\Builders\Filters\PostKeyword;
 use Inovector\Mixpost\Builders\Filters\PostTags;
 use Inovector\Mixpost\Builders\Filters\PostStatus;
 use Inovector\Mixpost\Contracts\Query;
-use Inovector\Mixpost\Model\Post;
+use Inovector\Mixpost\Models\Post;
 
 class PostQuery implements Query
 {

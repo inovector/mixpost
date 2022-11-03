@@ -6,7 +6,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Inovector\Mixpost\Enums\PostStatus;
-use Inovector\Mixpost\Model\Post;
+use Inovector\Mixpost\Models\Post;
 
 class DuplicatePostController extends Controller
 {

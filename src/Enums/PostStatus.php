@@ -6,5 +6,7 @@ enum PostStatus: int
 {
     case DRAFT = 0;
     case SCHEDULED = 1;
-    case PUBLISHED = 2;
+    case PUBLISHING = 2;
+    case PUBLISHED = 3;
+    case ERROR = 4;
 }

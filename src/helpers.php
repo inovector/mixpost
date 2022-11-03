@@ -1,7 +1,9 @@
 <?php
 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Arr;
+use Inovector\Mixpost\Facades\Settings;
 
 if (!function_exists('mixpostAssets')) {
     function mixpostAssets(): HtmlString
@@ -47,5 +49,19 @@ if (!function_exists('removeHtmlTags')) {
         $text = trim(strip_tags($string));
 
         return html_entity_decode($text);
+    }
+}
+
+if (!function_exists('convertTimeToUTC')) {
+    function convertTimeToUTC(string|DateTimeInterface|null $time = null, DateTimeZone|string|null $tz = null): Carbon
+    {
+        return Carbon::parse($time, $tz ?: Settings::get('timezone'))->timezone('UTC');
+    }
+}
+
+if (!function_exists('timeFormat')) {
+    function timeFormat(): string
+    {
+        return Settings::get('time_format') == 24 ? 'H:i' : 'h:ia';
     }
 }

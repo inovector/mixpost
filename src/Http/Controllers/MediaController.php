@@ -6,8 +6,8 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Routing\Controller;
 use Inertia\Inertia;
 use Inertia\Response;
-use Inovector\Mixpost\Model\Media;
-use Inovector\Mixpost\Resources\MediaResource;
+use Inovector\Mixpost\Http\Resources\MediaResource;
+use Inovector\Mixpost\Models\Media;
 
 class MediaController extends Controller
 {

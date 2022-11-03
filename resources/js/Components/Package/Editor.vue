@@ -13,6 +13,10 @@ const props = defineProps({
     value: {
         required: true,
     },
+    editable: {
+        type: Boolean,
+        default: true,
+    },
     placeholder: {
         type: String,
         default: ''
@@ -27,6 +31,7 @@ const focused = ref(false);
 const {defaultExtensions} = useEditorHelper();
 
 const editor = useEditor({
+    editable: props.editable,
     content: props.value,
     extensions: [...defaultExtensions, ...[
         History,

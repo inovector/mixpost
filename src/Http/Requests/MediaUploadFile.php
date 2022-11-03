@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 use Inovector\Mixpost\MediaConversions\MediaImageResizeConversion;
 use Inovector\Mixpost\MediaConversions\MediaVideoThumbConversion;
-use Inovector\Mixpost\Model\Media;
+use Inovector\Mixpost\Models\Media;
 use Inovector\Mixpost\Support\MediaUploader;
 
 class MediaUploadFile extends FormRequest
@@ -32,6 +32,7 @@ class MediaUploadFile extends FormRequest
             ->path("mixpost/$now")
             ->conversions([
                 MediaImageResizeConversion::name('thumb')->width(430),
+                MediaImageResizeConversion::name('large')->width(2000),
                 MediaVideoThumbConversion::name('thumb')->atSecond(5)
             ])
             ->uploadAndInsert();

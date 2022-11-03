@@ -9,6 +9,7 @@ use Inovector\Mixpost\Http\Controllers\AddAccountController;
 use Inovector\Mixpost\Http\Controllers\SettingsController;
 use Inovector\Mixpost\Http\Controllers\PostsController;
 use Inovector\Mixpost\Http\Controllers\DuplicatePostController;
+use Inovector\Mixpost\Http\Controllers\SchedulePostController;
 use Inovector\Mixpost\Http\Controllers\DeletePostsController;
 use Inovector\Mixpost\Http\Controllers\TagsController;
 use Inovector\Mixpost\Http\Controllers\ScheduleController;
@@ -34,6 +35,7 @@ Route::middleware(['web', MixpostAuthMiddleware::class, HandleInertiaRequests::c
         Route::put('{post}', [PostsController::class, 'update'])->name('update');
         Route::delete('{post}', [PostsController::class, 'destroy'])->name('delete');
 
+        Route::post('schedule/{post}', SchedulePostController::class)->name('schedule');
         Route::post('duplicate/{post}', DuplicatePostController::class)->name('duplicate');
         Route::delete('/', DeletePostsController::class)->name('multipleDelete');
     });
@@ -52,7 +54,10 @@ Route::middleware(['web', MixpostAuthMiddleware::class, HandleInertiaRequests::c
         Route::delete('{tag}', [TagsController::class, 'destroy'])->name('delete');
     });
 
-    Route::get('settings', [SettingsController::class, 'index'])->name('settings');
+    Route::prefix('settings')->name('settings.')->group(function () {
+        Route::get('/', [SettingsController::class, 'index'])->name('index');
+        Route::put('/', [SettingsController::class, 'update'])->name('update');
+    });
 
     Route::get('callback/{provider}', CallbackSocialProviderController::class);
 });

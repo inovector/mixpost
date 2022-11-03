@@ -3,7 +3,6 @@
 namespace Inovector\Mixpost\Contracts;
 
 use Illuminate\Http\Request;
-use Inovector\Mixpost\Model\Post;
 
 interface SocialProvider
 {
@@ -21,7 +20,9 @@ interface SocialProvider
 
     public function getAccount();
 
-    public function post(Post $post);
+    public function publishPost($text, $media = []);
+
+    public function deletePost();
 
     public function getMetrics();
 }

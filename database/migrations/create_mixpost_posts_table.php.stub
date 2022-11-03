@@ -18,7 +18,7 @@ return new class extends Migration
             $table->tinyInteger('status')->default(0);
             $table->tinyInteger('schedule_status')->default(0);
             $table->dateTime('scheduled_at')->nullable();
-            $table->dateTime('delivered_at')->nullable();
+            $table->dateTime('published_at')->nullable();
             $table->timestamps();
         });
     }

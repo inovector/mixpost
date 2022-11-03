@@ -7,8 +7,8 @@ use Illuminate\Routing\Controller;
 use Inertia\Inertia;
 use Inertia\Response;
 use Inovector\Mixpost\Facades\SocialProviderManager;
-use Inovector\Mixpost\Model\Account;
-use Inovector\Mixpost\Resources\AccountResource;
+use Inovector\Mixpost\Http\Resources\AccountResource;
+use Inovector\Mixpost\Models\Account;
 
 class AccountsController extends Controller
 {

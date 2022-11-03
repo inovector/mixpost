@@ -3,6 +3,7 @@
 namespace Inovector\Mixpost;
 
 use Illuminate\Support\Facades\Gate;
+use Inovector\Mixpost\Commands\ClearSettingsCache;
 use Inovector\Mixpost\Commands\PublishAssetsCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -26,17 +27,26 @@ class MixpostServiceProvider extends PackageServiceProvider
                 'create_mixpost_posts_table',
                 'create_mixpost_post_accounts_table',
                 'create_mixpost_post_versions_table',
+                'create_mixpost_post_publication_logs_table',
                 'create_mixpost_tags_table',
                 'create_mixpost_tag_post_table',
                 'create_mixpost_media_table',
+                'create_mixpost_settings_table',
             ])
-            ->hasCommand(PublishAssetsCommand::class);
+            ->hasCommands([
+                PublishAssetsCommand::class,
+                ClearSettingsCache::class,
+            ]);
     }
 
     public function register()
     {
         $this->app->singleton('SocialProviderManager', function ($app) {
             return new SocialProviderManager($app);
+        });
+
+        $this->app->singleton('Settings', function ($app) {
+            return new Settings($app);
         });
 
         return parent::register();

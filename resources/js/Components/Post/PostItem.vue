@@ -82,7 +82,7 @@ const closePreview = () => {
                     }}
                 </div>
                 <div v-if="item.status === 'PUBLISHED'" class="text-sm mt-xs text-gray-500">{{
-                        item.delivered_at.human
+                        item.published_at.human
                     }}
                 </div>
             </div>

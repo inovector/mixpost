@@ -4,12 +4,13 @@ namespace Inovector\Mixpost\SocialProviders;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Inovector\Mixpost\Contracts\SocialProvider;
-use Inovector\Mixpost\Model\Post;
 
 class TwitterProvider implements SocialProvider
 {
     const DEFAULT_API_VERSION = '2';
+    const STANDARD_API_VERSION = '1.1';
 
     public TwitterOAuth $connection;
     protected Request $request;
@@ -71,9 +72,55 @@ class TwitterProvider implements SocialProvider
         ];
     }
 
-    public function post(Post $post)
+    public function publishPost($text, $media = [])
     {
-        // TODO: Implement post() method.
+        // Upload media
+        $this->connection->setApiVersion(self::STANDARD_API_VERSION);
+
+        $uploadedMediaIds = [];
+        $uploadMediaErrors = [];
+
+        foreach ($media as $item) {
+            $parameters = [
+                'media' => $item['path'],
+            ];
+
+            $uploadResponse = $this->connection->upload('media/upload', $parameters);
+
+            if (!$uploadResponse) {
+                $uploadMediaErrors[$item['id']] = $uploadResponse;
+                continue;
+            }
+
+            $uploadedMediaIds[] = $uploadResponse->media_id_string;
+        }
+
+        // Publish post with media
+        $this->connection->setApiVersion(self::DEFAULT_API_VERSION);
+
+        $postParameters = ['text' => $text];
+
+        if (!empty($uploadedMediaIds)) {
+            $postParameters['media'] = [
+                'media_ids' => $uploadedMediaIds
+            ];
+        }
+
+        $postResponse = $this->connection->post('tweets', $postParameters, true);
+
+        $errors = $postResponse->errors ?? [];
+
+        return [
+            'errors' => Arr::map($errors, function ($error) {
+                return $error->message;
+            }),
+            'upload_media_error' => $uploadMediaErrors,
+        ];
+    }
+
+    public function deletePost()
+    {
+        // TODO: Implement deletePost() method.
     }
 
     public function getMetrics()

@@ -5,7 +5,7 @@ namespace Inovector\Mixpost\Http\Controllers;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Inovector\Mixpost\Model\Post;
+use Inovector\Mixpost\Models\Post;
 
 class DeletePostsController extends Controller
 {

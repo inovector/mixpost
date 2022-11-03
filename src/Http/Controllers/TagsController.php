@@ -6,7 +6,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Inovector\Mixpost\Http\Requests\StoreTag;
 use Inovector\Mixpost\Http\Requests\UpdateTag;
-use Inovector\Mixpost\Model\Tag;
+use Inovector\Mixpost\Models\Tag;
 
 class TagsController extends Controller
 {

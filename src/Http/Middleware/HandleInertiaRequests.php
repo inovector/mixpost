@@ -4,6 +4,7 @@ namespace Inovector\Mixpost\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Inovector\Mixpost\Facades\Settings;
 use Tightenco\Ziggy\Ziggy;
 
 class HandleInertiaRequests extends Middleware
@@ -57,7 +58,12 @@ class HandleInertiaRequests extends Middleware
             },
             'mixpost' => [
                 'social_provider_options' => config('mixpost.social_provider_options'),
-                'mime_types' => config('mixpost.mime_types')
+                'mime_types' => config('mixpost.mime_types'),
+                'settings' => [
+                    'timezone' => Settings::get('timezone'),
+                    'time_format' => Settings::get('time_format'),
+                    'week_starts_on' => Settings::get('week_starts_on'),
+                ]
             ]
         ]);
     }

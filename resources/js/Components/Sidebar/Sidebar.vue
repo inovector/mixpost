@@ -77,7 +77,7 @@ import CogIcon from "@/Icons/Cog.vue"
                     </template>
                     Accounts
                 </MenuItem>
-                <MenuItem :url="route('mixpost.settings')" :active="$page.component === 'Settings'">
+                <MenuItem :url="route('mixpost.settings.index')" :active="$page.component === 'Settings'">
                     <template #icon>
                         <CogIcon/>
                     </template>

@@ -4,6 +4,7 @@ import {Head, useForm} from '@inertiajs/inertia-vue3';
 import {Inertia} from "@inertiajs/inertia";
 import {cloneDeep, debounce} from "lodash";
 import useMounted from "@/Composables/useMounted";
+import usePost from "@/Composables/usePost";
 import usePostVersions from "@/Composables/usePostVersions";
 import PageHeader from "@/Components/DataDisplay/PageHeader.vue";
 import PostContext from "@/Context/PostContext.vue";
@@ -15,6 +16,7 @@ import SecondaryButton from "@/Components/Button/SecondaryButton.vue"
 import PostStatus from "@/Components/Post/PostStatus.vue";
 import EyeIcon from "@/Icons/Eye.vue"
 import EyeOffIcon from "@/Icons/EyeOff.vue"
+import Alert from "@/Components/Util/Alert.vue";
 
 const props = defineProps(['post']);
 
@@ -25,6 +27,7 @@ const showPreview = ref(false);
 const isLoading = ref(false);
 const hasError = ref(false);
 
+const {isReadOnly} = usePost();
 const {versionObject} = usePostVersions();
 
 const form = useForm({
@@ -100,7 +103,9 @@ if (props.post) {
 }
 
 watch(form, debounce(() => {
-    save();
+    if (!isReadOnly.value) {
+        save();
+    }
 }, 300))
 </script>
 <template>
@@ -125,6 +130,7 @@ watch(form, debounce(() => {
                         </PageHeader>
 
                         <div class="w-full max-w-7xl mx-auto row-px">
+                            <Alert v-if="isReadOnly" :closeable="false" class="mb-lg">Posts in history cannot be edited.</Alert>
                             <PostForm :form="form" :accounts="$page.props.accounts"/>
                         </div>
                     </div>
@@ -153,7 +159,7 @@ watch(form, debounce(() => {
                     </div>
                 </div>
             </div>
-            <PostActions :form="form" @submit="save">
+            <PostActions :form="form">
                 <PostTags :items="form.tags" @update="form.tags = $event"/>
             </PostActions>
         </div>

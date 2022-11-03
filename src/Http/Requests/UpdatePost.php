@@ -3,7 +3,7 @@
 namespace Inovector\Mixpost\Http\Requests;
 
 use Illuminate\Support\Facades\DB;
-use Inovector\Mixpost\Model\Post;
+use Inovector\Mixpost\Models\Post;
 
 class UpdatePost extends PostFormRequest
 {
@@ -18,8 +18,10 @@ class UpdatePost extends PostFormRequest
             $record->versions()->delete();
             $record->versions()->createMany($this->input('versions'));
 
+            $scheduledAt = $this->input('date') && $this->input('time') ? "{$this->input('date')} {$this->input('time')}" : null;
+
             return $record->update([
-                'scheduled_at' => $this->input('date') && $this->input('time') ? "{$this->input('date')} {$this->input('time')}" : null
+                'scheduled_at' => $scheduledAt ? convertTimeToUTC($scheduledAt) : null
             ]);
         });
     }

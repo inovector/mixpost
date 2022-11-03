@@ -49,9 +49,9 @@ return [
     ],
 
     /*
-      * The path where to store temporary files while performing image conversions.
-      * If set to null, storage_path('mixpost-media/temp') will be used.
-      */
+     * The path where to store temporary files while performing image conversions.
+     * If set to null, storage_path('mixpost-media/temp') will be used.
+     */
     'temporary_directory_path' => null,
 
     /*
@@ -59,4 +59,9 @@ return [
      */
     'ffmpeg_path' => env('FFMPEG_PATH', '/usr/bin/ffmpeg'),
     'ffprobe_path' => env('FFPROBE_PATH', '/usr/bin/ffprobe'),
+
+    /**
+     * Define cache prefix
+     */
+    'cache_prefix' => env('MIXPOST_CACHE_PREFIX', 'mixpost')
 ];

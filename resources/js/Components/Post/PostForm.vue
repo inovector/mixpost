@@ -1,6 +1,7 @@
 <script setup>
 import {computed, inject, onMounted, ref, watch} from "vue";
 import {capitalize, clone, cloneDeep} from "lodash";
+import usePost from "@/Composables/usePost";
 import usePostVersions from "@/Composables/usePostVersions";
 import useEditor from "@/Composables/useEditor";
 import Editor from "@/Components/Package/Editor.vue";
@@ -25,6 +26,8 @@ const props = defineProps({
         type: Array
     },
 });
+
+const {isReadOnly} = usePost();
 
 /**
  * Account
@@ -176,6 +179,7 @@ const {insertEmoji, focusEditor} = useEditor();
         <template v-for="(item, index) in content" :key="index">
             <Editor id="postEditor"
                     :value="item.body"
+                    :editable="!isReadOnly"
                     @update="updateContent(index, 'body', $event)"
                     placeholder="Type here something interesting for your audience...">
                 <template #default="props">

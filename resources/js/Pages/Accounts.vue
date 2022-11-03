@@ -30,7 +30,7 @@ const accountIsDeleting = ref(false);
 const updateAccount = (accountId) => {
     Inertia.put(route('mixpost.accounts.update', {account: accountId}), {}, {
         onSuccess() {
-            notify('success', 'Account has been refreshed');
+            notify('success', 'The account has been refreshed');
         }
     });
 }

@@ -58,3 +58,41 @@ export function lightOrDark(color) {
 export function decomposeString(string) {
     return string.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
+
+export function changeTimeZone(date, timeZone) {
+    if (typeof date === 'string') {
+        return new Date(
+            new Date(date).toLocaleString('en-US', {
+                timeZone,
+            }),
+        );
+    }
+
+    return new Date(
+        date.toLocaleString('en-US', {
+            timeZone,
+        }),
+    );
+}
+
+export function isTimePast(date, currentTimezone = null) {
+    const currentTime = currentTimezone ? changeTimeZone(new Date(), currentTimezone) : new Date();
+
+    return date.getTime() < currentTime.getTime()
+}
+
+export function convertTime12to24(time12h) {
+    const [time, modifier] = time12h.split(' ');
+
+    let [hours, minutes] = time.split(':');
+
+    if (hours === '12') {
+        hours = '00';
+    }
+
+    if (modifier === 'PM') {
+        hours = parseInt(hours, 10) + 12;
+    }
+
+    return `${hours}:${minutes}`;
+}

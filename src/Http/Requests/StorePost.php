@@ -4,16 +4,18 @@ namespace Inovector\Mixpost\Http\Requests;
 
 use Illuminate\Support\Facades\DB;
 use Inovector\Mixpost\Enums\PostStatus;
-use Inovector\Mixpost\Model\Post;
+use Inovector\Mixpost\Models\Post;
 
 class StorePost extends PostFormRequest
 {
     public function handle()
     {
         return DB::transaction(function () {
+            $scheduledAt = $this->input('date') && $this->input('time') ? "{$this->input('date')} {$this->input('time')}" : null;
+
             $record = Post::create([
                 'status' => PostStatus::DRAFT,
-                'scheduled_at' => $this->input('date') && $this->input('time') ? "{$this->input('date')} {$this->input('time')}" : null
+                'scheduled_at' => $scheduledAt ? convertTimeToUTC($scheduledAt) : null
             ]);
 
             $record->accounts()->attach($this->input('accounts', []));

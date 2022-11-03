@@ -4,7 +4,7 @@ namespace Inovector\Mixpost\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
-use Inovector\Mixpost\Model\Tag;
+use Inovector\Mixpost\Models\Tag;
 use Inovector\Mixpost\Rules\HexRule;
 
 class StoreTag extends FormRequest

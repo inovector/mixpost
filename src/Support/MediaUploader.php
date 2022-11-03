@@ -5,7 +5,7 @@ namespace Inovector\Mixpost\Support;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Inovector\Mixpost\Model\Media;
+use Inovector\Mixpost\Models\Media;
 use Inovector\Mixpost\Contracts\MediaConversion;
 
 class MediaUploader
