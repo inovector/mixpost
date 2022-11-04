@@ -1,6 +1,9 @@
 <?php
 
 return [
+    /*
+     * Credentials for third-party services
+     */
     'credentials' => [
         'twitter' => [
             'client_id' => env('MIXPOST_TWITTER_CLIENT_ID'),
@@ -9,6 +12,11 @@ return [
         ],
     ],
 
+    /*
+     * Setting options for each social network
+     * We recommend leaving these options unchanged
+     * You only change them when the API policy of the social networks changes, and you know what you are doing.
+     */
     'social_provider_options' => [
         'twitter' => [
             'simultaneous_posting_on_multiple_accounts' => false,
@@ -20,6 +28,9 @@ return [
         ]
     ],
 
+    /**
+     * Mixpost will redirect unauthorized users to the route specified here
+     */
     'redirect_unauthorized_users_to_route' => 'login',
 
     /*
