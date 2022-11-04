@@ -6,7 +6,7 @@ import Masonry from "@/Components/Layout/Masonry.vue";
 import MediaFile from "@/Components/Media/MediaFile.vue";
 import MediaSelectable from "@/Components/Media/MediaSelectable.vue";
 import Preloader from "@/Components/Util/Preloader.vue"
-import PhotoIcon from "@/icons/Photo.vue"
+import PhotoIcon from "@/Icons/Photo.vue"
 
 const props = defineProps({
     maxSelection: {
