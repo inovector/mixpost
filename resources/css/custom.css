@@ -1,0 +1,19 @@
+@layer components {
+    .aside {
+        @apply w-[240px];
+    }
+
+    .main {
+        width: calc(theme('width.full') - 240px);
+    }
+}
+
+@layer utilities {
+    .row-px {
+        @apply px-3 sm:px-6 lg:px-8;
+    }
+
+    .row-py {
+        @apply py-10;
+    }
+}

@@ -1,6 +1,6 @@
 <?php
 
-namespace Lao9s\Mixpost\Database\Factories;
+namespace Inovector\Mixpost\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 

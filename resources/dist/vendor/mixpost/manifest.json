@@ -1,66 +1,148 @@
 {
+  "resources/img/fb-like.svg": {
+    "file": "assets/fb-like.59c2ede2.svg",
+    "src": "resources/img/fb-like.svg"
+  },
+  "resources/img/fb-wow.svg": {
+    "file": "assets/fb-wow.ca50712c.svg",
+    "src": "resources/img/fb-wow.svg"
+  },
+  "resources/img/fb-icons.png": {
+    "file": "assets/fb-icons.855a0fcf.png",
+    "src": "resources/img/fb-icons.png"
+  },
   "resources/js/app.js": {
-    "file": "assets/app.2df5ff5b.js",
+    "file": "assets/app.16a2fdee.js",
     "src": "resources/js/app.js",
     "isEntry": true,
     "dynamicImports": [
       "resources/js/Pages/Accounts.vue",
       "resources/js/Pages/Dashboard.vue",
       "resources/js/Pages/Media.vue",
-      "resources/js/Pages/Posts/Create.vue",
+      "resources/js/Pages/Posts/CreateEdit.vue",
       "resources/js/Pages/Posts/Index.vue",
       "resources/js/Pages/Schedule.vue",
       "resources/js/Pages/Settings.vue"
     ],
     "css": [
-      "assets/app.e45f36c0.css"
+      "assets/app.59c8f6ed.css"
     ]
   },
   "resources/js/Pages/Accounts.vue": {
-    "file": "assets/Accounts.0542446c.js",
+    "file": "assets/Accounts.8e66ca8a.js",
     "src": "resources/js/Pages/Accounts.vue",
     "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_PageHeader.b575d820.js",
+      "_CircleLoading.50f200e8.js",
+      "_Trash.6340654e.js",
+      "_EllipsisVertical.e28b0d1c.js"
+    ]
+  },
+  "_PageHeader.b575d820.js": {
+    "file": "assets/PageHeader.b575d820.js",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "_CircleLoading.50f200e8.js": {
+    "file": "assets/CircleLoading.50f200e8.js",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "_Trash.6340654e.js": {
+    "file": "assets/Trash.6340654e.js",
+    "imports": [
+      "resources/js/app.js",
+      "_CircleLoading.50f200e8.js"
+    ],
+    "css": [
+      "assets/Trash.b54678c7.css"
+    ]
+  },
+  "_EllipsisVertical.e28b0d1c.js": {
+    "file": "assets/EllipsisVertical.e28b0d1c.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
   "resources/js/Pages/Dashboard.vue": {
-    "file": "assets/Dashboard.0b0d9e8c.js",
+    "file": "assets/Dashboard.6f74dfd5.js",
     "src": "resources/js/Pages/Dashboard.vue",
     "isDynamicEntry": true,
     "imports": [
-      "resources/js/app.js"
+      "resources/js/app.js",
+      "_PrimaryButton.ecbb9f97.js",
+      "_CircleLoading.50f200e8.js"
+    ]
+  },
+  "_PrimaryButton.ecbb9f97.js": {
+    "file": "assets/PrimaryButton.ecbb9f97.js",
+    "imports": [
+      "resources/js/app.js",
+      "_CircleLoading.50f200e8.js"
     ]
   },
   "resources/js/Pages/Media.vue": {
-    "file": "assets/Media.00fd1264.js",
+    "file": "assets/Media.233703b2.js",
     "src": "resources/js/Pages/Media.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "resources/js/Pages/Posts/Create.vue": {
-    "file": "assets/Create.aaeca89a.js",
-    "src": "resources/js/Pages/Posts/Create.vue",
+  "resources/js/Pages/Posts/CreateEdit.vue": {
+    "file": "assets/CreateEdit.e5a025a7.js",
+    "src": "resources/js/Pages/Posts/CreateEdit.vue",
     "isDynamicEntry": true,
     "imports": [
-      "resources/js/app.js"
+      "resources/js/app.js",
+      "_PostStatus.874bf582.js",
+      "_PageHeader.b575d820.js",
+      "_Trash.6340654e.js",
+      "_CircleLoading.50f200e8.js",
+      "_PrimaryButton.ecbb9f97.js"
     ],
     "css": [
-      "assets/Create.7898d9b7.css"
+      "assets/CreateEdit.8483be18.css"
+    ]
+  },
+  "_PostStatus.874bf582.js": {
+    "file": "assets/PostStatus.874bf582.js",
+    "imports": [
+      "resources/js/app.js",
+      "_Trash.6340654e.js",
+      "_PageHeader.b575d820.js",
+      "_PrimaryButton.ecbb9f97.js",
+      "_CircleLoading.50f200e8.js"
+    ],
+    "css": [
+      "assets/PostStatus.eda7d8b2.css"
+    ],
+    "assets": [
+      "assets/fb-like.59c2ede2.svg",
+      "assets/fb-wow.ca50712c.svg",
+      "assets/fb-icons.855a0fcf.png"
     ]
   },
   "resources/js/Pages/Posts/Index.vue": {
-    "file": "assets/Index.59f85cc5.js",
+    "file": "assets/Index.941cbd29.js",
     "src": "resources/js/Pages/Posts/Index.vue",
     "isDynamicEntry": true,
     "imports": [
-      "resources/js/app.js"
+      "resources/js/app.js",
+      "_PageHeader.b575d820.js",
+      "_PostStatus.874bf582.js",
+      "_PrimaryButton.ecbb9f97.js",
+      "_Trash.6340654e.js",
+      "_CircleLoading.50f200e8.js",
+      "_EllipsisVertical.e28b0d1c.js"
     ]
   },
   "resources/js/Pages/Schedule.vue": {
-    "file": "assets/Schedule.52825b70.js",
+    "file": "assets/Schedule.397a67e3.js",
     "src": "resources/js/Pages/Schedule.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -68,19 +150,30 @@
     ]
   },
   "resources/js/Pages/Settings.vue": {
-    "file": "assets/Settings.d3ff4ff6.js",
+    "file": "assets/Settings.12760157.js",
     "src": "resources/js/Pages/Settings.vue",
     "isDynamicEntry": true,
     "imports": [
-      "resources/js/app.js"
+      "resources/js/app.js",
+      "_PageHeader.b575d820.js",
+      "_CircleLoading.50f200e8.js",
+      "_PrimaryButton.ecbb9f97.js"
     ]
   },
-  "resources/js/Pages/Posts/Create.css": {
-    "file": "assets/Create.7898d9b7.css",
-    "src": "resources/js/Pages/Posts/Create.css"
+  "Trash.css": {
+    "file": "assets/Trash.b54678c7.css",
+    "src": "Trash.css"
+  },
+  "PostStatus.css": {
+    "file": "assets/PostStatus.eda7d8b2.css",
+    "src": "PostStatus.css"
   },
   "resources/js/app.css": {
-    "file": "assets/app.e45f36c0.css",
+    "file": "assets/app.59c8f6ed.css",
     "src": "resources/js/app.css"
+  },
+  "resources/js/Pages/Posts/CreateEdit.css": {
+    "file": "assets/CreateEdit.8483be18.css",
+    "src": "resources/js/Pages/Posts/CreateEdit.css"
   }
 }

@@ -1,9 +1,10 @@
 <?php
 
-namespace Lao9s\Mixpost\Http\Middleware;
+namespace Inovector\Mixpost\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Inovector\Mixpost\Facades\Settings;
 use Tightenco\Ziggy\Ziggy;
 
 class HandleInertiaRequests extends Middleware
@@ -23,6 +24,10 @@ class HandleInertiaRequests extends Middleware
      */
     public function version(Request $request)
     {
+        if (file_exists($manifest = public_path('vendor/mixpost/manifest.json'))) {
+            return md5_file($manifest);
+        }
+
         return parent::version($request);
     }
 
@@ -43,8 +48,22 @@ class HandleInertiaRequests extends Middleware
                     'location' => $request->url(),
                 ]);
             },
+            'flash' => function () use ($request) {
+                return [
+                    'success' => $request->session()->get('success'),
+                    'warning' => $request->session()->get('warning'),
+                    'error' => $request->session()->get('error'),
+                    'info' => $request->session()->get('info'),
+                ];
+            },
             'mixpost' => [
-                'config' => []
+                'social_provider_options' => config('mixpost.social_provider_options'),
+                'mime_types' => config('mixpost.mime_types'),
+                'settings' => [
+                    'timezone' => Settings::get('timezone'),
+                    'time_format' => Settings::get('time_format'),
+                    'week_starts_on' => Settings::get('week_starts_on'),
+                ]
             ]
         ]);
     }
