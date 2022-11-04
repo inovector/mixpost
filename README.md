@@ -11,11 +11,11 @@
 
 ## Introduction
 
-[Mixpost](https://mixpost.app/) it's the coolest Self-hosted social media management software. This package is the lite version of Mixpost PRO, and by integrating it into your Laravel project, you can schedule and organize your social content (Twitter and Facebook support only) all in one place without limits and monthly subscriptions.
+Mixpost it's the coolest Self-hosted social media management software. This package is the lite version of Mixpost PRO, and by integrating it into your Laravel project, you can schedule and organize your social content (Twitter and Facebook support only) all in one place without limits and monthly subscriptions.
 
 It's the perfect social media management solution for bloggers, crafters and entrepreneurs.
 
-**Mixpost is under development and will be released soon. Sign up to be notified when it's released [https://mixpost.app/](https://mixpost.app/)**
+**Mixpost is under development and will be released soon. Sign up to be notified when it's released [mixpost.app](https://mixpost.app/)**
 
 Join our community:
 - [Discord](https://discord.gg/s2ytAnwm)
