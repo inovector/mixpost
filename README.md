@@ -18,7 +18,7 @@ It's the perfect social media management solution for bloggers, crafters and ent
 **Mixpost is under development and will be released soon. Sign up to be notified when it's released [mixpost.app](https://mixpost.app/)**
 
 Join our community:
-- [Discord](https://discord.gg/s2ytAnwm)
+- [Discord](https://discord.gg/5YdseZnK2Z)
 - [Facebook Private Group](https://www.facebook.com/groups/inovector)
 
 [<img src="./art/cover.png" />](https://mixpost.app)
