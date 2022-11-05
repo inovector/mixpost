@@ -2,9 +2,11 @@
 
 namespace Inovector\Mixpost\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Inovector\Mixpost\Enums\PostScheduleStatus;
 use Inovector\Mixpost\Enums\PostStatus;
 
 class Post extends Model
@@ -19,6 +21,7 @@ class Post extends Model
 
     protected $casts = [
         'status' => PostStatus::class,
+        'schedule_status' => PostScheduleStatus::class,
         'scheduled_at' => 'datetime',
         'published_at' => 'datetime',
     ];
@@ -43,12 +46,13 @@ class Post extends Model
 
     public function canSchedule(): bool
     {
-        return $this->status->name === PostStatus::DRAFT->name && $this->scheduled_at !== null;
+        // TODO: check if original content is not empty
+        return $this->scheduled_at && !$this->scheduled_at->isPast() && $this->accounts()->exists();
     }
 
-    public function isPublishing(): bool
+    public function isScheduleProcessing(): bool
     {
-        return $this->status->name === PostStatus::PUBLISHING->name;
+        return $this->schedule_status->name === PostScheduleStatus::PROCESSING->name;
     }
 
     public function isPublished(): bool
@@ -56,15 +60,20 @@ class Post extends Model
         return $this->status->name === PostStatus::PUBLISHED->name;
     }
 
-    public function setScheduled()
+    public function setScheduled(Carbon|null $date = null)
     {
         $this->status = PostStatus::SCHEDULED->value;
+
+        if ($date) {
+            $this->scheduled_at = $date;
+        }
+
         $this->save();
     }
 
-    public function setPublishing()
+    public function setScheduleProcessing()
     {
-        $this->status = PostStatus::PUBLISHING->value;
+        $this->schedule_status = PostScheduleStatus::PROCESSING;
         $this->save();
     }
 
@@ -72,12 +81,14 @@ class Post extends Model
     {
         $this->status = PostStatus::PUBLISHED->value;
         $this->published_at = now();
+        $this->schedule_status = PostScheduleStatus::PROCESSED;
         $this->save();
     }
 
-    public function setError()
+    public function setFailed()
     {
-        $this->status = PostStatus::ERROR->value;
+        $this->status = PostStatus::FAILED->value;
+        $this->schedule_status = PostScheduleStatus::PROCESSED;
         $this->save();
     }
 }

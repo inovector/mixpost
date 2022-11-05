@@ -109,6 +109,7 @@ const deletePosts = () => {
                 <Tab @click="filter.status = 'draft'" :active="filter.status === 'draft'">Drafts</Tab>
                 <Tab @click="filter.status = 'scheduled'" :active="filter.status === 'scheduled'">Scheduled</Tab>
                 <Tab @click="filter.status = 'published'" :active="filter.status === 'published'">Published</Tab>
+                <Tab @click="filter.status = 'failed'" :active="filter.status === 'failed'" class="text-red-500">Failed</Tab>
             </Tabs>
         </div>
 

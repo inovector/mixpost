@@ -1,7 +1,6 @@
 <script setup>
 import {computed, ref} from "vue";
 import {format, parseISO} from "date-fns";
-import {usePage} from "@inertiajs/inertia-vue3";
 import {Inertia} from "@inertiajs/inertia";
 import usePost from "@/Composables/usePost";
 import useNotifications from "@/Composables/useNotifications";
@@ -51,10 +50,16 @@ const clearScheduleTime = () => {
 const {notify} = useNotifications();
 const isLoading = ref(false);
 
-const schedule = () => {
+const canSchedule = computed(() => {
+    return (postId.value && props.form.accounts.length) || !isReadOnly.value;
+});
+
+const schedule = (postNow = false) => {
     isLoading.value = true;
 
-    axios.post(route('mixpost.posts.schedule', {post: postId.value})).then((response) => {
+    axios.post(route('mixpost.posts.schedule', {post: postId.value}), {
+        postNow
+    }).then((response) => {
         notify('success', response.data);
 
         Inertia.visit(route('mixpost.posts.index'));
@@ -95,15 +100,16 @@ const schedule = () => {
             </div>
 
             <div v-if="!isReadOnly" class="flex items-center" role="group">
-                <PrimaryButton @click="schedule" size="md"
-                               :disabled="!postId || isLoading"
+                <PrimaryButton @click="schedule(!scheduleTime)"
+                               :disabled="!canSchedule || isLoading"
                                :isLoading="isLoading"
+                               size="md"
                                :class="{'rounded-r-none border-r-indigo-400': scheduleTime}">
                     <PaperAirplaneIcon class="mr-xs"/>
                     {{ scheduleTime ? 'Schedule' : 'Post now' }}
                 </PrimaryButton>
 
-                <PrimaryButton v-if="scheduleTime" size="md" :disabled="!postId"
+                <PrimaryButton v-if="scheduleTime" size="md"
                                class="rounded-l-none border-l-0 !px-2">
                     <ChevronDownIcon/>
                 </PrimaryButton>
