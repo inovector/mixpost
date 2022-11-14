@@ -10,17 +10,17 @@ const usePost = () => {
         return post.value ? post.value.id : null;
     });
 
-    const isReadOnly = computed(() => {
+    const isInHistory = computed(() => {
         if (!post.value) {
             return false;
         }
 
-        return ['PUBLISHED', 'PUBLISHING', 'ERROR'].includes(post.value.status)
+        return ['PUBLISHED', 'FAILED'].includes(post.value.status)
     })
 
     return {
         postId,
-        isReadOnly: isReadOnly
+        isInHistory: isInHistory
     }
 }
 

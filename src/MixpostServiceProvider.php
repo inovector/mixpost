@@ -5,6 +5,7 @@ namespace Inovector\Mixpost;
 use Illuminate\Support\Facades\Gate;
 use Inovector\Mixpost\Commands\ClearSettingsCache;
 use Inovector\Mixpost\Commands\PublishAssetsCommand;
+use Inovector\Mixpost\Commands\RunScheduledPosts;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -36,6 +37,7 @@ class MixpostServiceProvider extends PackageServiceProvider
             ->hasCommands([
                 PublishAssetsCommand::class,
                 ClearSettingsCache::class,
+                RunScheduledPosts::class
             ]);
     }
 

@@ -24,7 +24,7 @@ const props = defineProps({
     }
 });
 
-const {postId, isReadOnly} = usePost();
+const {postId, isInHistory} = usePost();
 
 const emit = defineEmits(['submit'])
 
@@ -51,7 +51,7 @@ const {notify} = useNotifications();
 const isLoading = ref(false);
 
 const canSchedule = computed(() => {
-    return (postId.value && props.form.accounts.length) || !isReadOnly.value;
+    return (postId.value && props.form.accounts.length) || !isInHistory.value;
 });
 
 const schedule = (postNow = false) => {
@@ -99,7 +99,7 @@ const schedule = (postNow = false) => {
                           @update="form.date = $event.date; form.time = $event.time;"/>
             </div>
 
-            <div v-if="!isReadOnly" class="flex items-center" role="group">
+            <div v-if="!isInHistory" class="flex items-center" role="group">
                 <PrimaryButton @click="schedule(!scheduleTime)"
                                :disabled="!canSchedule || isLoading"
                                :isLoading="isLoading"

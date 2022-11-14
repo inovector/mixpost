@@ -27,12 +27,16 @@ const props = defineProps({
     },
 });
 
-const {isReadOnly} = usePost();
+const {isInHistory} = usePost();
 
 /**
  * Account
  */
 const selectAccount = (account) => {
+    if (isInHistory.value) {
+        return;
+    }
+
     if (props.form.accounts.includes(account)) {
         props.form.accounts = props.form.accounts.filter(item => item !== account);
         return;
@@ -179,7 +183,7 @@ const {insertEmoji, focusEditor} = useEditor();
         <template v-for="(item, index) in content" :key="index">
             <Editor id="postEditor"
                     :value="item.body"
-                    :editable="!isReadOnly"
+                    :editable="!isInHistory"
                     @update="updateContent(index, 'body', $event)"
                     placeholder="Type here something interesting for your audience...">
                 <template #default="props">

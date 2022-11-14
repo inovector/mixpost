@@ -1,10 +1,10 @@
 <script setup>
 import {computed, inject} from "vue";
-import {get} from "lodash"
 import usePostVersions from "@/Composables/usePostVersions";
 import PostPreviewTwitter from "@/Components/Post/PostPreviewTwitter.vue"
 import PostPreviewFacebook from "@/Components/Post/PostPreviewFacebook.vue"
 import Panel from "@/Components/Surface/Panel.vue";
+import Alert from "@/Components/Util/Alert.vue";
 
 const postContext = inject('postContext')
 
@@ -49,6 +49,7 @@ const previews = computed(() => {
 <template>
     <template v-if="selectedAccounts.length">
         <template v-for="preview in previews" :key="preview.id">
+            <Alert v-if="preview.account.errors" variant="error" :closeable="false" class="mb-1">{{ preview.account.errors.join(',') }}</Alert>
             <div class="mb-lg last:mb-0">
                 <component :is="preview.providerComponent"
                            :name="preview.account.name"

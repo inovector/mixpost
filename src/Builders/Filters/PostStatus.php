@@ -14,6 +14,7 @@ class PostStatus implements Filter
             'draft' => PostStatusEnum::DRAFT->value,
             'scheduled' => PostStatusEnum::SCHEDULED->value,
             'published' => PostStatusEnum::PUBLISHED->value,
+            'failed' => PostStatusEnum::FAILED->value,
             default => null
         };
 

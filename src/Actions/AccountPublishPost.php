@@ -3,11 +3,12 @@
 namespace Inovector\Mixpost\Actions;
 
 use Illuminate\Database\Eloquent\Collection;
-use Inovector\Mixpost\Exceptions\MissingAccountContent;
+use Illuminate\Support\Facades\Log;
 use Inovector\Mixpost\Facades\SocialProviderManager;
 use Inovector\Mixpost\Models\Account;
 use Inovector\Mixpost\Models\Media;
 use Inovector\Mixpost\Models\Post;
+use Exception;
 
 class AccountPublishPost
 {
@@ -16,11 +17,9 @@ class AccountPublishPost
         $content = $this->getContentVersion($account, $post->versions);
 
         if (empty($content)) {
-            $errors = "This account doesn't have content!";
+            $error = "This account doesn't have content!";
 
-            $this->setError($post, $account, $errors);
-
-            throw new MissingAccountContent($errors);
+            $this->setError($post, $account, [$error]);
         }
 
         $body = $this->cleanBody($content[0]['body']);
@@ -29,13 +28,28 @@ class AccountPublishPost
         $provider = SocialProviderManager::connect($account->provider);
         $provider->setCredentials($account->credentials);
 
-        $response = $provider->publishPost($body, $media);
+        try {
+            $response = $provider->publishPost($body, $media);
+            $errors = $response['errors'];
 
-        if (!empty($response['errors'])) {
-            $this->setError($post, $account, $response['errors']);
+        } catch (Exception $exception) {
+            Log::error("Publishing error: {$exception->getMessage()}",
+                array_merge([
+                    'post_id' => $post->id,
+                    'account_id' => $account->id,
+                    'account_name' => $account->name,
+                    'account_provider' => $account->provider
+                ])
+            );
+
+            $errors = ['Unexpected internal error.'];
+        }
+
+        if (!empty($errors)) {
+            $this->setError($post, $account, $errors);
 
             return [
-                'errors' => $response['errors']
+                'errors' => $errors
             ];
         }
 

@@ -165,6 +165,31 @@ Default folder path: `/usr/bin/`. If FFmpeg is there, there is no need to change
 'ffprobe_path' => env('FFPROBE_PATH', '/usr/bin/ffprobe'),
 ```
 
+## Queue configuration
+
+Set `QUEUE_CONNECTION` in your .env file to your preferred queue connection. We recommend `redis` connection.
+
+Don't forget running the queue worker `php artisan queue:work`. In production, you need a way to keep your `queue:work` processes running. 
+
+For this reason, you need to configure a process monitor that can detect when your `queue:work` processes exit and automatically restart them. Supervisor is a process monitor, follow [their installation instructions](https://laravel.com/docs/9.x/queues#supervisor-configuration).
+
+## Schedule the commands
+
+In the console kernel (`app/Console/Kernel.php`), you should schedule this command.
+
+```php
+protected function schedule(Schedule $schedule)
+{
+    // ...
+    $schedule->command('mixpost:run-scheduled-posts')->everyMinute();
+}
+```
+
+Don't forget to add a cron that running the scheduler:
+
+`* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1`
+
+
 ## Add authorization to Mixpost UI
 
 Mixpost does not come with any user management, we assume that you already provide this in your own app. You can use a gate check to determine who can access Mixpost.

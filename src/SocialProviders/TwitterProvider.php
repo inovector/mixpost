@@ -108,12 +108,16 @@ class TwitterProvider implements SocialProvider
 
         $postResponse = $this->connection->post('tweets', $postParameters, true);
 
-        $errors = $postResponse->errors ?? [];
+        $errors = Arr::map($postResponse->errors ?? [], function ($error) {
+            return $error->message;
+        });
+
+        if ($postResponse->status === 403) {
+            $errors[] = $postResponse->detail;
+        }
 
         return [
-            'errors' => Arr::map($errors, function ($error) {
-                return $error->message;
-            }),
+            'errors' => $errors,
             'upload_media_error' => $uploadMediaErrors,
         ];
     }

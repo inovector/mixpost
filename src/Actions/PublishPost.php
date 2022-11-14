@@ -10,6 +10,10 @@ class PublishPost
 {
     public function __invoke(Post $post): void
     {
+        if ($post->isScheduleProcessing()) {
+            return;
+        }
+
         $post->setScheduleProcessing();
 
         $jobs = $post->accounts->map(function ($account) use ($post) {
@@ -19,6 +23,7 @@ class PublishPost
         Bus::batch($jobs)
             ->allowFailures()
             ->finally(function () use ($post) {
+                logger('final');
                 $hasErrors = $post->accounts()->wherePivot('errors', '!=', null)->exists();
 
                 if ($hasErrors) {

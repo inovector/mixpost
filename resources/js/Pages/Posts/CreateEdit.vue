@@ -27,7 +27,7 @@ const showPreview = ref(false);
 const isLoading = ref(false);
 const hasError = ref(false);
 
-const {isReadOnly} = usePost();
+const {isInHistory} = usePost();
 const {versionObject} = usePostVersions();
 
 const form = useForm({
@@ -103,7 +103,7 @@ if (props.post) {
 }
 
 watch(form, debounce(() => {
-    if (!isReadOnly.value) {
+    if (!isInHistory.value) {
         save();
     }
 }, 300))
@@ -130,7 +130,7 @@ watch(form, debounce(() => {
                         </PageHeader>
 
                         <div class="w-full max-w-7xl mx-auto row-px">
-                            <Alert v-if="isReadOnly" :closeable="false" class="mb-lg">Posts in history cannot be edited.</Alert>
+                            <Alert v-if="isInHistory" :closeable="false" class="mb-lg">Posts in history cannot be edited.</Alert>
                             <PostForm :form="form" :accounts="$page.props.accounts"/>
                         </div>
                     </div>
@@ -151,7 +151,7 @@ watch(form, debounce(() => {
                         <PageHeader title="Preview"/>
 
                         <div class="row-px">
-                            <PostPreviewProviders :accounts="$page.props.accounts"
+                            <PostPreviewProviders :accounts="isInHistory ? post.accounts : $page.props.accounts"
                                                   :selected-accounts="form.accounts"
                                                   :versions="form.versions"
                             />

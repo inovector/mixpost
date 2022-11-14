@@ -31,6 +31,10 @@ class AccountPublishPostJob implements ShouldQueue
 
     public function handle(AccountPublishPost $accountPublishPost)
     {
+        if ($this->batch()->cancelled()) {
+            return;
+        }
+
         if ($this->post->isPublished()) {
             return;
         }

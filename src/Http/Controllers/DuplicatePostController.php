@@ -19,7 +19,13 @@ class DuplicatePostController extends Controller
 
             $newPost->accounts()->attach($post->accounts->pluck('id'));
             $newPost->tags()->attach($post->tags->pluck('id'));
-            $newPost->versions()->createMany($post->versions->toArray());
+            $newPost->versions()->createMany($post->versions->map(function ($version) {
+                return [
+                    'account_id' => $version->account_id,
+                    'is_original' => $version->is_original,
+                    'content' => $version->content,
+                ];
+            })->toArray());
         });
 
         return redirect()->route('mixpost.posts.index');
