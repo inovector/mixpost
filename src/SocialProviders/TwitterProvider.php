@@ -112,7 +112,7 @@ class TwitterProvider implements SocialProvider
             return $error->message;
         });
 
-        if ($postResponse->status === 403) {
+        if (isset($postResponse->status) && $postResponse->status === 403) {
             $errors[] = $postResponse->detail;
         }
 

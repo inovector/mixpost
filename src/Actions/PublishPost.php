@@ -23,7 +23,6 @@ class PublishPost
         Bus::batch($jobs)
             ->allowFailures()
             ->finally(function () use ($post) {
-                logger('final');
                 $hasErrors = $post->accounts()->wherePivot('errors', '!=', null)->exists();
 
                 if ($hasErrors) {
