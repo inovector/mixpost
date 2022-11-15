@@ -10,7 +10,6 @@ import SecondaryButton from "@/Components/Button/SecondaryButton.vue"
 import PickTime from "@/Components/Package/PickTime.vue"
 import CalendarIcon from "@/Icons/Calendar.vue"
 import PaperAirplaneIcon from "@/Icons/PaperAirplane.vue"
-import ChevronDownIcon from "@/Icons/ChevronDown.vue"
 import XIcon from "@/Icons/X.vue"
 
 const props = defineProps({
@@ -99,21 +98,15 @@ const schedule = (postNow = false) => {
                           @update="form.date = $event.date; form.time = $event.time;"/>
             </div>
 
-            <div v-if="!isInHistory" class="flex items-center" role="group">
+            <template v-if="!isInHistory">
                 <PrimaryButton @click="schedule(!scheduleTime)"
                                :disabled="!canSchedule || isLoading"
                                :isLoading="isLoading"
-                               size="md"
-                               :class="{'rounded-r-none border-r-indigo-400': scheduleTime}">
+                               size="md">
                     <PaperAirplaneIcon class="mr-xs"/>
                     {{ scheduleTime ? 'Schedule' : 'Post now' }}
                 </PrimaryButton>
-
-                <PrimaryButton v-if="scheduleTime" size="md"
-                               class="rounded-l-none border-l-0 !px-2">
-                    <ChevronDownIcon/>
-                </PrimaryButton>
-            </div>
+            </template>
         </div>
     </div>
 </template>
