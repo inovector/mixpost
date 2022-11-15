@@ -1,5 +1,6 @@
 <script setup>
-import {ref} from "vue";
+import {computed, ref} from "vue";
+import {usePage} from "@inertiajs/inertia-vue3";
 import {Inertia} from "@inertiajs/inertia";
 import emitter from "@/Services/emitter";
 import useNotifications from "@/Composables/useNotifications";
@@ -26,10 +27,14 @@ const emit = defineEmits(['onDelete'])
 
 const confirmationDeletion = ref(false);
 
+const filterStatus = computed(() => {
+    return usePage().props.value.filter.status;
+});
+
 const {notify} = useNotifications();
 
 const deletePost = () => {
-    Inertia.delete(route('mixpost.posts.delete', {post: props.itemId}), {
+    Inertia.delete(route('mixpost.posts.delete', {post: props.itemId, status: filterStatus.value}), {
         onSuccess() {
             confirmationDeletion.value = false;
             notify('success', 'Post deleted')

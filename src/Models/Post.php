@@ -3,6 +3,7 @@
 namespace Inovector\Mixpost\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -42,6 +43,11 @@ class Post extends Model
     {
         return $this->belongsToMany(Tag::class, 'mixpost_tag_post', 'post_id', 'tag_id')
             ->orderByPivot('id');
+    }
+
+    public function scopeFailed(Builder $query): Builder
+    {
+        return $query->where('status', PostStatus::FAILED->value);
     }
 
     public function canSchedule(): bool

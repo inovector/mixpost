@@ -32,6 +32,10 @@ const props = defineProps({
     },
     posts: {
         type: Object,
+    },
+    has_failed_posts: {
+        type: Boolean,
+        default: false
     }
 });
 
@@ -83,7 +87,8 @@ const confirmationDeletion = ref(false);
 const deletePosts = () => {
     Inertia.delete(route('mixpost.posts.multipleDelete'), {
         data: {
-            posts: selectedRecords.value
+            posts: selectedRecords.value,
+            status: filter.value.status
         },
         onSuccess() {
             deselectAllRecords();
@@ -105,11 +110,13 @@ const deletePosts = () => {
 
         <div class="w-full row-px">
             <Tabs>
-                <Tab @click="filter.status = null" :active="!filter.status">All</Tab>
-                <Tab @click="filter.status = 'draft'" :active="filter.status === 'draft'">Drafts</Tab>
-                <Tab @click="filter.status = 'scheduled'" :active="filter.status === 'scheduled'">Scheduled</Tab>
-                <Tab @click="filter.status = 'published'" :active="filter.status === 'published'">Published</Tab>
-                <Tab @click="filter.status = 'failed'" :active="filter.status === 'failed'" class="text-red-500">Failed</Tab>
+                <Tab @click="filter.status = null" :active="!$page.props.filter.status">All</Tab>
+                <Tab @click="filter.status = 'draft'" :active="$page.props.filter.status === 'draft'">Drafts</Tab>
+                <Tab @click="filter.status = 'scheduled'" :active="$page.props.filter.status === 'scheduled'">Scheduled</Tab>
+                <Tab @click="filter.status = 'published'" :active="$page.props.filter.status === 'published'">Published</Tab>
+                <template v-if="has_failed_posts">
+                    <Tab @click="filter.status = 'failed'" :active="$page.props.filter.status === 'failed'" class="text-red-500">Failed</Tab>
+                </template>
             </Tabs>
         </div>
 

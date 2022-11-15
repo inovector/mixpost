@@ -15,6 +15,7 @@ import Account from "@/Components/Account/Account.vue"
 import PostItemActions from "@/Components/Post/PostItemActions.vue";
 import PostStatus from "@/Components/Post/PostStatus.vue";
 import VerticallyScrollableContent from "@/Components/Surface/VerticallyScrollableContent.vue";
+import Badge from "@/Components/DataDisplay/Badge.vue";
 
 const props = defineProps({
     item: {
@@ -35,7 +36,8 @@ const content = computed(() => {
     if (!props.item.versions.length) {
         return {
             excerpt: '',
-            media: null
+            media: null,
+            media_count: 0,
         }
     }
 
@@ -56,6 +58,7 @@ const content = computed(() => {
     return {
         excerpt: record.excerpt,
         media: record.media.length ? record.media[0] : null,
+        media_count: record.media.length
     }
 });
 
@@ -91,8 +94,12 @@ const closePreview = () => {
             <div class="w-96 text-left">{{ content.excerpt }}</div>
         </TableCell>
         <TableCell :clickable="true" @click="openPreview">
-            <div v-if="content.media" class="w-48 flex">
-                <MediaFile v-if="content.media" :media="content.media" img-height="sm"/>
+            <div v-if="content.media" class="w-48 flex relative">
+                <MediaFile v-if="content.media" :media="content.media" img-height="sm">
+                    <div class="absolute top-0 -right-5 z-10">
+                        <Badge>+{{ content.media_count - 1 }}</Badge>
+                    </div>
+                </MediaFile>
             </div>
         </TableCell>
         <TableCell :clickable="true" @click="openPreview">
@@ -138,6 +145,8 @@ const closePreview = () => {
 
         <DialogModal :show="preview" :scrollableBody="true" @close="closePreview">
             <template #body>
+                <PostStatus :value="item.status" class="mb-lg"/>
+
                 <PostPreviewProviders v-if="preview"
                                       :accounts="item.accounts"
                                       :selected-accounts="item.accounts.map(account => account.id)"

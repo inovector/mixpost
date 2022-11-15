@@ -19,7 +19,7 @@ class AccountResource extends JsonResource
             'provider_options' => socialProviderOptions($this->provider),
             'created_at' => $this->created_at->diffForHumans(),
             'errors' => $this->whenPivotLoaded('mixpost_post_accounts', function() {
-                return json_decode($this->pivot->errors);
+                return $this->pivot->errors ? json_decode($this->pivot->errors) : [];
             })
         ];
     }

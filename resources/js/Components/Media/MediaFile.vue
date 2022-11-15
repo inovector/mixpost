@@ -28,6 +28,7 @@ const isVideo = (mime_type) => {
 </script>
 <template>
     <figure class="relative">
+        <slot/>
         <div
             class="relative flex rounded"
             :class="{'border border-red-500 p-5': media.hasOwnProperty('error')}"

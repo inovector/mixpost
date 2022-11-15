@@ -10,6 +10,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Arr;
 use Inertia\Inertia;
 use Inertia\Response;
+use Inovector\Mixpost\Actions\RedirectAfterDeletedPost;
 use Inovector\Mixpost\Builders\PostQuery;
 use Inovector\Mixpost\Facades\Settings;
 use Inovector\Mixpost\Http\Requests\StorePost;
@@ -41,6 +42,7 @@ class PostsController extends Controller
                     'accounts' => Arr::map($request->get('accounts', []), 'intval')
                 ]
             ]),
+            'has_failed_posts' => Post::failed()->exists()
         ]);
     }
 
@@ -79,10 +81,10 @@ class PostsController extends Controller
         return response()->noContent();
     }
 
-    public function destroy($id): RedirectResponse
+    public function destroy(Request $request, RedirectAfterDeletedPost $redirectAfterPostDeleted, $id): RedirectResponse
     {
         Post::where('id', $id)->delete();
 
-        return redirect()->back();
+        return $redirectAfterPostDeleted($request);
     }
 }
