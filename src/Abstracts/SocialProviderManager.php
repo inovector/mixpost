@@ -2,6 +2,7 @@
 
 namespace Inovector\Mixpost\Abstracts;
 
+use Inovector\Mixpost\Contracts\SocialProvider;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
@@ -41,8 +42,14 @@ abstract class SocialProviderManager
         throw new InvalidArgumentException("Provider [$provider] not supported.");
     }
 
-    protected function buildConnectionProvider($provider, $config)
+    protected function buildConnectionProvider($provider, $config): SocialProvider
     {
-        return new $provider($this->container->make('request'), $config['client_id'], $config['client_secret'], $config['redirect']);
+        $connection = (new $provider($this->container->make('request'), $config['client_id'], $config['client_secret'], $config['redirect']));
+
+        if (!$connection instanceof SocialProvider) {
+            throw new \Exception('The provider must be an instance of SocialProvider');
+        }
+
+        return $connection;
     }
 }

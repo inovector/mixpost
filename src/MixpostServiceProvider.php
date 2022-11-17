@@ -28,7 +28,6 @@ class MixpostServiceProvider extends PackageServiceProvider
                 'create_mixpost_posts_table',
                 'create_mixpost_post_accounts_table',
                 'create_mixpost_post_versions_table',
-                'create_mixpost_post_publication_logs_table',
                 'create_mixpost_tags_table',
                 'create_mixpost_tag_post_table',
                 'create_mixpost_media_table',

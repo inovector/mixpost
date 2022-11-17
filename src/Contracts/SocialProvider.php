@@ -8,19 +8,13 @@ interface SocialProvider
 {
     public function __construct(Request $request, $clientId, $clientSecret, $redirectUrl);
 
-    public function setApiVersion(): void;
-
-    public function credentials(): static;
-
-    public function setCredentials(): void;
-
     public function getAuthUrl(): string;
 
-    public function getAccessToken(): array;
+    public function requestAccessToken(array $params = []): array;
 
-    public function getAccount();
+    public function getAccount(array $params = []);
 
-    public function publishPost($text, $media = []);
+    public function publishPost(string $text, array $media = [], array $params = []);
 
     public function deletePost();
 

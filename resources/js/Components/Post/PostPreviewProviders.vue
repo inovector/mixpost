@@ -40,7 +40,8 @@ const previews = computed(() => {
             content: accountVersion ? accountVersion.content : defaultVersion.value.content,
             providerComponent: {
                 'twitter': PostPreviewTwitter,
-                'facebook': PostPreviewFacebook,
+                'facebook_page': PostPreviewFacebook,
+                'facebook_group': PostPreviewFacebook,
             }[account.provider]
         }
     });

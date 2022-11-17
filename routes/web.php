@@ -5,6 +5,7 @@ use Inovector\Mixpost\Http\Middleware\HandleInertiaRequests;
 use Inovector\Mixpost\Http\Middleware\Auth as MixpostAuthMiddleware;
 use Inovector\Mixpost\Http\Controllers\DashboardController;
 use Inovector\Mixpost\Http\Controllers\AccountsController;
+use Inovector\Mixpost\Http\Controllers\AccountEntitiesController;
 use Inovector\Mixpost\Http\Controllers\AddAccountController;
 use Inovector\Mixpost\Http\Controllers\SettingsController;
 use Inovector\Mixpost\Http\Controllers\PostsController;
@@ -25,6 +26,11 @@ Route::middleware(['web', MixpostAuthMiddleware::class, HandleInertiaRequests::c
         Route::post('add/{provider}', AddAccountController::class)->name('add');
         Route::put('update/{account}', [AccountsController::class, 'update'])->name('update');
         Route::delete('{account}', [AccountsController::class, 'delete'])->name('delete');
+
+        Route::prefix('entities')->name('entities.')->group(function () {
+            Route::get('{provider}', [AccountEntitiesController::class, 'index'])->name('index');
+            Route::post('{provider}', [AccountEntitiesController::class, 'store'])->name('store');
+        });
     });
 
     Route::prefix('posts')->name('posts.')->group(function () {
@@ -59,5 +65,5 @@ Route::middleware(['web', MixpostAuthMiddleware::class, HandleInertiaRequests::c
         Route::put('/', [SettingsController::class, 'update'])->name('update');
     });
 
-    Route::get('callback/{provider}', CallbackSocialProviderController::class);
+    Route::get('callback/{provider}', CallbackSocialProviderController::class)->name('callbackSocialProvider');
 });

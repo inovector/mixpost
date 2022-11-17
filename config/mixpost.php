@@ -8,7 +8,10 @@ return [
         'twitter' => [
             'client_id' => env('MIXPOST_TWITTER_CLIENT_ID'),
             'client_secret' => env('MIXPOST_TWITTER_CLIENT_SECRET'),
-            'redirect' => env('MIXPOST_TWITTER_REDIRECT', 'http://localhost/mixpost/callback/twitter')
+        ],
+        'facebook' => [
+            'client_id' => env('MIXPOST_FACEBOOK_CLIENT_ID'),
+            'client_secret' => env('MIXPOST_FACEBOOK_CLIENT_SECRET')
         ],
     ],
 
@@ -22,7 +25,11 @@ return [
             'simultaneous_posting_on_multiple_accounts' => false,
             'post_characters_limit' => 280
         ],
-        'facebook' => [
+        'facebook_page' => [
+            'simultaneous_posting_on_multiple_accounts' => true,
+            'post_characters_limit' => null
+        ],
+        'facebook_group' => [
             'simultaneous_posting_on_multiple_accounts' => true,
             'post_characters_limit' => null
         ]

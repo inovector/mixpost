@@ -26,7 +26,7 @@ class AccountPublishPost
         $media = $this->collectMedia($content[0]['media']);
 
         $provider = SocialProviderManager::connect($account->provider);
-        $provider->setCredentials($account->credentials);
+        $provider->setAccessToken($account->access_token);
 
         try {
             $response = $provider->publishPost($body, $media);

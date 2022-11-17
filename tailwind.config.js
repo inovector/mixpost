@@ -9,14 +9,6 @@ module.exports = {
         './resources/js/**/*.vue',
         './resources/js/**/*.js',
     ],
-    safelist: [
-        'text-twitter',
-        'border-twitter',
-        'bg-twitter',
-        'text-facebook',
-        'border-facebook',
-        'bg-facebook',
-    ],
     theme: {
         extend: {
             fontFamily: {

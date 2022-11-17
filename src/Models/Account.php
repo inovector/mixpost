@@ -14,10 +14,12 @@ class Account extends Model
         'image',
         'provider',
         'provider_id',
-        'credentials'
+        'data',
+        'access_token'
     ];
 
     protected $casts = [
-        'credentials' => 'array'
+        'data' => 'array',
+        'access_token' => 'array',
     ];
 }

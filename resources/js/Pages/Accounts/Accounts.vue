@@ -9,7 +9,8 @@ import Modal from "@/Components/Modal/Modal.vue"
 import ConfirmationModal from "@/Components/Modal/ConfirmationModal.vue"
 import Account from "@/Components/Account/Account.vue"
 import AddTwitterAccount from "@/Components/Account/AddTwitterAccount.vue"
-import AddFacebookAccount from "@/Components/Account/AddFacebookAccount.vue"
+import AddFacebookPage from "@/Components/Account/AddFacebookPage.vue"
+import AddFacebookGroup from "@/Components/Account/AddFacebookGroup.vue"
 import SecondaryButton from "@/Components/Button/SecondaryButton.vue"
 import DangerButton from "@/Components/Button/DangerButton.vue"
 import Dropdown from "@/Components/Dropdown/Dropdown.vue"
@@ -68,8 +69,8 @@ const closeConfirmationAccountDeletion = () => {
             </template>
         </PageHeader>
 
-        <div class="mt-lg row-px">
-            <div class="grid grid-cols-4 gap-6">
+        <div class="mt-lg row-px w-full">
+            <div class="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
                 <button @click="addAccountModal = true"
                         class="border border-indigo-800 rounded-lg hover:border-indigo-500 hover:text-indigo-500 transition-colors ease-in-out duration-200">
                     <span class="block p-lg">
@@ -124,7 +125,8 @@ const closeConfirmationAccountDeletion = () => {
                   @close="addAccountModal = false">
         <div class="flex flex-col">
             <AddTwitterAccount/>
-            <AddFacebookAccount/>
+            <AddFacebookPage/>
+            <AddFacebookGroup/>
         </div>
     </Modal>
 

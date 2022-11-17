@@ -1,9 +1,10 @@
 <script setup>
-import {ref, onMounted, onUnmounted, computed} from "vue";
+import {ref, onMounted, onUnmounted, computed, watch} from "vue";
 import emitter from "@/Services/emitter";
 import CheckIcon from "@/Icons/Check.vue"
 import ExclamationIcon from "@/Icons/Exclamation.vue"
 import XIcon from "@/Icons/X.vue"
+import {usePage} from "@inertiajs/inertia-vue3";
 
 const variant = ref('info');
 const message = ref('');
@@ -30,7 +31,7 @@ const open = (variantName, messageText) => {
 
     showTimeout = setTimeout(() => {
         show.value = false;
-    }, 2500);
+    }, 3000);
 }
 
 const close = () => {
@@ -58,6 +59,31 @@ const variantColorClasses = computed(() => {
         'error': 'bg-red-100 text-red-600',
     }[variant.value]
 });
+
+// Flash Messages
+const flash = computed(() => {
+    return usePage().props.value.flash;
+});
+
+watch(() => flash, () => {
+    if (flash.value.success) {
+        open('success', flash.value.success);
+    }
+
+    if (flash.value.warning) {
+        open('warning', flash.value.warning);
+    }
+
+    if (flash.value.error) {
+        open('error', flash.value.error);
+    }
+
+    if (flash.value.info) {
+        open('info', flash.value.info);
+    }
+}, {
+    immediate: true
+})
 </script>
 <template>
     <teleport to="body">
@@ -67,7 +93,8 @@ const variantColorClasses = computed(() => {
                     leave-active-class="transition ease-in duration-75"
                     leave-from-class="transform opacity-100 scale-100"
                     leave-to-class="transform opacity-0 scale-95">
-            <div v-show="show" class="absolute bottom-0 right-0 mr-xl mb-2xl flex px-lg py-md rounded-md bg-indigo-800 z-50"
+            <div v-show="show"
+                 class="absolute bottom-0 right-0 ml-sm md:ml-0 mr-sm md:mr-xl mb-2xl flex px-lg py-md rounded-md bg-indigo-800 z-50"
                  aria-live="polite">
                 <div class="flex items-center">
                     <div>
@@ -77,7 +104,7 @@ const variantColorClasses = computed(() => {
                         </div>
                     </div>
                     <div class="text-gray-200">{{ message }}</div>
-                    <button @click="close" class="ml-2xl">
+                    <button @click="close" class="ml-2xl hover:rotate-90 transition-transform ease-in-out duration-300">
                         <XIcon class="text-gray-200"/>
                     </button>
                 </div>
