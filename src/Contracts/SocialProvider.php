@@ -12,6 +12,8 @@ interface SocialProvider
 
     public function requestAccessToken(array $params = []): array;
 
+    public function useAccessToken(array $token = []): static;
+
     public function getAccount(array $params = []);
 
     public function publishPost(string $text, array $media = [], array $params = []);

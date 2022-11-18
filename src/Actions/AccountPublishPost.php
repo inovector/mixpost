@@ -12,26 +12,31 @@ use Exception;
 
 class AccountPublishPost
 {
-    public function __invoke(Account $account, Post $post): bool|array
+    public function __invoke(Account $account, Post $post): void
     {
         $content = $this->getContentVersion($account, $post->versions);
 
         if (empty($content)) {
-            $error = "This account doesn't have content!";
+            $errors = ["This account version doesn't have content!"];
 
-            $this->setError($post, $account, [$error]);
+            $this->insertErrors($post, $account, $errors);
         }
 
         $body = $this->cleanBody($content[0]['body']);
         $media = $this->collectMedia($content[0]['media']);
 
-        $provider = SocialProviderManager::connect($account->provider);
-        $provider->setAccessToken($account->access_token);
+        $provider = SocialProviderManager::connect($account->provider)->useAccessToken($account->access_token);
 
         try {
-            $response = $provider->publishPost($body, $media);
-            $errors = $response['errors'];
+            $response = $provider->publishPost($body, $media, params: ['provider_id' => $account->provider_id]);
 
+            if (isset($response['errors'])) {
+                $this->insertErrors($post, $account, $response['errors']);
+            }
+
+            if (!isset($response['errors'])) {
+                $this->insertProviderPostId($post, $account, $response['id']);
+            }
         } catch (Exception $exception) {
             Log::error("Publishing error: {$exception->getMessage()}",
                 array_merge([
@@ -43,23 +48,22 @@ class AccountPublishPost
             );
 
             $errors = ['Unexpected internal error.'];
+
+            $this->insertErrors($post, $account, $errors);
         }
-
-        if (!empty($errors)) {
-            $this->setError($post, $account, $errors);
-
-            return [
-                'errors' => $errors
-            ];
-        }
-
-        return true;
     }
 
-    private function setError(Post $post, Account $account, $errors): void
+    private function insertErrors(Post $post, Account $account, $errors): void
     {
         $post->accounts()->updateExistingPivot($account->id, [
             'errors' => json_encode($errors)
+        ]);
+    }
+
+    private function insertProviderPostId(Post $post, Account $account, string $id): void
+    {
+        $post->accounts()->updateExistingPivot($account->id, [
+            'provider_post_id' => $id
         ]);
     }
 
@@ -74,7 +78,12 @@ class AccountPublishPost
         return $accountVersion->content;
     }
 
-    private function collectMedia(array $media)
+    private function cleanBody(string $text): string
+    {
+        return str_replace(["<div>", "</div>"], ["", "\n"], $text);
+    }
+
+    private function collectMedia(array $media): array
     {
         return Media::whereIn('id', $media)->get()->map(function ($item) {
             return [
@@ -84,11 +93,6 @@ class AccountPublishPost
                 'mime_type' => $item->mime_type,
                 'size' => $item->size
             ];
-        });
-    }
-
-    private function cleanBody(string $text): string
-    {
-        return str_replace(["<div>", "</div>"], ["", "\n"], $text);
+        })->toArray();
     }
 }

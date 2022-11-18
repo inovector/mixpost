@@ -42,6 +42,7 @@ abstract class SocialProvider implements SocialProviderContract
         return $this->request->only($this->callbackResponseKeys);
     }
 
+    // Use this method into web app. For example, in Controllers..etc.
     public function setAccessToken(array $token = []): void
     {
         $this->accessToken = $token;
@@ -62,6 +63,14 @@ abstract class SocialProvider implements SocialProviderContract
         }
 
         return $token;
+    }
+
+    // Use this method outside of web app. For example, in Jobs..etc.
+    public function useAccessToken(array $token = []): static
+    {
+        $this->accessToken = $token;
+
+        return $this;
     }
 
     public function forgetAccessToken(): void

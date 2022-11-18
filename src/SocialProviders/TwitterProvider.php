@@ -46,6 +46,14 @@ class TwitterProvider extends SocialProvider
         $this->connection->setOauthToken($token['oauth_token'], $token['oauth_token_secret']);
     }
 
+    // Overwrite useAccessToken to use Twitter SDK
+    public function useAccessToken(array $token = []): static
+    {
+        $this->connection->setOauthToken($token['oauth_token'], $token['oauth_token_secret']);
+
+        return $this;
+    }
+
     public function getAccount(array $params = []): array
     {
         $response = $this->connection->get('users/me', ['user.fields' => 'profile_image_url,created_at']);
@@ -71,14 +79,14 @@ class TwitterProvider extends SocialProvider
                 'media' => $item['path'],
             ];
 
-            $uploadResponse = $this->connection->upload('media/upload', $parameters);
+            $uploadResult = $this->connection->upload('media/upload', $parameters);
 
-            if (!$uploadResponse) {
-                $uploadMediaErrors[$item['id']] = $uploadResponse;
+            if (!$uploadResult) {
+                $uploadMediaErrors[$item['id']] = $uploadResult;
                 continue;
             }
 
-            $uploadedMediaIds[] = $uploadResponse->media_id_string;
+            $uploadedMediaIds[] = $uploadResult->media_id_string;
         }
 
         // Publish post with media
@@ -92,18 +100,24 @@ class TwitterProvider extends SocialProvider
             ];
         }
 
-        $postResponse = $this->connection->post('tweets', $postParameters, true);
+        $postResult = $this->connection->post('tweets', $postParameters, true);
 
-        $errors = Arr::map($postResponse->errors ?? [], function ($error) {
+        $errors = Arr::map($postResult->errors ?? [], function ($error) {
             return $error->message;
         });
 
-        if (isset($postResponse->status) && $postResponse->status === 403) {
-            $errors[] = $postResponse->detail;
+        if (isset($postResult->status) && $postResult->status === 403) {
+            $errors[] = $postResult->detail;
+        }
+
+        if (!empty($errors)) {
+            return [
+                'errors' => $errors
+            ];
         }
 
         return [
-            'errors' => $errors,
+            'id' => $postResult->data->id,
             'upload_media_error' => $uploadMediaErrors,
         ];
     }

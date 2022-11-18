@@ -50,26 +50,26 @@ class StoreProviderEntitiesAsAccounts
             return in_array($entity['id'], $items);
         });
 
-        $account = $provider->getAccount();
-        $accessToken = $provider->getAccessToken();
+        $account = $provider->getUserAccount();
 
-        $entities = Arr::map($filterEntities, function ($entity) use ($account, $accessToken) {
+        $entities = Arr::map($filterEntities, function ($entity) use ($account) {
             return array_merge($entity, [
                 'data' => [
-                    'posting_as_user' => [
+                    'user' => [
                         'id' => $account['id'],
                         'name' => $account['name']
                     ]
                 ],
-                'access_token' => $accessToken
             ]);
         });
+
+        $accessToken = $provider->getAccessToken();
 
         foreach ($entities as $account) {
             (new UpdateOrCreateAccount())(
                 providerName: 'facebook_group',
                 account: $account,
-                accessToken: $account['access_token']
+                accessToken: $accessToken
             );
         }
     }

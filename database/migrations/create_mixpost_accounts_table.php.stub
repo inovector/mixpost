@@ -20,7 +20,8 @@ return new class extends Migration
             $table->string('image', 455)->nullable();
             $table->string('provider');
             $table->string('provider_id');
-            $table->json('credentials');
+            $table->json('data')->nullable();
+            $table->json('access_token');
             $table->timestamps();
         });
     }

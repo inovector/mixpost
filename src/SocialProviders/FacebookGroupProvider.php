@@ -55,7 +55,7 @@ class FacebookGroupProvider extends FacebookMainProvider
         $groupId = $params['provider_id'];
 
         $result = Http::get("$this->apiUrl/$this->apiVersion/$groupId/feed", [
-            'fields' => "message:$text",
+            'fields' => "message=$text",
             'access_token' => $this->getAccessToken()['access_token']
         ]);
     }

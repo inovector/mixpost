@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('post_id')->constrained('mixpost_posts')->onDelete('cascade');
             $table->foreignId('account_id')->constrained('mixpost_accounts')->onDelete('cascade');
+            $table->string('provider_post_id')->nullable();
             $table->json('errors')->nullable();
         });
     }
