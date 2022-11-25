@@ -60,24 +60,7 @@ class FacebookPageProvider extends FacebookMainProvider
 
     public function publishPost(string $text, array $media = [], array $params = [])
     {
-        $pageId = $params['provider_id'];
-
-        $result = Http::post("$this->apiUrl/$this->apiVersion/$pageId/feed", [
-            'message' => $text,
-            'access_token' => $this->getAccessToken()['page_access_token']
-        ]);
-
-        $data = json_decode($result, true);
-
-        if (isset($data['error'])) {
-            return [
-                'errors' => [$result['error']['message']]
-            ];
-        }
-
-        return [
-            'id' => $data['id']
-        ];
+        return parent::publish($text, $media, $params, $this->getAccessToken()['page_access_token']);
     }
 
     public function deletePost()

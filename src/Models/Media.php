@@ -30,6 +30,11 @@ class Media extends Model
         return $this->filesystem()->path($this->path);
     }
 
+    public function getThumbFullPath(): ?string
+    {
+        return $this->getConversionFullPath('thumb');
+    }
+
     public function getUrl(): string
     {
         return $this->filesystem()->url($this->path);
@@ -38,11 +43,6 @@ class Media extends Model
     public function getThumbUrl(): ?string
     {
         return $this->getConversionUrl('thumb');
-    }
-
-    public function getLargeFullPath(): ?string
-    {
-        return $this->getConversionFullPath('large');
     }
 
     public function getConversion(string $name): ?array
@@ -75,11 +75,11 @@ class Media extends Model
 
     public function isImage(): bool
     {
-        return Str::before('/', $this->mime_type) === 'image';
+        return Str::before($this->mime_type, '/') === 'image';
     }
 
     public function isVideo(): bool
     {
-        return Str::before('/', $this->mime_type) === 'video';
+        return Str::before($this->mime_type, '/') === 'video';
     }
 }

@@ -75,11 +75,9 @@ class TwitterProvider extends SocialProvider
         $uploadMediaErrors = [];
 
         foreach ($media as $item) {
-            $parameters = [
+            $uploadResult = $this->connection->upload('media/upload', [
                 'media' => $item['path'],
-            ];
-
-            $uploadResult = $this->connection->upload('media/upload', $parameters);
+            ]);
 
             if (!$uploadResult) {
                 $uploadMediaErrors[$item['id']] = $uploadResult;

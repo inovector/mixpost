@@ -52,12 +52,7 @@ class FacebookGroupProvider extends FacebookMainProvider
 
     public function publishPost(string $text, array $media = [], array $params = [])
     {
-        $groupId = $params['provider_id'];
-
-        $result = Http::get("$this->apiUrl/$this->apiVersion/$groupId/feed", [
-            'fields' => "message=$text",
-            'access_token' => $this->getAccessToken()['access_token']
-        ]);
+        return parent::publish($text, $media, $params,  $this->getAccessToken()['access_token']);
     }
 
     public function deletePost()

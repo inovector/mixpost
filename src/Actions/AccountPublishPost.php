@@ -88,9 +88,11 @@ class AccountPublishPost
         return Media::whereIn('id', $media)->get()->map(function ($item) {
             return [
                 'id' => $item->id,
-                'path' => $item->getLargeFullPath(),
+                'path' => $item->getFullPath(),
+                'thumb_path' => $item->getThumbFullPath(),
                 'name' => $item->name,
                 'mime_type' => $item->mime_type,
+                'is_image' => $item->isImage(),
                 'size' => $item->size
             ];
         })->toArray();
