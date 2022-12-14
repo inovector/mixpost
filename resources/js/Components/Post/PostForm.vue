@@ -187,7 +187,9 @@ const {insertEmoji, focusEditor} = useEditor();
                     @update="updateContent(index, 'body', $event)"
                     placeholder="Type here something interesting for your audience...">
                 <template #default="props">
-                    <div class="flex items-center justify-between border-t border-gray-200 pt-4">
+                    <div class="relative flex items-center justify-between border-t border-gray-200 pt-md mt-md">
+                        <div v-if="isInHistory" class="absolute w-full h-full"></div>
+
                         <div class="flex items-center space-x-xs">
                             <EmojiPicker
                                 @selected="insertEmoji({editorId: 'postEditor', emoji: $event})"
@@ -195,7 +197,8 @@ const {insertEmoji, focusEditor} = useEditor();
                             />
 
                             <AddMedia @insert="updateContent(index, 'media', [...item.media, ...$event])">
-                                <button type="button" v-tooltip="'Media'"
+                                <button type="button"
+                                        v-tooltip="'Media'"
                                         class="text-stone-800 hover:text-indigo-500 transition-colors ease-in-out duration-200">
                                     <PhotoIcon/>
                                 </button>

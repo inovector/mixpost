@@ -39,6 +39,7 @@ const isVideo = (mime_type) => {
 
             <div v-if="media.hasOwnProperty('error')" class="text-center">
                 <ExclamationCircleIcon class="w-8 h-8 mx-auto text-red-500"/>
+                <div class="mt-xs">{{ media.name }}</div>
                 <div class="mt-xs text-red-500">{{ media.error ? media.error : 'Error uploading file!' }}</div>
             </div>
 

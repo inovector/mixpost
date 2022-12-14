@@ -8,19 +8,14 @@ use Inovector\Mixpost\MediaConversions\MediaImageResizeConversion;
 use Inovector\Mixpost\MediaConversions\MediaVideoThumbConversion;
 use Inovector\Mixpost\Models\Media;
 use Inovector\Mixpost\Support\MediaUploader;
+use Illuminate\Validation\Rules\File;
 
 class MediaUploadFile extends FormRequest
 {
     public function rules(): array
     {
-        $mimes = collect(config('mixpost.mime_types'))->map(function ($mime) {
-            return Str::after($mime, '/');
-        })->implode(',');
-
-        $maxFileSize = config('mixpost.max_file_size');
-
         return [
-            'file' => ['required', 'file', "mimes:$mimes", "max:$maxFileSize"],
+            'file' => ['required', File::types($this->allowedTypes())->max($this->max())]
         ];
     }
 
@@ -36,5 +31,56 @@ class MediaUploadFile extends FormRequest
                 MediaVideoThumbConversion::name('thumb')->atSecond(5)
             ])
             ->uploadAndInsert();
+    }
+
+    public function messages(): array
+    {
+        $fileType = $this->isImage() ? 'image' : 'video';
+        $max = $this->max() / 1024;
+
+        return [
+            'file.max' => "The $fileType must not be greater than {$max}MB.",
+        ];
+    }
+
+    private function isImage(): bool
+    {
+        return Str::before($this->file('file')->getMimeType(), '/') === 'image';
+    }
+
+    private function isVideo(): bool
+    {
+        return Str::before($this->file('file')->getMimeType(), '/') === 'video';
+    }
+
+    private function isGif(): bool
+    {
+        return Str::after($this->file('file')->getMimeType(), '/') === 'gif';
+    }
+
+    private function max()
+    {
+        $max = 0;
+
+        if ($this->isImage()) {
+            $max = config('mixpost.max_file_size.image');
+        }
+
+        if ($this->isGif()) {
+            $max = config('mixpost.max_file_size.gif');
+        }
+
+        if ($this->isVideo()) {
+            $max = config('mixpost.max_file_size.video');
+        }
+
+        return $max;
+    }
+
+    private function allowedTypes(): string
+    {
+        return collect(config('mixpost.mime_types'))->map(function ($mime) {
+            return Str::after($mime, '/');
+        })->implode(',');
     }
 }

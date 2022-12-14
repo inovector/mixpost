@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('username')->nullable();
-            $table->string('image', 455)->nullable();
+            $table->json('media')->nullable();
             $table->string('provider');
             $table->string('provider_id');
             $table->json('data')->nullable();

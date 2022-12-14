@@ -10,7 +10,6 @@ import PageHeader from "@/Components/DataDisplay/PageHeader.vue";
 import PostContext from "@/Context/PostContext.vue";
 import PostForm from "@/Components/Post/PostForm.vue";
 import PostActions from "@/Components/Post/PostActions.vue";
-import PostTags from "@/Components/Post/PostTags.vue"
 import PostPreviewProviders from "@/Components/Post/PostPreviewProviders.vue"
 import SecondaryButton from "@/Components/Button/SecondaryButton.vue"
 import PostStatus from "@/Components/Post/PostStatus.vue";
@@ -159,9 +158,8 @@ watch(form, debounce(() => {
                     </div>
                 </div>
             </div>
-            <PostActions :form="form">
-                <PostTags :items="form.tags" @update="form.tags = $event"/>
-            </PostActions>
+
+            <PostActions :form="form"/>
         </div>
     </PostContext>
 </template>

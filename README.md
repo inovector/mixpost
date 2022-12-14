@@ -114,14 +114,18 @@ return [
     'disk' => env('MIXPOST_DISK', 'public'),
 
     /*
-     * The maximum file size of an item in bytes.
+     * Indicate that the uploaded file should be no more than the given number of kilobytes.
      * Adding a larger file will result in an exception.
      */
-    'max_file_size' => 1024 * 1024 * 200, // 200MB
+    'max_file_size' => [
+        'image' => 1024 * 5, // 5MB
+        'gif' => 1024 * 15, // 15MB
+        'video' => 1024 * 500 // 500MB
+    ],
 
     /**
      * Accepted mime types for media library upload.
-     * These are all supported mime types for the media files. We do not guarantee that it will work with other types.
+     * These are all supported mime types for the image and video files. We do not guarantee that it will work with other types.
      * If you need to remove certain mime types, you are free to do so from here.
      */
     'mime_types' => [
@@ -129,8 +133,7 @@ return [
         'image/jpeg',
         'image/gif',
         'image/png',
-        'video/mp4',
-        'video/quicktime'
+        'video/mp4'
     ],
 
     /*

@@ -6,6 +6,8 @@ import {changeTimeZone, isTimePast, convertTime12to24} from "@/helpers";
 import DialogModal from "@/Components/Modal/DialogModal.vue"
 import PrimaryButton from "@/Components/Button/PrimaryButton.vue"
 import SecondaryButton from "@/Components/Button/SecondaryButton.vue"
+import ExclamationCircleIcon from "@/Icons/ExclamationCircle.vue"
+import { Link } from '@inertiajs/inertia-vue3'
 import FlatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 import '@css/overrideFlatPickr.css'
@@ -23,6 +25,10 @@ const props = defineProps({
         type: String,
         default: '',
     },
+    isSubmitActive: {
+        type: Boolean,
+        default: true
+    }
 })
 
 const emit = defineEmits(['close', 'update']);
@@ -158,14 +164,17 @@ const configTimePicker = {
                         <FlatPickr v-model="time" :config="configTimePicker"/>
                     </div>
                 </div>
-                <div v-if="hasErrors" class="mt-4 text-center text-red-500">The selected date and time is in the past
+                <div class="text-sm flex items-center justify-center mt-sm">
+                    <div class="mr-1">{{ timeZone }}</div>
+                    <Link :href="route('mixpost.settings.index')" v-tooltip="'Post will be scheduled according to this timezone. Click to update it.'"><ExclamationCircleIcon class="!w-4 !h-4"/></Link>
                 </div>
+                <div v-if="hasErrors" class="mt-xs text-center text-red-500">The selected date and time is in the past</div>
             </div>
         </template>
 
         <template #footer>
             <SecondaryButton @click="close" class="mr-xs">Cancel</SecondaryButton>
-            <PrimaryButton @click="confirm" :disabled="hasErrors">Pick time</PrimaryButton>
+            <PrimaryButton @click="confirm" :disabled="hasErrors || !isSubmitActive">Pick time</PrimaryButton>
         </template>
     </DialogModal>
 </template>

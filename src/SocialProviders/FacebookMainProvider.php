@@ -84,7 +84,7 @@ class FacebookMainProvider extends SocialProvider
         // Publish a post in page feed with attached media.
         // `attached_media` = only images support
         if (!$isVideo) {
-            $uploadMedia = $this->uploadMediaImages($media, $pageId, $accessToken);
+            $uploadMedia = $this->uploadImages($media, $pageId, $accessToken);
 
             $postParams = [
                 'message' => $text,
@@ -198,7 +198,7 @@ class FacebookMainProvider extends SocialProvider
         ];
     }
 
-    public function uploadMediaImages(array $media, string $targetId, string $accessToken): array
+    public function uploadImages(array $media, string $targetId, string $accessToken): array
     {
         $ids = [];
 

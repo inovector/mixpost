@@ -3,6 +3,7 @@ import {computed, ref} from "vue";
 import {usePage} from '@inertiajs/inertia-vue3';
 import {Inertia} from "@inertiajs/inertia";
 import {difference, first, random} from "lodash";
+import usePost from "@/Composables/usePost";
 import {decomposeString} from "@/helpers";
 import {COLOR_PALLET_LIST} from "@/Constants/ColorPallet";
 import Tag from "@/Components/DataDisplay/Tag.vue";
@@ -20,6 +21,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update'])
+
+const {isInHistory} = usePost();
 
 const showManager = ref(false);
 const searchText = ref('');
@@ -106,11 +109,11 @@ const store = () => {
         <div class="flex items-center">
             <div class="hidden lg:flex items-center space-x-xs mr-xs">
                 <template v-for="item in items" :key="item.id">
-                    <Tag :item="item" @remove="remove(item)"/>
+                    <Tag :item="item" :removable="!isInHistory" @remove="remove(item)"/>
                 </template>
             </div>
 
-            <SecondaryButton @click="openManager" size="md">
+            <SecondaryButton v-if="!isInHistory" @click="openManager" size="md">
                 <TagIcon class="lg:mr-xs"/>
                 <span class="hidden lg:block">Labels</span>
             </SecondaryButton>

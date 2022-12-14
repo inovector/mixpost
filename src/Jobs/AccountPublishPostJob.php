@@ -18,7 +18,6 @@ class AccountPublishPostJob implements ShouldQueue
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $deleteWhenMissingModels = true;
-    public $tries = 1;
 
     public Account $account;
     public Post $post;

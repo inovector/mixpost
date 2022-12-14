@@ -5,12 +5,13 @@ namespace Inovector\Mixpost\SocialProviders;
 use Abraham\TwitterOAuth\TwitterOAuth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Inovector\Mixpost\Abstracts\SocialProvider;
 
 class TwitterProvider extends SocialProvider
 {
-    const DEFAULT_API_VERSION = '2';
-    const STANDARD_API_VERSION = '1.1';
+    const VERSION_API_ONE = '1.1';
+    const API_VERSION_TWO = '2';
 
     public TwitterOAuth $connection;
 
@@ -18,7 +19,8 @@ class TwitterProvider extends SocialProvider
     public function __construct(Request $request, $clientId, $clientSecret, $redirectUrl)
     {
         $this->connection = new TwitterOAuth($clientId, $clientSecret);
-        $this->connection->setApiVersion(self::DEFAULT_API_VERSION);
+        $this->connection->setApiVersion(self::API_VERSION_TWO);
+        $this->connection->setTimeouts(10, 60);
 
         parent::__construct($request, $clientId, $clientSecret, $redirectUrl);
     }
@@ -69,32 +71,22 @@ class TwitterProvider extends SocialProvider
     public function publishPost(string $text, array $media = [], array $params = []): array
     {
         // Upload media
-        $this->connection->setApiVersion(self::STANDARD_API_VERSION);
+        $mediaResult = $this->uploadMedia($media);
 
-        $uploadedMediaIds = [];
-        $uploadMediaErrors = [];
-
-        foreach ($media as $item) {
-            $uploadResult = $this->connection->upload('media/upload', [
-                'media' => $item['path'],
-            ]);
-
-            if (!$uploadResult) {
-                $uploadMediaErrors[$item['id']] = $uploadResult;
-                continue;
-            }
-
-            $uploadedMediaIds[] = $uploadResult->media_id_string;
+        if (!empty($mediaResult['errors'])) {
+            return [
+                'errors' => $mediaResult['errors']
+            ];
         }
 
         // Publish post with media
-        $this->connection->setApiVersion(self::DEFAULT_API_VERSION);
+        $this->connection->setApiVersion(self::API_VERSION_TWO);
 
         $postParameters = ['text' => $text];
 
-        if (!empty($uploadedMediaIds)) {
+        if (!empty($mediaResult['ids'])) {
             $postParameters['media'] = [
-                'media_ids' => $uploadedMediaIds
+                'media_ids' => $mediaResult['ids']
             ];
         }
 
@@ -104,7 +96,7 @@ class TwitterProvider extends SocialProvider
             return $error->message;
         });
 
-        if (isset($postResult->status) && $postResult->status === 403) {
+        if (isset($postResult->status)) {
             $errors[] = $postResult->detail;
         }
 
@@ -115,9 +107,77 @@ class TwitterProvider extends SocialProvider
         }
 
         return [
-            'id' => $postResult->data->id,
-            'upload_media_error' => $uploadMediaErrors,
+            'id' => $postResult->data->id
         ];
+    }
+
+    public function uploadMedia(array $media): array
+    {
+        $this->connection->setApiVersion(self::VERSION_API_ONE);
+
+        $ids = [];
+        $errors = [];
+
+        foreach ($media as $item) {
+            $isGif = Str::after($item['mime_type'], '/') === 'gif';
+            $chunkUpload = !$item['is_image'] || $isGif;
+
+            if (!$chunkUpload) {
+                $result = $this->connection->upload('media/upload', [
+                    'media' => $item['path'],
+                    'media_type' => $item['mime_type'],
+                    'media_category' => 'tweet_image',
+                    'total_bytes' => $item['size'],
+                ]);
+            }
+
+            if ($chunkUpload) {
+                $result = $this->connection->upload('media/upload', [
+                    'media' => $item['path'],
+                    'media_type' => $item['mime_type'],
+                    'media_category' => $isGif ? 'tweet_gif' : 'tweet_video',
+                    'total_bytes' => $item['size'],
+                ], true);
+            }
+
+            if (!$result) {
+                $errors[] = $result;
+                continue;
+            }
+
+            // Check status of uploaded media
+            if (isset($result->processing_info)) {
+                $state = $result->processing_info->state;
+                $sleepSeconds = $result->processing_info->check_after_secs;
+
+                do {
+                    sleep($sleepSeconds);
+
+                    $mediaStatus = $this->connection->mediaStatus($result->media_id);
+
+                    $state = $mediaStatus->processing_info->state;
+                    $sleepSeconds = $mediaStatus->processing_info->check_after_secs ?? 1;
+
+                } while (in_array($state, ['pending', 'in_progress']));
+
+                if ($state === 'failed') {
+                    $errors[] = "Failed to upload {$item['name']} file.";
+                    continue;
+                }
+            }
+
+            $ids[] = $result->media_id_string;
+        }
+
+        return [
+            'ids' => $ids,
+            'errors' => $errors
+        ];
+    }
+
+    public function uploadVideo()
+    {
+
     }
 
     public function deletePost()

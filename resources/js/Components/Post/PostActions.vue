@@ -8,6 +8,7 @@ import useSettings from "@/Composables/useSettings";
 import PrimaryButton from "@/Components/Button/PrimaryButton.vue"
 import SecondaryButton from "@/Components/Button/SecondaryButton.vue"
 import PickTime from "@/Components/Package/PickTime.vue"
+import PostTags from "@/Components/Post/PostTags.vue"
 import CalendarIcon from "@/Icons/Calendar.vue"
 import PaperAirplaneIcon from "@/Icons/PaperAirplane.vue"
 import XIcon from "@/Icons/X.vue"
@@ -16,10 +17,6 @@ const props = defineProps({
     form: {
         required: true,
         type: Object
-    },
-    canManage: {
-        type: Boolean,
-        default: false,
     }
 });
 
@@ -50,7 +47,7 @@ const {notify} = useNotifications();
 const isLoading = ref(false);
 
 const canSchedule = computed(() => {
-    return (postId.value && props.form.accounts.length) || !isInHistory.value;
+    return (postId.value && props.form.accounts.length) && !isInHistory.value;
 });
 
 const schedule = (postNow = false) => {
@@ -73,16 +70,17 @@ const schedule = (postNow = false) => {
 <template>
     <div class="w-full flex items-center justify-end bg-stone-500 border-t border-gray-200 z-10">
         <div class="py-4 flex items-center space-x-xs row-px">
-            <slot/>
+            <PostTags :items="form.tags" @update="form.tags = $event"/>
+
             <div class="flex items-center" role="group">
                 <SecondaryButton size="md"
-                                 :class="{'!normal-case rounded-r-none border-r-indigo-800': scheduleTime}"
+                                 :class="{'!normal-case rounded-r-none border-r-indigo-800': scheduleTime, 'rounded-r-lg': !canSchedule}"
                                  @click="timePicker = true">
                     <CalendarIcon class="lg:mr-xs"/>
                     <span class="hidden lg:block">{{ scheduleTime ? scheduleTime : 'Pick time' }}</span>
                 </SecondaryButton>
 
-                <template v-if="scheduleTime">
+                <template v-if="scheduleTime && canSchedule">
                     <SecondaryButton size="md"
                                      @click="clearScheduleTime"
                                      v-tooltip="'Clear time'"
@@ -94,6 +92,7 @@ const schedule = (postNow = false) => {
                 <PickTime :show="timePicker"
                           :date="form.date"
                           :time="form.time"
+                          :isSubmitActive="!isInHistory"
                           @close="timePicker = false"
                           @update="form.date = $event.date; form.time = $event.time;"/>
             </div>

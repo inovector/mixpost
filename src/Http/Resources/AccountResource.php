@@ -14,7 +14,7 @@ class AccountResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'username' => $this->username,
-            'image' => $this->image,
+            'image' => $this->image(),
             'provider' => $this->provider,
             'provider_options' => socialProviderOptions($this->provider),
             'created_at' => $this->created_at->diffForHumans(),

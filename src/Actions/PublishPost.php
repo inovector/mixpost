@@ -32,6 +32,7 @@ class PublishPost
 
                 $post->setPublished();
             })
+            ->onQueue('publish-post')
             ->dispatch();
     }
 }

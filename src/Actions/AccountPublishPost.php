@@ -80,13 +80,25 @@ class AccountPublishPost
 
     private function cleanBody(string $text): string
     {
-        return str_replace(["<div>", "</div>"], ["", "\n"], $text);
+        $replaceDiv = str_replace(["<div>", "</div>"], ["", "\n"], $text);
+
+        return strip_tags($replaceDiv);
     }
 
-    private function collectMedia(array $media): array
+    private function collectMedia(array $ids): array
     {
-        return Media::whereIn('id', $media)->get()->map(function ($item) {
-            return [
+        $items = [];
+
+        $media = Media::whereIn('id', $ids)->get()->keyBy('id');
+
+        foreach ($ids as $id) {
+            $item = $media[$id] ?? null;
+
+            if (!$item) {
+                continue;
+            }
+
+            $items[] = [
                 'id' => $item->id,
                 'path' => $item->getFullPath(),
                 'thumb_path' => $item->getThumbFullPath(),
@@ -95,6 +107,8 @@ class AccountPublishPost
                 'is_image' => $item->isImage(),
                 'size' => $item->size
             ];
-        })->toArray();
+        }
+
+        return $items;
     }
 }

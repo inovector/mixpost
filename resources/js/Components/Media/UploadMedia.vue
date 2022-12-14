@@ -95,7 +95,7 @@ const startNextJob = (media) => {
     if (Object.keys(active.value).length > 0) {
         addCompletedJob(active.value, media);
 
-        if(props.toggleSelect) {
+        if (props.toggleSelect) {
             props.toggleSelect(media);
         }
     }
@@ -129,6 +129,7 @@ const dispatch = (files) => {
                     startNextJob(media);
                 }).catch((error) => {
                     startNextJob({
+                        name: file.name,
                         error: error.response.data.message
                     });
                 });
@@ -153,7 +154,7 @@ const uploadFile = (file) => {
 }
 
 const completedJobs = computed(() => {
-    return completed.value.filter(job => !job.media.error).reverse();
+    return completed.value.filter(() => true).reverse();
 });
 
 const selected = ref([]);

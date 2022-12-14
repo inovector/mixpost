@@ -9,7 +9,9 @@ const useEditor = () => {
         Document,
         Div,
         Text,
-        Link
+        Link.configure({
+            openOnClick: false,
+        })
     ]
 
     const insertEmoji = ({editorId, emoji}) => {
