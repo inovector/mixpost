@@ -34,7 +34,7 @@ class AccountPublishPostJob implements ShouldQueue
             return;
         }
 
-        if ($this->post->isPublished()) {
+        if ($this->post->isInHistory()) {
             return;
         }
 

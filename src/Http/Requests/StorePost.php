@@ -11,11 +11,9 @@ class StorePost extends PostFormRequest
     public function handle()
     {
         return DB::transaction(function () {
-            $scheduledAt = $this->input('date') && $this->input('time') ? "{$this->input('date')} {$this->input('time')}" : null;
-
             $record = Post::create([
                 'status' => PostStatus::DRAFT,
-                'scheduled_at' => $scheduledAt ? convertTimeToUTC($scheduledAt) : null
+                'scheduled_at' => $this->scheduledAt() ? convertTimeToUTC($this->scheduledAt()) : null
             ]);
 
             $record->accounts()->attach($this->input('accounts', []));

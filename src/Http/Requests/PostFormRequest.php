@@ -21,4 +21,9 @@ class PostFormRequest extends FormRequest
             'versions.*.content.*.media.*' => ['integer'],
         ];
     }
+
+    protected function scheduledAt(): ?string
+    {
+        return $this->input('date') && $this->input('time') ? "{$this->input('date')} {$this->input('time')}" : null;
+    }
 }

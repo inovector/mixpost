@@ -27,13 +27,13 @@ const props = defineProps({
     },
 });
 
-const {isInHistory} = usePost();
+const {editAllowed} = usePost();
 
 /**
  * Account
  */
 const selectAccount = (account) => {
-    if (isInHistory.value) {
+    if (!editAllowed.value) {
         return;
     }
 
@@ -183,12 +183,12 @@ const {insertEmoji, focusEditor} = useEditor();
         <template v-for="(item, index) in content" :key="index">
             <Editor id="postEditor"
                     :value="item.body"
-                    :editable="!isInHistory"
+                    :editable="editAllowed"
                     @update="updateContent(index, 'body', $event)"
                     placeholder="Type here something interesting for your audience...">
                 <template #default="props">
                     <div class="relative flex items-center justify-between border-t border-gray-200 pt-md mt-md">
-                        <div v-if="isInHistory" class="absolute w-full h-full"></div>
+                        <div v-if="!editAllowed" class="absolute w-full h-full"></div>
 
                         <div class="flex items-center space-x-xs">
                             <EmojiPicker

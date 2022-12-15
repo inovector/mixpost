@@ -7,21 +7,34 @@ use Inovector\Mixpost\Models\Post;
 
 class UpdatePost extends PostFormRequest
 {
+    public Post $post;
+
+    public function withValidator($validator)
+    {
+        $this->post = Post::findOrFail($this->route('post'));
+
+        $validator->after(function ($validator) {
+            if ($this->post->isInHistory()) {
+                $validator->errors()->add('in_history', 'The post is in history.');
+            }
+
+            if ($this->post->isScheduleProcessing()) {
+                $validator->errors()->add('in_history', 'This post is being published.');
+            }
+        });
+    }
+
     public function handle()
     {
         return DB::transaction(function () {
-            $record = Post::findOrFail($this->route('post'));
+            $this->post->accounts()->sync($this->input('accounts'));
+            $this->post->tags()->sync($this->input('tags'));
 
-            $record->accounts()->sync($this->input('accounts'));
-            $record->tags()->sync($this->input('tags'));
+            $this->post->versions()->delete();
+            $this->post->versions()->createMany($this->input('versions'));
 
-            $record->versions()->delete();
-            $record->versions()->createMany($this->input('versions'));
-
-            $scheduledAt = $this->input('date') && $this->input('time') ? "{$this->input('date')} {$this->input('time')}" : null;
-
-            return $record->update([
-                'scheduled_at' => $scheduledAt ? convertTimeToUTC($scheduledAt) : null
+            return $this->post->update([
+                'scheduled_at' => $this->scheduledAt() ? convertTimeToUTC($this->scheduledAt()) : null
             ]);
         });
     }

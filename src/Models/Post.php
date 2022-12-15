@@ -61,9 +61,24 @@ class Post extends Model
         return $this->schedule_status->name === PostScheduleStatus::PROCESSING->name;
     }
 
+    public function isScheduled(): bool
+    {
+        return $this->status->name === PostStatus::SCHEDULED->name;
+    }
+
     public function isPublished(): bool
     {
         return $this->status->name === PostStatus::PUBLISHED->name;
+    }
+
+    public function isFailed(): bool
+    {
+        return $this->status->name === PostStatus::FAILED->name;
+    }
+
+    public function isInHistory(): bool
+    {
+        return $this->isPublished() || $this->isFailed();
     }
 
     public function setScheduled(Carbon|null $date = null)

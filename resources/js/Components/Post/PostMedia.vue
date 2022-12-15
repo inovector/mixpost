@@ -15,7 +15,7 @@ const props = defineProps({
     }
 })
 
-const {isInHistory} = usePost();
+const {editAllowed} = usePost();
 
 const items = ref([]);
 const showView = ref(false);
@@ -45,6 +45,7 @@ const remove = (id) => {
     <div class="mt-lg">
         <Draggable
             :list="media"
+            :disabled="!editAllowed"
             v-bind="{
                 animation: 200,
                 group: 'media',
@@ -76,7 +77,7 @@ const remove = (id) => {
 
         <template #footer>
             <SecondaryButton @click="close" class="mr-xs">Close</SecondaryButton>
-            <DangerButton v-if="!isInHistory" @click="remove(openedItem.id)">Remove</DangerButton>
+            <DangerButton v-if="editAllowed" @click="remove(openedItem.id)">Remove</DangerButton>
         </template>
     </DialogModal>
 </template>

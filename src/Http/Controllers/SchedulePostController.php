@@ -13,8 +13,8 @@ class SchedulePostController extends Controller
 {
     public function __invoke(Post $post, Request $request, PublishPost $publishPost): JsonResponse
     {
-        if ($post->isPublished()) {
-            return response()->json('It has already been published', Response::HTTP_UNPROCESSABLE_ENTITY);
+        if ($post->isInHistory()) {
+            return response()->json('This post is in history.', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         if ($post->isScheduleProcessing()) {

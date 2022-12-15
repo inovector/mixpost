@@ -34,7 +34,7 @@ class AccountPublishPost
                 $this->insertErrors($post, $account, $response['errors']);
             }
 
-            if (!isset($response['errors'])) {
+            if (isset($response['id'])) {
                 $this->insertProviderPostId($post, $account, $response['id']);
             }
         } catch (Exception $exception) {

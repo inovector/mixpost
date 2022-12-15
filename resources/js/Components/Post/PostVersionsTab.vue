@@ -1,5 +1,6 @@
 <script setup>
 import {computed, ref} from "vue";
+import usePost from "@/Composables/usePost";
 import usePostVersions from "@/Composables/usePostVersions";
 import Dropdown from "@/Components/Dropdown/Dropdown.vue";
 import DropdownItem from "@/Components/Dropdown/DropdownItem.vue";
@@ -35,6 +36,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['add', 'remove', 'select']);
+
+const {editAllowed} = usePost();
 
 // Get selected accounts and those accounts that don't have a version
 const availableAccounts = computed(() => {
@@ -106,7 +109,7 @@ const remove = () => {
                 </template>
             </Tabs>
 
-            <template v-if="availableAccounts.length > 1">
+            <template v-if="editAllowed && availableAccounts.length > 1">
                 <Dropdown width-classes="w-64">
                     <template #trigger>
                         <PureButton v-tooltip="'Create version'">

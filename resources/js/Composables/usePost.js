@@ -18,9 +18,23 @@ const usePost = () => {
         return ['PUBLISHED', 'FAILED'].includes(post.value.status)
     })
 
+    const isScheduleProcessing = computed(() => {
+        if (!post.value) {
+            return false;
+        }
+
+        return post.value.status === 'PUBLISHING';
+    })
+
+    const editAllowed = computed(() => {
+        return !(isInHistory.value || isScheduleProcessing.value);
+    });
+
     return {
         postId,
-        isInHistory: isInHistory
+        isInHistory,
+        isScheduleProcessing,
+        editAllowed
     }
 }
 

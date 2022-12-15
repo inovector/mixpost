@@ -6,6 +6,7 @@ import {cloneDeep, debounce} from "lodash";
 import useMounted from "@/Composables/useMounted";
 import usePost from "@/Composables/usePost";
 import usePostVersions from "@/Composables/usePostVersions";
+import useNotifications from "@/Composables/useNotifications";
 import PageHeader from "@/Components/DataDisplay/PageHeader.vue";
 import PostContext from "@/Context/PostContext.vue";
 import PostForm from "@/Components/Post/PostForm.vue";
@@ -24,10 +25,12 @@ const post = props.post ? cloneDeep(props.post) : null;
 const {isMounted} = useMounted();
 const showPreview = ref(false);
 const isLoading = ref(false);
+const triedToSave = ref(false);
 const hasError = ref(false);
 
-const {isInHistory} = usePost();
+const {isInHistory, isScheduleProcessing} = usePost();
 const {versionObject} = usePostVersions();
+const {notify} = useNotifications();
 
 const form = useForm({
     accounts: post ? post.accounts.map(account => account.id) : [],
@@ -40,6 +43,7 @@ const form = useForm({
 const store = (data) => {
     Inertia.post(route('mixpost.posts.store'), data, {
         onSuccess() {
+            triedToSave.value = true;
             // After redirect to the edit mode, it's necessary to track the tag changes
             watchTags();
         }
@@ -52,9 +56,20 @@ const update = (data) => {
     axios.put(route('mixpost.posts.update', {post: props.post.id}), data)
         .then(() => {
             hasError.value = false;
-        }).catch(() => {
-        hasError.value = true;
+        }).catch((error) => {
+        // Check if the post is in the history and if it is, refresh the page
+        const isInHistory = error.response.data.errors.hasOwnProperty('in_history');
+
+        if (!isInHistory) {
+            notify('error', error.response.data.errors);
+            hasError.value = true;
+        }
+
+        if (isInHistory) {
+            Inertia.visit(route('mixpost.posts.edit', {post: props.post.id}));
+        }
     }).finally(() => {
+        triedToSave.value = true;
         isLoading.value = false;
     });
 }
@@ -120,16 +135,21 @@ watch(form, debounce(() => {
                                 <PostStatus :value="$page.props.post.status"/>
                                 <div class="flex items-center ml-lg">
                                     <div
-                                        :class="{'animate-ping': isLoading, 'bg-lime-500': !hasError, 'bg-red-500': hasError}"
+                                        :class="{'hidden': !triedToSave, 'animate-ping': isLoading, 'bg-lime-500': !hasError, 'bg-red-500': hasError}"
                                         class="w-4 h-4 mr-xs rounded-full"></div>
-                                    <div v-if="!hasError">Saved</div>
+                                    <div v-if="!hasError && triedToSave">Saved</div>
                                     <div v-if="hasError">Error on saving</div>
                                 </div>
                             </div>
                         </PageHeader>
 
                         <div class="w-full max-w-7xl mx-auto row-px">
-                            <Alert v-if="isInHistory" :closeable="false" class="mb-lg">Posts in history cannot be edited.</Alert>
+                            <Alert v-if="isInHistory" :closeable="false" class="mb-lg">
+                                Posts in history cannot be edited.
+                            </Alert>
+                            <Alert v-if="isScheduleProcessing" :closeable="false" variant="warning" class="mb-lg">
+                                This post is being published. It cannot be edited.
+                            </Alert>
                             <PostForm :form="form" :accounts="$page.props.accounts"/>
                         </div>
                     </div>
@@ -150,7 +170,7 @@ watch(form, debounce(() => {
                         <PageHeader title="Preview"/>
 
                         <div class="row-px">
-                            <PostPreviewProviders :accounts="isInHistory ? post.accounts : $page.props.accounts"
+                            <PostPreviewProviders :accounts="$page.props.accounts"
                                                   :selected-accounts="form.accounts"
                                                   :versions="form.versions"
                             />

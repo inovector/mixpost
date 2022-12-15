@@ -20,7 +20,7 @@ const props = defineProps({
     }
 });
 
-const {postId, isInHistory} = usePost();
+const {postId, editAllowed} = usePost();
 
 const emit = defineEmits(['submit'])
 
@@ -47,7 +47,7 @@ const {notify} = useNotifications();
 const isLoading = ref(false);
 
 const canSchedule = computed(() => {
-    return (postId.value && props.form.accounts.length) && !isInHistory.value;
+    return (postId.value && props.form.accounts.length) && editAllowed.value;
 });
 
 const schedule = (postNow = false) => {
@@ -92,12 +92,12 @@ const schedule = (postNow = false) => {
                 <PickTime :show="timePicker"
                           :date="form.date"
                           :time="form.time"
-                          :isSubmitActive="!isInHistory"
+                          :isSubmitActive="editAllowed"
                           @close="timePicker = false"
                           @update="form.date = $event.date; form.time = $event.time;"/>
             </div>
 
-            <template v-if="!isInHistory">
+            <template v-if="editAllowed">
                 <PrimaryButton @click="schedule(!scheduleTime)"
                                :disabled="!canSchedule || isLoading"
                                :isLoading="isLoading"

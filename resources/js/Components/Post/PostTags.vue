@@ -22,7 +22,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update'])
 
-const {isInHistory} = usePost();
+const {editAllowed} = usePost();
 
 const showManager = ref(false);
 const searchText = ref('');
@@ -109,11 +109,11 @@ const store = () => {
         <div class="flex items-center">
             <div class="hidden lg:flex items-center space-x-xs mr-xs">
                 <template v-for="item in items" :key="item.id">
-                    <Tag :item="item" :removable="!isInHistory" @remove="remove(item)"/>
+                    <Tag :item="item" :removable="editAllowed" @remove="remove(item)"/>
                 </template>
             </div>
 
-            <SecondaryButton v-if="!isInHistory" @click="openManager" size="md">
+            <SecondaryButton v-if="editAllowed" @click="openManager" size="md">
                 <TagIcon class="lg:mr-xs"/>
                 <span class="hidden lg:block">Labels</span>
             </SecondaryButton>
