@@ -56,11 +56,6 @@ class Post extends Model
         return $this->scheduled_at && !$this->scheduled_at->isPast() && $this->accounts()->exists();
     }
 
-    public function isScheduleProcessing(): bool
-    {
-        return $this->schedule_status->name === PostScheduleStatus::PROCESSING->name;
-    }
-
     public function isScheduled(): bool
     {
         return $this->status->name === PostStatus::SCHEDULED->name;
@@ -79,6 +74,11 @@ class Post extends Model
     public function isInHistory(): bool
     {
         return $this->isPublished() || $this->isFailed();
+    }
+
+    public function isScheduleProcessing(): bool
+    {
+        return $this->schedule_status->name === PostScheduleStatus::PROCESSING->name;
     }
 
     public function setScheduled(Carbon|null $date = null)

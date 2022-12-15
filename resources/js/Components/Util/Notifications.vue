@@ -26,7 +26,7 @@ const open = (variantName, messageText) => {
     }
 
     variant.value = variantName;
-    message.value = messageText;
+    message.value = messageText.replace(/\n/g, '<br />');
     show.value = true;
 
     showTimeout = setTimeout(() => {
@@ -103,7 +103,7 @@ watch(() => flash, () => {
                             <component :is="variantIcon"/>
                         </div>
                     </div>
-                    <div class="text-gray-200">{{ message }}</div>
+                    <div class="text-gray-200" v-html="message"/>
                     <button @click="close" class="ml-2xl hover:rotate-90 transition-transform ease-in-out duration-300">
                         <XIcon class="text-gray-200"/>
                     </button>

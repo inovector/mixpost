@@ -28,7 +28,7 @@ const isLoading = ref(false);
 const triedToSave = ref(false);
 const hasError = ref(false);
 
-const {isInHistory, isScheduleProcessing} = usePost();
+const {isInHistory, isScheduleProcessing, editAllowed} = usePost();
 const {versionObject} = usePostVersions();
 const {notify} = useNotifications();
 
@@ -57,15 +57,22 @@ const update = (data) => {
         .then(() => {
             hasError.value = false;
         }).catch((error) => {
-        // Check if the post is in the history and if it is, refresh the page
-        const isInHistory = error.response.data.errors.hasOwnProperty('in_history');
+        if (error.response.status !== 422) {
+            notify('error', error.response.data.message);
+            hasError.value = true;
+            return;
+        }
 
-        if (!isInHistory) {
-            notify('error', error.response.data.errors);
+        const validationErrors = error.response.data.errors;
+
+        const mustRefreshPage = validationErrors.hasOwnProperty('in_history') || validationErrors.hasOwnProperty('publishing');
+
+        if (!mustRefreshPage) {
+            notify('error', validationErrors);
             hasError.value = true;
         }
 
-        if (isInHistory) {
+        if (mustRefreshPage) {
             Inertia.visit(route('mixpost.posts.edit', {post: props.post.id}));
         }
     }).finally(() => {
@@ -117,7 +124,7 @@ if (props.post) {
 }
 
 watch(form, debounce(() => {
-    if (!isInHistory.value) {
+    if (editAllowed.value) {
         save();
     }
 }, 300))

@@ -2,13 +2,17 @@
 import {computed, ref} from "vue";
 import {format, parseISO} from "date-fns";
 import {Inertia} from "@inertiajs/inertia";
+import {usePage} from "@inertiajs/inertia-vue3";
 import usePost from "@/Composables/usePost";
 import useNotifications from "@/Composables/useNotifications";
 import useSettings from "@/Composables/useSettings";
+import ConfirmationModal from "@/Components/Modal/ConfirmationModal.vue";
 import PrimaryButton from "@/Components/Button/PrimaryButton.vue"
 import SecondaryButton from "@/Components/Button/SecondaryButton.vue"
 import PickTime from "@/Components/Package/PickTime.vue"
 import PostTags from "@/Components/Post/PostTags.vue"
+import Badge from "@/Components/DataDisplay/Badge.vue";
+import ProviderIcon from "@/Components/Account/ProviderIcon.vue";
 import CalendarIcon from "@/Icons/Calendar.vue"
 import PaperAirplaneIcon from "@/Icons/PaperAirplane.vue"
 import XIcon from "@/Icons/X.vue"
@@ -60,12 +64,32 @@ const schedule = (postNow = false) => {
 
         Inertia.visit(route('mixpost.posts.index'));
     }).catch((error) => {
-        console.log(error);
-        notify('error', error.response.data);
+        if (error.response.status !== 422) {
+            notify('error', error.response.data.message);
+            return;
+        }
+
+        const validationErrors = error.response.data.errors;
+
+        const mustRefreshPage = validationErrors.hasOwnProperty('in_history') || validationErrors.hasOwnProperty('publishing');
+
+        if (!mustRefreshPage) {
+            notify('error', validationErrors);
+        }
+
+        if (mustRefreshPage) {
+            Inertia.visit(route('mixpost.posts.edit', {post: postId.value}));
+        }
     }).finally(() => {
         isLoading.value = false;
     })
 }
+
+const confirmationPostNow = ref(false);
+
+const accounts = computed(() => {
+    return usePage().props.value.accounts.filter(account => props.form.accounts.includes(account.id));
+})
 </script>
 <template>
     <div class="w-full flex items-center justify-end bg-stone-500 border-t border-gray-200 z-10">
@@ -98,7 +122,7 @@ const schedule = (postNow = false) => {
             </div>
 
             <template v-if="editAllowed">
-                <PrimaryButton @click="schedule(!scheduleTime)"
+                <PrimaryButton @click="scheduleTime ? schedule() : confirmationPostNow = true"
                                :disabled="!canSchedule || isLoading"
                                :isLoading="isLoading"
                                size="md">
@@ -107,5 +131,26 @@ const schedule = (postNow = false) => {
                 </PrimaryButton>
             </template>
         </div>
+
+        <ConfirmationModal :show="confirmationPostNow" @close="confirmationPostNow = false">
+            <template #header>
+                Confirm publication
+            </template>
+            <template #body>
+                This post will be immediately published to the following social accounts. Are you sure?
+
+                <div class="mt-sm flex flex-wrap items-center gap-xs">
+                    <Badge v-for="account in accounts" :key="account.id">
+                        <ProviderIcon :provider="account.provider" class="!w-4 !h-4 mr-xs"/>
+                        {{ account.name }}
+                    </Badge>
+                </div>
+            </template>
+            <template #footer>
+                <SecondaryButton @click="confirmationPostNow = false" class="mr-xs">Cancel</SecondaryButton>
+                <PrimaryButton :disabled="isLoading" :isLoading="isLoading" @click="schedule(true)">Post now
+                </PrimaryButton>
+            </template>
+        </ConfirmationModal>
     </div>
 </template>

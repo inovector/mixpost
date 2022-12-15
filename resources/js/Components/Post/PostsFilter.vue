@@ -1,7 +1,6 @@
 <script setup>
 import {computed} from "vue";
 import {usePage} from "@inertiajs/inertia-vue3";
-import {filter} from "lodash";
 import Input from "@/Components/Form/Input.vue";
 import PrimaryButton from "@/Components/Button/PrimaryButton.vue";
 import Dropdown from "@/Components/Dropdown/Dropdown.vue";
@@ -92,7 +91,7 @@ const clear = () => {
                                 <label class="flex items-center cursor-pointer">
                                     <Checkbox v-model:checked="modelValue.accounts" :value="account.id" number
                                               class="mr-1"/>
-                                    <Badge class="inline-flex items-center">
+                                    <Badge>
                                         <ProviderIcon :provider="account.provider" class="!w-4 !h-4 mr-xs"/>
                                         {{ account.name }}
                                     </Badge>
