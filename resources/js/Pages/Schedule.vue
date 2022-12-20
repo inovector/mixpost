@@ -1,16 +1,19 @@
 <script setup>
-import { Head } from '@inertiajs/inertia-vue3';
+import {Head} from '@inertiajs/inertia-vue3';
+import useSettings from "@/Composables/useSettings";
+import CalendarMonth from "@/Components/Schedule/Month/CalendarMonth.vue";
+import Panel from "@/Components/Surface/Panel.vue";
+
+const {timeZone, weekStartsOn} = useSettings();
 </script>
 <template>
-    <Head title="Schedule" />
+    <Head title="Schedule"/>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-lg lg:px-xl">
-            <div class="bg-white overflow-hidden shadow sm:rounded-lg">
-                <div class="p-lg bg-white border-b border-gray-200">
-                    You're logged in!
-                </div>
-            </div>
+    <div class="row-py mb-2xl">
+        <div class="w-full row-px">
+            <Panel :withPadding="false">
+                <CalendarMonth initialDate="1000-01-01" :weekStartsOn="weekStartsOn" :timeZone="timeZone"/>
+            </Panel>
         </div>
     </div>
 </template>

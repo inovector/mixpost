@@ -45,6 +45,7 @@ const setDateTime = () => {
     if (props.show) {
         if (!props.date && !props.time) {
             // Display the next time if the date and time are null
+            // TODO: implement date-fns-tz
             const currentTime = changeTimeZone(new Date(), timeZone);
 
             const [nextDate, nextHour] = format(addHours(currentTime, 1), 'Y-MM-dd H').split(' ');

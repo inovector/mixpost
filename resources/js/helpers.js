@@ -76,6 +76,7 @@ export function changeTimeZone(date, timeZone) {
 }
 
 export function isTimePast(date, currentTimezone = null) {
+    // TODO: implement date-fns-tz
     const currentTime = currentTimezone ? changeTimeZone(new Date(), currentTimezone) : new Date();
 
     return date.getTime() < currentTime.getTime()
