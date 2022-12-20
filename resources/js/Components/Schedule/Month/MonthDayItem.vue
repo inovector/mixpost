@@ -1,6 +1,8 @@
 <script setup>
 import {computed} from "vue";
 import {format} from "date-fns";
+import PlusIcon from "@/Icons/Plus.vue"
+import DisabledItemImg from "@img/calendar-disabled-item.svg"
 
 const props = defineProps({
     day: {
@@ -16,50 +18,33 @@ const props = defineProps({
 const label = computed(() => {
     return format(new Date(props.day.date), 'd');
 })
+
+const style = computed(() => {
+    if (!props.day.isDisabled) {
+        return {};
+    }
+
+    return {
+        backgroundImage: `url('${DisabledItemImg}')`
+    }
+})
 </script>
 <template>
-    <li
-        class="calendar-day"
-        :class="{
-      'calendar-day--not-current': day.isDisabled,
-      'calendar-day--today': isToday,
-    }"
+    <div
+        class="relative p-sm min-h-[100px] bg-white border-r border-b border-gray-200 group"
+        :style="style"
     >
-        <span>{{ label }}</span>
-    </li>
+        <div class="absolute w-full top-0 left-0 mt-xs text-center">
+            <span class="w-7 h-7 inline-flex items-center justify-center p-1 mr-xs rounded-full text-gray-700"
+                  :class="{'bg-indigo-500 text-white': isToday,'text-gray-400': day.isDisabled}">{{ label }}</span>
+        </div>
+        <div
+            v-if="!day.isDisabled"
+            class="absolute mt-0 right-0 mr-sm opacity-0 group-hover:opacity-100 transition-opacity ease-in-out duration-300">
+            <button type="button"
+                    class="py-2 text-gray-400 hover:text-indigo-500 transition-colors ease-in-out duration-200">
+                <PlusIcon/>
+            </button>
+        </div>
+    </div>
 </template>
-<style>
-.calendar-day {
-    position: relative;
-    min-height: 100px;
-    font-size: 16px;
-    background-color: #fff;
-    color: #3e4e63;
-    padding: 5px;
-}
-
-.calendar-day > span {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    right: 2px;
-    width: 20px;;
-    height: 20px;;
-}
-
-.calendar-day--not-current {
-    background-color: #e4e9f0;
-    color: #b5c0cd;
-}
-
-.calendar-day--today {
-    padding-top: 4px;
-}
-
-.calendar-day--today > span {
-    color: #fff;
-    border-radius: 9999px;
-    background-color: #3e4e63;
-}
-</style>

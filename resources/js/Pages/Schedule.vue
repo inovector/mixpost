@@ -12,7 +12,7 @@ const {timeZone, weekStartsOn} = useSettings();
     <div class="row-py mb-2xl">
         <div class="w-full row-px">
             <Panel :withPadding="false">
-                <CalendarMonth initialDate="1000-01-01" :weekStartsOn="weekStartsOn" :timeZone="timeZone"/>
+                <CalendarMonth :weekStartsOn="weekStartsOn" :timeZone="timeZone"/>
             </Panel>
         </div>
     </div>

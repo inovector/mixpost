@@ -45,21 +45,10 @@ const weekdays = computed(() => {
 })
 </script>
 <template>
-    <ol class="day-of-week">
-        <li v-for="weekday in weekdays" :key="weekday">
+    <div class="grid grid-cols-7">
+        <div v-for="weekday in weekdays" :key="weekday" class="p-sm border-t border-r last:border-r-0 border-gray-200 text-center font-semibold">
             <span class="hidden md:block">{{ weekday.name }}</span>
             <span class="block md:hidden">{{ weekday.name_short }}</span>
-        </li>
-    </ol>
+        </div>
+    </div>
 </template>
-<style>
-.day-of-week {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-}
-
-.day-of-week > * {
-    text-align: right;
-    padding-right: 5px;
-}
-</style>

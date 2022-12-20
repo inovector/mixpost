@@ -17,7 +17,7 @@ const { sizeClass } = useButtonSize(props.size);
 </script>
 
 <template>
-    <Link :href="href" :class="sizeClass" class="inline-flex items-center bg-indigo-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-900 focus:border-indigo-900 focus:shadow-outline-indigo transition ease-in-out duration-150">
+    <Link :href="href" :class="sizeClass" class="inline-flex items-center bg-indigo-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-900 focus:border-indigo-900 focus:shadow-outline-indigo transition ease-in-out duration-200">
         <slot />
     </Link>
 </template>

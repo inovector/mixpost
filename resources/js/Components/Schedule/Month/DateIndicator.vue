@@ -14,12 +14,6 @@ const selectedMonth = computed(()=> {
 });
 </script>
 <template>
-    <div class="calendar-date-indicator">{{ selectedMonth }}</div>
+    <div class="text-gray-700 font-semibold text-lg">{{ selectedMonth }}</div>
 </template>
-<style>
-.calendar-date-indicator {
-    font-size: 24px;
-    font-weight: 600;
-    color: gray
-}
-</style>
+

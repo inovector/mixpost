@@ -123,39 +123,27 @@ const selectDate = (value) => {
 </script>
 <template>
     <div class="calendar-month">
-        <div class="calendar-month-header">
-            <DateIndicator
-                :selected-date="selectedDate"
-                class="calendar-month-header-selected-month"
-            />
-
+        <div class="flex items-center space-x-5">
             <DateSelector
                 :current-date="today"
                 :selected-date="selectedDate"
                 @dateSelected="selectDate"
             />
+            <DateIndicator
+                :selected-date="selectedDate"
+                class="calendar-month-header-selected-month"
+            />
         </div>
 
         <Weekdays :weekStartsOn="weekStartsOn"/>
 
-        <ol class="days-grid">
+        <div class="grid grid-cols-7 h-screen relative border-t border-t-gray-200">
             <MonthDayItem
                 v-for="day in days"
                 :key="day.date"
                 :day="day"
                 :is-today="day.date === today"
             />
-        </ol>
+        </div>
     </div>
 </template>
-<style>
-.days-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    height: 100%;
-    position: relative;
-    grid-column-gap: 1px;;
-    grid-row-gap: 1px;;
-    border-top: solid 1px #cfd7e3;
-}
-</style>
