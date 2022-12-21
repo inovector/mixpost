@@ -26,7 +26,7 @@ class PostsController extends Controller
 {
     public function index(Request $request): AnonymousResourceCollection|Response
     {
-        $query = PostQuery::apply($request)->latest('id')->paginate(20)->onEachSide(1)->withQueryString();
+        $posts = PostQuery::apply($request)->latest('id')->paginate(20)->onEachSide(1)->withQueryString();
 
         return Inertia::render('Posts/Index', [
             'accounts' => fn() => AccountResource::collection(Account::oldest()->get())->resolve(),
@@ -37,7 +37,7 @@ class PostsController extends Controller
                 'tags' => $request->get('tags', []),
                 'accounts' => $request->get('accounts', [])
             ],
-            'posts' => PostResource::collection($query)->additional([
+            'posts' => PostResource::collection($posts)->additional([
                 'filter' => [
                     'accounts' => Arr::map($request->get('accounts', []), 'intval')
                 ]

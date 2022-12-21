@@ -13,6 +13,7 @@ import {
     getDay
 } from "date-fns"
 import {utcToZonedTime} from "date-fns-tz";
+import {isDatePast} from "@/helpers";
 import DateIndicator from "@/Components/Schedule/Month/DateIndicator.vue";
 import DateSelector from "@/Components/Schedule/Month/DateSelector.vue";
 import Weekdays from "@/Components/Schedule/Month/Weekdays.vue";
@@ -35,6 +36,11 @@ const props = defineProps({
         required: false,
         type: Number,
         default: 0
+    },
+    posts: {
+        required: false,
+        type: Array,
+        default: []
     }
 });
 
@@ -71,7 +77,7 @@ const previousMonthDays = computed(() => {
 
     const visibleNumberOfDaysFromPreviousMonth = firstDayOfTheMonthWeekday
         ? firstDayOfTheMonthWeekday - props.weekStartsOn
-        :  props.weekStartsOn ? 6 : 0;
+        : props.weekStartsOn ? 6 : 0;
 
     const previousMonthLastMondayDayOfMonth = getDate(subDays(new Date(currentMonthDays.value[0].date), visibleNumberOfDaysFromPreviousMonth))
 
@@ -79,9 +85,12 @@ const previousMonthDays = computed(() => {
 
     return [...Array(visibleNumberOfDaysFromPreviousMonth)].map(
         (day, index) => {
+            const date = new Date(`${getYear(previousMonth)}-${getMonth(previousMonth) + 1}-${previousMonthLastMondayDayOfMonth + index}`);
+
             return {
-                date: format(new Date(`${getYear(previousMonth)}-${getMonth(previousMonth) + 1}-${previousMonthLastMondayDayOfMonth + index}`), 'yyyy-MM-dd'),
-                isDisabled: true,
+                date: format(date, 'yyyy-MM-dd'),
+                isDisabled: isDatePast(date, props.timeZone),
+                posts: []
             };
         }
     );
@@ -89,9 +98,12 @@ const previousMonthDays = computed(() => {
 
 const currentMonthDays = computed(() => {
     return [...Array(numberOfDaysInMonth.value)].map((day, index) => {
+        const date = new Date(`${year.value}-${month.value}-${index + 1}`);
+
         return {
-            date: format(new Date(`${year.value}-${month.value}-${index + 1}`), 'yyyy-MM-dd'),
-            isDisabled: false,
+            date: format(date, 'yyyy-MM-dd'),
+            isDisabled: isDatePast(date, props.timeZone),
+            posts: getDayPosts(date)
         };
     });
 })
@@ -109,6 +121,7 @@ const nextMonthDays = computed(() => {
         return {
             date: format(new Date(`${getYear(nextMonth)}-${getMonth(nextMonth) + 1}-${index + 1}`), 'yyyy-MM-dd'),
             isDisabled: false,
+            posts: []
         };
     });
 })
@@ -117,22 +130,31 @@ const getWeekday = (date) => {
     return getDay(typeof date === 'string' ? new Date(date) : date);
 }
 
+const getDayPosts = (date) => {
+    return props.posts.filter((post) => {
+        return format(date, 'yyyy-MM-dd') === post.date;
+    });
+}
+
 const selectDate = (value) => {
     selectedDate.value = value;
 }
 </script>
 <template>
-    <div class="calendar-month">
-        <div class="flex items-center space-x-5">
-            <DateSelector
-                :current-date="today"
-                :selected-date="selectedDate"
-                @dateSelected="selectDate"
-            />
-            <DateIndicator
-                :selected-date="selectedDate"
-                class="calendar-month-header-selected-month"
-            />
+    <div class="bg-white">
+        <div class="flex items-center justify-between p-lg">
+            <div class="flex items-center space-x-xs">
+                <DateSelector
+                    :current-date="today"
+                    :selected-date="selectedDate"
+                    @dateSelected="selectDate"
+                />
+                <DateIndicator
+                    :selected-date="selectedDate"
+                    class="calendar-month-header-selected-month"
+                />
+            </div>
+            <slot name="header"/>
         </div>
 
         <Weekdays :weekStartsOn="weekStartsOn"/>

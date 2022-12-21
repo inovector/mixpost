@@ -1,3 +1,5 @@
+import {utcToZonedTime} from "date-fns-tz";
+
 export function getWindowDimensions() {
     let width = Math.max(
         document.body.scrollWidth,
@@ -59,27 +61,18 @@ export function decomposeString(string) {
     return string.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
-export function changeTimeZone(date, timeZone) {
-    if (typeof date === 'string') {
-        return new Date(
-            new Date(date).toLocaleString('en-US', {
-                timeZone,
-            }),
-        );
-    }
+export function isTimePast(date, timeZone = null) {
+    const today = timeZone ? utcToZonedTime(new Date().toISOString(), timeZone) : new Date();
 
-    return new Date(
-        date.toLocaleString('en-US', {
-            timeZone,
-        }),
-    );
+    return date.getTime() < today.getTime()
 }
 
-export function isTimePast(date, currentTimezone = null) {
-    // TODO: implement date-fns-tz
-    const currentTime = currentTimezone ? changeTimeZone(new Date(), currentTimezone) : new Date();
+export function isDatePast(date, timeZone = null) {
+    const today = timeZone ? utcToZonedTime(new Date().toISOString(), timeZone) : new Date();
 
-    return date.getTime() < currentTime.getTime()
+    today.setHours(0, 0, 0, 0);
+
+    return date < today;
 }
 
 export function convertTime12to24(time12h) {

@@ -53,11 +53,11 @@ import CogIcon from "@/Icons/Cog.vue"
                     </template>
                     Posts
                 </MenuItem>
-                <MenuItem :url="route('mixpost.schedule')" :active="$page.component === 'Schedule'">
+                <MenuItem :url="route('mixpost.calendar')" :active="$page.component === 'Calendar'">
                     <template #icon>
                         <CalendarIcon/>
                     </template>
-                    Schedule
+                    Calendar
                 </MenuItem>
                 <MenuItem :url="route('mixpost.media.index')" :active="$page.component === 'Media'">
                     <template #icon>

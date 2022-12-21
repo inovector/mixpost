@@ -1,5 +1,9 @@
 <script setup>
 import {addMonths, parseISO, subMonths} from "date-fns";
+import SecondaryButton from "@/Components/Button/SecondaryButton.vue"
+import PureButton from "@/Components/Button/PureButton.vue"
+import ChevronRightIcon from "@/Icons/ChevronRight.vue"
+import ChevronLeftIcon from "@/Icons/ChevronLeft.vue"
 
 const props = defineProps({
     currentDate: {
@@ -30,22 +34,11 @@ const selectNext = () => {
 }
 </script>
 <template>
-    <div class="calendar-date-selector">
-        <span @click="selectPrevious"> &lt; </span>
-        <span @click="selectCurrent">Today</span>
-        <span @click="selectNext">></span>
+    <div class="flex items-center">
+        <SecondaryButton @click="selectCurrent" class="mr-xs">Today</SecondaryButton>
+        <div class="flex items-center">
+            <PureButton @click="selectPrevious" class="mr-xs"><ChevronLeftIcon/></PureButton>
+            <PureButton @click="selectNext"><ChevronRightIcon/></PureButton>
+        </div>
     </div>
 </template>
-<style>
-.calendar-date-selector {
-    display: flex;
-    justify-content: space-between;
-    width: 80px;
-    color: gray;
-}
-
-.calendar-date-selector > * {
-    cursor: pointer;
-    user-select: none;
-}
-</style>

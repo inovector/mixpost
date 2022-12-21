@@ -13,7 +13,7 @@ use Inovector\Mixpost\Http\Controllers\DuplicatePostController;
 use Inovector\Mixpost\Http\Controllers\SchedulePostController;
 use Inovector\Mixpost\Http\Controllers\DeletePostsController;
 use Inovector\Mixpost\Http\Controllers\TagsController;
-use Inovector\Mixpost\Http\Controllers\ScheduleController;
+use Inovector\Mixpost\Http\Controllers\CalendarController;
 use Inovector\Mixpost\Http\Controllers\MediaController;
 use Inovector\Mixpost\Http\Controllers\MediaUploadFileController;
 use Inovector\Mixpost\Http\Controllers\CallbackSocialProviderController;
@@ -46,7 +46,9 @@ Route::middleware(['web', MixpostAuthMiddleware::class, HandleInertiaRequests::c
         Route::delete('/', DeletePostsController::class)->name('multipleDelete');
     });
 
-    Route::get('schedule', [ScheduleController::class, 'index'])->name('schedule');
+    Route::get('calendar/{date?}', [CalendarController::class, 'index'])
+        ->name('calendar')
+        ->where('date', '^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$');
 
     Route::prefix('media')->name('media.')->group(function () {
         Route::get('/', [MediaController::class, 'index'])->name('index');

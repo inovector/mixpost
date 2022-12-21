@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inovector\Mixpost\Builders\Filters\PostAccounts;
 use Inovector\Mixpost\Builders\Filters\PostKeyword;
+use Inovector\Mixpost\Builders\Filters\PostScheduledAt;
 use Inovector\Mixpost\Builders\Filters\PostTags;
 use Inovector\Mixpost\Builders\Filters\PostStatus;
 use Inovector\Mixpost\Contracts\Query;
@@ -31,6 +32,10 @@ class PostQuery implements Query
 
         if ($request->has('tags') && !empty($request->get('tags'))) {
             $query = PostTags::apply($query, $request->get('tags', []));
+        }
+
+        if ($request->has('date') && !empty($request->get('date')) && preg_match('/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/', $request->get('date'))) {
+            $query = PostScheduledAt::apply($query, $request->only('calendar_type', 'date'));
         }
 
         return $query;
