@@ -155,7 +155,7 @@ watch(form, debounce(() => {
                                 Posts in history cannot be edited.
                             </Alert>
                             <Alert v-if="isScheduleProcessing" :closeable="false" variant="warning" class="mb-lg">
-                                This post is being published. It cannot be edited.
+                                This post is being published, check back shortly!
                             </Alert>
                             <PostForm :form="form" :accounts="$page.props.accounts"/>
                         </div>

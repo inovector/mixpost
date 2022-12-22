@@ -1,7 +1,7 @@
 <script setup>
 import {inject} from "vue";
 import PostsFilter from '@/Components/Post/PostsFilter.vue';
-import SwitchCalendarType from "@/Components/Schedule/SwitchCalendarType.vue";
+import SwitchCalendarType from "@/Components/Calendar/SwitchCalendarType.vue";
 
 const calendarFilter = inject('calendarFilter');
 </script>

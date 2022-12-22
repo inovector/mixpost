@@ -14,10 +14,10 @@ import {
 } from "date-fns"
 import {utcToZonedTime} from "date-fns-tz";
 import {isDatePast} from "@/helpers";
-import DateIndicator from "@/Components/Schedule/Month/DateIndicator.vue";
-import DateSelector from "@/Components/Schedule/Month/DateSelector.vue";
-import Weekdays from "@/Components/Schedule/Month/Weekdays.vue";
-import MonthDayItem from "@/Components/Schedule/Month/MonthDayItem.vue";
+import DateIndicator from "@/Components/Calendar/Month/DateIndicator.vue";
+import DateSelector from "@/Components/Calendar/Month/DateSelector.vue";
+import Weekdays from "@/Components/Calendar/Month/Weekdays.vue";
+import MonthDayItem from "@/Components/Calendar/Month/MonthDayItem.vue";
 
 const props = defineProps({
     timeZone: {
@@ -43,6 +43,8 @@ const props = defineProps({
         default: []
     }
 });
+
+const emit = defineEmits(['dateSelected'])
 
 const selectedDate = ref(new Date(props.initialDate));
 
@@ -132,12 +134,14 @@ const getWeekday = (date) => {
 
 const getDayPosts = (date) => {
     return props.posts.filter((post) => {
-        return format(date, 'yyyy-MM-dd') === post.date;
+        return format(date, 'yyyy-MM-dd') === post.scheduled_at.date;
     });
 }
 
 const selectDate = (value) => {
     selectedDate.value = value;
+
+    emit('dateSelected', value);
 }
 </script>
 <template>
@@ -159,7 +163,7 @@ const selectDate = (value) => {
 
         <Weekdays :weekStartsOn="weekStartsOn"/>
 
-        <div class="grid grid-cols-7 h-screen relative border-t border-t-gray-200">
+        <div class="calendar-month-days-height grid grid-cols-7 relative border-t border-t-gray-200">
             <MonthDayItem
                 v-for="day in days"
                 :key="day.date"

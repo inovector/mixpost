@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Facade;
 /**
  * @method static \Inovector\Mixpost\Settings schema()
  * @method static \Inovector\Mixpost\Settings get(string $name)
+ * @method static \Inovector\Mixpost\Settings getFromCache(string $name, mixed $default = null)
  * @method static \Inovector\Mixpost\Settings all()
  * @method static \Inovector\Mixpost\Settings clearCache()
  * @method static \Inovector\Mixpost\Settings put(string $name, mixed $default = null)

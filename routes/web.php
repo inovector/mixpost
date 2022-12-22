@@ -46,9 +46,10 @@ Route::middleware(['web', MixpostAuthMiddleware::class, HandleInertiaRequests::c
         Route::delete('/', DeletePostsController::class)->name('multipleDelete');
     });
 
-    Route::get('calendar/{date?}', [CalendarController::class, 'index'])
+    Route::get('calendar/{date?}/{type?}', [CalendarController::class, 'index'])
         ->name('calendar')
-        ->where('date', '^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$');
+        ->where('date', '^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$')
+        ->where('type', '^(?:month|week)$');
 
     Route::prefix('media')->name('media.')->group(function () {
         Route::get('/', [MediaController::class, 'index'])->name('index');

@@ -5,6 +5,11 @@ const props = defineProps({
     value: {
         type: String,
         required: true
+    },
+    showName: {
+        type: Boolean,
+        required: false,
+        default: true
     }
 })
 
@@ -30,7 +35,7 @@ const name = computed(() => {
 </script>
 <template>
     <div class="flex items-center">
-        <div :class="[classNames]" class="w-4 h-4 mr-xs rounded-full"></div>
-        <div>{{ name }}</div>
+        <div :class="[classNames]" v-tooltip="`${showName ? '' : name}`" class="w-4 h-4 rounded-full"></div>
+        <div v-if="showName" class="ml-xs">{{ name }}</div>
     </div>
 </template>

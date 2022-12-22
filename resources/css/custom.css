@@ -6,6 +6,10 @@
     .main {
         width: calc(theme('width.full') - 240px);
     }
+
+    .calendar-month-days-height {
+        height: calc(theme('height.screen') - 139px);
+    }
 }
 
 @layer utilities {
@@ -15,5 +19,28 @@
 
     .row-py {
         @apply py-10;
+    }
+
+    /* Firefox */
+    .mixpost-scroll-style {
+        scrollbar-width: thin;
+        /*scrollbar-color: var(--secondary) var(--primary);*/
+    }
+
+    /* Chrome, Edge, and Safari */
+    .mixpost-scroll-style::-webkit-scrollbar {
+        @apply invisible w-3;
+    }
+
+    .mixpost-scroll-style::-webkit-scrollbar-track {
+        @apply bg-gray-50 rounded;
+    }
+
+    .mixpost-scroll-style::-webkit-scrollbar-thumb {
+        @apply bg-gray-300 rounded-md border-4 border-solid border-white transition-colors ease-in-out duration-200;
+    }
+
+    .mixpost-scroll-style::-webkit-scrollbar-thumb:hover {
+        @apply bg-gray-400;
     }
 }

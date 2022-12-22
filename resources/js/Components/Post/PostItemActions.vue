@@ -28,7 +28,9 @@ const emit = defineEmits(['onDelete'])
 const confirmationDeletion = ref(false);
 
 const filterStatus = computed(() => {
-    return usePage().props.value.filter.status;
+    const pageProps = usePage().props.value;
+
+    return pageProps.hasOwnProperty('filter') ? pageProps.filter.status : null;
 });
 
 const {notify} = useNotifications();

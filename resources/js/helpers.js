@@ -1,4 +1,5 @@
 import {utcToZonedTime} from "date-fns-tz";
+import {format} from "date-fns";
 
 export function getWindowDimensions() {
     let width = Math.max(
@@ -89,4 +90,14 @@ export function convertTime12to24(time12h) {
     }
 
     return `${hours}:${minutes}`;
+}
+
+export function convertTime24to12(time24h) {
+    const date = new Date();
+
+    const [hours, minutes] = time24h.split(':');
+
+    date.setHours(hours, minutes);
+
+    return format(date, 'h:mmaaa');
 }
