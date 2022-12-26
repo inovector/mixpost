@@ -47,7 +47,19 @@ const today = computed(() => {
     return format(utcToZonedTime(new Date().toISOString(), props.timeZone), 'yyyy-MM-dd')
 });
 
-const minutesSlot = [0, 30];
+const start = computed(() => {
+    return startOfWeek(selectedDate.value, {
+        weekStartsOn: props.weekStartsOn,
+    })
+});
+
+const weekDays = computed(() => {
+    return range(7).map((item) => {
+        const date = item === 0 ? start.value : addDays(start.value, item);
+
+        return format(date, 'yyyy-MM-dd')
+    });
+})
 
 const dayTimes = computed(() => {
     let times = [];
@@ -64,24 +76,21 @@ const dayTimes = computed(() => {
     return times;
 })
 
-const start = computed(() => {
-    return startOfWeek(selectedDate.value, {
-        weekStartsOn: props.weekStartsOn,
-    })
-});
-
-const weekDays = computed(() => {
-    return range(7).map((item) => {
-        const date = item === 0 ? start.value : addDays(start.value, item);
-
-        return format(date, 'yyyy-MM-dd')
-    });
-})
+const minuteSlots = [
+    {
+        start: 0,
+        end: 29
+    },
+    {
+        start: 30,
+        end: 59
+    }
+];
 
 const getPosts = (date, time, minuteSlot) => {
     return props.posts.filter((post) => {
-        const startTime = format(addMinutes(parseISO(`${date} ${time}`), minuteSlot), 'kk:mm');
-        const endTime = format(addMinutes(parseISO(`${date} ${time}`), minuteSlot === 30 ? 60 : minuteSlot), 'kk:mm');
+        const startTime = format(addMinutes(parseISO(`${date} ${time}`), minuteSlot['start']), 'kk:mm');
+        const endTime = format(addMinutes(parseISO(`${date} ${time}`), minuteSlot['end']), 'kk:mm');
 
         return date === post.scheduled_at.date && (post.scheduled_at.time >= startTime && post.scheduled_at.time <= endTime);
     });
@@ -95,7 +104,7 @@ const selectDate = (value) => {
 
 const scrolled = ref(false);
 
-const onScroll = throttle(($event)=> {
+const onScroll = throttle(($event) => {
     scrolled.value = $event.target.scrollTop > 0
 }, 100)
 </script>
@@ -115,19 +124,22 @@ const onScroll = throttle(($event)=> {
         </div>
 
         <div @scroll="onScroll" class="calendar-week-height overflow-y-auto">
-            <Weekdays :timeZone="timeZone" :weekStartsOn="weekStartsOn" :selectedDate="selectedDate" :scrolled="scrolled"/>
+            <Weekdays :timeZone="timeZone" :weekStartsOn="weekStartsOn" :selectedDate="selectedDate"
+                      :scrolled="scrolled"/>
 
             <div class="w-full grid grid-cols-week-time">
                 <template v-for="time in dayTimes">
-                    <template v-for="(minuteSlot, minuteSlotIndex) in minutesSlot">
-                        <div class="text-center text-gray-400 text-sm font-semibold">{{ minuteSlotIndex === 0 ? time[timeFormat] : '' }}</div>
+                    <template v-for="(minuteSlot, minuteSlotIndex) in minuteSlots">
+                        <div class="text-center text-gray-400 text-sm font-semibold">
+                            {{ minuteSlotIndex === 0 ? time[timeFormat] : '' }}
+                        </div>
 
                         <div v-for="(weekday, indexDay) in weekDays" :key="indexDay"
                              class="grid grid-cols-1 border-t border-l border-gray-200 text-center font-semibold bg-white">
 
                             <WeekDayHourMinuteItem :dateSlot="weekday"
-                                                   :minuteSlot="minuteSlot"
                                                    :timeSlot="time[24]"
+                                                   :minuteSlot="minuteSlot"
                                                    :timeZone="timeZone"
                                                    :timeFormat="timeFormat"
                                                    :posts="getPosts(weekday, time[24], minuteSlot)"/>

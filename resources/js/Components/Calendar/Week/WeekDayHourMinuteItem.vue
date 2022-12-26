@@ -16,18 +16,18 @@ const props = defineProps({
         required: true,
     },
     minuteSlot: {
-        type: Number,
+        type: Object,
         required: true,
-    },
-    timeFormat: {
-        required: false,
-        type: Number,
-        default: 12
     },
     timeZone: {
         required: false,
         type: String,
         default: 'UTC'
+    },
+    timeFormat: {
+        required: false,
+        type: Number,
+        default: 12
     },
     posts: {
         type: Array,
@@ -36,13 +36,13 @@ const props = defineProps({
 })
 
 const isDisabled = computed(() => {
-    const cellDateTimeMinute = addMinutes(parseISO(`${props.dateSlot} ${props.timeSlot}`), props.minuteSlot === 30 ? 60 : props.minuteSlot);
+    const cellDateTimeMinute = addMinutes(parseISO(`${props.dateSlot} ${props.timeSlot}`), props.minuteSlot['end']);
 
     return isDateTimePast(cellDateTimeMinute, props.timeZone);
 })
 
 const label = computed(() => {
-    const cellDateTimeMinute = addMinutes(parseISO(`${props.dateSlot} ${props.timeSlot}`), props.minuteSlot);
+    const cellDateTimeMinute = addMinutes(parseISO(`${props.dateSlot} ${props.timeSlot}`), props.minuteSlot['start']);
 
     return format(cellDateTimeMinute, `${props.timeFormat === 12 ? 'h:mm aaa' : 'H:mm'}`)
 })
