@@ -64,7 +64,7 @@ const style = computed(() => {
     >
         <div
             v-if="!isDisabled"
-            class="absolute top-0  right-0 mr-sm opacity-0 group-hover:opacity-100 transition-opacity ease-in-out duration-300">
+            class="absolute mt-xs right-0 mr-sm z-10 opacity-0 group-hover:opacity-100 transition-opacity ease-in-out duration-300">
             <button type="button"
                     class="flex items-center text-gray-400 hover:text-indigo-500 transition-colors ease-in-out duration-200">
                 <span class="mr-xs text-sm">{{ label }}</span>
@@ -72,7 +72,7 @@ const style = computed(() => {
             </button>
         </div>
 
-        <div v-if="posts.length" class="mt-xl pb-xl h-full overflow-hidden">
+        <div v-if="posts.length" :class="{'mt-xl': !isDisabled}" class="h-full overflow-hidden">
             <div class="relative p-sm overflow-y-auto mixpost-scroll-style h-full">
                 <div class="flex flex-wrap space-y-xs w-full">
                     <template v-for="post in posts" :key="post.id">
