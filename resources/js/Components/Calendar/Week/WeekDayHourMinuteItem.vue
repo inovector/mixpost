@@ -35,20 +35,16 @@ const props = defineProps({
     },
 })
 
-const fullDateTimeMinute = computed(()=> {
-    return addMinutes(parseISO(`${props.dateSlot} ${props.timeSlot}`), props.minuteSlot);;
-})
-
 const isDisabled = computed(() => {
-    const cellDateTime = parseISO(`${props.dateSlot} ${props.timeSlot}`);
+    const cellDateTimeMinute = addMinutes(parseISO(`${props.dateSlot} ${props.timeSlot}`), props.minuteSlot === 30 ? 60 : props.minuteSlot);
 
-    return isDateTimePast(fullDateTimeMinute.value, props.timeZone);
+    return isDateTimePast(cellDateTimeMinute, props.timeZone);
 })
 
 const label = computed(() => {
-    // const parse = addMinutes(parseISO(`${props.dateSlot} ${props.timeSlot}`), props.minuteSlot);
+    const cellDateTimeMinute = addMinutes(parseISO(`${props.dateSlot} ${props.timeSlot}`), props.minuteSlot);
 
-    return format(fullDateTimeMinute.value, `${props.timeFormat === 12 ? 'h:mm aaa' : 'H:mm'}`)
+    return format(cellDateTimeMinute, `${props.timeFormat === 12 ? 'h:mm aaa' : 'H:mm'}`)
 })
 
 const style = computed(() => {

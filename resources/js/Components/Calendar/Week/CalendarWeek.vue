@@ -80,8 +80,8 @@ const weekDays = computed(() => {
 
 const getPosts = (date, time, minuteSlot) => {
     return props.posts.filter((post) => {
-        const startTime = format(addMinutes(parseISO(`${date} ${time}`), (minuteSlot - 15)), 'kk:mm');
-        const endTime = format(addMinutes(parseISO(`${date} ${time}`), minuteSlot === 45 ? 60 : minuteSlot), 'kk:mm');
+        const startTime = format(addMinutes(parseISO(`${date} ${time}`), minuteSlot), 'kk:mm');
+        const endTime = format(addMinutes(parseISO(`${date} ${time}`), minuteSlot === 30 ? 60 : minuteSlot), 'kk:mm');
 
         return date === post.scheduled_at.date && (post.scheduled_at.time >= startTime && post.scheduled_at.time <= endTime);
     });
@@ -98,7 +98,6 @@ const scrolled = ref(false);
 const onScroll = throttle(($event)=> {
     scrolled.value = $event.target.scrollTop > 0
 }, 100)
-
 </script>
 <template>
     <div class="bg-white ">
