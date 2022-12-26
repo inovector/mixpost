@@ -1,5 +1,5 @@
 <script setup>
-import {startOfMonth, addMonths, parseISO, subMonths} from "date-fns";
+import {addWeeks, parseISO, subWeeks} from "date-fns";
 import SecondaryButton from "@/Components/Button/SecondaryButton.vue"
 import PureButton from "@/Components/Button/PureButton.vue"
 import ChevronRightIcon from "@/Icons/ChevronRight.vue"
@@ -19,7 +19,7 @@ const props = defineProps({
 const emit = defineEmits(['dateSelected']);
 
 const selectPrevious = () => {
-    let newSelectedDate = startOfMonth(subMonths(props.selectedDate, 1));
+    let newSelectedDate = subWeeks(props.selectedDate, 1);
     emit("dateSelected", newSelectedDate);
 }
 
@@ -29,7 +29,7 @@ const selectCurrent = () => {
 }
 
 const selectNext = () => {
-    let newSelectedDate = startOfMonth(addMonths(props.selectedDate, 1));
+    let newSelectedDate = addWeeks(props.selectedDate, 1);
     emit("dateSelected", newSelectedDate);
 }
 </script>
@@ -38,12 +38,8 @@ const selectNext = () => {
         <SecondaryButton @click="selectCurrent" class="mr-xs">Today</SecondaryButton>
 
         <div class="flex items-center">
-            <PureButton @click="selectPrevious" class="mr-xs">
-                <ChevronLeftIcon/>
-            </PureButton>
-            <PureButton @click="selectNext">
-                <ChevronRightIcon/>
-            </PureButton>
+            <PureButton @click="selectPrevious" class="mr-xs"><ChevronLeftIcon/></PureButton>
+            <PureButton @click="selectNext"><ChevronRightIcon/></PureButton>
         </div>
     </div>
 </template>

@@ -24,7 +24,7 @@ class CalendarController extends Controller
             'tags' => fn() => TagResource::collection(Tag::latest()->get())->resolve(),
             'posts' => fn() => PostResource::collection($posts),
             'type' => $request->type(),
-            'selected_date' => $request->route('date', $request->today())
+            'selected_date' => $request->selectedDate()
         ]);
     }
 }

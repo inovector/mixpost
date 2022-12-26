@@ -76,6 +76,13 @@ export function isDatePast(date, timeZone = null) {
     return date < today;
 }
 
+export function isDateTimePast(datetime, timeZone = null) {
+    const today = timeZone ? utcToZonedTime(new Date().toISOString(), timeZone) : new Date();
+    today.setSeconds(0);
+
+    return datetime < today;
+}
+
 export function convertTime12to24(time12h) {
     const [time, modifier] = time12h.split(' ');
 
@@ -92,12 +99,12 @@ export function convertTime12to24(time12h) {
     return `${hours}:${minutes}`;
 }
 
-export function convertTime24to12(time24h) {
+export function convertTime24to12(time24h, customFormat = 'h:mmaaa') {
     const date = new Date();
 
     const [hours, minutes] = time24h.split(':');
 
     date.setHours(hours, minutes);
 
-    return format(date, 'h:mmaaa');
+    return format(date, customFormat);
 }

@@ -27,7 +27,7 @@ const props = defineProps({
     },
     initialDate: {
         required: false,
-        type: String,
+        type: [String, Date],
         default: (props) => {
             return format(utcToZonedTime(new Date().toISOString(), props.timeZone), 'yyyy-MM-dd')
         }
@@ -153,17 +153,15 @@ const selectDate = (value) => {
                     :selected-date="selectedDate"
                     @dateSelected="selectDate"
                 />
-                <DateIndicator
-                    :selected-date="selectedDate"
-                    class="calendar-month-header-selected-month"
-                />
+                <DateIndicator :selected-date="selectedDate"/>
             </div>
+
             <slot name="header"/>
         </div>
 
         <Weekdays :weekStartsOn="weekStartsOn"/>
 
-        <div class="calendar-month-days-height grid grid-cols-7 relative border-t border-t-gray-200">
+        <div class="calendar-month-height grid grid-cols-7 relative border-t border-t-gray-200">
             <MonthDayItem
                 v-for="day in days"
                 :key="day.date"

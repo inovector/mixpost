@@ -9,11 +9,11 @@ const props = defineProps({
     }
 })
 
-const selectedMonth = computed(()=> {
+const label = computed(()=> {
     return format(props.selectedDate, 'MMMM yyyy');
 });
 </script>
 <template>
-    <div class="text-gray-700 font-semibold text-lg">{{ selectedMonth }}</div>
+    <div class="text-gray-700 font-semibold text-lg">{{ label }}</div>
 </template>
 

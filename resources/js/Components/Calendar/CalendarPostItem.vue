@@ -93,7 +93,7 @@ const closePreview = () => {
         </div>
 
         <div class="w-full h-full p-sm bg-white">
-            <div>{{ content.excerpt }}</div>
+            <div class="text-left">{{ content.excerpt }}</div>
 
             <div v-if="accounts.length" class="flex items-center mt-xs">
                 <div v-for="account in accounts" :key="account.id" class="mr-xs last:mr-0">
@@ -110,6 +110,7 @@ const closePreview = () => {
             </div>
         </div>
     </div>
+
     <DialogModal :show="preview" :scrollableBody="true" @close="closePreview">
         <template #body>
             <PostStatus :value="item.status" class="mb-lg"/>

@@ -88,6 +88,9 @@ module.exports = {
                 'lg': '1.5rem', // 6
                 'xl': '2rem', // 8
                 '2xl': '2.5rem', // 10
+            },
+            gridTemplateColumns: {
+                'week-time': '70px repeat(7, 1fr)'
             }
         },
     },

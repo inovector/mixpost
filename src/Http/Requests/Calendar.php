@@ -16,9 +16,14 @@ class Calendar extends FormRequest
     {
         $this->merge([
             'calendar_type' => $this->type(),
-            'date' => $this->route('date', $this->today()),
+            'date' => $this->selectedDate(),
             'exclude_status' => 'draft',
         ]);
+    }
+
+    public function selectedDate(): string
+    {
+        return $this->route('date', $this->today());
     }
 
     public function today(): string

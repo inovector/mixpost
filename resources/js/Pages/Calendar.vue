@@ -3,6 +3,7 @@ import {computed, ref, provide, watch} from "vue";
 import {Head} from '@inertiajs/inertia-vue3';
 import {Inertia} from "@inertiajs/inertia";
 import {format} from "date-fns";
+import {throttle} from "lodash";
 import useSettings from "@/Composables/useSettings";
 import CalendarMonth from "@/Components/Calendar/Month/CalendarMonth.vue";
 import CalendarWeek from "@/Components/Calendar/Week/CalendarWeek.vue";
@@ -23,9 +24,10 @@ const props = defineProps({
     }
 })
 
-const {timeZone, weekStartsOn} = useSettings();
+const {timeZone, timeFormat, weekStartsOn} = useSettings();
 
 const type = ref(props.type);
+const selectedDate = ref(props.selected_date)
 
 const filter = ref({
     status: null,
@@ -45,11 +47,15 @@ const isCalendarWeekType = computed(() => {
 })
 
 const dateSelected = (date) => {
-    fetchPosts({date: format(date, 'yyyy-MM-dd')});
+    const newSelectedDate = format(date, 'yyyy-MM-dd');
+
+    selectedDate.value = newSelectedDate;
+
+    fetchPostsThrottle({date: newSelectedDate});
 }
 
 watch(type, () => {
-    fetchPosts({date: props.selected_date, type: type.value});
+    fetchPosts({date: selectedDate.value, type: type.value});
 })
 
 const fetchPosts = (data) => {
@@ -58,12 +64,16 @@ const fetchPosts = (data) => {
         only: ['posts']
     });
 }
+
+const fetchPostsThrottle = throttle((data) => {
+    fetchPosts(data);
+}, 300)
 </script>
 <template>
     <Head title="Schedule"/>
 
     <CalendarMonth v-if="isCalendarMonthType"
-                   :initialDate="selected_date"
+                   :initialDate="selectedDate"
                    :weekStartsOn="weekStartsOn"
                    :timeZone="timeZone"
                    :posts="posts.data"
@@ -73,7 +83,13 @@ const fetchPosts = (data) => {
         </template>
     </CalendarMonth>
 
-    <CalendarWeek v-if="isCalendarWeekType">
+    <CalendarWeek v-if="isCalendarWeekType"
+                  :initialDate="selectedDate"
+                  :weekStartsOn="weekStartsOn"
+                  :timeZone="timeZone"
+                  :timeFormat="timeFormat"
+                  :posts="posts.data"
+                  @dateSelected="dateSelected">
         <template #header>
             <CalendarToolbar/>
         </template>

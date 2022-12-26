@@ -7,8 +7,12 @@
         width: calc(theme('width.full') - 240px);
     }
 
-    .calendar-month-days-height {
+    .calendar-month-height {
         height: calc(theme('height.screen') - 139px);
+    }
+
+    .calendar-week-height {
+        height: calc(theme('height.screen') - 90px);
     }
 }
 
