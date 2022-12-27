@@ -1,32 +1,39 @@
 <script setup>
 import {ref, onMounted, onUnmounted, computed, watch} from "vue";
+import {Link} from '@inertiajs/inertia-vue3';
+import {usePage} from "@inertiajs/inertia-vue3";
 import emitter from "@/Services/emitter";
+import SecondaryButton from "@/Components/Button/SecondaryButton.vue";
 import CheckIcon from "@/Icons/Check.vue"
 import ExclamationIcon from "@/Icons/Exclamation.vue"
 import XIcon from "@/Icons/X.vue"
-import {usePage} from "@inertiajs/inertia-vue3";
 
 const variant = ref('info');
 const message = ref('');
+const button = ref({
+    name: null,
+    url: null
+})
 const show = ref(false);
 
 let showTimeout = null;
 
 onMounted(() => {
-    emitter.on('notify', e => open(e.variant, e.message));
+    emitter.on('notify', e => open(e.variant, e.message, e.button));
 });
 
 onUnmounted(() => {
     emitter.off('notify');
 });
 
-const open = (variantName, messageText) => {
+const open = (variantName, messageText, buttonObject) => {
     if (showTimeout) {
         clearTimeout(showTimeout);
     }
 
     variant.value = variantName;
     message.value = messageText.replace(/\n/g, '<br />');
+    button.value = buttonObject;
     show.value = true;
 
     showTimeout = setTimeout(() => {
@@ -103,7 +110,14 @@ watch(() => flash, () => {
                             <component :is="variantIcon"/>
                         </div>
                     </div>
-                    <div class="text-gray-200" v-html="message"/>
+                    <div>
+                        <div class="text-gray-200" v-html="message"/>
+                        <div v-if="button.href" class="mt-xs">
+                            <Link :href="button.href">
+                               <SecondaryButton @click="close">{{ button.name }}</SecondaryButton>
+                            </Link>
+                        </div>
+                    </div>
                     <button @click="close" class="ml-2xl hover:rotate-90 transition-transform ease-in-out duration-300">
                         <XIcon class="text-gray-200"/>
                     </button>

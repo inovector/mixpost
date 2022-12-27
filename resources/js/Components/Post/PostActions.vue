@@ -60,7 +60,10 @@ const schedule = (postNow = false) => {
     axios.post(route('mixpost.posts.schedule', {post: postId.value}), {
         postNow
     }).then((response) => {
-        notify('success', response.data);
+        notify('success', response.data, {
+            name: 'View in calendar',
+            href: route('mixpost.calendar', {date: props.form.date})
+        });
 
         Inertia.visit(route('mixpost.posts.index'));
     }).catch((error) => {

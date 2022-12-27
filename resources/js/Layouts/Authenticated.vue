@@ -12,7 +12,7 @@ const context = reactive({
 
 provide('appContext', context);
 
-const removeStartEventListener = Inertia.on('start', (event) => {
+const removeStartEventListener = Inertia.on('start', () => {
     context.showAside = false;
 });
 

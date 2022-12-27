@@ -3,6 +3,7 @@
 namespace Inovector\Mixpost\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Carbon;
 use Inovector\Mixpost\Models\Post;
 
 class SchedulePost extends FormRequest
@@ -43,6 +44,11 @@ class SchedulePost extends FormRequest
 
     public function handle(): void
     {
-        $this->post->setScheduled($this->input('postNow') ? now() : null);
+        $this->post->setScheduled($this->getDateTime());
+    }
+
+    public function getDateTime(): Carbon|\Carbon\Carbon
+    {
+        return $this->input('postNow') ? now() : $this->post->scheduled_at;
     }
 }
