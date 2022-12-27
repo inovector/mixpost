@@ -8,6 +8,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 use Inovector\Mixpost\Actions\RedirectAfterDeletedPost;
@@ -37,7 +38,7 @@ class PostsController extends Controller
                 'tags' => $request->get('tags', []),
                 'accounts' => $request->get('accounts', [])
             ],
-            'posts' => PostResource::collection($posts)->additional([
+            'posts' => fn() => PostResource::collection($posts)->additional([
                 'filter' => [
                     'accounts' => Arr::map($request->get('accounts', []), 'intval')
                 ]
@@ -46,13 +47,17 @@ class PostsController extends Controller
         ]);
     }
 
-    public function create(): Response
+    public function create(Request $request): Response
     {
         return Inertia::render('Posts/CreateEdit', [
             'default_accounts' => Settings::get('default_accounts'),
             'accounts' => AccountResource::collection(Account::oldest()->get())->resolve(),
             'tags' => TagResource::collection(Tag::latest()->get())->resolve(),
             'post' => null,
+            'schedule_at' => [
+                'date' => Str::before($request->route('schedule_at'), ' '),
+                'time' => Str::after($request->route('schedule_at'), ' '),
+            ]
         ]);
     }
 

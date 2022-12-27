@@ -35,7 +35,9 @@ Route::middleware(['web', MixpostAuthMiddleware::class, HandleInertiaRequests::c
 
     Route::prefix('posts')->name('posts.')->group(function () {
         Route::get('/', [PostsController::class, 'index'])->name('index');
-        Route::get('create', [PostsController::class, 'create'])->name('create');
+        Route::get('create/{schedule_at?}', [PostsController::class, 'create'])
+            ->name('create')
+            ->where('schedule_at', '^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]) (0\d|1\d|2[0-3]):([0-5]\d)$');
         Route::post('store', [PostsController::class, 'store'])->name('store');
         Route::get('{post}', [PostsController::class, 'edit'])->name('edit');
         Route::put('{post}', [PostsController::class, 'update'])->name('update');

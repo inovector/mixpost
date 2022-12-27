@@ -1,5 +1,5 @@
 <script setup>
-import {computed, ref} from "vue";
+import {computed, inject, ref} from "vue";
 import {uniqBy} from "lodash";
 import {convertTime24to12} from "@/helpers";
 import useSettings from "@/Composables/useSettings";
@@ -16,14 +16,10 @@ const props = defineProps({
     item: {
         type: Object,
         required: true
-    },
-    filter: {
-        type: Object,
-        default: {
-            accounts: [],
-        }
     }
 })
+
+const calendarFilter = inject('calendarFilter');
 
 const {timeFormat} = useSettings();
 const {getOriginalVersion, getAccountVersion} = usePostVersions();
@@ -32,15 +28,13 @@ const content = computed(() => {
     if (!props.item.versions.length) {
         return {
             excerpt: '',
-            media: null,
-            media_count: 0,
         }
     }
 
     let accounts = props.item.accounts;
 
-    if (props.filter.accounts.length) {
-        accounts = accounts.filter(account => props.filter.accounts.includes(account.id))
+    if (calendarFilter.value.accounts.length) {
+        accounts = accounts.filter(account => calendarFilter.value.accounts.includes(account.id))
     }
 
     const accountVersions = accounts.map((account) => {
@@ -52,9 +46,7 @@ const content = computed(() => {
     const record = accountVersions.length ? accountVersions[0] : props.item.versions[0].content[0];
 
     return {
-        excerpt: record.excerpt,
-        media: record.media.length ? record.media[0] : null,
-        media_count: record.media.length
+        excerpt: record.excerpt
     }
 });
 

@@ -166,7 +166,8 @@ const selectDate = (value) => {
                 v-for="day in days"
                 :key="day.date"
                 :day="day"
-                :is-today="day.date === today"
+                :isToday="day.date === today"
+                :timeZone="timeZone"
             />
         </div>
     </div>

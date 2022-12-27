@@ -3,7 +3,7 @@ import {computed, ref, provide, watch} from "vue";
 import {Head} from '@inertiajs/inertia-vue3';
 import {Inertia} from "@inertiajs/inertia";
 import {format} from "date-fns";
-import {throttle} from "lodash";
+import {cloneDeep, pickBy, throttle} from "lodash";
 import useSettings from "@/Composables/useSettings";
 import CalendarMonth from "@/Components/Calendar/Month/CalendarMonth.vue";
 import CalendarWeek from "@/Components/Calendar/Week/CalendarWeek.vue";
@@ -21,7 +21,11 @@ const props = defineProps({
     selected_date: {
         required: true,
         type: [String, Date]
-    }
+    },
+    filter: {
+        type: Object,
+        default: {}
+    },
 })
 
 const {timeZone, timeFormat, weekStartsOn} = useSettings();
@@ -30,9 +34,10 @@ const type = ref(props.type);
 const selectedDate = ref(props.selected_date)
 
 const filter = ref({
-    status: null,
-    tags: [],
-    accounts: []
+    keyword: props.filter.keyword,
+    status: props.filter.status,
+    tags: props.filter.tags,
+    accounts: props.filter.accounts
 });
 
 provide('calendarType', type);
@@ -55,8 +60,12 @@ const dateSelected = (date) => {
 }
 
 watch(type, () => {
-    fetchPosts({date: selectedDate.value, type: type.value});
+    fetchPosts(Object.assign({date: selectedDate.value, type: type.value}, pickBy(filter.value)));
 })
+
+watch(() => cloneDeep(filter.value), throttle(() => {
+    fetchPosts(Object.assign({date: selectedDate.value}, pickBy(filter.value)))
+}, 300))
 
 const fetchPosts = (data) => {
     Inertia.get(route('mixpost.calendar', data), {}, {

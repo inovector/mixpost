@@ -7,7 +7,7 @@ import {convertTime24to12} from "@/helpers";
 import DateIndicator from "@/Components/Calendar/Week/DateIndicator.vue";
 import DateSelector from "@/Components/Calendar/Week/DateSelector.vue";
 import Weekdays from "@/Components/Calendar/Week/Weekdays.vue";
-import WeekDayHourMinuteItem from "@/Components/Calendar/Week/WeekDayHourMinuteItem.vue";
+import WeekDayTimeItem from "@/Components/Calendar/Week/WeekDayTimeItem.vue";
 
 const props = defineProps({
     timeZone: {
@@ -79,10 +79,6 @@ const dayTimes = computed(() => {
 const minuteSlots = [
     {
         start: 0,
-        end: 29
-    },
-    {
-        start: 30,
         end: 59
     }
 ];
@@ -138,7 +134,7 @@ const onScroll = throttle(($event) => {
                              :class="{'!border-t-gray-100': minuteSlotIndex !== 0}"
                              class="grid grid-cols-1 border-l border-t border-gray-200 text-center font-semibold bg-white">
 
-                            <WeekDayHourMinuteItem :dateSlot="weekday"
+                            <WeekDayTimeItem :dateSlot="weekday"
                                                    :timeSlot="time[24]"
                                                    :minuteSlot="minuteSlot"
                                                    :timeZone="timeZone"

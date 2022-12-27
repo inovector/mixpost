@@ -1,6 +1,8 @@
 <script setup>
 import {computed} from "vue";
+import {Inertia} from "@inertiajs/inertia";
 import {format} from "date-fns";
+import {utcToZonedTime} from "date-fns-tz";
 import CalendarPostItem from "@/Components/Calendar/CalendarPostItem.vue";
 import PlusIcon from "@/Icons/Plus.vue"
 import DisabledItemImg from "@img/calendar-disabled-item.svg"
@@ -13,6 +15,11 @@ const props = defineProps({
     isToday: {
         type: Boolean,
         default: false,
+    },
+    timeZone: {
+        required: false,
+        type: String,
+        default: 'UTC'
     },
 })
 
@@ -29,6 +36,14 @@ const style = computed(() => {
         backgroundImage: `url('${DisabledItemImg}')`
     }
 })
+
+const add = () => {
+    const now = utcToZonedTime(new Date().toISOString(), props.timeZone);
+
+    let scheduleAt = `${props.day.date} ${format(now, 'H:mm')}`;
+
+    Inertia.visit(route('mixpost.posts.create', {schedule_at: scheduleAt}));
+}
 </script>
 <template>
     <div
@@ -43,7 +58,7 @@ const style = computed(() => {
         <div
             v-if="!day.isDisabled"
             class="absolute mt-xs right-0 mr-sm opacity-0 group-hover:opacity-100 transition-opacity ease-in-out duration-300">
-            <button type="button"
+            <button @click="add" type="button"
                     class="text-gray-400 hover:text-indigo-500 transition-colors ease-in-out duration-200">
                 <PlusIcon/>
             </button>

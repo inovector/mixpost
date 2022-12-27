@@ -1,7 +1,9 @@
 <script setup>
 import {computed} from "vue";
+import {Inertia} from "@inertiajs/inertia";
 import {isDateTimePast} from "@/helpers";
-import {addMinutes, format, parseISO} from "date-fns";
+import {addMinutes, format, getHours, parseISO} from "date-fns";
+import {utcToZonedTime} from "date-fns-tz";
 import CalendarPostItem from "@/Components/Calendar/CalendarPostItem.vue";
 import PlusIcon from "@/Icons/Plus.vue"
 import DisabledItemImg from "@img/calendar-disabled-item.svg"
@@ -56,23 +58,37 @@ const style = computed(() => {
         backgroundImage: `url('${DisabledItemImg}')`
     }
 })
+
+const add = () => {
+    let scheduleAt = `${props.dateSlot} ${props.timeSlot}`;
+
+    const now = utcToZonedTime(new Date().toISOString(), props.timeZone);
+
+    const today = format(now, 'yyyy-MM-dd')
+
+    if (`${today} ${getHours(now)}:00` === scheduleAt) {
+        scheduleAt = format(now, 'yyyy-MM-dd H:mm');
+    }
+
+    Inertia.visit(route('mixpost.posts.create', {schedule_at: scheduleAt}));
+}
 </script>
 <template>
     <div
-        class="relative min-h-[35px] group"
+        class="relative min-h-[50px] group"
         :style="style"
     >
         <div
             v-if="!isDisabled"
             class="absolute mt-xs right-0 mr-sm z-10 opacity-0 group-hover:opacity-100 transition-opacity ease-in-out duration-300">
-            <button type="button"
+            <button @click="add" type="button"
                     class="flex items-center text-gray-400 hover:text-indigo-500 transition-colors ease-in-out duration-200">
                 <span class="mr-xs text-sm">{{ label }}</span>
                 <PlusIcon/>
             </button>
         </div>
 
-        <div v-if="posts.length" :class="{'mt-xl': !isDisabled}" class="h-full overflow-hidden">
+        <div v-if="posts.length" :class="{'mt-lg': !isDisabled}" class="h-full overflow-hidden">
             <div class="relative p-sm overflow-y-auto mixpost-scroll-style h-full">
                 <div class="flex flex-wrap space-y-xs w-full">
                     <template v-for="post in posts" :key="post.id">
