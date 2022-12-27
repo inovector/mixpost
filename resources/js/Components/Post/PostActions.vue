@@ -104,7 +104,7 @@ const accounts = computed(() => {
                                  :class="{'!normal-case rounded-r-none border-r-indigo-800': scheduleTime, 'rounded-r-lg': !canSchedule}"
                                  @click="timePicker = true">
                     <CalendarIcon class="lg:mr-xs"/>
-                    <span class="hidden lg:block">{{ scheduleTime ? scheduleTime : 'Pick time' }}</span>
+                    <span class="hidden sm:block">{{ scheduleTime ? scheduleTime : 'Pick time' }}</span>
                 </SecondaryButton>
 
                 <template v-if="scheduleTime && canSchedule">

@@ -33,7 +33,11 @@ const open = (variantName, messageText, buttonObject) => {
 
     variant.value = variantName;
     message.value = messageText.replace(/\n/g, '<br />');
-    button.value = buttonObject;
+
+    if(buttonObject) {
+        button.value = buttonObject;
+    }
+
     show.value = true;
 
     showTimeout = setTimeout(() => {
