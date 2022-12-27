@@ -95,7 +95,7 @@ const closePreview = () => {
 
             <div class="flex items-center justify-between mt-xs">
                 <div class="flex items-center text-gray-500">
-                    <ClockIcon class="hidden md:block mr-1 2xl:mr-xs !w-5 !h-5"/>
+                    <ClockIcon class="hidden md:block mr-1 !w-5 !h-5"/>
                     <span class="text-sm">{{ time }}</span>
                 </div>
                 <PostStatus :value="item.status" :showName="false" class="hidden md:block"/>
