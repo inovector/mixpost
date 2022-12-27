@@ -106,8 +106,8 @@ const onScroll = throttle(($event) => {
 </script>
 <template>
     <div class="bg-white ">
-        <div class="flex items-center justify-between p-lg">
-            <div class="flex items-center space-x-xs">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between p-lg">
+            <div class="flex items-center space-x-xs mb-xs md:mb-0">
                 <DateSelector
                     :currentDate="today"
                     :selectedDate="selectedDate"
@@ -119,11 +119,11 @@ const onScroll = throttle(($event) => {
             <slot name="header"/>
         </div>
 
-        <div @scroll="onScroll" class="calendar-week-height overflow-y-auto">
+        <div @scroll="onScroll" class="calendar-week-height-sm md:calendar-week-height-md xl:calendar-week-height overflow-y-auto">
             <Weekdays :timeZone="timeZone" :weekStartsOn="weekStartsOn" :selectedDate="selectedDate"
                       :scrolled="scrolled"/>
 
-            <div class="w-full grid grid-cols-week-time">
+            <div class="w-full grid grid-cols-week-time-sm md:grid-cols-week-time">
                 <template v-for="time in dayTimes">
                     <template v-for="(minuteSlot, minuteSlotIndex) in minuteSlots">
                         <div class="text-center text-gray-400 text-sm font-semibold">

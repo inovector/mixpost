@@ -85,13 +85,13 @@ const items = computed(() => {
 </script>
 <template>
     <div class="flex flex-row sticky top-0 bg-white z-10">
-        <div class="w-full grid grid-cols-week-time">
-            <div class="p-sm"></div>
+        <div class="w-full grid grid-cols-week-time-sm md:grid-cols-week-time">
+            <div></div>
             <div v-for="(item, index) in items"
                  :key="index"
                  :class="{'text-indigo-500': item.isToday, 'border-b-gray-200': scrolled, 'border-b-white': !scrolled}"
                  class="p-xs border-t border-b border-l border-gray-200 text-center font-semibold">
-                <div class="text-xl">{{ item.date }}</div>
+                <div class="text-base md:text-xl">{{ item.date }}</div>
 
                 <span :class="{'text-gray-500': !item.isToday}">
                     <span class="hidden md:block">{{ item.name }}</span>

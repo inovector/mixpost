@@ -50,8 +50,8 @@ const items = computed(() => {
 <template>
     <div class="grid grid-cols-7">
         <div v-for="(item, index) in items" :key="index" class="p-sm border-t border-r last:border-r-0 border-gray-200 text-center font-semibold">
-            <span class="hidden md:block">{{ item.name }}</span>
-            <span class="block md:hidden">{{ item.name_short }}</span>
+            <span class="hidden sm:block">{{ item.name }}</span>
+            <span class="block sm:hidden">{{ item.name_short }}</span>
         </div>
     </div>
 </template>

@@ -71,7 +71,7 @@ import CogIcon from "@/Icons/Cog.vue"
                 Configuration
             </MenuGroupHeader>
             <MenuGroupBody>
-                <MenuItem :url="route('mixpost.accounts.index')" :active="$page.component === 'Accounts'">
+                <MenuItem :url="route('mixpost.accounts.index')" :active="$page.component === 'Accounts/Accounts'">
                     <template #icon>
                         <PackageIcon/>
                     </template>

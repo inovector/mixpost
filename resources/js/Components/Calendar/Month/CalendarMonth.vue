@@ -146,8 +146,8 @@ const selectDate = (value) => {
 </script>
 <template>
     <div class="bg-white">
-        <div class="flex items-center justify-between p-lg">
-            <div class="flex items-center space-x-xs">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between p-lg">
+            <div class="flex items-center space-x-xs mb-xs md:mb-0">
                 <DateSelector
                     :current-date="today"
                     :selected-date="selectedDate"

@@ -65,7 +65,7 @@ const add = () => {
         </div>
 
         <div v-if="day.posts.length" class="mt-xl pb-xl h-full overflow-hidden">
-            <div class="relative p-sm overflow-y-auto mixpost-scroll-style h-full">
+            <div class="relative p-0.5 md:p-sm overflow-y-auto mixpost-scroll-style h-full">
                 <div class="flex flex-wrap space-y-xs w-full">
                     <template v-for="post in day.posts" :key="post.id">
                         <CalendarPostItem :item="post"/>

@@ -90,6 +90,7 @@ module.exports = {
                 '2xl': '2.5rem', // 10
             },
             gridTemplateColumns: {
+                'week-time-sm': '48px repeat(7, 1fr)',
                 'week-time': '70px repeat(7, 1fr)'
             }
         },

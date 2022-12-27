@@ -84,21 +84,21 @@ const closePreview = () => {
                  :style="{backgroundColor: tag.hex_color}"/>
         </div>
 
-        <div class="w-full h-full p-sm bg-white">
-            <div class="text-left">{{ content.excerpt }}</div>
+        <div class="w-full h-full p-1 md:p-sm bg-white">
+            <div class="text-left text-sm md:text-base">{{ content.excerpt }}</div>
 
-            <div v-if="accounts.length" class="flex items-center mt-xs">
-                <div v-for="account in accounts" :key="account.id" class="mr-xs last:mr-0">
+            <div v-if="accounts.length" class="flex flex-wrap gap-xs items-center mt-xs">
+                <div v-for="account in accounts" :key="account.id">
                     <ProviderIcon v-tooltip="`${account.name}`" :provider="account.provider" class="!w-4 !h-4"/>
                 </div>
             </div>
 
-            <div class="flex items-center justify-between">
-                <div class="flex items-center text-gray-500 mt-xs">
-                    <ClockIcon class="mr-xs !w-5 !h-5"/>
+            <div class="flex items-center justify-between mt-xs">
+                <div class="flex items-center text-gray-500">
+                    <ClockIcon class="hidden md:block mr-1 2xl:mr-xs !w-5 !h-5"/>
                     <span class="text-sm">{{ time }}</span>
                 </div>
-                <PostStatus :value="item.status" :showName="false"/>
+                <PostStatus :value="item.status" :showName="false" class="hidden md:block"/>
             </div>
         </div>
     </div>

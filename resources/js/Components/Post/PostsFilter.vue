@@ -45,7 +45,7 @@ const clear = () => {
 </script>
 <template>
     <div class="flex items-center">
-        <div class="relative mx-2">
+        <div class="relative mr-2">
             <Input type="text" v-model="modelValue.keyword" id="keyword" placeholder="Search by keyword"
                    class="w-full pl-11 pr-11"/>
             <label for="keyword" class="absolute top-0 left-0 ml-sm mt-xs">

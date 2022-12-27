@@ -11,6 +11,14 @@
         height: calc(theme('height.screen') - 139px);
     }
 
+    .calendar-week-height-sm {
+        height: calc(theme('height.screen') - 181px);
+    }
+
+    .calendar-week-height-md {
+        height: calc(theme('height.screen') - 131px);
+    }
+
     .calendar-week-height {
         height: calc(theme('height.screen') - 90px);
     }

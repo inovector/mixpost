@@ -105,7 +105,7 @@ const deletePosts = () => {
 
     <div class="row-py mb-2xl">
         <PageHeader title="Posts">
-            <PostsFilter v-model="filter"/>
+            <PostsFilter v-model="filter" class="ml-2"/>
         </PageHeader>
 
         <div class="w-full row-px">
