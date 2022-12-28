@@ -59,7 +59,7 @@ const fetchItems = () => {
 
     NProgress.start();
 
-    axios.get(route('mixpost.media.fetch'), {
+    axios.get(route('mixpost.media.fetchUploads'), {
         params: {
             page: page.value
         }

@@ -33,14 +33,14 @@ class PostsController extends Controller
             'accounts' => fn() => AccountResource::collection(Account::oldest()->get())->resolve(),
             'tags' => fn() => TagResource::collection(Tag::latest()->get())->resolve(),
             'filter' => [
-                'keyword' => $request->get('keyword', ''),
-                'status' => $request->get('status'),
-                'tags' => $request->get('tags', []),
-                'accounts' => $request->get('accounts', [])
+                'keyword' => $request->query('keyword', ''),
+                'status' => $request->query('status'),
+                'tags' => $request->query('tags', []),
+                'accounts' => $request->query('accounts', [])
             ],
             'posts' => fn() => PostResource::collection($posts)->additional([
                 'filter' => [
-                    'accounts' => Arr::map($request->get('accounts', []), 'intval')
+                    'accounts' => Arr::map($request->query('accounts', []), 'intval')
                 ]
             ]),
             'has_failed_posts' => Post::failed()->exists()

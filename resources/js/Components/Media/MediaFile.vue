@@ -1,7 +1,7 @@
 <script setup>
 import ExclamationCircleIcon from "@/Icons/ExclamationCircle.vue"
 import VideoSolidIcon from "@/Icons/VideoSolid.vue"
-import {startsWith} from "lodash";
+import {endsWith, startsWith} from "lodash";
 import {computed} from "vue";
 
 const props = defineProps({
@@ -22,9 +22,21 @@ const imgHeightClass = computed(() => {
     }[props.imgHeight]
 })
 
-const isVideo = (mime_type) => {
-    return startsWith(mime_type, 'video')
-}
+const isVideo = computed(() => {
+    return startsWith(props.media.mime_type, 'video');
+})
+
+const isGif = computed(() => {
+    return endsWith(props.media.mime_type, 'gif');
+})
+
+const thumbUrl = computed(() => {
+    if (isGif.value) {
+        return props.media.url;
+    }
+
+    return props.media.thumb_url;
+})
 </script>
 <template>
     <figure class="relative">
@@ -33,7 +45,7 @@ const isVideo = (mime_type) => {
             class="relative flex rounded"
             :class="{'border border-red-500 p-5': media.hasOwnProperty('error')}"
         >
-             <span v-if="isVideo(media.mime_type)" class="absolute top-0 right-0 mt-1 mr-1">
+             <span v-if="isVideo" class="absolute top-0 right-0 mt-1 mr-1">
                 <VideoSolidIcon class="!w-4 !h-4 text-white"/>
             </span>
 
@@ -44,8 +56,9 @@ const isVideo = (mime_type) => {
             </div>
 
             <img
-                v-if="media.thumb_url"
-                :src="media.thumb_url"
+                v-if="thumbUrl"
+                :src="thumbUrl"
+                loading="lazy"
                 alt="Image"
                 class="w-full object-cover rounded"
                 :class="imgHeightClass"

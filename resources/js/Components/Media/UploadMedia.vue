@@ -26,6 +26,10 @@ const props = defineProps({
     },
     isSelected: {
         type: Function
+    },
+    columns: {
+        type: Number,
+        default: 3,
     }
 })
 
@@ -193,8 +197,8 @@ const selected = ref([]);
         @change="onBrowse"
     />
 
-    <div class="mt-lg">
-        <Masonry :items="completedJobs">
+    <div v-if="completedJobs.length" class="mt-lg">
+        <Masonry :items="completedJobs" :columns="columns">
             <template #default="{item}">
                 <MediaSelectable :active="isSelected(item.media)" @click="toggleSelect(item.media)">
                     <MediaFile :media="item.media"/>

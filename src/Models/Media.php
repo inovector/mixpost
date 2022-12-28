@@ -22,11 +22,16 @@ class Media extends Model
     ];
 
     protected $casts = [
+        'id' => 'string',
         'conversions' => 'array'
     ];
 
     public function getFullPath(): string
     {
+        if ($this->disk === 'stock') {
+            return $this->path;
+        }
+
         return $this->filesystem()->path($this->path);
     }
 
@@ -37,6 +42,10 @@ class Media extends Model
 
     public function getUrl(): string
     {
+        if ($this->disk === 'stock') {
+            return $this->path;
+        }
+
         return $this->filesystem()->url($this->path);
     }
 
@@ -53,6 +62,10 @@ class Media extends Model
     public function getConversionUrl(string $name): ?string
     {
         if ($conversion = $this->getConversion($name)) {
+            if ($this->disk === 'stock') {
+                return $conversion['path'];
+            }
+
             return $this->filesystem($conversion['disk'])->url($conversion['path']);
         }
 
@@ -62,6 +75,10 @@ class Media extends Model
     public function getConversionFullPath(string $name): ?string
     {
         if ($conversion = $this->getConversion($name)) {
+            if ($this->disk === 'stock') {
+                return $conversion['path'];
+            }
+
             return $this->filesystem($conversion['disk'])->path($conversion['path']);
         }
 

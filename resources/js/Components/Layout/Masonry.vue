@@ -7,6 +7,10 @@ const props = defineProps({
     items: {
         type: Array,
         required: true
+    },
+    columns: {
+        type: Number,
+        default: 3,
     }
 })
 
@@ -31,7 +35,7 @@ const resizeHandler = debounce(() => {
 }, 300);
 
 const newColumns = () => {
-    let count = 3;
+    let count = props.columns;
 
     if (getWindowDimensions().width <= 768) {
         count = 2;

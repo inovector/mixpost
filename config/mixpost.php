@@ -13,6 +13,12 @@ return [
             'client_id' => env('MIXPOST_FACEBOOK_CLIENT_ID'),
             'client_secret' => env('MIXPOST_FACEBOOK_CLIENT_SECRET')
         ],
+        'unsplash' => [
+            'client_id' => env('MIXPOST_UNSPLASH_CLIENT_ID')
+        ],
+        'tenor' => [
+            'client_id' => env('MIXPOST_TENOR_CLIENT_ID')
+        ],
     ],
 
     /*

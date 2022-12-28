@@ -19,7 +19,9 @@ defineProps({
                 <slot name="description"/>
             </div>
 
-            <slot/>
+            <div :class="{'mt-lg': $slots.title || $slots.description}">
+                <slot/>
+            </div>
         </div>
     </div>
 </template>
