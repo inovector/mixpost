@@ -28,7 +28,7 @@ class Media extends Model
 
     public function getFullPath(): string
     {
-        if ($this->disk === 'stock') {
+        if ($this->disk === 'external_media') {
             return $this->path;
         }
 
@@ -42,7 +42,7 @@ class Media extends Model
 
     public function getUrl(): string
     {
-        if ($this->disk === 'stock') {
+        if ($this->disk === 'external_media') {
             return $this->path;
         }
 
@@ -62,7 +62,7 @@ class Media extends Model
     public function getConversionUrl(string $name): ?string
     {
         if ($conversion = $this->getConversion($name)) {
-            if ($this->disk === 'stock') {
+            if ($this->disk === 'external_media') {
                 return $conversion['path'];
             }
 
@@ -75,7 +75,7 @@ class Media extends Model
     public function getConversionFullPath(string $name): ?string
     {
         if ($conversion = $this->getConversion($name)) {
-            if ($this->disk === 'stock') {
+            if ($this->disk === 'external_media') {
                 return $conversion['path'];
             }
 

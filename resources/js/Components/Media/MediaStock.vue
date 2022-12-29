@@ -6,6 +6,7 @@ import MediaFile from "@/Components/Media/MediaFile.vue";
 import Masonry from "@/Components/Layout/Masonry.vue";
 import SearchInput from "@/Components/Util/SearchInput.vue";
 import MediaCredit from "@/Components/Media/MediaCredit.vue";
+import NoResult from "@/Components/Util/NoResult.vue";
 
 const props = defineProps({
     columns: {
@@ -17,6 +18,7 @@ const props = defineProps({
 const emit = defineEmits(['select'])
 
 const {
+    isLoaded,
     keyword,
     page,
     items,
@@ -55,5 +57,8 @@ watch(selected.value, () => {
             </template>
         </Masonry>
     </div>
+
+    <NoResult v-if="isLoaded && !items.length" class="mt-lg">No images found.</NoResult>
+
     <div ref="endlessPagination" class="-z-10 w-full"/>
 </template>

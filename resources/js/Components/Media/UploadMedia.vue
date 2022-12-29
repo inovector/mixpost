@@ -178,7 +178,7 @@ const selected = ref([]);
                        class="!w-16 !h-16 mx-auto mb-xs transition-colors ease-in-out duration-200"/>
             <div class="text-center mb-1">Drag & drop files here, or
                 <label for="browse"
-                       class="text-indigo-500 hover:text-indigo-700 active:text-indigo-700 focus:outline-none focus:text-indigo-700 transition-colors ease-in-out duration-200">
+                       class="cursor-pointer text-indigo-500 hover:text-indigo-700 active:text-indigo-700 focus:outline-none focus:text-indigo-700 transition-colors ease-in-out duration-200">
                     Browse
                 </label>
             </div>

@@ -16,6 +16,7 @@ const useMedia = (routeName = 'mixpost.media.fetchUploads') => {
         };
     })
 
+    const isLoaded = ref(false);
     const page = ref(1);
     const items = ref([]);
     const endlessPagination = ref(null);
@@ -78,6 +79,7 @@ const useMedia = (routeName = 'mixpost.media.fetchUploads') => {
             notify('error', 'Error retrieving media. Try again!');
         }).finally(() => {
             NProgress.done();
+            isLoaded.value = true;
         });
     }
 
@@ -103,6 +105,7 @@ const useMedia = (routeName = 'mixpost.media.fetchUploads') => {
     return {
         activeTab,
         tabs,
+        isLoaded,
         keyword,
         page,
         items,

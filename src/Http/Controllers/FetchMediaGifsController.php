@@ -15,13 +15,12 @@ class FetchMediaGifsController extends Controller
     public function __invoke(Request $request): AnonymousResourceCollection
     {
         $clientId = config('mixpost.credentials.tenor.client_id');
-
-        $words = ['young', 'social', 'mix', 'content', 'viral', 'trend', 'test', 'light', 'true', 'false', 'marketing', 'self-hosted', 'ambient', 'writer', 'technology'];
+        $terms = config('mixpost.external_media_terms');
 
         $items = Http::get("https://tenor.googleapis.com/v2/search", [
             'client_key' => $clientId,
             'key' => $clientId,
-            'q' => $request->query('keyword', Arr::random($words)),
+            'q' => $request->query('keyword', Arr::random($terms)),
             'limit' => 30,
         ]);
 
@@ -29,13 +28,13 @@ class FetchMediaGifsController extends Controller
             $media = new Media([
                 'name' => $item['content_description'],
                 'mime_type' => 'image/gif',
-                'disk' => 'stock',
+                'disk' => 'external_media',
                 'path' => $item['media_formats']['tinygif']['url'],
                 'conversions' => [
                     [
                         'disk' => 'stock',
                         'name' => 'thumb',
-                        'path' => $item['media_formats']['gif']['url']
+                        'path' => $item['media_formats']['tinygif']['url']
                     ]
                 ]
             ]);

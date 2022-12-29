@@ -24,7 +24,7 @@
     }
 
     .link {
-        @apply text-blue-500 hover:text-blue-400;
+        @apply text-blue-500 hover:text-blue-400 transition-colors ease-in-out duration-200;
     }
 }
 

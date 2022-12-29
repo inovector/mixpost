@@ -90,5 +90,11 @@ return [
     /**
      * Define cache prefix
      */
-    'cache_prefix' => env('MIXPOST_CACHE_PREFIX', 'mixpost')
+    'cache_prefix' => env('MIXPOST_CACHE_PREFIX', 'mixpost'),
+
+    /**
+     * The media component is integrated with third-party services Unsplash.com and Tenor.com
+     * Defines the default terms for displaying media resources
+     */
+    'external_media_terms' => ['young', 'social', 'mix', 'content', 'viral', 'trend', 'test', 'light', 'true', 'false', 'marketing', 'self-hosted', 'ambient', 'writer', 'technology']
 ];

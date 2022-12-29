@@ -154,7 +154,7 @@ const deletePosts = () => {
                     </template>
                 </Table>
 
-                <NoResult v-if="!posts.meta.total">No posts found.</NoResult>
+                <NoResult v-if="!posts.meta.total" class="py-md px-md">No posts found.</NoResult>
             </Panel>
 
             <div v-if="posts.meta.links.length > 3" class="mt-lg">
