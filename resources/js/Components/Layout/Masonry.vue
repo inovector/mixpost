@@ -16,7 +16,6 @@ const props = defineProps({
 
 const bottomRef = ref(null);
 const columns = ref([]);
-const cursor = ref(0);
 const ready = ref(false);
 
 onMounted(() => {
@@ -51,12 +50,9 @@ const newColumns = () => {
 }
 
 const addItem = (index) => {
-    const column = columns.value[index]
+    const columnIndex = index % columns.value.length;
 
-    if (props.items[cursor.value]) {
-        column.indexes.push(cursor.value)
-        cursor.value++
-    }
+    columns.value[columnIndex].indexes.push(index);
 }
 
 const fill = () => {
@@ -64,25 +60,14 @@ const fill = () => {
         return
     }
 
-    if (cursor.value >= props.items.length) {
-        return
+    for (let i = 0; i < props.items.length; i++) {
+        addItem(i);
     }
-
-    // Keep filling until no more items
-    nextTick(() => {
-        const bottom = maxBy(bottomRef.value, (spacer) => spacer.clientHeight || 0)
-
-        setTimeout(()=> {
-            addItem(bottom.dataset.column)
-            fill()
-        });
-    })
 }
 
 const redraw = () => {
     ready.value = false;
     columns.value.splice(0);
-    cursor.value = 0;
     columns.value.push(...newColumns())
     ready.value = true;
     fill();
