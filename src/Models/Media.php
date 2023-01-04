@@ -104,6 +104,11 @@ class Media extends Model
         return Str::before($this->mime_type, '/') === 'image';
     }
 
+    public function isImageGif(): bool
+    {
+        return $this->isImage() && Str::after($this->mime_type, '/') === 'gif';
+    }
+
     public function isVideo(): bool
     {
         return Str::before($this->mime_type, '/') === 'video';

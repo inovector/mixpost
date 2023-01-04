@@ -18,7 +18,7 @@ class MediaImageResizeConversion extends MediaConversion
 
     public function canPerform(): bool
     {
-        return $this->isImage();
+        return $this->isImage() && !$this->isGifImage();
     }
 
     public function getPath(): string

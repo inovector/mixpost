@@ -1,5 +1,5 @@
 <script setup>
-import {endsWith, startsWith} from "lodash";
+import {startsWith} from "lodash";
 import {computed} from "vue";
 import ExclamationCircleIcon from "@/Icons/ExclamationCircle.vue"
 import VideoSolidIcon from "@/Icons/VideoSolid.vue"
@@ -25,18 +25,6 @@ const imgHeightClass = computed(() => {
 const isVideo = computed(() => {
     return startsWith(props.media.mime_type, 'video');
 })
-
-const isGif = computed(() => {
-    return endsWith(props.media.mime_type, 'gif');
-})
-
-const thumbUrl = computed(() => {
-    if (isGif.value) {
-        return props.media.url;
-    }
-
-    return props.media.thumb_url;
-})
 </script>
 <template>
     <figure class="relative">
@@ -56,7 +44,7 @@ const thumbUrl = computed(() => {
             </div>
 
             <img
-                :src="thumbUrl"
+                :src="media.thumb_url"
                 loading="lazy"
                 alt="Image"
                 class="w-full object-cover rounded-md"
