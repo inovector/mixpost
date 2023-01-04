@@ -15,9 +15,10 @@ use Inovector\Mixpost\Http\Controllers\DeletePostsController;
 use Inovector\Mixpost\Http\Controllers\TagsController;
 use Inovector\Mixpost\Http\Controllers\CalendarController;
 use Inovector\Mixpost\Http\Controllers\MediaController;
-use Inovector\Mixpost\Http\Controllers\FetchMediaUploadsController;
-use Inovector\Mixpost\Http\Controllers\FetchMediaStockController;
-use Inovector\Mixpost\Http\Controllers\FetchMediaGifsController;
+use Inovector\Mixpost\Http\Controllers\MediaFetchUploadsController;
+use Inovector\Mixpost\Http\Controllers\MediaFetchStockController;
+use Inovector\Mixpost\Http\Controllers\MediaFetchGifsController;
+use Inovector\Mixpost\Http\Controllers\MediaDownloadExternalController;
 use Inovector\Mixpost\Http\Controllers\MediaUploadFileController;
 use Inovector\Mixpost\Http\Controllers\CallbackSocialProviderController;
 
@@ -58,9 +59,10 @@ Route::middleware(['web', MixpostAuthMiddleware::class, HandleInertiaRequests::c
 
     Route::prefix('media')->name('media.')->group(function () {
         Route::get('/', [MediaController::class, 'index'])->name('index');
-        Route::get('fetch/uploaded', FetchMediaUploadsController::class)->name('fetchUploads');
-        Route::get('fetch/stock', FetchMediaStockController::class)->name('fetchStock');
-        Route::get('fetch/gifs', FetchMediaGifsController::class)->name('fetchGifs');
+        Route::get('fetch/uploaded', MediaFetchUploadsController::class)->name('fetchUploads');
+        Route::get('fetch/stock', MediaFetchStockController::class)->name('fetchStock');
+        Route::get('fetch/gifs', MediaFetchGifsController::class)->name('fetchGifs');
+        Route::post('download', MediaDownloadExternalController::class)->name('download');
         Route::post('upload', MediaUploadFileController::class)->name('upload');
     });
 

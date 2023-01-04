@@ -167,7 +167,7 @@ const selected = ref([]);
     <div @dragenter.prevent="dragEnter = !isLoading"
          @drop.prevent="onDrop"
          @dragover.prevent
-         :class="{'border-gray-400 bg-white': !dragEnter, 'border-cyan-500 bg-cyan-50': dragEnter}"
+         :class="{'border-gray-700 bg-white': !dragEnter, 'border-cyan-500 bg-cyan-50': dragEnter}"
          class="relative w-full flex items-center justify-center rounded-lg p-10 border-2 border-dashed transition-colors ease-in-out duration-200">
         <div class="relative flex flex-col justify-center">
             <div v-if="dragEnter"

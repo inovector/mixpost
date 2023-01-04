@@ -15,8 +15,6 @@ const props = defineProps({
     }
 })
 
-const emit = defineEmits(['select'])
-
 const {
     isLoaded,
     keyword,
@@ -34,13 +32,9 @@ onMounted(() => {
     createObserver();
 });
 
-watch(selected.value, () => {
-    emit('select', selected.value)
-})
+defineExpose({selected, unselectAll})
 </script>
 <template>
-    <slot v-bind:selected="selected" v-bind:unselectAll="unselectAll"/>
-
     <SearchInput v-model="keyword" placeholder="Search Unsplash"/>
 
     <div v-if="items.length" class="mt-lg">

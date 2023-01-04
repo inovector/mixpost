@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, watch} from "vue";
+import {onMounted} from "vue";
 import useMedia from "@/Composables/useMedia";
 import useNotifications from "@/Composables/useNotifications";
 import UploadMedia from "@/Components/Media/UploadMedia.vue"
@@ -14,8 +14,6 @@ const props = defineProps({
         default: 3
     }
 })
-
-const emit = defineEmits(['select'])
 
 const {notify} = useNotifications();
 
@@ -34,13 +32,9 @@ onMounted(() => {
     createObserver();
 });
 
-watch(selected.value, () => {
-    emit('select', selected.value)
-})
+defineExpose({selected, unselectAll})
 </script>
 <template>
-    <slot v-bind:selected="selected" v-bind:unselectAll="unselectAll"/>
-
     <UploadMedia :max-selection="4"
                  :combines-mime-types="''"
                  :selected="selected"

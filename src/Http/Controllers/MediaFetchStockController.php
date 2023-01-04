@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Http;
 use Inovector\Mixpost\Http\Resources\MediaResource;
 use Inovector\Mixpost\Models\Media;
 
-class FetchMediaStockController extends Controller
+class MediaFetchStockController extends Controller
 {
     public function __invoke(Request $request): AnonymousResourceCollection
     {
@@ -29,7 +29,7 @@ class FetchMediaStockController extends Controller
                 'name' => $item['user']['name'],
                 'mime_type' => 'image/jpeg',
                 'disk' => 'external_media',
-                'path' => $item['links']['download'],
+                'path' => $item['urls']['regular'],
                 'conversions' => [
                     [
                         'disk' => 'stock',

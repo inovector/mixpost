@@ -7,7 +7,7 @@ use Illuminate\Routing\Controller;
 use Inovector\Mixpost\Http\Resources\MediaResource;
 use Inovector\Mixpost\Models\Media;
 
-class FetchMediaUploadsController extends Controller
+class MediaFetchUploadsController extends Controller
 {
     public function __invoke(): AnonymousResourceCollection
     {

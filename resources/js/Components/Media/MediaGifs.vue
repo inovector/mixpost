@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, watch} from "vue";
+import {onMounted} from "vue";
 import useMedia from "@/Composables/useMedia";
 import MediaSelectable from "@/Components/Media/MediaSelectable.vue";
 import MediaFile from "@/Components/Media/MediaFile.vue";
@@ -14,8 +14,6 @@ const props = defineProps({
         default: 3
     }
 })
-
-const emit = defineEmits(['select'])
 
 const {
     isLoaded,
@@ -34,13 +32,9 @@ onMounted(() => {
     createObserver();
 });
 
-watch(selected.value, () => {
-    emit('select', selected.value)
-})
+defineExpose({selected, unselectAll})
 </script>
 <template>
-    <slot v-bind:selected="selected" v-bind:unselectAll="unselectAll"/>
-
     <SearchInput v-model="keyword" placeholder="Search Tenor GIFs"/>
 
     <div v-if="items.length" class="mt-lg">

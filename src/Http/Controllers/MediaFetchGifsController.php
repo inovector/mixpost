@@ -7,10 +7,11 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use Inovector\Mixpost\Http\Resources\MediaResource;
 use Inovector\Mixpost\Models\Media;
 
-class FetchMediaGifsController extends Controller
+class MediaFetchGifsController extends Controller
 {
     public function __invoke(Request $request): AnonymousResourceCollection
     {
@@ -18,8 +19,8 @@ class FetchMediaGifsController extends Controller
         $terms = config('mixpost.external_media_terms');
 
         $items = Http::get("https://tenor.googleapis.com/v2/search", [
-            'client_key' => $clientId,
             'key' => $clientId,
+            'client_key' => Str::slug(env('APP_NAME', 'mixpost'), '_'),
             'q' => $request->query('keyword', Arr::random($terms)),
             'limit' => 30,
         ]);

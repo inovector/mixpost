@@ -1,4 +1,5 @@
 <script setup>
+import {computed, ref} from "vue";
 import {Head} from '@inertiajs/inertia-vue3';
 import useMedia from "@/Composables/useMedia";
 import PageHeader from '@/Components/DataDisplay/PageHeader.vue';
@@ -18,6 +19,26 @@ const {
     activeTab,
     tabs
 } = useMedia();
+
+const sources = {
+    'uploads': MediaUploads,
+    'stock': MediaStock,
+    'gifs': MediaGifs
+};
+
+const sourceProperties = ref();
+
+const source = computed(() => {
+    return sources[activeTab.value]
+})
+
+const selectedItems = computed(() => {
+    return sourceProperties.value ? sourceProperties.value.selected : [];
+})
+
+const unselectAll = () => {
+    sourceProperties.value.unselectAll()
+}
 </script>
 <template>
     <Head title="Media Library"/>
@@ -35,30 +56,17 @@ const {
 
         <div class="w-full row-px mt-lg">
             <Panel>
-                <template v-if="activeTab === 'uploads'">
+                <component :is="source" ref="sourceProperties" :columns="4"/>
 
-                    <MediaUploads :columns="4">
-                        <template #default="{selected, unselectAll}">
-                            <SelectableBar :count="selected.length" @close="unselectAll()">
-                                <SecondaryButton class="mr-sm" size="xs">
-                                    <PlusIcon class="mr-xs"/>
-                                    Use
-                                </SecondaryButton>
-                                <PureDangerButton v-tooltip="'Delete'">
-                                    <TrashIcon/>
-                                </PureDangerButton>
-                            </SelectableBar>
-                        </template>
-                    </MediaUploads>
-                </template>
-
-                <template v-if="activeTab === 'stock'">
-                    <MediaStock :columns="4"/>
-                </template>
-
-                <template v-if="activeTab === 'gifs'">
-                    <MediaGifs :columns="4"/>
-                </template>
+                <SelectableBar :count="selectedItems.length" @close="unselectAll()">
+                    <SecondaryButton class="mr-sm" size="xs">
+                        <PlusIcon class="mr-xs"/>
+                        Use
+                    </SecondaryButton>
+                    <PureDangerButton v-tooltip="'Delete'">
+                        <TrashIcon/>
+                    </PureDangerButton>
+                </SelectableBar>
             </Panel>
         </div>
     </div>

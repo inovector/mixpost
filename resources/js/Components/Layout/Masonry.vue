@@ -56,10 +56,6 @@ const addItem = (index) => {
 }
 
 const fill = () => {
-    if (!ready.value) {
-        return
-    }
-
     for (let i = 0; i < props.items.length; i++) {
         addItem(i);
     }
@@ -74,7 +70,7 @@ const redraw = () => {
 }
 
 watch(() => props.items, () => {
-    fill();
+    redraw();
 });
 </script>
 <template>
