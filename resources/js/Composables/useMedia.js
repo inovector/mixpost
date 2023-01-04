@@ -17,6 +17,7 @@ const useMedia = (routeName = 'mixpost.media.fetchUploads') => {
     })
 
     const isLoaded = ref(false);
+    const isDownloading = ref(false);
     const page = ref(1);
     const items = ref([]);
     const endlessPagination = ref(null);
@@ -84,6 +85,22 @@ const useMedia = (routeName = 'mixpost.media.fetchUploads') => {
         });
     }
 
+    const downloadExternal = (items, callback) => {
+        isDownloading.value = true;
+        NProgress.start();
+        axios.post(route('mixpost.media.download'), {
+            items
+        }).then((response) => {
+            callback(response);
+        }).catch(() => {
+            notify('error', 'Error downloading media. Try again!');
+        }).finally(() => {
+            isDownloading.value = false;
+            NProgress.done();
+            NProgress.remove();
+        })
+    }
+
     const createObserver = () => {
         const observer = new IntersectionObserver((entries) => {
             const isIntersecting = entries[0].isIntersecting;
@@ -107,11 +124,13 @@ const useMedia = (routeName = 'mixpost.media.fetchUploads') => {
         activeTab,
         tabs,
         isLoaded,
+        isDownloading,
         keyword,
         page,
         items,
         endlessPagination,
         selected,
+        downloadExternal,
         createObserver,
         toggleSelect,
         unselectAll,

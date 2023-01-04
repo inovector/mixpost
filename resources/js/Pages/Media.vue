@@ -1,6 +1,8 @@
 <script setup>
 import {computed, ref} from "vue";
 import {Head} from '@inertiajs/inertia-vue3';
+import {Inertia} from "@inertiajs/inertia";
+import usePostVersions from "@/Composables/usePostVersions";
 import useMedia from "@/Composables/useMedia";
 import PageHeader from '@/Components/DataDisplay/PageHeader.vue';
 import Tabs from "@/Components/Navigation/Tabs.vue"
@@ -17,7 +19,9 @@ import Panel from "@/Components/Surface/Panel.vue";
 
 const {
     activeTab,
-    tabs
+    tabs,
+    isDownloading,
+    downloadExternal,
 } = useMedia();
 
 const sources = {
@@ -39,11 +43,41 @@ const selectedItems = computed(() => {
 const unselectAll = () => {
     sourceProperties.value.unselectAll()
 }
+
+const use = () => {
+    const toDownload = activeTab.value !== 'uploads';
+
+    if (toDownload) {
+        downloadExternal(selectedItems.value, (response) => {
+            createPost(response.data);
+        });
+    }
+
+    if (!toDownload) {
+        createPost(selectedItems.value);
+    }
+}
+
+const {versionContentObject} = usePostVersions();
+
+const createPost = (media) => {
+    Inertia.post(route('mixpost.posts.store'), {
+        versions: [
+            {
+                account_id: 0,
+                is_original: true,
+                content: [
+                    versionContentObject('', media.map((item) => item.id))
+                ]
+            }
+        ]
+    });
+}
 </script>
 <template>
     <Head title="Media Library"/>
 
-    <div class="row-py mb-2xl">
+    <div class="max-w-5xl w-full mx-auto row-py mb-2xl">
         <PageHeader title="Media Library"/>
 
         <div class="w-full row-px">
@@ -59,11 +93,13 @@ const unselectAll = () => {
                 <component :is="source" ref="sourceProperties" :columns="4"/>
 
                 <SelectableBar :count="selectedItems.length" @close="unselectAll()">
-                    <SecondaryButton class="mr-sm" size="xs">
+                    <SecondaryButton @click="use" :isLoading="isDownloading" :disabled="isDownloading" class="mr-sm"
+                                     size="xs">
                         <PlusIcon class="mr-xs"/>
-                        Use
+                        Create Post
                     </SecondaryButton>
-                    <PureDangerButton v-tooltip="'Delete'">
+
+                    <PureDangerButton v-if="activeTab === 'uploads'" v-tooltip="'Delete'">
                         <TrashIcon/>
                     </PureDangerButton>
                 </SelectableBar>

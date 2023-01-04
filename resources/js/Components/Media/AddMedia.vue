@@ -1,6 +1,5 @@
 <script setup>
 import {computed, ref} from "vue";
-import NProgress from 'nprogress'
 import useMedia from "@/Composables/useMedia";
 import useNotifications from "@/Composables/useNotifications";
 import DialogModal from "@/Components/Modal/DialogModal.vue"
@@ -34,7 +33,9 @@ const show = ref(false);
 
 const {
     activeTab,
-    tabs
+    tabs,
+    isDownloading,
+    downloadExternal,
 } = useMedia();
 
 const sources = {
@@ -63,27 +64,14 @@ const close = () => {
     activeTab.value = 'uploads'
 };
 
-const isDownloading = ref(false);
-
 const insert = () => {
     const toDownload = activeTab.value !== 'uploads';
 
     if (toDownload) {
         // Download external media files
-        isDownloading.value = true;
-        NProgress.start();
-
-        axios.post(route('mixpost.media.download'), {
-            items: selectedItems.value
-        }).then((response) => {
+        downloadExternal(selectedItems.value, (response) => {
             emit('insert', response.data);
             close();
-        }).catch(() => {
-            notify('error', 'Error downloading media. Try again!');
-        }).finally(() => {
-            isDownloading.value = false;
-            NProgress.done();
-            NProgress.remove();
         })
     }
 
