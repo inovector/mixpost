@@ -1,8 +1,8 @@
 <script setup>
-import ExclamationCircleIcon from "@/Icons/ExclamationCircle.vue"
-import VideoSolidIcon from "@/Icons/VideoSolid.vue"
 import {endsWith, startsWith} from "lodash";
 import {computed} from "vue";
+import ExclamationCircleIcon from "@/Icons/ExclamationCircle.vue"
+import VideoSolidIcon from "@/Icons/VideoSolid.vue"
 
 const props = defineProps({
     media: {
@@ -56,11 +56,10 @@ const thumbUrl = computed(() => {
             </div>
 
             <img
-                v-if="thumbUrl"
                 :src="thumbUrl"
                 loading="lazy"
                 alt="Image"
-                class="w-full object-cover rounded"
+                class="w-full object-cover rounded-md"
                 :class="imgHeightClass"
             />
         </div>

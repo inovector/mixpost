@@ -23,7 +23,7 @@ const {
     endlessPagination,
     selected,
     toggleSelect,
-    unselectAll,
+    deselectAll,
     isSelected,
     createObserver
 } = useMedia('mixpost.media.fetchGifs');
@@ -32,7 +32,7 @@ onMounted(() => {
     createObserver();
 });
 
-defineExpose({selected, unselectAll})
+defineExpose({selected, deselectAll})
 </script>
 <template>
     <SearchInput v-model="keyword" placeholder="Search Tenor GIFs"/>

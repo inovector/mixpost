@@ -54,12 +54,12 @@ const selectedItems = computed(() => {
     return sourceProperties.value ? sourceProperties.value.selected : [];
 })
 
-const unselectAll = () => {
-    sourceProperties.value.unselectAll()
+const deselectAll = () => {
+    sourceProperties.value.deselectAll()
 }
 
 const close = () => {
-    unselectAll();
+    deselectAll();
     show.value = false;
     activeTab.value = 'uploads'
 };
@@ -115,7 +115,7 @@ const insert = () => {
             <SecondaryButton @click="close" class="mr-xs">Cancel</SecondaryButton>
 
             <template v-if="selectedItems.length">
-                <SecondaryButton @click="unselectAll" v-tooltip.top="'Dismiss'" class="mr-xs">
+                <SecondaryButton @click="deselectAll" v-tooltip.top="'Dismiss'" class="mr-xs">
                     <XIcon/>
                 </SecondaryButton>
 

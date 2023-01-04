@@ -18,6 +18,7 @@ const useMedia = (routeName = 'mixpost.media.fetchUploads') => {
 
     const isLoaded = ref(false);
     const isDownloading = ref(false);
+    const isDeleting = ref(false);
     const page = ref(1);
     const items = ref([]);
     const endlessPagination = ref(null);
@@ -36,7 +37,7 @@ const useMedia = (routeName = 'mixpost.media.fetchUploads') => {
         }
     }
 
-    const unselectAll = () => {
+    const deselectAll = () => {
         selected.value = [];
     }
 
@@ -101,6 +102,29 @@ const useMedia = (routeName = 'mixpost.media.fetchUploads') => {
         })
     }
 
+    const removeItems = (ids) => {
+        items.value = items.value.filter((item) => !ids.includes(item.id));
+    }
+
+    const deletePermanently = (items, callback) => {
+        isDeleting.value = true;
+        NProgress.start();
+
+        axios.delete(route('mixpost.media.delete'), {
+            data: {
+                items
+            }
+        }).then(() => {
+            callback();
+        }).catch(() => {
+            notify('error', 'Error deleting media. Try again!');
+        }).finally(() => {
+            isDeleting.value = false;
+            NProgress.done();
+            NProgress.remove();
+        })
+    }
+
     const createObserver = () => {
         const observer = new IntersectionObserver((entries) => {
             const isIntersecting = entries[0].isIntersecting;
@@ -125,15 +149,18 @@ const useMedia = (routeName = 'mixpost.media.fetchUploads') => {
         tabs,
         isLoaded,
         isDownloading,
+        isDeleting,
         keyword,
         page,
         items,
         endlessPagination,
         selected,
         downloadExternal,
+        deletePermanently,
+        removeItems,
         createObserver,
         toggleSelect,
-        unselectAll,
+        deselectAll,
         isSelected
     }
 }

@@ -23,7 +23,8 @@ const {
     endlessPagination,
     selected,
     toggleSelect,
-    unselectAll,
+    deselectAll,
+    removeItems,
     isSelected,
     createObserver
 } = useMedia();
@@ -32,7 +33,7 @@ onMounted(() => {
     createObserver();
 });
 
-defineExpose({selected, unselectAll})
+defineExpose({selected, deselectAll, removeItems})
 </script>
 <template>
     <UploadMedia :max-selection="4"
@@ -55,6 +56,6 @@ defineExpose({selected, unselectAll})
                 </template>
             </Masonry>
         </template>
-        <div ref="endlessPagination" class="-z-10 w-full" :class="{'-mt-20': items.length}"/>
+        <div ref="endlessPagination" class="-z-10 w-full"/>
     </div>
 </template>

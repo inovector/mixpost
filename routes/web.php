@@ -59,6 +59,7 @@ Route::middleware(['web', MixpostAuthMiddleware::class, HandleInertiaRequests::c
 
     Route::prefix('media')->name('media.')->group(function () {
         Route::get('/', [MediaController::class, 'index'])->name('index');
+        Route::delete('/', [MediaController::class, 'destroy'])->name('delete');
         Route::get('fetch/uploaded', MediaFetchUploadsController::class)->name('fetchUploads');
         Route::get('fetch/stock', MediaFetchStockController::class)->name('fetchStock');
         Route::get('fetch/gifs', MediaFetchGifsController::class)->name('fetchGifs');

@@ -12,16 +12,20 @@ import MediaStock from "@/Components/Media/MediaStock.vue";
 import MediaGifs from "@/Components/Media/MediaGifs.vue";
 import SelectableBar from "@/Components/DataDisplay/SelectableBar.vue";
 import PureDangerButton from "@/Components/Button/PureDangerButton.vue";
-import TrashIcon from "@/Icons/Trash.vue";
-import PlusIcon from "@/Icons/Plus.vue";
+import DangerButton from "@/Components/Button/DangerButton.vue"
 import SecondaryButton from "@/Components/Button/SecondaryButton.vue";
 import Panel from "@/Components/Surface/Panel.vue";
+import ConfirmationModal from "@/Components/Modal/ConfirmationModal.vue";
+import TrashIcon from "@/Icons/Trash.vue";
+import PlusIcon from "@/Icons/Plus.vue";
 
 const {
     activeTab,
     tabs,
     isDownloading,
+    isDeleting,
     downloadExternal,
+    deletePermanently,
 } = useMedia();
 
 const sources = {
@@ -40,8 +44,8 @@ const selectedItems = computed(() => {
     return sourceProperties.value ? sourceProperties.value.selected : [];
 })
 
-const unselectAll = () => {
-    sourceProperties.value.unselectAll()
+const deselectAll = () => {
+    sourceProperties.value.deselectAll()
 }
 
 const use = () => {
@@ -73,6 +77,18 @@ const createPost = (media) => {
         ]
     });
 }
+
+const confirmationDeletion = ref(false);
+
+const deleteSelectedItems = () => {
+    const items = selectedItems.value.map((item) => item.id);
+
+    deletePermanently(items, () => {
+        deselectAll();
+        sourceProperties.value.removeItems(items);
+        confirmationDeletion.value = false;
+    })
+}
 </script>
 <template>
     <Head title="Media Library"/>
@@ -92,18 +108,33 @@ const createPost = (media) => {
             <Panel>
                 <component :is="source" ref="sourceProperties" :columns="4"/>
 
-                <SelectableBar :count="selectedItems.length" @close="unselectAll()">
+                <SelectableBar :count="selectedItems.length" @close="deselectAll()">
                     <SecondaryButton @click="use" :isLoading="isDownloading" :disabled="isDownloading" class="mr-sm"
                                      size="xs">
                         <PlusIcon class="mr-xs"/>
                         Create Post
                     </SecondaryButton>
 
-                    <PureDangerButton v-if="activeTab === 'uploads'" v-tooltip="'Delete'">
-                        <TrashIcon/>
-                    </PureDangerButton>
+                    <template v-if="activeTab === 'uploads'">
+                        <PureDangerButton @click="confirmationDeletion = true" v-tooltip="'Delete'">
+                            <TrashIcon/>
+                        </PureDangerButton>
+                    </template>
                 </SelectableBar>
             </Panel>
         </div>
     </div>
+
+    <ConfirmationModal :show="confirmationDeletion" variant="danger" @close="confirmationDeletion = false">
+        <template #header>
+            Delete media
+        </template>
+        <template #body>
+            Are you sure you want to delete selected media items?
+        </template>
+        <template #footer>
+            <SecondaryButton @click="confirmationDeletion = false" class="mr-xs">Cancel</SecondaryButton>
+            <DangerButton :isLoading="isDeleting" :disabled="isDeleting" @click="deleteSelectedItems">Delete</DangerButton>
+        </template>
+    </ConfirmationModal>
 </template>

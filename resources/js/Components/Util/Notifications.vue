@@ -105,7 +105,7 @@ watch(() => flash, () => {
                     leave-from-class="transform opacity-100 scale-100"
                     leave-to-class="transform opacity-0 scale-95">
             <div v-show="show"
-                 class="absolute bottom-0 right-0 ml-sm md:ml-0 mr-sm md:mr-xl mb-2xl flex px-lg py-md rounded-md bg-indigo-800 z-50"
+                 class="absolute bottom-0 right-0 ml-sm md:ml-0 mr-sm md:mr-xl mb-2xl flex px-lg py-md rounded-md bg-indigo-800 shadow-mix z-50"
                  aria-live="polite">
                 <div class="flex items-center">
                     <div>

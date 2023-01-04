@@ -85,6 +85,15 @@ class Media extends Model
         return null;
     }
 
+    public function deleteFiles(): void
+    {
+        $this->filesystem()->delete($this->path);
+
+        foreach ($this->conversions as $conversion) {
+            $this->filesystem($conversion['disk'])->delete($conversion['path']);
+        }
+    }
+
     public function filesystem(string $disk = ''): Filesystem
     {
         return Storage::disk($disk ?: $this->disk);
