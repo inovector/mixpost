@@ -12,6 +12,7 @@ import CalendarIcon from "@/Icons/Calendar.vue"
 import PhotoIcon from "@/Icons/Photo.vue"
 import PackageIcon from "@/Icons/Package.vue"
 import CogIcon from "@/Icons/Cog.vue"
+import ServerStackIcon from "@/Icons/ServerStack.vue"
 </script>
 <template>
     <div class="w-full h-full flex flex-col py-2xl bg-white border-r border-gray-200">
@@ -82,6 +83,12 @@ import CogIcon from "@/Icons/Cog.vue"
                         <CogIcon/>
                     </template>
                     Settings
+                </MenuItem>
+                <MenuItem :url="route('mixpost.services.index')" :active="$page.component === 'Services'">
+                    <template #icon>
+                        <ServerStackIcon/>
+                    </template>
+                    Services
                 </MenuItem>
             </MenuGroupBody>
         </div>

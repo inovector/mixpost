@@ -24,6 +24,7 @@ class MixpostServiceProvider extends PackageServiceProvider
             ->hasViews()
             ->hasRoute('web')
             ->hasMigrations([
+                'create_mixpost_services_table',
                 'create_mixpost_accounts_table',
                 'create_mixpost_posts_table',
                 'create_mixpost_post_accounts_table',
@@ -48,6 +49,10 @@ class MixpostServiceProvider extends PackageServiceProvider
 
         $this->app->singleton('Settings', function ($app) {
             return new Settings($app);
+        });
+
+        $this->app->singleton('Services', function ($app) {
+            return new Services($app);
         });
 
         return parent::register();

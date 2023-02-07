@@ -12,6 +12,7 @@ abstract class SocialProviderManager
     protected Container $container;
     protected mixed $config;
     protected array $providers = [];
+    protected mixed $options = [];
 
     public function __construct(Container $container)
     {
@@ -31,6 +32,16 @@ abstract class SocialProviderManager
         return $this->providers[$provider];
     }
 
+    public function setOptions(array $value): void
+    {
+        $this->options = $value;
+    }
+
+    public function setOption(string $name, mixed $value): void
+    {
+        $this->options[$name] = $value;
+    }
+
     private function createConnection(string $provider)
     {
         $method = 'connect' . Str::studly($provider) . 'Provider';
@@ -42,9 +53,9 @@ abstract class SocialProviderManager
         throw new InvalidArgumentException("Provider [$provider] not supported.");
     }
 
-    protected function buildConnectionProvider($provider, $config): SocialProvider
+    protected function buildConnectionProvider(string $provider, array $config): SocialProvider
     {
-        $connection = (new $provider($this->container->make('request'), $config['client_id'], $config['client_secret'], $config['redirect']));
+        $connection = (new $provider($this->container->make('request'), $config['client_id'], $config['client_secret'], $config['redirect'], $config['options'] ?? []));
 
         if (!$connection instanceof SocialProvider) {
             throw new \Exception('The provider must be an instance of SocialProvider');

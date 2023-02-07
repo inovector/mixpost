@@ -11,6 +11,7 @@ import Account from "@/Components/Account/Account.vue"
 import AddTwitterAccount from "@/Components/Account/AddTwitterAccount.vue"
 import AddFacebookPage from "@/Components/Account/AddFacebookPage.vue"
 import AddFacebookGroup from "@/Components/Account/AddFacebookGroup.vue"
+import AddMastodonAccount from "@/Components/Account/AddMastodonAccount.vue"
 import SecondaryButton from "@/Components/Button/SecondaryButton.vue"
 import DangerButton from "@/Components/Button/DangerButton.vue"
 import Dropdown from "@/Components/Dropdown/Dropdown.vue"
@@ -120,16 +121,6 @@ const closeConfirmationAccountDeletion = () => {
         </div>
     </div>
 
-    <Modal :show="addAccountModal"
-                  :closeable="true"
-                  @close="addAccountModal = false">
-        <div class="flex flex-col">
-            <AddTwitterAccount/>
-            <AddFacebookPage/>
-            <AddFacebookGroup/>
-        </div>
-    </Modal>
-
     <ConfirmationModal :show="confirmationAccountDeletion !== null"
                               @close="closeConfirmationAccountDeletion"
                               variant="danger">
@@ -148,4 +139,15 @@ const closeConfirmationAccountDeletion = () => {
             </DangerButton>
         </template>
     </ConfirmationModal>
+
+    <Modal :show="addAccountModal"
+           :closeable="true"
+           @close="addAccountModal = false">
+        <div class="flex flex-col">
+            <AddTwitterAccount/>
+            <AddFacebookPage/>
+            <AddFacebookGroup/>
+            <AddMastodonAccount/>
+        </div>
+    </Modal>
 </template>

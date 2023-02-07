@@ -40,7 +40,7 @@ const variantColorClasses = computed(() => {
 });
 </script>
 <template>
-    <div v-if="show" class="flex px-5 py-4 rounded-md bg-indigo-800">
+    <div v-if="show" class="flex px-5 py-md rounded-md bg-indigo-800">
         <div class="flex items-center justify-between">
            <div class="flex items-center">
                <div>

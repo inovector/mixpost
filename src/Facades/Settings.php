@@ -5,12 +5,14 @@ namespace Inovector\Mixpost\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static \Inovector\Mixpost\Settings schema()
- * @method static \Inovector\Mixpost\Settings get(string $name)
- * @method static \Inovector\Mixpost\Settings getFromCache(string $name, mixed $default = null)
- * @method static \Inovector\Mixpost\Settings all()
- * @method static \Inovector\Mixpost\Settings clearCache()
- * @method static \Inovector\Mixpost\Settings put(string $name, mixed $default = null)
+ * @method static array form()
+ * @method static array rules()
+ * @method static get(string $name)
+ * @method static getFromCache(string $name, mixed $default = null)
+ * @method static array all()
+ * @method static void forget()
+ * @method static void forgetAll()
+ * @method static void put(string $name, mixed $default = null)
  *
  * @see \Inovector\Mixpost\Settings
  */

@@ -19,7 +19,7 @@ class CallbackSocialProviderController extends Controller
                 ->with('mixpost_callback_response', $provider->getCallbackResponse());
         }
 
-        $accessToken = $provider->requestAccessToken();
+        $accessToken = $provider->requestAccessToken($provider->getCallbackResponse());
 
         $provider->setAccessToken($accessToken);
 

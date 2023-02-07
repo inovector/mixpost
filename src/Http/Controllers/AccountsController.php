@@ -6,6 +6,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Inertia\Inertia;
 use Inertia\Response;
+use Inovector\Mixpost\Actions\UpdateOrCreateAccount;
 use Inovector\Mixpost\Facades\SocialProviderManager;
 use Inovector\Mixpost\Http\Resources\AccountResource;
 use Inovector\Mixpost\Models\Account;
@@ -30,11 +31,7 @@ class AccountsController extends Controller
             return redirect()->back()->with('The account cannot be updated. Re-authenticate your account.');
         }
 
-        $account->update([
-            'name' => $result['name'],
-            'username' => $result['username'],
-            'image' => $result['image']
-        ]);
+        (new UpdateOrCreateAccount())($account->provider, $result, $account->access_token);
 
         return redirect()->back();
     }

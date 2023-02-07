@@ -7,6 +7,7 @@ const useProviderClassesColor = (provider) => {
             'facebook': 'text-facebook',
             'facebook_page': 'text-facebook',
             'facebook_group': 'text-facebook',
+            'mastodon': 'text-mastodon'
         }[provider];
     });
 
@@ -16,6 +17,7 @@ const useProviderClassesColor = (provider) => {
             'facebook': 'border-facebook',
             'facebook_page': 'border-facebook',
             'facebook_group': 'border-facebook',
+            'mastodon': 'border-mastodon'
         }[provider];
     });
 
@@ -25,6 +27,7 @@ const useProviderClassesColor = (provider) => {
             'facebook': 'bg-facebook',
             'facebook_page': 'bg-facebook',
             'facebook_group': 'bg-facebook',
+            'mastodon': 'bg-mastodon'
         }[provider];
     });
 

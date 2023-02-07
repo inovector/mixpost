@@ -26,7 +26,7 @@ class UpdateOrCreateAccount
         );
     }
 
-    private function media(string|null $imageUrl, string $providerName): array|null
+    protected function media(string|null $imageUrl, string $providerName): array|null
     {
         if (!$imageUrl) {
             return null;

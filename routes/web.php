@@ -8,6 +8,7 @@ use Inovector\Mixpost\Http\Controllers\AccountsController;
 use Inovector\Mixpost\Http\Controllers\AccountEntitiesController;
 use Inovector\Mixpost\Http\Controllers\AddAccountController;
 use Inovector\Mixpost\Http\Controllers\SettingsController;
+use Inovector\Mixpost\Http\Controllers\ServicesController;
 use Inovector\Mixpost\Http\Controllers\PostsController;
 use Inovector\Mixpost\Http\Controllers\DuplicatePostController;
 use Inovector\Mixpost\Http\Controllers\SchedulePostController;
@@ -76,6 +77,11 @@ Route::middleware(['web', MixpostAuthMiddleware::class, HandleInertiaRequests::c
     Route::prefix('settings')->name('settings.')->group(function () {
         Route::get('/', [SettingsController::class, 'index'])->name('index');
         Route::put('/', [SettingsController::class, 'update'])->name('update');
+    });
+
+    Route::prefix('services')->name('services.')->group(function () {
+        Route::get('/', [ServicesController::class, 'index'])->name('index');
+        Route::put('{service}', [ServicesController::class, 'update'])->name('update');
     });
 
     Route::get('callback/{provider}', CallbackSocialProviderController::class)->name('callbackSocialProvider');

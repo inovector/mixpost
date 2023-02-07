@@ -43,7 +43,8 @@ class AccountPublishPost
                     'post_id' => $post->id,
                     'account_id' => $account->id,
                     'account_name' => $account->name,
-                    'account_provider' => $account->provider
+                    'account_provider' => $account->provider,
+                    'trace' => $exception->getTrace(),
                 ])
             );
 

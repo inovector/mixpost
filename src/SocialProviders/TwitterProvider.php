@@ -10,16 +10,15 @@ use Inovector\Mixpost\Abstracts\SocialProvider;
 
 class TwitterProvider extends SocialProvider
 {
-    const VERSION_API_ONE = '1.1';
-    const API_VERSION_TWO = '2';
+    protected string $apiVersion = '2';
 
     public TwitterOAuth $connection;
 
     // Overwrite __construct to use Twitter SDK
-    public function __construct(Request $request, $clientId, $clientSecret, $redirectUrl)
+    public function __construct(Request $request, string $clientId, string $clientSecret, string $redirectUrl, array $options = [])
     {
         $this->connection = new TwitterOAuth($clientId, $clientSecret);
-        $this->connection->setApiVersion(self::API_VERSION_TWO);
+        $this->connection->setApiVersion($this->apiVersion);
         $this->connection->setTimeouts(10, 60);
 
         parent::__construct($request, $clientId, $clientSecret, $redirectUrl);
@@ -79,18 +78,15 @@ class TwitterProvider extends SocialProvider
             ];
         }
 
-        // Publish post with media
-        $this->connection->setApiVersion(self::API_VERSION_TWO);
-
-        $postParameters = ['text' => $text];
+        $postParameters = ['status' => $text];
 
         if (!empty($mediaResult['ids'])) {
-            $postParameters['media'] = [
-                'media_ids' => $mediaResult['ids']
-            ];
+            $postParameters['media_ids'] = $mediaResult['ids'];
         }
 
-        $postResult = $this->connection->post('tweets', $postParameters, true);
+        $this->connection->setApiVersion('1.1');
+
+        $postResult = $this->connection->post('statuses/update', $postParameters);
 
         $errors = Arr::map($postResult->errors ?? [], function ($error) {
             return $error->message;
@@ -107,13 +103,13 @@ class TwitterProvider extends SocialProvider
         }
 
         return [
-            'id' => $postResult->data->id
+            'id' => $postResult->id
         ];
     }
 
     public function uploadMedia(array $media): array
     {
-        $this->connection->setApiVersion(self::VERSION_API_ONE);
+        $this->connection->setApiVersion('1.1');
 
         $ids = [];
         $errors = [];
@@ -173,11 +169,6 @@ class TwitterProvider extends SocialProvider
             'ids' => $ids,
             'errors' => $errors
         ];
-    }
-
-    public function uploadVideo()
-    {
-
     }
 
     public function deletePost()

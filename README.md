@@ -90,7 +90,7 @@ return [
      * We recommend leaving these options unchanged
      * You only change them when the API policy of the social networks changes, and you know what you are doing.
      */
-    'social_provider_options' => [
+    'social_provider_rules' => [
         'twitter' => [
             'simultaneous_posting_on_multiple_accounts' => false,
             'post_characters_limit' => 280

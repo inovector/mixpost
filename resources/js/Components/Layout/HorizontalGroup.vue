@@ -2,11 +2,11 @@
     <div class="flex justify-between items-center">
         <div class="w-full flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <div v-if="$slots.title"
-                 class="font-semibold sm:mr-xs">
+                 class="flex justify-start w-full font-semibold sm:mr-xs">
                 <slot name="title"/>
             </div>
 
-            <div v-if="$slots.default" class="mt-xs sm:mt-0">
+            <div v-if="$slots.default" class="w-full flex justify-end mt-xs sm:mt-0">
                 <slot/>
             </div>
         </div>

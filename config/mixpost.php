@@ -13,6 +13,10 @@ return [
             'client_id' => env('MIXPOST_FACEBOOK_CLIENT_ID'),
             'client_secret' => env('MIXPOST_FACEBOOK_CLIENT_SECRET')
         ],
+        'mastodon' => [
+            'client_id' => env('MIXPOST_MASTODON_CLIENT_ID'),
+            'client_secret' => env('MIXPOST_MASTODON_CLIENT_SECRET')
+        ],
         'unsplash' => [
             'client_id' => env('MIXPOST_UNSPLASH_CLIENT_ID')
         ],
@@ -22,22 +26,30 @@ return [
     ],
 
     /*
-     * Setting options for each social network
+     * Rules for each social network
      * We recommend leaving these options unchanged
      * You only change them when the API policy of the social networks changes, and you know what you are doing.
      */
-    'social_provider_options' => [
+    'social_provider_rules' => [
         'twitter' => [
             'simultaneous_posting_on_multiple_accounts' => false,
-            'post_characters_limit' => 280
+            'post_characters_limit' => 280,
+            'simultaneous_posting_photo_video' => false // GIFs also considered as video
         ],
         'facebook_page' => [
             'simultaneous_posting_on_multiple_accounts' => true,
-            'post_characters_limit' => null
+            'post_characters_limit' => null,
+            'simultaneous_posting_photo_video' => false // GIFs also considered as video
         ],
         'facebook_group' => [
             'simultaneous_posting_on_multiple_accounts' => true,
-            'post_characters_limit' => null
+            'post_characters_limit' => null,
+            'simultaneous_posting_photo_video' => false // GIFs also considered as video
+        ],
+        'mastodon' => [
+            'simultaneous_posting_on_multiple_accounts' => true,
+            'post_characters_limit' => null,
+            'simultaneous_posting_photo_video' => false // GIFs also considered as video
         ]
     ],
 

@@ -22,14 +22,17 @@ abstract class SocialProvider implements SocialProviderContract
     protected string $clientSecret = '';
     protected string $redirectUrl;
 
+    protected array $options = [];
+
     const ACCESS_TOKEN_SESSION_NAME = 'mixpost_provider_access_token';
 
-    public function __construct(Request $request, $clientId, $clientSecret, $redirectUrl)
+    public function __construct(Request $request, string $clientId, string $clientSecret, string $redirectUrl, array $options = [])
     {
         $this->request = $request;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
         $this->redirectUrl = $redirectUrl;
+        $this->options = $options;
     }
 
     public function isOnlyUserAccount(): bool

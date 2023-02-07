@@ -50,7 +50,7 @@ const selectAccount = (account) => {
 
 const providersWithDisabledSimultaneousPosting = computed(() => {
     return props.accounts.filter(function (account) {
-        return props.form.accounts.includes(account.id) && !account.provider_options.simultaneous_posting_on_multiple_accounts;
+        return props.form.accounts.includes(account.id) && !account.provider_rules.simultaneous_posting_on_multiple_accounts;
     }).map(function (account) {
         return account.provider;
     });
@@ -58,11 +58,11 @@ const providersWithDisabledSimultaneousPosting = computed(() => {
 
 // const providersWithPostCharactersLimit = computed(() => {
 //     const items = props.accounts.filter(function (account) {
-//         return props.form.accounts.includes(account.id) && account.provider_options.post_characters_limit !== null;
+//         return props.form.accounts.includes(account.id) && account.provider_rules.post_characters_limit !== null;
 //     }).map(function (account) {
 //         return {
 //             provider: account.provider,
-//             limit: account.provider_options.post_characters_limit
+//             limit: account.provider_rules.post_characters_limit
 //         };
 //     });
 //

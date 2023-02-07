@@ -1,5 +1,5 @@
 <script setup>
-import {ref, watch} from "vue";
+import {computed, ref, watch} from "vue";
 import {Head, useForm} from '@inertiajs/inertia-vue3';
 import {Inertia} from "@inertiajs/inertia";
 import {cloneDeep, debounce} from "lodash";
@@ -14,9 +14,10 @@ import PostActions from "@/Components/Post/PostActions.vue";
 import PostPreviewProviders from "@/Components/Post/PostPreviewProviders.vue"
 import SecondaryButton from "@/Components/Button/SecondaryButton.vue"
 import PostStatus from "@/Components/Post/PostStatus.vue";
+import Alert from "@/Components/Util/Alert.vue";
 import EyeIcon from "@/Icons/Eye.vue"
 import EyeOffIcon from "@/Icons/EyeOff.vue"
-import Alert from "@/Components/Util/Alert.vue";
+import ExclamationIcon from "@/Icons/Exclamation.vue"
 
 const props = defineProps(['post', 'schedule_at']);
 
@@ -39,6 +40,10 @@ const form = useForm({
     date: post ? post.scheduled_at.date : props.schedule_at.date,
     time: post ? post.scheduled_at.time : props.schedule_at.time,
 });
+
+const showValidationErrors = computed(() => {
+    return true;
+})
 
 const store = (data) => {
     Inertia.post(route('mixpost.posts.store'), data, {
@@ -126,6 +131,9 @@ if (props.post) {
 watch(form, debounce(() => {
     if (editAllowed.value) {
         save();
+
+        // Validate rules
+        console.log(form.data())
     }
 }, 300))
 </script>
@@ -133,7 +141,15 @@ watch(form, debounce(() => {
     <Head title="Your post"/>
 
     <PostContext>
-        <div class="flex flex-col grow h-full">
+        <div class="flex flex-col grow h-full overflow-y-auto">
+<!--            <div class="w-full flex items-center row-px py-md flex-row border-b border-gray-200 text-red-500">-->
+<!--                <div class="w-8 h-8 mr-sm flex items-center">-->
+<!--                    <ExclamationIcon/>-->
+<!--                </div>-->
+<!--                -->
+<!--                <div>Errors</div>-->
+<!--            </div>-->
+
             <div class="flex flex-row h-full overflow-y-auto">
                 <div class="w-full md:w-3/5 h-full flex flex-col overflow-x-hidden overflow-y-auto">
                     <div class="row-py">

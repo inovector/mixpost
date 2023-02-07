@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 interface SocialProvider
 {
-    public function __construct(Request $request, $clientId, $clientSecret, $redirectUrl);
+    public function __construct(Request $request, string $clientId, string $clientSecret, string $redirectUrl, array $options = []);
 
     public function getAuthUrl(): string;
 

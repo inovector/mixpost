@@ -34,10 +34,10 @@ if (!function_exists('mixpostAssets')) {
     }
 }
 
-if (!function_exists('socialProviderOptions')) {
-    function socialProviderOptions($provider)
+if (!function_exists('socialProviderRules')) {
+    function socialProviderRules($provider)
     {
-        $items = config('mixpost.social_provider_options');
+        $items = config('mixpost.social_provider_rules');
 
         return Arr::get($items, $provider);
     }

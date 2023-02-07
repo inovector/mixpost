@@ -3,6 +3,7 @@ import {computed} from "vue";
 import usePostVersions from "@/Composables/usePostVersions";
 import PostPreviewTwitter from "@/Components/Post/PostPreviewTwitter.vue"
 import PostPreviewFacebook from "@/Components/Post/PostPreviewFacebook.vue"
+import PostPreviewMastodon from "@/Components/Post/PostPreviewMastodon.vue"
 import Panel from "@/Components/Surface/Panel.vue";
 import Alert from "@/Components/Util/Alert.vue";
 
@@ -42,6 +43,7 @@ const previews = computed(() => {
                 'twitter': PostPreviewTwitter,
                 'facebook_page': PostPreviewFacebook,
                 'facebook_group': PostPreviewFacebook,
+                'mastodon': PostPreviewMastodon
             }[account.provider]
         }
     });

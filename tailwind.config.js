@@ -76,7 +76,8 @@ module.exports = {
                     "900": "#100E25"
                 },
                 facebook: '#1877f2',
-                twitter: '#1da1f2'
+                twitter: '#1da1f2',
+                mastodon: '#6364FF'
             },
             boxShadow: {
                 'mix': '0 5px 10px rgb(55 55 89 / 8%)',
