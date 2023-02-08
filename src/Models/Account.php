@@ -2,6 +2,7 @@
 
 namespace Inovector\Mixpost\Models;
 
+use Illuminate\Database\Eloquent\Casts\AsEncryptedArrayObject;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Inovector\Mixpost\Casts\AccountMediaCast;
@@ -23,7 +24,11 @@ class Account extends Model
     protected $casts = [
         'media' => AccountMediaCast::class,
         'data' => 'array',
-        'access_token' => 'array',
+        'access_token' => AsEncryptedArrayObject::class
+    ];
+
+    protected $hidden = [
+        'access_token'
     ];
 
     protected static function booted()
@@ -43,5 +48,16 @@ class Account extends Model
         }
 
         return null;
+    }
+
+    public function values(): array
+    {
+        return [
+            'account_id' => $this->id,
+            'provider_id' => $this->provider_id,
+            'name' => $this->name,
+            'username' => $this->username,
+            'data' => $this->data
+        ];
     }
 }

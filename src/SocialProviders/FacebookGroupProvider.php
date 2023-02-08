@@ -24,10 +24,10 @@ class FacebookGroupProvider extends FacebookMainProvider
         return $this->buildUrlFromBase($url, $params);
     }
 
-    public function getAccount(array $params = []): array
+    public function getAccount(): array
     {
-        $filter = array_values(Arr::where($this->getEntities(), function ($entity) use ($params) {
-            return $entity['id'] === $params['provider_id'];
+        $filter = array_values(Arr::where($this->getEntities(), function ($entity) {
+            return $entity['id'] === $this->values['provider_id'];
         }));
 
         return $filter[0] ?? [];
@@ -52,7 +52,7 @@ class FacebookGroupProvider extends FacebookMainProvider
 
     public function publishPost(string $text, array $media = [], array $params = [])
     {
-        return parent::publish($text, $media, $params,  $this->getAccessToken()['access_token']);
+        return parent::publish($text, $media, $this->getAccessToken()['access_token']);
     }
 
     public function deletePost()

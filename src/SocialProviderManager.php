@@ -2,12 +2,8 @@
 
 namespace Inovector\Mixpost;
 
-use Composer\InstalledVersions;
 use Inovector\Mixpost\Abstracts\SocialProviderManager as SocialProviderManagerAbstract;
-use Inovector\Mixpost\Actions\CreateMastodonApp;
-use Inovector\Mixpost\Actions\UpdateOrCreateService;
 use Inovector\Mixpost\Facades\Services;
-use Inovector\Mixpost\Models\Account;
 use Inovector\Mixpost\SocialProviders\FacebookGroupProvider;
 use Inovector\Mixpost\SocialProviders\FacebookPageProvider;
 use Inovector\Mixpost\SocialProviders\TwitterProvider;
@@ -45,36 +41,22 @@ class SocialProviderManager extends SocialProviderManagerAbstract
     protected function connectMastodonProvider()
     {
         $request = $this->container->request;
-        $sessionServerKey = 'mixpost_mastodon_server';
+        $sessionServerKey = "{$this->config->get('mixpost.cache_prefix')}.mastodon_server";
 
-        $intendAddAccount = $request->route() && $request->route()->getName() === 'mixpost.accounts.add';
-        $intendCallback = $request->route() && $request->route()->getName() === 'mixpost.callbackSocialProvider';
-
-        if ($intendAddAccount) {
+        if ($request->route() && $request->route()->getName() === 'mixpost.accounts.add') {
             $serverName = $this->container->request->input('server');
-
-            // We keep the server name in the session. We'll need it in the callback
-            $request->session()->put($sessionServerKey, $serverName);
-        } else if ($intendCallback) {
+            $request->session()->put($sessionServerKey, $serverName); // We keep the server name in the session. We'll need it in the callback
+        } else if ($request->route() && $request->route()->getName() === 'mixpost.callbackSocialProvider') {
             $serverName = $request->session()->get($sessionServerKey);
         } else {
-            // Get options which was registered on SocialProviderManager::connect($provider)
-            $account = Account::find($this->options['account_id']);
-//            $serverName = ;
+            $serverName = $this->values['data']['server']; // Get the server value that have been set on SocialProviderManager::connect($provider, array $values = [])
         }
 
-        $serviceName = "mastodon.$serverName";
-
-        $config = Services::get($serviceName);
-
-        if (!$config) {
-            $credentials = (new CreateMastodonApp())($serverName);
-            $config = (new UpdateOrCreateService())($serviceName, $credentials)->credentials->toArray();
-        }
+        $config = Services::get("mastodon.$serverName");
 
         $config['redirect'] = route('mixpost.callbackSocialProvider', ['provider' => 'mastodon']);
-        $config['options'] = [
-            'server' => $serverName
+        $config['values'] = [
+            'data' => ['server' => $serverName]
         ];
 
         return $this->buildConnectionProvider(MastodonProvider::class, $config);

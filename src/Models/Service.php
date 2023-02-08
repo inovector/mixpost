@@ -19,6 +19,10 @@ class Service extends Model
         'credentials' => AsEncryptedArrayObject::class
     ];
 
+    protected $hidden = [
+        'credentials'
+    ];
+
     public $timestamps = false;
 
     protected static function booted()

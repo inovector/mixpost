@@ -71,14 +71,14 @@ class FacebookMainProvider extends SocialProvider
         ];
     }
 
-    public function getAccount(array $params = []): array
+    public function getAccount(): array
     {
         return $this->getUserAccount();
     }
 
-    public function publish(string $text, array $media, array $params, string $accessToken): array
+    public function publish(string $text, array $media, string $accessToken): array
     {
-        $pageId = $params['provider_id'];
+        $pageId = $this->values['provider_id'];
         $isVideo = count($media) === 1 && !$media[0]['is_image'];
 
         // Publish a post in page feed with attached media.

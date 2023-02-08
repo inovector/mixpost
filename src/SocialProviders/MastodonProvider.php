@@ -14,11 +14,11 @@ class MastodonProvider extends SocialProvider
     protected string $apiVersion = 'v1';
     protected string $serverUrl;
 
-    public function __construct(Request $request, string $clientId, string $clientSecret, string $redirectUrl, array $options = [])
+    public function __construct(Request $request, string $clientId, string $clientSecret, string $redirectUrl, array $values = [])
     {
-        $this->serverUrl = "https://{$options['server']}";
+        $this->serverUrl = "https://{$values['data']['server']}";
 
-        parent::__construct($request, $clientId, $clientSecret, $redirectUrl, $options);
+        parent::__construct($request, $clientId, $clientSecret, $redirectUrl, $values);
     }
 
     public function getAuthUrl(): string
@@ -45,36 +45,62 @@ class MastodonProvider extends SocialProvider
             'scope' => 'read write'
         ];
 
-        $response = Http::post("$this->serverUrl/oauth/token", $params)->json();
+        $result = Http::post("$this->serverUrl/oauth/token", $params)->json();
 
         return [
-            'access_token' => $response['access_token']
+            'access_token' => $result['access_token']
         ];
     }
 
-    public function getAccount(array $params = []): array
+    public function getAccount(): array
     {
-        $response = Http::withToken($this->getAccessToken()['access_token'])
-            ->get("$this->serverUrl/api/$this->apiVersion/accounts/verify_credentials", $params)
+        $result = Http::withToken($this->getAccessToken()['access_token'])
+            ->get("$this->serverUrl/api/$this->apiVersion/accounts/verify_credentials")
             ->json();
 
         return [
-            'id' => $response['id'],
-            'name' => $response['display_name'],
-            'username' => $response['username'],
-            'image' => $response['avatar'],
+            'id' => $result['id'],
+            'name' => $result['display_name'],
+            'username' => $result['username'],
+            'image' => $result['avatar'],
             'data' => [
-                'server' => $this->options['server']
+                'server' => $this->values['data']['server']
             ]
         ];
     }
 
     public function publishPost(string $text, array $media = [], array $params = []): array
     {
-        // Upload media
+        $mediaResult = $this->uploadMedia($media);
 
-        return [];
-        // Post
+        if (!empty($mediaResult['errors'])) {
+            return [
+                'errors' => $mediaResult['errors']
+            ];
+        }
+
+        $postParameters = ['status' => $text];
+
+        if (!empty($mediaResult['ids'])) {
+            $postParameters['media_ids'] = $mediaResult['ids'];
+        }
+
+        $result = Http::withToken($this->getAccessToken()['access_token'])
+            ->withHeaders([
+                'Idempotency-Key' => Str::uuid()->toString()
+            ])
+            ->post("$this->serverUrl/api/$this->apiVersion/statuses", $postParameters)
+            ->json();
+
+        if (isset($result['error'])) {
+            return [
+                'errors' => [$result['error']]
+            ];
+        }
+
+        return [
+            'id' => $result['id']
+        ];
     }
 
     public function uploadMedia(array $media): array
@@ -82,55 +108,25 @@ class MastodonProvider extends SocialProvider
         $ids = [];
         $errors = [];
 
-        foreach ($media as $item) {
-            $isGif = Str::after($item['mime_type'], '/') === 'gif';
-            $chunkUpload = !$item['is_image'] || $isGif;
+        foreach (array_slice($media, 0, 4) as $item) {
+            $stream = fopen($item['path'], 'r');
 
-            if (!$chunkUpload) {
-                $result = $this->connection->upload('media/upload', [
-                    'media' => $item['path'],
-                    'media_type' => $item['mime_type'],
-                    'media_category' => 'tweet_image',
-                    'total_bytes' => $item['size'],
-                ]);
+            $result = Http::attach('file', $stream)
+                ->timeout(60 * 5)
+                ->withToken($this->getAccessToken()['access_token'])
+                ->post("$this->serverUrl/api/$this->apiVersion/media")
+                ->json();
+
+            if (is_resource($stream)) {
+                fclose($stream);
             }
 
-            if ($chunkUpload) {
-                $result = $this->connection->upload('media/upload', [
-                    'media' => $item['path'],
-                    'media_type' => $item['mime_type'],
-                    'media_category' => $isGif ? 'tweet_gif' : 'tweet_video',
-                    'total_bytes' => $item['size'],
-                ], true);
-            }
-
-            if (!$result) {
-                $errors[] = $result;
+            if (isset($result['error'])) {
+                $errors[] = $result['error'];
                 continue;
             }
 
-            // Check status of uploaded media
-            if (isset($result->processing_info)) {
-                $state = $result->processing_info->state;
-                $sleepSeconds = $result->processing_info->check_after_secs;
-
-                do {
-                    sleep($sleepSeconds);
-
-                    $mediaStatus = $this->connection->mediaStatus($result->media_id);
-
-                    $state = $mediaStatus->processing_info->state;
-                    $sleepSeconds = $mediaStatus->processing_info->check_after_secs ?? 1;
-
-                } while (in_array($state, ['pending', 'in_progress']));
-
-                if ($state === 'failed') {
-                    $errors[] = "Failed to upload {$item['name']} file.";
-                    continue;
-                }
-            }
-
-            $ids[] = $result->media_id_string;
+            $ids[] = $result['id'];
         }
 
         return [

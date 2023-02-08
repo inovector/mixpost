@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 interface SocialProvider
 {
-    public function __construct(Request $request, string $clientId, string $clientSecret, string $redirectUrl, array $options = []);
+    public function __construct(Request $request, string $clientId, string $clientSecret, string $redirectUrl, array $values = []);
 
     public function getAuthUrl(): string;
 
@@ -14,7 +14,7 @@ interface SocialProvider
 
     public function useAccessToken(array $token = []): static;
 
-    public function getAccount(array $params = []);
+    public function getAccount();
 
     public function publishPost(string $text, array $media = [], array $params = []);
 

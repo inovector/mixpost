@@ -59,7 +59,7 @@ const clear = () => {
 
             <template #content>
                 <VerticallyScrollableContent>
-                    <div class="p-sm">
+                    <div v-if="tags.length" class="p-sm">
                         <div class="font-semibold">Labels</div>
                         <div class="mt-sm flex flex-wrap items-center gap-xs">
                             <template v-for="tag in tags" :key="tag.id">

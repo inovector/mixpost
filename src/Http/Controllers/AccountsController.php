@@ -22,16 +22,16 @@ class AccountsController extends Controller
 
     public function update(Account $account): RedirectResponse
     {
-        $provider = SocialProviderManager::connect($account->provider);
-        $provider->setAccessToken($account->access_token);
+        $provider = SocialProviderManager::connect($account->provider, $account->values());
+        $provider->setAccessToken($account->access_token->toArray());
 
-        $result = $provider->getAccount($account->toArray());
+        $result = $provider->getAccount();
 
         if (empty($result)) {
             return redirect()->back()->with('The account cannot be updated. Re-authenticate your account.');
         }
 
-        (new UpdateOrCreateAccount())($account->provider, $result, $account->access_token);
+        (new UpdateOrCreateAccount())($account->provider, $result, $account->access_token->toArray());
 
         return redirect()->back();
     }

@@ -15,7 +15,7 @@ class TwitterProvider extends SocialProvider
     public TwitterOAuth $connection;
 
     // Overwrite __construct to use Twitter SDK
-    public function __construct(Request $request, string $clientId, string $clientSecret, string $redirectUrl, array $options = [])
+    public function __construct(Request $request, string $clientId, string $clientSecret, string $redirectUrl, array $values = [])
     {
         $this->connection = new TwitterOAuth($clientId, $clientSecret);
         $this->connection->setApiVersion($this->apiVersion);
@@ -26,18 +26,18 @@ class TwitterProvider extends SocialProvider
 
     public function getAuthUrl(): string
     {
-        $response = $this->connection->oauth('oauth/request_token', ['x_auth_access_type' => 'write', 'redirect_uri' => $this->redirectUrl]);
+        $result = $this->connection->oauth('oauth/request_token', ['x_auth_access_type' => 'write', 'redirect_uri' => $this->redirectUrl]);
 
-        return $this->connection->url('oauth/authorize', ['oauth_token' => $response['oauth_token'], 'oauth_token_secret' => $response['oauth_token_secret']]);
+        return $this->connection->url('oauth/authorize', ['oauth_token' => $result['oauth_token'], 'oauth_token_secret' => $result['oauth_token_secret']]);
     }
 
     public function requestAccessToken(array $params = []): array
     {
-        $response = $this->connection->oauth('oauth/access_token', ['oauth_token' => $this->request->get('oauth_token'), 'oauth_verifier' => $this->request->get('oauth_verifier')]);
+        $result = $this->connection->oauth('oauth/access_token', ['oauth_token' => $this->request->get('oauth_token'), 'oauth_verifier' => $this->request->get('oauth_verifier')]);
 
         return [
-            'oauth_token' => $response['oauth_token'],
-            'oauth_token_secret' => $response['oauth_token_secret']
+            'oauth_token' => $result['oauth_token'],
+            'oauth_token_secret' => $result['oauth_token_secret']
         ];
     }
 
@@ -55,15 +55,15 @@ class TwitterProvider extends SocialProvider
         return $this;
     }
 
-    public function getAccount(array $params = []): array
+    public function getAccount(): array
     {
-        $response = $this->connection->get('users/me', ['user.fields' => 'profile_image_url,created_at']);
+        $result = $this->connection->get('users/me', ['user.fields' => 'profile_image_url,created_at']);
 
         return [
-            'id' => $response->data->id,
-            'name' => $response->data->name,
-            'username' => $response->data->username,
-            'image' => str_replace('normal', '400x400', $response->data->profile_image_url)
+            'id' => $result->data->id,
+            'name' => $result->data->name,
+            'username' => $result->data->username,
+            'image' => str_replace('normal', '400x400', $result->data->profile_image_url)
         ];
     }
 
@@ -81,7 +81,7 @@ class TwitterProvider extends SocialProvider
         $postParameters = ['status' => $text];
 
         if (!empty($mediaResult['ids'])) {
-            $postParameters['media_ids'] = $mediaResult['ids'];
+            $postParameters['media_ids'] = implode(',', $mediaResult['ids']);
         }
 
         $this->connection->setApiVersion('1.1');
@@ -114,7 +114,7 @@ class TwitterProvider extends SocialProvider
         $ids = [];
         $errors = [];
 
-        foreach ($media as $item) {
+        foreach (array_slice($media, 0, 4) as $item) {
             $isGif = Str::after($item['mime_type'], '/') === 'gif';
             $chunkUpload = !$item['is_image'] || $isGif;
 

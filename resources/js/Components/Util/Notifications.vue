@@ -10,10 +10,7 @@ import XIcon from "@/Icons/X.vue"
 
 const variant = ref('info');
 const message = ref('');
-const button = ref({
-    name: null,
-    url: null
-})
+const button = ref(null)
 const show = ref(false);
 
 let showTimeout = null;
@@ -34,7 +31,7 @@ const open = (variantName, messageText, buttonObject) => {
     variant.value = variantName;
     message.value = messageText.replace(/\n/g, '<br />');
 
-    if(buttonObject) {
+    if (buttonObject) {
         button.value = buttonObject;
     }
 
@@ -42,6 +39,7 @@ const open = (variantName, messageText, buttonObject) => {
 
     showTimeout = setTimeout(() => {
         show.value = false;
+        button.value = null;
     }, 3000);
 }
 
@@ -51,6 +49,7 @@ const close = () => {
     }
 
     show.value = false
+    button.value = null
 }
 
 const variantIcon = computed(() => {
@@ -116,9 +115,9 @@ watch(() => flash, () => {
                     </div>
                     <div>
                         <div class="text-gray-200" v-html="message"/>
-                        <div v-if="button.href" class="mt-xs">
+                        <div v-if="button" class="mt-xs">
                             <Link :href="button.href">
-                               <SecondaryButton @click="close">{{ button.name }}</SecondaryButton>
+                                <SecondaryButton @click="close">{{ button.name }}</SecondaryButton>
                             </Link>
                         </div>
                     </div>

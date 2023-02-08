@@ -6,6 +6,7 @@ use Inovector\Mixpost\Http\Middleware\Auth as MixpostAuthMiddleware;
 use Inovector\Mixpost\Http\Controllers\DashboardController;
 use Inovector\Mixpost\Http\Controllers\AccountsController;
 use Inovector\Mixpost\Http\Controllers\AccountEntitiesController;
+use Inovector\Mixpost\Http\Controllers\CreateMastodonAppController;
 use Inovector\Mixpost\Http\Controllers\AddAccountController;
 use Inovector\Mixpost\Http\Controllers\SettingsController;
 use Inovector\Mixpost\Http\Controllers\ServicesController;
@@ -82,6 +83,8 @@ Route::middleware(['web', MixpostAuthMiddleware::class, HandleInertiaRequests::c
     Route::prefix('services')->name('services.')->group(function () {
         Route::get('/', [ServicesController::class, 'index'])->name('index');
         Route::put('{service}', [ServicesController::class, 'update'])->name('update');
+
+        Route::post('create-mastodon-app', CreateMastodonAppController::class)->name('createMastodonApp');
     });
 
     Route::get('callback/{provider}', CallbackSocialProviderController::class)->name('callbackSocialProvider');

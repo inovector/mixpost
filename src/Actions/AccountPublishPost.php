@@ -25,10 +25,10 @@ class AccountPublishPost
         $body = $this->cleanBody($content[0]['body']);
         $media = $this->collectMedia($content[0]['media']);
 
-        $provider = SocialProviderManager::connect($account->provider)->useAccessToken($account->access_token);
+        $provider = SocialProviderManager::connect($account->provider, $account->values())->useAccessToken($account->access_token->toArray());
 
         try {
-            $response = $provider->publishPost($body, $media, params: ['provider_id' => $account->provider_id]);
+            $response = $provider->publishPost($body, $media);
 
             if (isset($response['errors'])) {
                 $this->insertErrors($post, $account, $response['errors']);
@@ -64,7 +64,8 @@ class AccountPublishPost
     private function insertProviderPostId(Post $post, Account $account, string $id): void
     {
         $post->accounts()->updateExistingPivot($account->id, [
-            'provider_post_id' => $id
+            'provider_post_id' => $id,
+            'errors' => null,
         ]);
     }
 

@@ -12,7 +12,7 @@ abstract class SocialProviderManager
     protected Container $container;
     protected mixed $config;
     protected array $providers = [];
-    protected mixed $options = [];
+    protected mixed $values = [];
 
     public function __construct(Container $container)
     {
@@ -20,8 +20,10 @@ abstract class SocialProviderManager
         $this->config = $container->make('config');
     }
 
-    public function connect(string $provider)
+    public function connect(string $provider, array $values = [])
     {
+        $this->setValues($values);
+
         // If the given provider has not been created before, we will create the instances
         // here and cache it, so we can return it next time very quickly. If there is
         // already a provider created by this name, we'll just return that instance.
@@ -32,14 +34,9 @@ abstract class SocialProviderManager
         return $this->providers[$provider];
     }
 
-    public function setOptions(array $value): void
+    protected function setValues(array $values): void
     {
-        $this->options = $value;
-    }
-
-    public function setOption(string $name, mixed $value): void
-    {
-        $this->options[$name] = $value;
+        $this->values = $values;
     }
 
     private function createConnection(string $provider)
@@ -55,7 +52,7 @@ abstract class SocialProviderManager
 
     protected function buildConnectionProvider(string $provider, array $config): SocialProvider
     {
-        $connection = (new $provider($this->container->make('request'), $config['client_id'], $config['client_secret'], $config['redirect'], $config['options'] ?? []));
+        $connection = (new $provider($this->container->make('request'), $config['client_id'], $config['client_secret'], $config['redirect'], array_merge($this->values, $config['values'] ?? [])));
 
         if (!$connection instanceof SocialProvider) {
             throw new \Exception('The provider must be an instance of SocialProvider');
