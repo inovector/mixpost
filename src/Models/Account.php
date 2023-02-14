@@ -33,8 +33,13 @@ class Account extends Model
 
     protected static function booted()
     {
+        static::updated(function ($account) {
+            if ($account->wasChanged('media')) {
+                Storage::disk($account->getOriginal('media')['disk'])->delete($account->getOriginal('media')['path']);
+            }
+        });
+
         static::deleted(function ($account) {
-            // Remove media
             if ($account->media) {
                 Storage::disk($account->media['disk'])->delete($account->media['path']);
             }

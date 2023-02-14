@@ -4,6 +4,7 @@ namespace Inovector\Mixpost\SocialProviders;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
+use Intervention\Image\Facades\Image;
 
 class FacebookGroupProvider extends FacebookMainProvider
 {
@@ -41,11 +42,17 @@ class FacebookGroupProvider extends FacebookMainProvider
         ])->collect('data');
 
         return $result->map(function ($item) {
+            $image = Arr::get($item, 'cover.source');
+
+            if (!$image) {
+                $image = Image::make(__DIR__ . '/../../resources/img/facebook-group.jpeg')->encode('data-url')->getEncoded();
+            }
+
             return [
                 'id' => $item['id'],
                 'name' => $item['name'],
                 'username' => '',
-                'image' => Arr::get($item, 'cover.source')
+                'image' => $image
             ];
         })->toArray();
     }

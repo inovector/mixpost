@@ -19,7 +19,7 @@
         "path": "^0.12.7",
         "postcss": "^8.4.20",
         "postcss-nesting": "^10.1.10",
-        "tailwindcss": "^3.2.4",
+        "tailwindcss": "^3.2.6",
         "vite": "^3.0.0",
         "vue": "^3.2.31"
     },

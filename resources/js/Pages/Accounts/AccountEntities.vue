@@ -50,7 +50,7 @@ const save = () => {
                     <label class="flex items-center cursor-pointer">
                         <Checkbox v-model:checked="form.selected" :value="entity.id" class="mr-md"/>
                         <span class="flex items-center">
-                            <img :src="entity.image" class="rounded-full w-8 h-8 object-cover mr-xs border border-gray-200"/>
+                            <img :src="entity.image" class="rounded-full w-8 h-8 object-cover mr-xs border border-gray-200" alt="Image"/>
                             <span class="font-semibold">{{ entity.name }}</span>
                         </span>
                     </label>

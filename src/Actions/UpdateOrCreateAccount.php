@@ -38,7 +38,7 @@ class UpdateOrCreateAccount
         file_put_contents($file, $contents);
 
         $file = new UploadedFile($file, $info['basename']);
-        $path = "mixpost/avatar_$providerName";
+        $path = "mixpost/avatars/$providerName";
 
         $upload = MediaUploader::fromFile($file)->path($path)->upload();
 

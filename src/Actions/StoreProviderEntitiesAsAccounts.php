@@ -50,14 +50,14 @@ class StoreProviderEntitiesAsAccounts
             return in_array($entity['id'], $items);
         });
 
-        $account = $provider->getUserAccount();
+        $userAccount = $provider->getUserAccount();
 
-        $entities = Arr::map($filterEntities, function ($entity) use ($account) {
+        $entities = Arr::map($filterEntities, function ($entity) use ($userAccount) {
             return array_merge($entity, [
                 'data' => [
                     'user' => [
-                        'id' => $account['id'],
-                        'name' => $account['name']
+                        'id' => $userAccount['id'],
+                        'name' => $userAccount['name']
                     ]
                 ],
             ]);

@@ -15,7 +15,6 @@ class CallbackSocialProviderController extends Controller
         $provider = SocialProviderManager::connect($providerName);
 
         if (!$provider->isOnlyUserAccount()) {
-
             if (empty($provider->getCallbackResponse())) {
                 return redirect()->route('mixpost.accounts.index');
             }

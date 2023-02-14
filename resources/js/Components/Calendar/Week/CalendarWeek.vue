@@ -132,7 +132,7 @@ const onScroll = throttle(($event) => {
 
                         <div v-for="(weekday, indexDay) in weekDays" :key="indexDay"
                              :class="{'!border-t-gray-100': minuteSlotIndex !== 0}"
-                             class="grid grid-cols-1 border-l border-t border-gray-200 text-center font-semibold bg-white">
+                             class="grid grid-cols-1 border-l border-t border-gray-200 text-center bg-white">
 
                             <WeekDayTimeItem :dateSlot="weekday"
                                                    :timeSlot="time[24]"
