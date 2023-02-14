@@ -1,8 +1,8 @@
 <script setup>
-import OneImage from "@/Components/ProviderGallery/Twitter/OneImage.vue"
-import TwoImage from "@/Components/ProviderGallery/Twitter/TwoImage.vue"
-import ThreeImage from "@/Components/ProviderGallery/Twitter/ThreeImage.vue"
-import FourImage from "@/Components/ProviderGallery/Twitter/FourImage.vue"
+import OneImage from "@/Components/ProviderGallery/Mastodon/OneImage.vue"
+import TwoImage from "@/Components/ProviderGallery/Mastodon/TwoImage.vue"
+import ThreeImage from "@/Components/ProviderGallery/Mastodon/ThreeImage.vue"
+import FourImage from "@/Components/ProviderGallery/Mastodon/FourImage.vue"
 
 defineProps({
     media: {
