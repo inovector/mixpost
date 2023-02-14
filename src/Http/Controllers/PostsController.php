@@ -13,6 +13,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Inovector\Mixpost\Actions\RedirectAfterDeletedPost;
 use Inovector\Mixpost\Builders\PostQuery;
+use Inovector\Mixpost\Facades\Services;
 use Inovector\Mixpost\Facades\Settings;
 use Inovector\Mixpost\Http\Requests\StorePost;
 use Inovector\Mixpost\Http\Requests\UpdatePost;
@@ -57,6 +58,10 @@ class PostsController extends Controller
             'schedule_at' => [
                 'date' => Str::before($request->route('schedule_at'), ' '),
                 'time' => Str::after($request->route('schedule_at'), ' '),
+            ],
+            'has_service' => [
+                'unsplash' => !!Services::get('unsplash', 'client_id'),
+                'tenor' => !!Services::get('tenor', 'client_id')
             ]
         ]);
     }
@@ -75,7 +80,11 @@ class PostsController extends Controller
         return Inertia::render('Posts/CreateEdit', [
             'accounts' => AccountResource::collection(Account::oldest()->get())->resolve(),
             'tags' => TagResource::collection(Tag::latest()->get())->resolve(),
-            'post' => new PostResource($post)
+            'post' => new PostResource($post),
+            'has_service' => [
+                'unsplash' => !!Services::get('unsplash', 'client_id'),
+                'tenor' => !!Services::get('tenor', 'client_id')
+            ]
         ]);
     }
 

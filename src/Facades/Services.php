@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static array form()
  * @method static array rules(string $name)
  * @method static array messages(string $name)
- * @method static get(string $name)
+ * @method static get(string $name, null|string $credentialKey = null)
  * @method static getFromCache(string $name)
  * @method static array all()
  * @method static void forgetAll()

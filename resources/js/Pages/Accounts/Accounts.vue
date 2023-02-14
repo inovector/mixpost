@@ -1,7 +1,7 @@
 <script setup>
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import {Inertia} from '@inertiajs/inertia'
-import {Head} from '@inertiajs/inertia-vue3';
+import {Head, Link} from '@inertiajs/inertia-vue3';
 import useNotifications from "@/Composables/useNotifications";
 import PageHeader from "@/Components/DataDisplay/PageHeader.vue";
 import Panel from "@/Components/Surface/Panel.vue";
@@ -20,7 +20,15 @@ import PlusIcon from "@/Icons/Plus.vue";
 import EllipsisVerticalIcon from "@/Icons/EllipsisVertical.vue";
 import RefreshIcon from "@/Icons/Refresh.vue";
 import TrashIcon from "@/Icons/Trash.vue";
+import Alert from "@/Components/Util/Alert.vue";
+import PrimaryButton from "@/Components/Button/PrimaryButton.vue";
 
+const props = defineProps({
+    has_service: {
+        required: true,
+        type: Object,
+    }
+})
 const title = 'Social Accounts';
 
 const {notify} = useNotifications();
@@ -28,6 +36,10 @@ const {notify} = useNotifications();
 const addAccountModal = ref(false);
 const confirmationAccountDeletion = ref(null);
 const accountIsDeleting = ref(false);
+
+const anyUnconfiguredServices = computed(()=> {
+    return Object.keys(props.has_service).some((service) => props.has_service[service] !== true)
+});
 
 const updateAccount = (accountId) => {
     Inertia.put(route('mixpost.accounts.update', {account: accountId}), {}, {
@@ -71,6 +83,18 @@ const closeConfirmationAccountDeletion = () => {
         </PageHeader>
 
         <div class="mt-lg row-px w-full">
+           <div v-if="anyUnconfiguredServices" class="mb-md">
+               <Alert variant="warning" :closeable="false" class="mb-md">
+                   <p v-if="!$page.props.has_service.twitter">You have not configured Twitter service.</p>
+                   <p v-if="!$page.props.has_service.facebook">You have not configured Facebook service.</p>
+                   <p class="mt-xs italic">Click on the button below to configure the third-party services.</p>
+               </Alert>
+
+               <Link :href="route('mixpost.services.index')" class="inline-block">
+                   <PrimaryButton>Configure services</PrimaryButton>
+               </Link>
+           </div>
+
             <div class="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
                 <button @click="addAccountModal = true"
                         class="border border-indigo-800 rounded-lg hover:border-indigo-500 hover:text-indigo-500 transition-colors ease-in-out duration-200">
@@ -144,9 +168,9 @@ const closeConfirmationAccountDeletion = () => {
            :closeable="true"
            @close="addAccountModal = false">
         <div class="flex flex-col">
-            <AddTwitterAccount/>
-            <AddFacebookPage/>
-            <AddFacebookGroup/>
+            <AddTwitterAccount v-if="$page.props.has_service.twitter"/>
+            <AddFacebookPage v-if="$page.props.has_service.facebook"/>
+            <AddFacebookGroup v-if="$page.props.has_service.facebook"/>
             <AddMastodonAccount/>
         </div>
     </Modal>

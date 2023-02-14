@@ -56,7 +56,7 @@ class Services
         Cache::put($this->resolveCacheKey($name), Crypt::encryptString(json_encode($value)));
     }
 
-    public function get(string $name)
+    public function get(string $name, null|string $credentialKey = null)
     {
         $value = $this->getFromCache($name, function () use ($name) {
             $dbRecord = Service::where('name', $name)->first();
@@ -69,7 +69,11 @@ class Services
         });
 
         if (!is_array($value)) {
-            return json_decode(Crypt::decryptString($value), true);
+            $value = json_decode(Crypt::decryptString($value), true);
+        }
+
+        if ($credentialKey) {
+            return Arr::get($value, $credentialKey);
         }
 
         return $value;

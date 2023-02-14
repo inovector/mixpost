@@ -2,18 +2,6 @@
 
 return [
     /*
-     * Credentials for third-party services
-     */
-    'credentials' => [
-        'unsplash' => [
-            'client_id' => env('MIXPOST_UNSPLASH_CLIENT_ID')
-        ],
-        'tenor' => [
-            'client_id' => env('MIXPOST_TENOR_CLIENT_ID')
-        ],
-    ],
-
-    /*
      * Rules for each social network
      * We recommend leaving these options unchanged
      * You only change them when the API policy of the social networks changes, and you know what you are doing.

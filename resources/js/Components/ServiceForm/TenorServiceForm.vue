@@ -23,6 +23,7 @@ const save = () => {
     errors.value = {};
 
     Inertia.put(route('mixpost.services.update', {service: 'tenor'}), props.form, {
+        preserveScroll: true,
         onSuccess() {
             notify('success', 'Tenor credentials have been saved');
         },

@@ -7,6 +7,7 @@ use Illuminate\Routing\Controller;
 use Inertia\Inertia;
 use Inertia\Response;
 use Inovector\Mixpost\Actions\UpdateOrCreateAccount;
+use Inovector\Mixpost\Facades\Services;
 use Inovector\Mixpost\Facades\SocialProviderManager;
 use Inovector\Mixpost\Http\Resources\AccountResource;
 use Inovector\Mixpost\Models\Account;
@@ -16,7 +17,11 @@ class AccountsController extends Controller
     public function index(): Response
     {
         return Inertia::render('Accounts/Accounts', [
-            'accounts' => AccountResource::collection(Account::latest()->get())->resolve()
+            'accounts' => AccountResource::collection(Account::latest()->get())->resolve(),
+            'has_service' => [
+                'twitter' => !!Services::get('twitter', 'client_id'),
+                'facebook' => !!Services::get('facebook', 'client_id')
+            ]
         ]);
     }
 

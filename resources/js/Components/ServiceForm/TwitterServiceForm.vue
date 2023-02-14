@@ -24,6 +24,7 @@ const save = () => {
     errors.value = {};
 
     Inertia.put(route('mixpost.services.update', {service: 'twitter'}), props.form, {
+        preserveScroll: true,
         onSuccess() {
             notify('success', 'Twitter credentials have been saved');
         },

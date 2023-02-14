@@ -24,6 +24,7 @@ const save = () => {
     errors.value = {};
 
     Inertia.put(route('mixpost.services.update', {service: 'facebook'}), props.form, {
+        preserveScroll: true,
         onSuccess() {
             notify('success', 'Facebook credentials have been saved');
         },
