@@ -2,34 +2,6 @@
 
 return [
     /*
-     * Rules for each social network
-     * We recommend leaving these options unchanged
-     * You only change them when the API policy of the social networks changes, and you know what you are doing.
-     */
-    'social_provider_rules' => [
-        'twitter' => [
-            'simultaneous_posting_on_multiple_accounts' => false,
-            'post_characters_limit' => 280,
-            'simultaneous_posting_photo_video' => false // GIFs also considered as video
-        ],
-        'facebook_page' => [
-            'simultaneous_posting_on_multiple_accounts' => true,
-            'post_characters_limit' => null,
-            'simultaneous_posting_photo_video' => false // GIFs also considered as video
-        ],
-        'facebook_group' => [
-            'simultaneous_posting_on_multiple_accounts' => true,
-            'post_characters_limit' => null,
-            'simultaneous_posting_photo_video' => false // GIFs also considered as video
-        ],
-        'mastodon' => [
-            'simultaneous_posting_on_multiple_accounts' => true,
-            'post_characters_limit' => null,
-            'simultaneous_posting_photo_video' => false // GIFs also considered as video
-        ]
-    ],
-
-    /**
      * Mixpost will redirect unauthorized users to the route specified here
      */
     'redirect_unauthorized_users_to_route' => 'login',
@@ -47,10 +19,10 @@ return [
     'max_file_size' => [
         'image' => 1024 * 5, // 5MB
         'gif' => 1024 * 15, // 15MB
-        'video' => 1024 * 500 // 500MB
+        'video' => 1024 * 200 // 200MB
     ],
 
-    /**
+    /*
      * Accepted mime types for media library upload.
      * These are all supported mime types for the image and video files. We do not guarantee that it will work with other types.
      * If you need to remove certain mime types, you are free to do so from here.
@@ -75,14 +47,58 @@ return [
     'ffmpeg_path' => env('FFMPEG_PATH', '/usr/bin/ffmpeg'),
     'ffprobe_path' => env('FFPROBE_PATH', '/usr/bin/ffprobe'),
 
-    /**
+    /*
      * Define cache prefix
      */
     'cache_prefix' => env('MIXPOST_CACHE_PREFIX', 'mixpost'),
 
-    /**
+    /*
      * The media component is integrated with third-party services Unsplash.com and Tenor.com
      * Defines the default terms for displaying media resources
      */
-    'external_media_terms' => ['young', 'social', 'mix', 'content', 'viral', 'trend', 'test', 'light', 'true', 'false', 'marketing', 'self-hosted', 'ambient', 'writer', 'technology']
+    'external_media_terms' => ['young', 'social', 'mix', 'content', 'viral', 'trend', 'test', 'light', 'true', 'false', 'marketing', 'self-hosted', 'ambient', 'writer', 'technology'],
+
+    /*
+     * Options for each social network
+     * We recommend leaving these options unchanged
+     * You only change them when the API policy of the social networks changes, and you know what you are doing.
+     */
+    'social_provider_options' => [
+        'twitter' => [
+            'simultaneous_posting_on_multiple_accounts' => false,
+            'post_character_limit' => 280,
+            'media_limit' => [
+                'photos' => 30,
+                'videos' => 1,
+                'allow_gifs_to_photos' => false,
+            ]
+        ],
+        'facebook_page' => [
+            'simultaneous_posting_on_multiple_accounts' => true,
+            'post_character_limit' => null,
+            'media_limit' => [
+                'photos' => 30,
+                'videos' => 1,
+                'allow_gifs_to_photos' => true,
+            ]
+        ],
+        'facebook_group' => [
+            'simultaneous_posting_on_multiple_accounts' => true,
+            'post_character_limit' => null,
+            'media_limit' => [
+                'photos' => 30,
+                'videos' => 1,
+                'allow_gifs_to_photos' => true,
+            ]
+        ],
+        'mastodon' => [
+            'simultaneous_posting_on_multiple_accounts' => true,
+            'post_character_limit' => 500,
+            'media_limit' => [
+                'photos' => 4,
+                'videos' => 1,
+                'allow_gifs_to_photos' => true,
+            ]
+        ]
+    ],
 ];

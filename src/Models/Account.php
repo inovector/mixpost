@@ -4,6 +4,7 @@ namespace Inovector\Mixpost\Models;
 
 use Illuminate\Database\Eloquent\Casts\AsEncryptedArrayObject;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Inovector\Mixpost\Casts\AccountMediaCast;
 
@@ -64,5 +65,12 @@ class Account extends Model
             'username' => $this->username,
             'data' => $this->data
         ];
+    }
+
+    public function providerOptions()
+    {
+        $rules = config('mixpost.social_provider_options');
+
+        return Arr::get($rules, $this->provider);
     }
 }

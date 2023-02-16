@@ -91,7 +91,7 @@ const closePreview = () => {
             </div>
         </TableCell>
         <TableCell :clickable="true" @click="openPreview" class="!pl-0">
-            <div class="w-96 text-left">{{ content.excerpt }}</div>
+            <div class="w-96 text-left break-words">{{ content.excerpt }}</div>
         </TableCell>
         <TableCell :clickable="true" @click="openPreview">
             <div v-if="content.media" class="w-48 flex relative">

@@ -1,5 +1,5 @@
 <script setup>
-import {computed, ref} from "vue";
+import {computed, inject, ref} from "vue";
 import {format, parseISO} from "date-fns";
 import {Inertia} from "@inertiajs/inertia";
 import {usePage} from "@inertiajs/inertia-vue3";
@@ -24,9 +24,11 @@ const props = defineProps({
     }
 });
 
-const {postId, editAllowed} = usePost();
+const {postId, editAllowed, accountsReachedTextLimit} = usePost();
 
 const emit = defineEmits(['submit'])
+
+const postContext = inject('postContext')
 
 const timePicker = ref(false);
 
@@ -51,7 +53,9 @@ const {notify} = useNotifications();
 const isLoading = ref(false);
 
 const canSchedule = computed(() => {
-    return (postId.value && props.form.accounts.length) && editAllowed.value;
+    return (postId.value && props.form.accounts.length) &&
+        editAllowed.value &&
+        !accountsReachedTextLimit.value;
 });
 
 const schedule = (postNow = false) => {
@@ -101,7 +105,7 @@ const accounts = computed(() => {
 
             <div class="flex items-center" role="group">
                 <SecondaryButton size="md"
-                                 :class="{'!normal-case rounded-r-none border-r-indigo-800': scheduleTime, 'rounded-r-lg': !canSchedule}"
+                                 :class="{'!normal-case border-r-indigo-800': scheduleTime, 'rounded-r-lg': !canSchedule}"
                                  @click="timePicker = true">
                     <CalendarIcon class="lg:mr-xs"/>
                     <span class="hidden sm:block">{{ scheduleTime ? scheduleTime : 'Pick time' }}</span>

@@ -57,7 +57,6 @@ class HandleInertiaRequests extends Middleware
                 ];
             },
             'mixpost' => [
-                'social_provider_rules' => config('mixpost.social_provider_rules'),
                 'mime_types' => config('mixpost.mime_types'),
                 'settings' => [
                     'timezone' => Settings::get('timezone'),

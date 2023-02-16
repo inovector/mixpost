@@ -1,5 +1,5 @@
 <script setup>
-import {computed, ref, watch} from "vue";
+import {ref, watch} from "vue";
 import {Head, useForm} from '@inertiajs/inertia-vue3';
 import {Inertia} from "@inertiajs/inertia";
 import {cloneDeep, debounce} from "lodash";
@@ -15,9 +15,9 @@ import PostPreviewProviders from "@/Components/Post/PostPreviewProviders.vue"
 import SecondaryButton from "@/Components/Button/SecondaryButton.vue"
 import PostStatus from "@/Components/Post/PostStatus.vue";
 import Alert from "@/Components/Util/Alert.vue";
+import PostValidationErrors from "@/Components/Post/PostValidationErrors.vue";
 import EyeIcon from "@/Icons/Eye.vue"
 import EyeOffIcon from "@/Icons/EyeOff.vue"
-import ExclamationIcon from "@/Icons/Exclamation.vue"
 
 const props = defineProps(['post', 'schedule_at']);
 
@@ -40,10 +40,6 @@ const form = useForm({
     date: post ? post.scheduled_at.date : props.schedule_at.date,
     time: post ? post.scheduled_at.time : props.schedule_at.time,
 });
-
-const showValidationErrors = computed(() => {
-    return true;
-})
 
 const store = (data) => {
     Inertia.post(route('mixpost.posts.store'), data, {
@@ -131,9 +127,6 @@ if (props.post) {
 watch(form, debounce(() => {
     if (editAllowed.value) {
         save();
-
-        // Validate rules
-        console.log(form.data())
     }
 }, 300))
 </script>
@@ -142,13 +135,8 @@ watch(form, debounce(() => {
 
     <PostContext>
         <div class="flex flex-col grow h-full overflow-y-auto">
-<!--            <div class="w-full flex items-center row-px py-md flex-row border-b border-gray-200 text-red-500">-->
-<!--                <div class="w-8 h-8 mr-sm flex items-center">-->
-<!--                    <ExclamationIcon/>-->
-<!--                </div>-->
-<!--                -->
-<!--                <div>Errors</div>-->
-<!--            </div>-->
+
+            <PostValidationErrors/>
 
             <div class="flex flex-row h-full overflow-y-auto">
                 <div class="w-full md:w-3/5 h-full flex flex-col overflow-x-hidden overflow-y-auto">
@@ -170,9 +158,11 @@ watch(form, debounce(() => {
                             <Alert v-if="isInHistory" :closeable="false" class="mb-lg">
                                 Posts in history cannot be edited.
                             </Alert>
+
                             <Alert v-if="isScheduleProcessing" :closeable="false" variant="warning" class="mb-lg">
                                 This post is being published, check back shortly!
                             </Alert>
+
                             <PostForm :form="form" :accounts="$page.props.accounts"/>
                         </div>
                     </div>
@@ -180,7 +170,7 @@ watch(form, debounce(() => {
                 <div :class="{'translate-x-0 pb-32': showPreview, 'translate-x-full md:translate-x-0': !showPreview}"
                      class="fixed md:relative w-full md:w-2/5 h-full overflow-x-hidden overflow-y-auto flex flex-col border-l border-gray-200 bg-stone-500 transition-transform ease-in-out duration-200">
                     <Teleport v-if="isMounted && form.accounts.length" to="#navRightButton">
-                        <SecondaryButton @click="showPreview = !showPreview" size="xs">
+                        <SecondaryButton @click="showPreview = !showPreview" size="xs" class="md:hidden">
                             <span class="mr-xs">
                                 <EyeOffIcon v-if="showPreview"/>
                                 <EyeIcon v-else/>

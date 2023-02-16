@@ -1,10 +1,11 @@
 {
     "name": "inovector/mixpost",
-    "description": "Laravel marketing platform for Social Network",
+    "description": "Self-hosted social media management software",
     "keywords": [
         "inovector",
         "mixpost",
         "social",
+        "scheduling",
         "laravel"
     ],
     "homepage": "https://github.com/inovector/mixpost",
@@ -20,16 +21,15 @@
         "php": "^8.1",
         "ext-fileinfo": "*",
         "abraham/twitteroauth": "^4.0",
-        "illuminate/contracts": "^9.0",
+        "illuminate/contracts": "^9.28|^10.0",
         "inertiajs/inertia-laravel": "^0.6.3",
         "intervention/image": "^2.7",
         "php-ffmpeg/php-ffmpeg": "^1.0",
-        "spatie/laravel-package-tools": "^1.9.2",
+        "spatie/laravel-package-tools": "^1.14",
         "spatie/temporary-directory": "^2.1",
         "tightenco/ziggy": "1.*"
     },
     "require-dev": {
-        "laravel/pint": "^1.0",
         "nunomaduro/collision": "^6.0",
         "orchestra/testbench": "^7.0",
         "pestphp/pest": "^1.21",

@@ -66,7 +66,7 @@ const iconClasses = computed(() => {
                 <img :src="imgUrl" class="object-cover w-full h-full rounded-full" alt=""/>
             </span>
             <span v-if="warningMessage" v-tooltip="warningMessage"
-                  class="flex items-center justify-center rounded-full absolute top-0 -ml-12 bg-red-500 text-white">
+                  class="flex items-center justify-center rounded-full absolute top-0 -ml-12 bg-orange-500 text-white">
                 <ExclamationCircleIcon :class="iconClasses"/>
             </span>
             <span :class="[iconWrapperClasses, {'grayscale': !active}]"

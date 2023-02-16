@@ -2,7 +2,7 @@
 import {provide, reactive} from "vue";
 
 const context = reactive({
-    reachedMaxCharacterLimit: {},
+    textLimit: {},
 });
 
 provide('postContext', context);

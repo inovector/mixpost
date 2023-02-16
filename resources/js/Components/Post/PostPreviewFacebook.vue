@@ -26,7 +26,7 @@ const props = defineProps({
         required: true,
         type: Array,
     },
-    reachedMaxCharacterLimit: {
+    textLimitReached: {
         type: Boolean,
         default: false,
     }
@@ -39,10 +39,10 @@ const mainContent = computed(() => {
 });
 </script>
 <template>
-    <Alert v-if="reachedMaxCharacterLimit" variant="error" :closeable="false" class="mb-xs">[{{ name }}] : You have
+    <Alert v-if="textLimitReached" variant="error" :closeable="false" class="mb-xs">[{{ name }}] : You have
         reached the maximum character limit
     </Alert>
-    <Panel :class="{'border-red-500': reachedMaxCharacterLimit}" class="relative">
+    <Panel :class="{'border-red-500': textLimitReached}" class="relative">
         <div class="absolute right-0 top-0 -mt-sm -mr-xs">
             <div class="flex items-center justify-center p-2 w-7 h-7 rounded-full bg-white border border-gray-200">
                 <div>

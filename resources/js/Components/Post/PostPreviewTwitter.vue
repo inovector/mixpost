@@ -24,7 +24,7 @@ const props = defineProps({
         required: true,
         type: Array,
     },
-    reachedMaxCharacterLimit: {
+    textLimitReached: {
         type: Boolean,
         default: false,
     }
@@ -37,13 +37,13 @@ const mainContent = computed(()=> {
 });
 </script>
 <template>
-    <Alert v-if="reachedMaxCharacterLimit" variant="error" :closeable="false" class="mb-xs">
+    <Alert v-if="textLimitReached" variant="error" :closeable="false" class="mb-xs">
         [{{ name }}] : You have reached the maximum character limit
     </Alert>
 
     <Alert v-if="mainContent.media.length > 4" variant="warning" class="mb-xs">[{{ name }}]: Twitter accepts a maximum of 4 pictures. Don't worry, if you have selected several pictures, Mixpost will only post the first 4.</Alert>
 
-    <Panel :class="{'border-red-500': reachedMaxCharacterLimit}" class="relative">
+    <Panel :class="{'border-red-500': textLimitReached}" class="relative">
         <div class="absolute right-0 top-0 -mt-sm -mr-xs">
             <div class="flex items-center justify-center p-2 w-7 h-7 rounded-full bg-white border border-gray-200">
                 <div>

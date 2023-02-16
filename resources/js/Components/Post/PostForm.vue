@@ -11,7 +11,7 @@ import Account from "@/Components/Account/Account.vue"
 import PostVersionsTab from "@/Components/Post/PostVersionsTab.vue"
 import AddMedia from "@/Components/Media/AddMedia.vue"
 import PostMedia from "@/Components/Post/PostMedia.vue"
-// import ProviderPostCharacterCount from "@/Components/Post/ProviderPostCharacterCount.vue"
+import PostCharacterCount from "@/Components/Post/PostCharacterCount.vue"
 import PhotoIcon from "@/Icons/Photo.vue"
 
 const postContext = inject('postContext')
@@ -48,26 +48,19 @@ const selectAccount = (account) => {
     props.form.accounts = accounts;
 }
 
-const providersWithDisabledSimultaneousPosting = computed(() => {
+const selectedAccounts = computed(() => {
     return props.accounts.filter(function (account) {
-        return props.form.accounts.includes(account.id) && !account.provider_rules.simultaneous_posting_on_multiple_accounts;
-    }).map(function (account) {
+        return isAccountSelected(account);
+    })
+});
+
+const providersWithDisabledSimultaneousPosting = computed(() => {
+    return selectedAccounts.value.filter((account) => {
+        return !account.provider_options.simultaneous_posting_on_multiple_accounts;
+    }).map((account) => {
         return account.provider;
     });
 });
-
-// const providersWithPostCharactersLimit = computed(() => {
-//     const items = props.accounts.filter(function (account) {
-//         return props.form.accounts.includes(account.id) && account.provider_rules.post_characters_limit !== null;
-//     }).map(function (account) {
-//         return {
-//             provider: account.provider,
-//             limit: account.provider_rules.post_characters_limit
-//         };
-//     });
-//
-//     return uniqBy(items, 'provider');
-// });
 
 const isAccountSelected = (account) => {
     return props.form.accounts.includes(account.id);
@@ -80,7 +73,13 @@ const isAccountUnselectable = (account) => {
 /**
  * Post content versions & Editor
  */
-const {versionObject, getOriginalVersion, getAccountVersion, getIndexAccountVersion} = usePostVersions();
+const {
+    versionObject,
+    getOriginalVersion,
+    getAccountVersion,
+    getIndexAccountVersion,
+    accountHasVersion
+} = usePostVersions();
 
 const activeVersion = ref(0);
 
@@ -205,17 +204,10 @@ const {insertEmoji, focusEditor} = useEditor();
                             </AddMedia>
                         </div>
 
-                        <div class="flex items-center justify-center">
-                            <!--                            In development-->
-                            <!--                            <div class="flex items-center justify-center mr-5">-->
-                            <!--                                <template v-for="item in providersWithPostCharactersLimit" :key="item.provider">-->
-                            <!--                                    <ProviderPostCharacterCount :provider="item.provider"-->
-                            <!--                                                                       :character-limit="item.limit"-->
-                            <!--                                                                       :text="props.bodyText"-->
-                            <!--                                                                       @reached="postContext.reachedMaxCharacterLimit[item.provider] = $event"/>-->
-                            <!--                                </template>-->
-                            <!--                            </div>-->
-                        </div>
+                        <PostCharacterCount :selectedAccounts="selectedAccounts"
+                                            :activeVersion="activeVersion"
+                                            :versions="form.versions"
+                                            :text="props.bodyText"/>
                     </div>
                 </template>
             </Editor>

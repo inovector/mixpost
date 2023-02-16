@@ -1,5 +1,6 @@
-import {computed} from "vue";
+import {computed, inject} from "vue";
 import {usePage} from "@inertiajs/inertia-vue3";
+import {pickBy} from "lodash";
 
 const usePost = () => {
     const post = computed(() => {
@@ -30,11 +31,24 @@ const usePost = () => {
         return !(isInHistory.value || isScheduleProcessing.value);
     });
 
+    const accountsReachedTextLimit = computed(() => {
+        const postContext = inject('postContext')
+
+        const result = pickBy(postContext.textLimit, (item) => item.hit === true);
+
+        if (!Object.keys(result).length) {
+            return null;
+        }
+
+        return result;
+    })
+
     return {
         postId,
         isInHistory,
         isScheduleProcessing,
-        editAllowed
+        editAllowed,
+        accountsReachedTextLimit
     }
 }
 
