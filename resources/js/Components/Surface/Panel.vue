@@ -10,7 +10,7 @@ defineProps({
     <div class="bg-white border border-gray-100 rounded-lg">
         <div :class="{'p-lg': withPadding}">
             <div v-if="$slots.title"
-                 class="text-lg font-bold text-black">
+                 class="text-lg font-semibold text-black">
                 <slot name="title"/>
             </div>
 

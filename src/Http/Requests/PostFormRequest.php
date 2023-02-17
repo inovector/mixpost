@@ -19,6 +19,7 @@ class PostFormRequest extends FormRequest
             'versions.*.content.*.body' => ['nullable', 'string'],
             'versions.*.content.*.media' => ['array'],
             'versions.*.content.*.media.*' => ['integer'],
+            'text_limit' => ['sometimes', 'array']
         ];
     }
 

@@ -7,8 +7,6 @@ import PostPreviewMastodon from "@/Components/Post/PostPreviewMastodon.vue"
 import Panel from "@/Components/Surface/Panel.vue";
 import Alert from "@/Components/Util/Alert.vue";
 
-// const postContext = inject('postContext')
-
 const props = defineProps({
     accounts: {
         required: true,

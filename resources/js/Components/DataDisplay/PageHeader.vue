@@ -9,7 +9,7 @@ defineProps({
 <template>
     <div class="row-px mb-2xl">
         <div class="flex items-center justify-between">
-            <h1 class="font-bold text-xl">
+            <h1 class="font-semibold text-xl">
                 {{ $props.title }}
             </h1>
             <slot/>

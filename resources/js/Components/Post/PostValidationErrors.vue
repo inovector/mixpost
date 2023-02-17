@@ -6,8 +6,16 @@ import ExclamationIcon from "@/Icons/Exclamation.vue"
 const {accountsReachedTextLimit} = usePost();
 
 const show = computed(() => {
-    return accountsReachedTextLimit.value !== null;
+    return accountsReachedTextLimit.value.length !== 0;
 })
+
+const resolveProvider = (provider) => {
+    if (['facebook_page', 'facebook_group'].includes(provider)) {
+        return 'facebook';
+    }
+
+    return provider;
+}
 </script>
 <template>
     <div v-if="show"
@@ -16,8 +24,9 @@ const show = computed(() => {
             <ExclamationIcon/>
         </div>
         <div v-if="accountsReachedTextLimit">
-            <p v-for="(item, _) in accountsReachedTextLimit">
-                <span class="capitalize">{{ item.provider }}</span> can only fit {{ item.limit }} characters.
+            <p v-for="item in accountsReachedTextLimit">
+                <span class="capitalize">{{ resolveProvider(item.provider) }}</span> can only fit {{ item.limit }}
+                characters.
                 <span v-if="item.account_name">Check out the <span class="font-semibold">{{ item.account_name }}</span> version.</span>
             </p>
         </div>

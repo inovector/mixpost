@@ -34,7 +34,7 @@ const alignClass = computed(() => {
 });
 </script>
 <template>
-    <th v-if="component === 'th'" :scope="scope" :class="[props.class, alignClass, commonClass]" class="font-semibold">
+    <th v-if="component === 'th'" :scope="scope" :class="[props.class, alignClass, commonClass]" class="font-medium">
         <slot/>
     </th>
     <td v-if="component === 'td'" :class="[props.class, alignClass, commonClass]"

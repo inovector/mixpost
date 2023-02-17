@@ -1,6 +1,6 @@
 import {computed, inject} from "vue";
 import {usePage} from "@inertiajs/inertia-vue3";
-import {pickBy} from "lodash";
+import {filter, some} from "lodash";
 
 const usePost = () => {
     const post = computed(() => {
@@ -34,13 +34,7 @@ const usePost = () => {
     const accountsReachedTextLimit = computed(() => {
         const postContext = inject('postContext')
 
-        const result = pickBy(postContext.textLimit, (item) => item.hit === true);
-
-        if (!Object.keys(result).length) {
-            return null;
-        }
-
-        return result;
+        return filter(postContext.textLimit, {hit: true});
     })
 
     return {

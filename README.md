@@ -30,7 +30,8 @@ Join our community:
 
 * Laravel Framework >=9.0
 * PHP 8.1 or higher
-* Database (eg: MySQL, PostgreSQL, SQLite)
+* Database (eg: MySQL, PostgresSQL, SQLite)
+* Redis 6.2 or higher
 * Web Server (eg: Apache, Nginx, IIS)
 * URL Rewrite (eg: mod_rewrite for Apache)
 
@@ -138,7 +139,7 @@ return [
     'social_provider_options' => [
         'twitter' => [
             'simultaneous_posting_on_multiple_accounts' => false,
-            'post_characters_limit' => 280,
+            'post_character_limit' => 280,
             'media_limit' => [
                 'photos' => 30,
                 'videos' => 1,
@@ -147,7 +148,7 @@ return [
         ],
         'facebook_page' => [
             'simultaneous_posting_on_multiple_accounts' => true,
-            'post_characters_limit' => null,
+            'post_character_limit' => 5000,
             'media_limit' => [
                 'photos' => 30,
                 'videos' => 1,
@@ -156,7 +157,7 @@ return [
         ],
         'facebook_group' => [
             'simultaneous_posting_on_multiple_accounts' => true,
-            'post_characters_limit' => null,
+            'post_character_limit' => 5000,
             'media_limit' => [
                 'photos' => 30,
                 'videos' => 1,
@@ -165,7 +166,7 @@ return [
         ],
         'mastodon' => [
             'simultaneous_posting_on_multiple_accounts' => true,
-            'post_characters_limit' => 500,
+            'post_character_limit' => 500,
             'media_limit' => [
                 'photos' => 4,
                 'videos' => 1,
@@ -207,7 +208,8 @@ follow [their installation instructions](https://laravel.com/docs/horizon#instal
 
 After Horizon is installed, don't forget to set `QUEUE_CONNECTION` in your `.env` file to `redis`.
 
-`config/horizon.php` should have been created in your project. In this config file, you must add a block named `mixpost-heavy` to both the `production` and `local` environment.
+`config/horizon.php` should have been created in your project. In this config file, you must add a block
+named `mixpost-heavy` to both the `production` and `local` environment.
 
 ```php
     'environments' => [
@@ -258,7 +260,11 @@ In the `config/queue.php` file you must add the `mixpost-redis` connection:
         'block_for' => null,
     ],
 ```
-Don't forget running `php artisan horizon`. In production, you need a way to keep your `horizon` processes running.  For this reason, you need to configure a process monitor [Supervisor](https://laravel.com/docs/9.x/queues#supervisor-configuration) that can detect when your `horizon` processes exit and automatically restart them.
+
+Don't forget running `php artisan horizon`. In production, you need a way to keep your `horizon` processes running. For
+this reason, you need to configure a process
+monitor [Supervisor](https://laravel.com/docs/9.x/queues#supervisor-configuration) that can detect when your `horizon`
+processes exit and automatically restart them.
 
 Example of supervisor config:
 
@@ -273,6 +279,7 @@ redirect_stderr=true
 stdout_logfile=/path-to-your-project/storage/logs/horizon.log
 stopwaitsecs=3600
 ```
+
 ## Schedule the commands
 
 In the console kernel (`app/Console/Kernel.php`), you should schedule this command.

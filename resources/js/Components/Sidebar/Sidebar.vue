@@ -26,7 +26,7 @@ import ServerStackIcon from "@/Icons/ServerStack.vue"
             <DarkButtonLink :href="route('mixpost.posts.create')" class="w-full"><PlusIcon class="mr-xs"/> Create post</DarkButtonLink>
         </div>
 
-        <div class="flex flex-col space-y-6 overflow-y-auto px-xl mt-2xl">
+        <div class="flex flex-col space-y-lg overflow-y-auto px-xl mt-2xl">
             <MenuGroupBody>
                 <MenuItem :url="route('mixpost.dashboard')" :active="$page.component === 'Dashboard'">
                     <template #icon>

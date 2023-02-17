@@ -2,7 +2,6 @@
 import {computed} from "vue";
 import useEditor from "@/Composables/useEditor";
 import ProviderIcon from "@/Components/Account/ProviderIcon.vue";
-import Alert from "@/Components/Util/Alert.vue";
 import Panel from "@/Components/Surface/Panel.vue";
 import Gallery from "@/Components/ProviderGallery/Twitter/TwitterGallery.vue"
 import EditorReadOnly from "@/Components/Package/EditorReadOnly.vue";
@@ -23,10 +22,6 @@ const props = defineProps({
     content: {
         required: true,
         type: Array,
-    },
-    textLimitReached: {
-        type: Boolean,
-        default: false,
     }
 })
 
@@ -37,13 +32,7 @@ const mainContent = computed(()=> {
 });
 </script>
 <template>
-    <Alert v-if="textLimitReached" variant="error" :closeable="false" class="mb-xs">
-        [{{ name }}] : You have reached the maximum character limit
-    </Alert>
-
-    <Alert v-if="mainContent.media.length > 4" variant="warning" class="mb-xs">[{{ name }}]: Twitter accepts a maximum of 4 pictures. Don't worry, if you have selected several pictures, Mixpost will only post the first 4.</Alert>
-
-    <Panel :class="{'border-red-500': textLimitReached}" class="relative">
+    <Panel class="relative">
         <div class="absolute right-0 top-0 -mt-sm -mr-xs">
             <div class="flex items-center justify-center p-2 w-7 h-7 rounded-full bg-white border border-gray-200">
                 <div>

@@ -81,6 +81,13 @@ class Post extends Model
         return $this->schedule_status->name === PostScheduleStatus::PROCESSING->name;
     }
 
+    public function setDraft()
+    {
+        $this->status = PostStatus::DRAFT->value;
+        $this->schedule_status = PostScheduleStatus::PENDING;
+        $this->save();
+    }
+
     public function setScheduled(Carbon|null $date = null)
     {
         $this->status = PostStatus::SCHEDULED->value;

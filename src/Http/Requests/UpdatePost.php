@@ -28,20 +28,18 @@ class UpdatePost extends PostFormRequest
     public function handle()
     {
         return DB::transaction(function () {
+            if (empty($this->input('accounts')) || !$this->scheduledAt()) {
+                $this->post->setDraft();
+            }
+
             $this->post->accounts()->sync($this->input('accounts'));
             $this->post->tags()->sync($this->input('tags'));
 
             $this->post->versions()->delete();
             $this->post->versions()->createMany($this->input('versions'));
 
-            $status = $this->post->status;
-
-            if (empty($this->input('accounts')) || !$this->scheduledAt()) {
-                $status = PostStatus::DRAFT;
-            }
 
             return $this->post->update([
-                'status' => $status,
                 'scheduled_at' => $this->scheduledAt() ? convertTimeToUTC($this->scheduledAt()) : null,
             ]);
         });

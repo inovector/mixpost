@@ -75,7 +75,7 @@ return [
         ],
         'facebook_page' => [
             'simultaneous_posting_on_multiple_accounts' => true,
-            'post_character_limit' => null,
+            'post_character_limit' => 5000,
             'media_limit' => [
                 'photos' => 30,
                 'videos' => 1,
@@ -84,7 +84,7 @@ return [
         ],
         'facebook_group' => [
             'simultaneous_posting_on_multiple_accounts' => true,
-            'post_character_limit' => null,
+            'post_character_limit' => 5000,
             'media_limit' => [
                 'photos' => 30,
                 'videos' => 1,

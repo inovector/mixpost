@@ -1,5 +1,5 @@
 <script setup>
-import {ref, watch} from "vue";
+import {provide, reactive, ref, watch} from "vue";
 import {Head, useForm} from '@inertiajs/inertia-vue3';
 import {Inertia} from "@inertiajs/inertia";
 import {cloneDeep, debounce} from "lodash";
@@ -8,7 +8,6 @@ import usePost from "@/Composables/usePost";
 import usePostVersions from "@/Composables/usePostVersions";
 import useNotifications from "@/Composables/useNotifications";
 import PageHeader from "@/Components/DataDisplay/PageHeader.vue";
-import PostContext from "@/Context/PostContext.vue";
 import PostForm from "@/Components/Post/PostForm.vue";
 import PostActions from "@/Components/Post/PostActions.vue";
 import PostPreviewProviders from "@/Components/Post/PostPreviewProviders.vue"
@@ -22,6 +21,12 @@ import EyeOffIcon from "@/Icons/EyeOff.vue"
 const props = defineProps(['post', 'schedule_at']);
 
 const post = props.post ? cloneDeep(props.post) : null;
+
+const context = reactive({
+    textLimit: [],
+});
+
+provide('postContext', context);
 
 const {isMounted} = useMounted();
 const showPreview = ref(false);
@@ -133,14 +138,13 @@ watch(form, debounce(() => {
 <template>
     <Head title="Your post"/>
 
-    <PostContext>
-        <div class="flex flex-col grow h-full overflow-y-auto">
+    <div class="flex flex-col grow h-full overflow-y-auto">
+        <div class="flex flex-row h-full overflow-y-auto">
+            <div class="w-full md:w-3/5 h-full flex flex-col overflow-x-hidden overflow-y-auto">
+                <div class="flex flex-col h-full">
+                    <PostValidationErrors/>
 
-            <PostValidationErrors/>
-
-            <div class="flex flex-row h-full overflow-y-auto">
-                <div class="w-full md:w-3/5 h-full flex flex-col overflow-x-hidden overflow-y-auto">
-                    <div class="row-py">
+                    <div class="row-py h-full overflow-y-auto">
                         <PageHeader title="Your post">
                             <div v-if="$page.props.post" class="flex items-center">
                                 <PostStatus :value="$page.props.post.status"/>
@@ -167,32 +171,32 @@ watch(form, debounce(() => {
                         </div>
                     </div>
                 </div>
-                <div :class="{'translate-x-0 pb-32': showPreview, 'translate-x-full md:translate-x-0': !showPreview}"
-                     class="fixed md:relative w-full md:w-2/5 h-full overflow-x-hidden overflow-y-auto flex flex-col border-l border-gray-200 bg-stone-500 transition-transform ease-in-out duration-200">
-                    <Teleport v-if="isMounted && form.accounts.length" to="#navRightButton">
-                        <SecondaryButton @click="showPreview = !showPreview" size="xs" class="md:hidden">
+            </div>
+            <div :class="{'translate-x-0 pb-32': showPreview, 'translate-x-full md:translate-x-0': !showPreview}"
+                 class="fixed md:relative w-full md:w-2/5 h-full overflow-x-hidden overflow-y-auto flex flex-col border-l border-gray-200 bg-stone-500 transition-transform ease-in-out duration-200">
+                <Teleport v-if="isMounted && form.accounts.length" to="#navRightButton">
+                    <SecondaryButton @click="showPreview = !showPreview" size="xs" class="md:hidden">
                             <span class="mr-xs">
                                 <EyeOffIcon v-if="showPreview"/>
                                 <EyeIcon v-else/>
                             </span>
-                            <span>Preview</span>
-                        </SecondaryButton>
-                    </Teleport>
+                        <span>Preview</span>
+                    </SecondaryButton>
+                </Teleport>
 
-                    <div class="py-2xl">
-                        <PageHeader title="Preview"/>
+                <div class="py-2xl">
+                    <PageHeader title="Preview"/>
 
-                        <div class="row-px">
-                            <PostPreviewProviders :accounts="$page.props.accounts"
-                                                  :selected-accounts="form.accounts"
-                                                  :versions="form.versions"
-                            />
-                        </div>
+                    <div class="row-px">
+                        <PostPreviewProviders :accounts="$page.props.accounts"
+                                              :selected-accounts="form.accounts"
+                                              :versions="form.versions"
+                        />
                     </div>
                 </div>
             </div>
-
-            <PostActions :form="form"/>
         </div>
-    </PostContext>
+
+        <PostActions :form="form"/>
+    </div>
 </template>

@@ -95,13 +95,32 @@ const getAccountName = (version) => {
 }
 
 const getTextLength = (provider, text = null) => {
-    const _text = text ? text : props.text;
+    const _text = (text ? text : props.text).replace(/[\r\n]+/g, ' ')
 
     return {
         'twitter': Twitter.getTweetLength(_text),
-        'facebook': _text.length,
+        'facebook_page': _text.length,
+        'facebook_group': _text.length,
         'mastodon': _text.length,
     }[provider]
+}
+
+const calc = (limit, used) => {
+    return limit - used;
+}
+
+const pushLimit = (data) => {
+    const index = postContext.textLimit.findIndex(
+        (object) => object.account_id === data.account_id
+    )
+    // If the account ID exists, replace the value
+    if (index !== -1) {
+        postContext.textLimit.splice(index, 1, data)
+    }
+    // If the account ID doesn't exist, push the new object to the array
+    else {
+        postContext.textLimit.push(data)
+    }
 }
 
 const providerActiveVersion = computed(() => {
@@ -115,10 +134,6 @@ const limitActiveVersion = computed(() => {
 const characterUsedActiveVersion = computed(() => {
     return getTextLength(providerActiveVersion.value);
 });
-
-const calc = (limit, used) => {
-    return limit - used;
-}
 
 const remaining = computed(() => {
     if (limitActiveVersion.value === null) {
@@ -134,12 +149,13 @@ watch(remaining, debounce(() => {
         return;
     }
 
-    postContext.textLimit[props.activeVersion] = {
+    pushLimit({
+        account_id: props.activeVersion,
         account_name: getAccountName(props.activeVersion),
         provider: providerActiveVersion.value,
         limit: limitActiveVersion.value,
         hit: remaining.value < 0
-    }
+    })
 }, 100));
 
 const setupVersionsLimit = () => {
@@ -154,12 +170,13 @@ const setupVersionsLimit = () => {
         const provider = getProvider(version.account_id);
         const remaining = calc(limit, getTextLength(provider, text));
 
-        postContext.textLimit[version.account_id] = {
+        pushLimit({
+            account_id: version.account_id,
             account_name: getAccountName(version.account_id),
             provider: provider,
             limit: limit,
             hit: remaining < 0
-        }
+        })
     })
 }
 
@@ -167,20 +184,22 @@ onMounted(() => {
     setupVersionsLimit();
 });
 
-watch(props.versions, (value) => {
-    const versions = value.map(item => item.account_id);
+watch(() => props.versions.length, (newValue, oldValue) => {
+    // Remove limits for the delete version only
+    if (oldValue > newValue) {
+        const versions = props.versions.map(item => item.account_id);
 
-    // TODO: create a fnc to postContext to push limits, no need to use account id as key
-    console.log(versions);
-    console.log(filter(postContext.textLimit, (_, key) => {
-        return !versions.includes(key);
-    }))
-    // Remove limits
-    // postContext.textLimit =
+        postContext.textLimit = filter(postContext.textLimit, (item) => {
+            return versions.includes(item.account_id);
+        })
+    }
 })
 </script>
 <template>
     <div v-if="remaining !== null" class="flex items-center justify-center">
-        <div :class="{'text-stone-800': remaining >= 0, 'text-red-500': remaining < 0}">{{ remaining }}</div>
+        <div
+            :class="{'text-stone-800': remaining >= 0, 'text-orange-500': remaining * 100 / limitActiveVersion < 20, 'text-red-500': remaining < 0}">
+            {{ remaining }}
+        </div>
     </div>
 </template>
