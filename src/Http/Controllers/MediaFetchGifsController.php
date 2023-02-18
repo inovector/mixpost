@@ -8,14 +8,21 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
+use Inovector\Mixpost\Facades\Services;
 use Inovector\Mixpost\Http\Resources\MediaResource;
 use Inovector\Mixpost\Models\Media;
+use Symfony\Component\HttpFoundation\Response;
 
 class MediaFetchGifsController extends Controller
 {
     public function __invoke(Request $request): AnonymousResourceCollection
     {
-        $clientId = config('mixpost.credentials.tenor.client_id');
+        $clientId = Services::get('tenor', 'client_id');
+
+        if (!$clientId) {
+            abort(Response::HTTP_FORBIDDEN);
+        }
+
         $terms = config('mixpost.external_media_terms');
 
         $items = Http::get("https://tenor.googleapis.com/v2/search", [
