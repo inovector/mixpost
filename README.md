@@ -141,27 +141,30 @@ return [
             'simultaneous_posting_on_multiple_accounts' => false,
             'post_character_limit' => 280,
             'media_limit' => [
-                'photos' => 30,
+                'photos' => 4,
                 'videos' => 1,
-                'allow_gifs_to_photos' => false,
+                'gifs' => 1,
+                'allow_mixing' => false,
             ]
         ],
         'facebook_page' => [
             'simultaneous_posting_on_multiple_accounts' => true,
             'post_character_limit' => 5000,
             'media_limit' => [
-                'photos' => 30,
+                'photos' => 10,
                 'videos' => 1,
-                'allow_gifs_to_photos' => true,
+                'gifs' => 1,
+                'allow_mixing' => false,
             ]
         ],
         'facebook_group' => [
             'simultaneous_posting_on_multiple_accounts' => true,
             'post_character_limit' => 5000,
             'media_limit' => [
-                'photos' => 30,
+                'photos' => 10,
                 'videos' => 1,
-                'allow_gifs_to_photos' => true,
+                'gifs' => 1,
+                'allow_mixing' => false,
             ]
         ],
         'mastodon' => [
@@ -170,7 +173,8 @@ return [
             'media_limit' => [
                 'photos' => 4,
                 'videos' => 1,
-                'allow_gifs_to_photos' => true,
+                'gifs' => 1,
+                'allow_mixing' => false,
             ]
         ]
     ],
