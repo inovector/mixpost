@@ -24,7 +24,7 @@ const props = defineProps({
     }
 });
 
-const {postId, editAllowed, accountsReachedTextLimit} = usePost();
+const {postId, editAllowed, accountsHitTextLimit, accountsHitMediaLimit} = usePost();
 
 const emit = defineEmits(['submit'])
 
@@ -55,7 +55,8 @@ const isLoading = ref(false);
 const canSchedule = computed(() => {
     return (postId.value && props.form.accounts.length) &&
         editAllowed.value &&
-        !accountsReachedTextLimit.value.length;
+        !accountsHitTextLimit.value.length &&
+        !accountsHitMediaLimit.value.length;
 });
 
 const schedule = (postNow = false) => {
@@ -107,7 +108,7 @@ const accounts = computed(() => {
                 <SecondaryButton size="md"
                                  :class="{'!normal-case border-r-indigo-800 rounded-r-none': scheduleTime, '!rounded-r-lg': !canSchedule}"
                                  @click="timePicker = true">
-                    <CalendarIcon class="lg:mr-xs"/>
+                    <CalendarIcon class="sm:mr-xs"/>
                     <span class="hidden sm:block">{{ scheduleTime ? scheduleTime : 'Pick time' }}</span>
                 </SecondaryButton>
 

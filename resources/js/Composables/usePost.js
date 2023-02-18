@@ -31,10 +31,18 @@ const usePost = () => {
         return !(isInHistory.value || isScheduleProcessing.value);
     });
 
-    const accountsReachedTextLimit = computed(() => {
+    const accountsHitTextLimit = computed(() => {
         const postContext = inject('postContext')
 
         return filter(postContext.textLimit, {hit: true});
+    })
+
+    const accountsHitMediaLimit = computed(() => {
+        const postContext = inject('postContext')
+
+        return filter(postContext.mediaLimit, (item) => {
+            return item.photos.hit || item.videos.hit || item.gifs.hit || item.is_mixing;
+        });
     })
 
     return {
@@ -42,7 +50,8 @@ const usePost = () => {
         isInHistory,
         isScheduleProcessing,
         editAllowed,
-        accountsReachedTextLimit
+        accountsHitTextLimit,
+        accountsHitMediaLimit
     }
 }
 

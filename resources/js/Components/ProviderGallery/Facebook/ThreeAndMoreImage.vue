@@ -44,7 +44,7 @@ const handleImageLoad = () => {
                         <CoverStyle :src="item.thumb_url"/>
                     </AspectRatioBox>
                     <div v-if="index === 2 && media.length > 5" class="absolute top-0 right-0 bottom-0 left-0 flex items-center justify-center bg-black bg-opacity-60">
-                        <span class="font-semibold text-3xl text-white">+{{ media.length - 5 }}</span>
+                        <span class="font-medium text-3xl text-white">+{{ media.length - 5 }}</span>
                     </div>
                 </Box>
             </div>

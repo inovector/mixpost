@@ -114,7 +114,7 @@ class TwitterProvider extends SocialProvider
         $ids = [];
         $errors = [];
 
-        foreach (array_slice($media, 0, 4) as $item) {
+        foreach ($media as $item) {
             $isGif = Str::after($item['mime_type'], '/') === 'gif';
             $chunkUpload = !$item['is_image'] || $isGif;
 

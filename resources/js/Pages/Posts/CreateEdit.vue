@@ -14,7 +14,7 @@ import PostPreviewProviders from "@/Components/Post/PostPreviewProviders.vue"
 import SecondaryButton from "@/Components/Button/SecondaryButton.vue"
 import PostStatus from "@/Components/Post/PostStatus.vue";
 import Alert from "@/Components/Util/Alert.vue";
-import PostValidationErrors from "@/Components/Post/PostValidationErrors.vue";
+import PostLimitErrors from "@/Components/Post/PostLimitErrors.vue";
 import EyeIcon from "@/Icons/Eye.vue"
 import EyeOffIcon from "@/Icons/EyeOff.vue"
 
@@ -24,6 +24,7 @@ const post = props.post ? cloneDeep(props.post) : null;
 
 const context = reactive({
     textLimit: [],
+    mediaLimit: []
 });
 
 provide('postContext', context);
@@ -142,7 +143,7 @@ watch(form, debounce(() => {
         <div class="flex flex-row h-full overflow-y-auto">
             <div class="w-full md:w-3/5 h-full flex flex-col overflow-x-hidden overflow-y-auto">
                 <div class="flex flex-col h-full">
-                    <PostValidationErrors/>
+                    <PostLimitErrors/>
 
                     <div class="row-py h-full overflow-y-auto">
                         <PageHeader title="Your post">

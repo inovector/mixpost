@@ -9,10 +9,9 @@ import EmojiPicker from '@/Components/Package/EmojiPicker.vue'
 import Panel from "@/Components/Surface/Panel.vue";
 import Account from "@/Components/Account/Account.vue"
 import PostVersionsTab from "@/Components/Post/PostVersionsTab.vue"
-import AddMedia from "@/Components/Media/AddMedia.vue"
+import PostAddMedia from "@/Components/Post/PostAddMedia.vue"
 import PostMedia from "@/Components/Post/PostMedia.vue"
 import PostCharacterCount from "@/Components/Post/PostCharacterCount.vue"
-import PhotoIcon from "@/Icons/Photo.vue"
 
 const postContext = inject('postContext')
 
@@ -77,8 +76,7 @@ const {
     versionObject,
     getOriginalVersion,
     getAccountVersion,
-    getIndexAccountVersion,
-    accountHasVersion
+    getIndexAccountVersion
 } = usePostVersions();
 
 const activeVersion = ref(0);
@@ -195,13 +193,11 @@ const {insertEmoji, focusEditor} = useEditor();
                                 @close="focusEditor({editorId: 'postEditor'})"
                             />
 
-                            <AddMedia @insert="updateContent(index, 'media', [...item.media, ...$event])">
-                                <button type="button"
-                                        v-tooltip="'Media'"
-                                        class="text-stone-800 hover:text-indigo-500 transition-colors ease-in-out duration-200">
-                                    <PhotoIcon/>
-                                </button>
-                            </AddMedia>
+                            <PostAddMedia @insert="updateContent(index, 'media', [...item.media, ...$event])"
+                                          :selectedAccounts="selectedAccounts"
+                                          :activeVersion="activeVersion"
+                                          :versions="form.versions"
+                                          :media="item.media"/>
                         </div>
 
                         <PostCharacterCount :selectedAccounts="selectedAccounts"

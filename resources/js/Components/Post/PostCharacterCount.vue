@@ -12,16 +12,16 @@ const props = defineProps({
         type: Array,
         required: true,
     },
-    activeVersion: {
-        type: Number,
-        required: true,
-    },
     versions: {
         type: Array,
         required: true,
     },
-    text: {
-        required: false,
+    activeVersion: {
+        type: Number,
+        required: true,
+    },
+    text: { // Text of current version
+        type: String,
         default: ''
     }
 });
@@ -53,7 +53,7 @@ const getLimit = (version) => {
     }
 
     // Original version
-    // We get the provider that has the lowest limit.
+    // We get the account that has the lowest limit.
     if (!version) {
         if (!accountsWithoutVersion.value.length) {
             return null;
@@ -94,6 +94,17 @@ const getAccountName = (version) => {
     return item ? item.name : null;
 }
 
+const getEnabledVersions = () => {
+    return filter(props.versions, (version) => {
+        // Original version is always enabled
+        if (version.account_id === 0) {
+            return true;
+        }
+
+        return isAccountSelected(version.account_id)
+    });
+}
+
 const getTextLength = (provider, text = null) => {
     const _text = (text ? text : props.text).replace(/[\r\n]+/g, ' ')
 
@@ -103,6 +114,10 @@ const getTextLength = (provider, text = null) => {
         'facebook_group': _text.length,
         'mastodon': _text.length,
     }[provider]
+}
+
+const isAccountSelected = (accountId) => {
+    return props.selectedAccounts.map(account => account.id).includes(accountId);
 }
 
 const calc = (limit, used) => {
@@ -121,6 +136,32 @@ const pushLimit = (data) => {
     else {
         postContext.textLimit.push(data)
     }
+}
+
+const removeAllLimits = () => {
+    postContext.textLimit = [];
+}
+
+const initLimits = () => {
+    getEnabledVersions().forEach((version) => {
+        const limit = getLimit(version.account_id);
+
+        if (!limit) {
+            return;
+        }
+
+        const text = extractTextFromHtml(version.content[0].body);
+        const provider = getProvider(version.account_id);
+        const remaining = calc(limit, getTextLength(provider, text));
+
+        pushLimit({
+            account_id: version.account_id,
+            account_name: getAccountName(version.account_id),
+            provider: provider,
+            limit: limit,
+            hit: remaining < 0
+        })
+    })
 }
 
 const providerActiveVersion = computed(() => {
@@ -158,42 +199,19 @@ watch(remaining, debounce(() => {
     })
 }, 100));
 
-const setupVersionsLimit = () => {
-    props.versions.forEach((version) => {
-        const limit = getLimit(version.account_id);
+watch(() => props.versions.length, () => {
+    removeAllLimits();
+    initLimits();
+})
 
-        if (!limit) {
-            return;
-        }
-
-        const text = extractTextFromHtml(version.content[0].body);
-        const provider = getProvider(version.account_id);
-        const remaining = calc(limit, getTextLength(provider, text));
-
-        pushLimit({
-            account_id: version.account_id,
-            account_name: getAccountName(version.account_id),
-            provider: provider,
-            limit: limit,
-            hit: remaining < 0
-        })
-    })
-}
+watch(() => props.selectedAccounts, () => {
+    removeAllLimits();
+    initLimits();
+})
 
 onMounted(() => {
-    setupVersionsLimit();
+    initLimits();
 });
-
-watch(() => props.versions.length, (newValue, oldValue) => {
-    // Remove limits for the delete version only
-    if (oldValue > newValue) {
-        const versions = props.versions.map(item => item.account_id);
-
-        postContext.textLimit = filter(postContext.textLimit, (item) => {
-            return versions.includes(item.account_id);
-        })
-    }
-})
 </script>
 <template>
     <div v-if="remaining !== null" class="flex items-center justify-center">
