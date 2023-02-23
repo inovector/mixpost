@@ -86,4 +86,14 @@ abstract class SocialProvider implements SocialProviderContract
     {
         return $url . '?' . http_build_query($params, '', '&');
     }
+
+    public function buildErrorResponse(int $status, string $desc): array
+    {
+        return [
+            'error' => [
+                'status' => $status,
+                'desc' => $desc
+            ]
+        ];
+    }
 }

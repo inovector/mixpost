@@ -223,7 +223,7 @@ class FacebookMainProvider extends SocialProvider
     {
     }
 
-    public function getMetrics()
+    public function getStatistics(array $data)
     {
     }
 }

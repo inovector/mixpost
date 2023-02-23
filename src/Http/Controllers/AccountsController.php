@@ -11,6 +11,8 @@ use Inovector\Mixpost\Facades\Services;
 use Inovector\Mixpost\Facades\SocialProviderManager;
 use Inovector\Mixpost\Http\Resources\AccountResource;
 use Inovector\Mixpost\Models\Account;
+use Inovector\Mixpost\Support\Log;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 class AccountsController extends Controller
 {
@@ -32,8 +34,14 @@ class AccountsController extends Controller
 
         $result = $provider->getAccount();
 
-        if (empty($result)) {
-            return redirect()->back()->with('The account cannot be updated. Re-authenticate your account.');
+        if (isset($result['error'])) {
+            if ($result['error']['status'] === HttpResponse::HTTP_UNAUTHORIZED) {
+                return redirect()->back()->with('error', 'The account cannot be updated. Re-authenticate your account.');
+            }
+
+            Log::error("Update Account: {$result['error']['desc']}", $account->toArray());
+
+            return redirect()->back()->with('error', 'The account cannot be updated. Internal Error!.');
         }
 
         (new UpdateOrCreateAccount())($account->provider, $result, $account->access_token->toArray());

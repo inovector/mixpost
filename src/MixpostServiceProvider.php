@@ -4,7 +4,10 @@ namespace Inovector\Mixpost;
 
 use Illuminate\Support\Facades\Gate;
 use Inovector\Mixpost\Commands\ClearSettingsCache;
+use Inovector\Mixpost\Commands\ImportAccountAudience;
+use Inovector\Mixpost\Commands\ProcessMetrics;
 use Inovector\Mixpost\Commands\PublishAssetsCommand;
+use Inovector\Mixpost\Commands\ImportAccountData;
 use Inovector\Mixpost\Commands\RunScheduledPosts;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -33,11 +36,17 @@ class MixpostServiceProvider extends PackageServiceProvider
                 'create_mixpost_tag_post_table',
                 'create_mixpost_media_table',
                 'create_mixpost_settings_table',
+                'create_mixpost_imported_posts_table',
+                'create_mixpost_metrics_table',
+                'create_mixpost_audience_table',
             ])
             ->hasCommands([
                 PublishAssetsCommand::class,
                 ClearSettingsCache::class,
-                RunScheduledPosts::class
+                RunScheduledPosts::class,
+                ImportAccountAudience::class,
+                ImportAccountData::class,
+                ProcessMetrics::class
             ]);
     }
 

@@ -30,7 +30,7 @@ class Post extends Model
     public function accounts(): BelongsToMany
     {
         return $this->belongsToMany(Account::class, 'mixpost_post_accounts', 'post_id', 'account_id')
-            ->withPivot('errors')
+            ->withPivot(['errors', 'provider_post_id'])
             ->orderByPivot('id');
     }
 

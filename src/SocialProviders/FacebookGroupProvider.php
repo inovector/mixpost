@@ -67,7 +67,7 @@ class FacebookGroupProvider extends FacebookMainProvider
         // TODO: Implement deletePost() method.
     }
 
-    public function getMetrics()
+    public function getStatistics(array $data)
     {
         // TODO: Implement metrics() method.
     }

@@ -1,3 +1,4 @@
+import {isProxy, toRaw} from "vue";
 import {utcToZonedTime} from "date-fns-tz";
 import {format} from "date-fns";
 
@@ -107,4 +108,8 @@ export function convertTime24to12(time24h, customFormat = 'h:mmaaa') {
     date.setHours(hours, minutes);
 
     return format(date, customFormat);
+}
+
+export function toRawIfProxy(obj) {
+    return isProxy(obj) ? toRaw(obj) : obj
 }

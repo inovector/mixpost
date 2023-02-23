@@ -1,37 +1,110 @@
 <script setup>
+import {computed, inject, onMounted, ref, watch} from "vue";
 import {Head, Link} from '@inertiajs/inertia-vue3';
+import NProgress from 'nprogress'
+import {find} from "lodash";
+import useNotifications from "@/Composables/useNotifications";
 import PageHeader from '@/Components/DataDisplay/PageHeader.vue';
-import Panel from "@/Components/Surface/Panel.vue";
 import Account from "@/Components/Account/Account.vue"
 import PrimaryButton from "../Components/Button/PrimaryButton.vue";
 import Tabs from "@/Components/Navigation/Tabs.vue"
 import Tab from "@/Components/Navigation/Tab.vue"
-import ChartBar from "@/Components/Package/ChartBar.vue";
-import {ref} from "vue";
+import TwitterReports from "@/Components/Report/TwitterReports.vue"
+import FacebookPageReports from "@/Components/Report/FacebookPageReports.vue"
+import FacebookGroupReports from "@/Components/Report/FacebookGroupReports.vue"
+import MastodonReports from "@/Components/Report/MastodonReports.vue"
 
-defineProps({
+const props = defineProps({
     accounts: {
         required: true,
         type: Array,
     }
 })
 
-const selectedAccount = ref(7);
+const {notify} = useNotifications();
+const appContext = inject('appContext');
+
+const isLoading = ref(false);
+const data = ref({
+    metrics: {},
+    audience: []
+});
+
+const selectAccount = (account) => {
+    appContext.dashboard_filter.account_id = account.id;
+}
 
 const isAccountSelected = (account) => {
-    return selectedAccount.value === account.id;
+    return appContext.dashboard_filter.account_id === account.id;
 }
+
+const selectPeriod = (value) => {
+    appContext.dashboard_filter.period = value;
+}
+
+const isPeriodSelected = (value) => {
+    return appContext.dashboard_filter.period === value;
+}
+
+const fetch = () => {
+    isLoading.value = true;
+    NProgress.start();
+
+    axios.get(route('mixpost.reports'), {
+        params: appContext.dashboard_filter
+    }).then(function (response) {
+        data.value = response.data;
+    }).catch(() => {
+        notify('error', 'Error retrieving analytics. Try again!');
+    }).finally(() => {
+        isLoading.value = false;
+        NProgress.done();
+    });
+}
+
+const providers = {
+    'twitter': TwitterReports,
+    'facebook_page': FacebookPageReports,
+    'facebook_group': FacebookGroupReports,
+    'mastodon': MastodonReports,
+};
+
+const component = computed(() => {
+    const account = find(props.accounts, {id: appContext.dashboard_filter.account_id});
+
+    if (account === undefined) {
+        return;
+    }
+
+    return providers[account.provider];
+});
+
+onMounted(() => {
+    if (!props.accounts.length) {
+        return null;
+    }
+
+    if (!appContext.dashboard_filter.account_id) {
+        selectAccount(props.accounts[0]);
+        return null;
+    }
+
+    fetch();
+})
+
+watch(appContext.dashboard_filter, () => {
+    fetch()
+});
 </script>
 <template>
     <Head title="Dashboard"/>
 
     <div class="row-py">
         <PageHeader title="Dashboard">
-            <Tabs>
-                <Tab>7 days</Tab>
-                <Tab :active="true">30 days</Tab>
-                <Tab>90 days</Tab>
-                <Tab>Custom</Tab>
+            <Tabs v-if="accounts.length">
+                <Tab @click="selectPeriod('7_days')" :active="isPeriodSelected('7_days')">7 days</Tab>
+                <Tab @click="selectPeriod('30_days')" :active="isPeriodSelected('30_days')">30 days</Tab>
+                <Tab @click="selectPeriod('90_days')" :active="isPeriodSelected('90_days')">90 days</Tab>
             </Tabs>
         </PageHeader>
 
@@ -39,7 +112,7 @@ const isAccountSelected = (account) => {
             <div class="w-full md:w-1/2">
                 <div v-if="accounts.length" class="flex flex-wrap items-center gap-sm">
                     <template v-for="account in accounts" :key="account.id">
-                        <button type="button">
+                        <button @click="selectAccount(account)" type="button">
                             <Account
                                 :provider="account.provider"
                                 :active="isAccountSelected(account)"
@@ -50,38 +123,14 @@ const isAccountSelected = (account) => {
                     </template>
                 </div>
                 <div v-else>
+                    <p class="mb-xs">You don't have an social account, please add at least one.</p>
                     <Link :href="route('mixpost.accounts.index')">
-                        <PrimaryButton>Add account</PrimaryButton>
+                        <PrimaryButton>Add accounts</PrimaryButton>
                     </Link>
                 </div>
             </div>
         </div>
 
-        <div class="row-px mt-2xl">
-            <div class="grid grid-cols-3 gap-sm">
-                <Panel>
-                    <template #title>Actions</template>
-                    <div class="font-extrabold text-indigo-500 text-2xl">12</div>
-                </Panel>
-
-                <Panel>
-                    <template #title>Views</template>
-                    <div class="font-extrabold text-indigo-500 text-2xl">14</div>
-                </Panel>
-
-                <Panel>
-                    <template #title>Impressions</template>
-                    <div class="font-extrabold text-indigo-500 text-2xl">40</div>
-                </Panel>
-            </div>
-        </div>
-
-        <div class="row-px mt-2xl">
-            <Panel>
-                <template #title>Follows</template>
-
-                <ChartBar/>
-            </Panel>
-        </div>
+        <component :is="component" :data="data" :isLoading="isLoading"/>
     </div>
 </template>

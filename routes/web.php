@@ -1,31 +1,33 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Inovector\Mixpost\Http\Middleware\HandleInertiaRequests;
-use Inovector\Mixpost\Http\Middleware\Auth as MixpostAuthMiddleware;
-use Inovector\Mixpost\Http\Controllers\DashboardController;
-use Inovector\Mixpost\Http\Controllers\AccountsController;
 use Inovector\Mixpost\Http\Controllers\AccountEntitiesController;
-use Inovector\Mixpost\Http\Controllers\CreateMastodonAppController;
+use Inovector\Mixpost\Http\Controllers\AccountsController;
 use Inovector\Mixpost\Http\Controllers\AddAccountController;
-use Inovector\Mixpost\Http\Controllers\SettingsController;
-use Inovector\Mixpost\Http\Controllers\ServicesController;
-use Inovector\Mixpost\Http\Controllers\PostsController;
-use Inovector\Mixpost\Http\Controllers\DuplicatePostController;
-use Inovector\Mixpost\Http\Controllers\SchedulePostController;
-use Inovector\Mixpost\Http\Controllers\DeletePostsController;
-use Inovector\Mixpost\Http\Controllers\TagsController;
 use Inovector\Mixpost\Http\Controllers\CalendarController;
-use Inovector\Mixpost\Http\Controllers\MediaController;
-use Inovector\Mixpost\Http\Controllers\MediaFetchUploadsController;
-use Inovector\Mixpost\Http\Controllers\MediaFetchStockController;
-use Inovector\Mixpost\Http\Controllers\MediaFetchGifsController;
-use Inovector\Mixpost\Http\Controllers\MediaDownloadExternalController;
-use Inovector\Mixpost\Http\Controllers\MediaUploadFileController;
 use Inovector\Mixpost\Http\Controllers\CallbackSocialProviderController;
+use Inovector\Mixpost\Http\Controllers\CreateMastodonAppController;
+use Inovector\Mixpost\Http\Controllers\DashboardController;
+use Inovector\Mixpost\Http\Controllers\ReportsController;
+use Inovector\Mixpost\Http\Controllers\DeletePostsController;
+use Inovector\Mixpost\Http\Controllers\DuplicatePostController;
+use Inovector\Mixpost\Http\Controllers\MediaController;
+use Inovector\Mixpost\Http\Controllers\MediaDownloadExternalController;
+use Inovector\Mixpost\Http\Controllers\MediaFetchGifsController;
+use Inovector\Mixpost\Http\Controllers\MediaFetchStockController;
+use Inovector\Mixpost\Http\Controllers\MediaFetchUploadsController;
+use Inovector\Mixpost\Http\Controllers\MediaUploadFileController;
+use Inovector\Mixpost\Http\Controllers\PostsController;
+use Inovector\Mixpost\Http\Controllers\SchedulePostController;
+use Inovector\Mixpost\Http\Controllers\ServicesController;
+use Inovector\Mixpost\Http\Controllers\SettingsController;
+use Inovector\Mixpost\Http\Controllers\TagsController;
+use Inovector\Mixpost\Http\Middleware\Auth as MixpostAuthMiddleware;
+use Inovector\Mixpost\Http\Middleware\HandleInertiaRequests;
 
 Route::middleware(['web', MixpostAuthMiddleware::class, HandleInertiaRequests::class])->prefix('mixpost')->name('mixpost.')->group(function () {
     Route::get('/', DashboardController::class)->name('dashboard');
+    Route::get('reports', ReportsController::class)->name('reports');
 
     Route::prefix('accounts')->name('accounts.')->group(function () {
         Route::get('/', [AccountsController::class, 'index'])->name('index');

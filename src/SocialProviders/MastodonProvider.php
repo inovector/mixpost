@@ -135,13 +135,17 @@ class MastodonProvider extends SocialProvider
         ];
     }
 
+    public function getStatistics(array $data)
+    {
+        $result = Http::withToken($this->getAccessToken()['access_token'])
+            ->get("$this->serverUrl/api/$this->apiVersion/accounts/verify_credentials")
+            ->json();
+
+        return $result;
+    }
+
     public function deletePost()
     {
         // TODO: Implement deletePost() method.
-    }
-
-    public function getMetrics()
-    {
-        // TODO: Implement metrics() method.
     }
 }

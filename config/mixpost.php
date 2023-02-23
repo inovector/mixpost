@@ -53,6 +53,13 @@ return [
     'cache_prefix' => env('MIXPOST_CACHE_PREFIX', 'mixpost'),
 
     /*
+     * Define log channel
+     * Captures connection errors with social networks or third parties used in Mixpost in a separate channel.
+     * Leave blank if you want to use Laravel's default log channel
+     */
+    'log_channel' => env('MIXPOST_LOG_CHANNEL'),
+
+    /*
      * The media component is integrated with third-party services Unsplash.com and Tenor.com
      * Defines the default terms for displaying media resources
      */

@@ -8,6 +8,10 @@ import {Inertia} from "@inertiajs/inertia";
 
 const context = reactive({
     showAside: false,
+    dashboard_filter: {
+        account_id: null,
+        period: '30_days'
+    }
 });
 
 provide('appContext', context);

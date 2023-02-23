@@ -37,13 +37,17 @@ const addAccountModal = ref(false);
 const confirmationAccountDeletion = ref(null);
 const accountIsDeleting = ref(false);
 
-const anyUnconfiguredServices = computed(()=> {
+const anyUnconfiguredServices = computed(() => {
     return Object.keys(props.has_service).some((service) => props.has_service[service] !== true)
 });
 
 const updateAccount = (accountId) => {
     Inertia.put(route('mixpost.accounts.update', {account: accountId}), {}, {
-        onSuccess() {
+        onSuccess(response) {
+            if (response.props.flash.error) {
+                return;
+            }
+
             notify('success', 'The account has been refreshed');
         }
     });
@@ -75,7 +79,7 @@ const closeConfirmationAccountDeletion = () => {
 <template>
     <Head :title="title"/>
 
-    <div class="max-w-5xl mx-auto row-py">
+    <div class="w-full max-w-5xl mx-auto row-py">
         <PageHeader :title="title">
             <template #description>
                 Connect a social account you'd like to manage.
@@ -83,17 +87,17 @@ const closeConfirmationAccountDeletion = () => {
         </PageHeader>
 
         <div class="mt-lg row-px w-full">
-           <div v-if="anyUnconfiguredServices" class="mb-md">
-               <Alert variant="warning" :closeable="false" class="mb-md">
-                   <p v-if="!$page.props.has_service.twitter">You have not configured Twitter service.</p>
-                   <p v-if="!$page.props.has_service.facebook">You have not configured Facebook service.</p>
-                   <p class="mt-xs italic">Click on the button below to configure the third-party services.</p>
-               </Alert>
+            <div v-if="anyUnconfiguredServices" class="mb-md">
+                <Alert variant="warning" :closeable="false" class="mb-md">
+                    <p v-if="!$page.props.has_service.twitter">You have not configured Twitter service.</p>
+                    <p v-if="!$page.props.has_service.facebook">You have not configured Facebook service.</p>
+                    <p class="mt-xs italic">Click on the button below to configure the third-party services.</p>
+                </Alert>
 
-               <Link :href="route('mixpost.services.index')" class="inline-block">
-                   <PrimaryButton>Configure services</PrimaryButton>
-               </Link>
-           </div>
+                <Link :href="route('mixpost.services.index')" class="inline-block">
+                    <PrimaryButton>Configure services</PrimaryButton>
+                </Link>
+            </div>
 
             <div class="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
                 <button @click="addAccountModal = true"
@@ -146,8 +150,8 @@ const closeConfirmationAccountDeletion = () => {
     </div>
 
     <ConfirmationModal :show="confirmationAccountDeletion !== null"
-                              @close="closeConfirmationAccountDeletion"
-                              variant="danger">
+                       @close="closeConfirmationAccountDeletion"
+                       variant="danger">
         <template #header>
             Delete account
         </template>
@@ -156,10 +160,10 @@ const closeConfirmationAccountDeletion = () => {
         </template>
         <template #footer>
             <SecondaryButton @click="closeConfirmationAccountDeletion" :disabled="accountIsDeleting"
-                                    class="mr-xs">Cancel
+                             class="mr-xs">Cancel
             </SecondaryButton>
             <DangerButton @click="deleteAccount" :is-loading="accountIsDeleting"
-                                 :disabled="accountIsDeleting">Delete
+                          :disabled="accountIsDeleting">Delete
             </DangerButton>
         </template>
     </ConfirmationModal>

@@ -81,7 +81,6 @@ const useMedia = (routeName = 'mixpost.media.fetchUploads') => {
             notify('error', 'Error retrieving media. Try again!');
         }).finally(() => {
             NProgress.done();
-            NProgress.remove();
             isLoaded.value = true;
         });
     }

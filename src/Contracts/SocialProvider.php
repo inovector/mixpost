@@ -19,6 +19,4 @@ interface SocialProvider
     public function publishPost(string $text, array $media = [], array $params = []);
 
     public function deletePost();
-
-    public function getMetrics();
 }

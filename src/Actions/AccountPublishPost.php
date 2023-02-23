@@ -3,7 +3,7 @@
 namespace Inovector\Mixpost\Actions;
 
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Log;
+use Inovector\Mixpost\Support\Log;
 use Inovector\Mixpost\Facades\SocialProviderManager;
 use Inovector\Mixpost\Models\Account;
 use Inovector\Mixpost\Models\Media;
@@ -38,14 +38,14 @@ class AccountPublishPost
                 $this->insertProviderPostId($post, $account, $response['id']);
             }
         } catch (Exception $exception) {
-            Log::error("Publishing error: {$exception->getMessage()}",
-                array_merge([
-                    'post_id' => $post->id,
+            Log::error("Publish: {$exception->getMessage()}",
+                [
                     'account_id' => $account->id,
                     'account_name' => $account->name,
                     'account_provider' => $account->provider,
+                    'post_id' => $post->id,
                     'trace' => $exception->getTrace(),
-                ])
+                ]
             );
 
             $errors = ['Unexpected internal error.'];
