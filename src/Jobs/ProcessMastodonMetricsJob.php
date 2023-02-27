@@ -13,7 +13,7 @@ use Inovector\Mixpost\Models\Account;
 use Inovector\Mixpost\Models\ImportedPost;
 use Inovector\Mixpost\Models\Metric;
 
-class ProcessTwitterMetricsJob implements ShouldQueue
+class ProcessMastodonMetricsJob implements ShouldQueue
 {
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -29,10 +29,9 @@ class ProcessTwitterMetricsJob implements ShouldQueue
     public function handle()
     {
         $items = ImportedPost::select('created_at',
-            DB::raw('SUM(JSON_EXTRACT(metrics, "$.likes")) as likes'),
             DB::raw('SUM(JSON_EXTRACT(metrics, "$.replies")) as replies'),
-            DB::raw('SUM(JSON_EXTRACT(metrics, "$.retweets")) as retweets'),
-            DB::raw('SUM(JSON_EXTRACT(metrics, "$.impressions")) as impressions'))
+            DB::raw('SUM(JSON_EXTRACT(metrics, "$.reblogs")) as reblogs'),
+            DB::raw('SUM(JSON_EXTRACT(metrics, "$.favourites")) as favourites'))
             ->where('account_id', $this->account->id)
             ->groupBy('created_at')
             ->cursor();
@@ -42,10 +41,9 @@ class ProcessTwitterMetricsJob implements ShouldQueue
                 'account_id' => $this->account->id,
                 'date' => $item->created_at,
                 'data' => json_encode([
-                    'likes' => $item->likes,
                     'replies' => $item->replies,
-                    'retweets' => $item->retweets,
-                    'impressions' => $item->impressions,
+                    'reblogs' => $item->reblogs,
+                    'favourites' => $item->favourites,
                 ])
             ];
         });

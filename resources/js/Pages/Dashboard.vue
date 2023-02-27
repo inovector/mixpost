@@ -27,7 +27,7 @@ const appContext = inject('appContext');
 const isLoading = ref(false);
 const data = ref({
     metrics: {},
-    audience: []
+    audience: {}
 });
 
 const selectAccount = (account) => {

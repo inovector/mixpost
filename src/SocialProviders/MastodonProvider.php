@@ -135,13 +135,43 @@ class MastodonProvider extends SocialProvider
         ];
     }
 
-    public function getStatistics(array $data)
+    public function getAccountMetrics(): array
     {
-        $result = Http::withToken($this->getAccessToken()['access_token'])
-            ->get("$this->serverUrl/api/$this->apiVersion/accounts/verify_credentials")
-            ->json();
+        $request = Http::withToken($this->getAccessToken()['access_token'])
+            ->get("$this->serverUrl/api/$this->apiVersion/accounts/verify_credentials");
 
-        return $result;
+        if ($request->status() !== 200) {
+            return $this->buildErrorResponse($request->status(), $request->json('error'));
+        }
+
+        $result = $request->json();
+
+        return [
+            'followers_count' => $result['followers_count'],
+            'following_count' => $result['following_count'],
+            'statuses_count' => $result['statuses_count'],
+        ];
+    }
+
+    public function getAccountStatuses(string $userId, string $maxId = ''): array
+    {
+        $params = [
+            'exclude_replies' => true,
+            'exclude_reblogs' => true,
+            'limit' => 40,
+        ];
+
+        if ($maxId) {
+            $params['max_id'] = $maxId;
+        }
+
+        $request = Http::withToken($this->getAccessToken()['access_token'])->get("$this->serverUrl/api/$this->apiVersion/accounts/$userId/statuses", $params);
+
+        if ($request->status() !== 200) {
+            return $this->buildErrorResponse($request->status(), $request->json('error'));
+        }
+
+        return $request->json();
     }
 
     public function deletePost()
