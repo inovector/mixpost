@@ -61,7 +61,7 @@ class TwitterReports implements ProviderReports
 
             return [
                 'label' => $item->format('M j'),
-                'value' => $item->toDateString() >= $firstDate ? $total : null,
+                'value' => $firstDate ? ($item->toDateString() >= $firstDate ? $total : null) : null,
             ];
         });
 

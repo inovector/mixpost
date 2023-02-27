@@ -3,6 +3,7 @@
 namespace Inovector\Mixpost\SocialProviders;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 
 class FacebookPageProvider extends FacebookMainProvider
@@ -14,7 +15,7 @@ class FacebookPageProvider extends FacebookMainProvider
         $params = [
             'client_id' => $this->clientId,
             'redirect_uri' => $this->redirectUrl,
-            'scope' => 'public_profile,pages_show_list,pages_read_engagement,pages_manage_posts',
+            'scope' => 'public_profile,pages_show_list,pages_read_engagement,read_insights,pages_manage_posts',
             'response_type' => 'code',
             'state' => null
         ];
@@ -63,13 +64,44 @@ class FacebookPageProvider extends FacebookMainProvider
         return parent::publish($text, $media, $this->getAccessToken()['page_access_token']);
     }
 
+    public function getPageAudience(): array
+    {
+        $result = Http::get("$this->apiUrl/$this->apiVersion/{$this->values['provider_id']}", [
+            'fields' => 'fan_count,followers_count',
+            'access_token' => $this->getAccessToken()['page_access_token']
+        ])->json();
+
+        if (isset($result['error'])) {
+            return $this->buildErrorResponse($result['error']['code'], $result['error']['message']);
+        }
+
+        return [
+            'followers_count' => $result['followers_count'],
+            'fan_count' => $result['fan_count']
+        ];
+    }
+
+    public function getPageInsights()
+    {
+        $data = [
+            'access_token' => $this->getAccessToken()['page_access_token'],
+            'metric' => 'page_engaged_users,page_post_engagements,page_posts_impressions',
+            'period' => 'day',
+            'since' => Carbon::now()->subDays(90)->toDateString(),
+            'until' => Carbon::now()->toDateString(),
+        ];
+
+        $result = Http::get("$this->apiUrl/$this->apiVersion/{$this->values['provider_id']}/insights", $data)->json();
+
+        if (isset($result['error'])) {
+            return $this->buildErrorResponse($result['error']['code'], $result['error']['message']);
+        }
+
+        return $result;
+    }
+
     public function deletePost()
     {
         // TODO: Implement deletePost() method.
-    }
-
-    public function getStatistics(array $data)
-    {
-        // TODO: Implement metrics() method.
     }
 }

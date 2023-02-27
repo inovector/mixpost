@@ -11,7 +11,6 @@ abstract class SocialProviderManager
 {
     protected Container $container;
     protected mixed $config;
-    protected array $providers = [];
     protected mixed $values = [];
 
     public function __construct(Container $container)
@@ -24,14 +23,7 @@ abstract class SocialProviderManager
     {
         $this->setValues($values);
 
-        // If the given provider has not been created before, we will create the instances
-        // here and cache it, so we can return it next time very quickly. If there is
-        // already a provider created by this name, we'll just return that instance.
-        if (!isset($this->providers[$provider])) {
-            $this->providers[$provider] = $this->createConnection($provider);
-        }
-
-        return $this->providers[$provider];
+        return $this->createConnection($provider);
     }
 
     protected function setValues(array $values): void

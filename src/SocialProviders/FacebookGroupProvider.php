@@ -62,13 +62,24 @@ class FacebookGroupProvider extends FacebookMainProvider
         return parent::publish($text, $media, $this->getAccessToken()['access_token']);
     }
 
+    public function getGroupMetrics(): array
+    {
+        $result = Http::get("$this->apiUrl/$this->apiVersion/{$this->values['provider_id']}", [
+            'fields' => 'member_count',
+            'access_token' => $this->getAccessToken()['access_token']
+        ])->json();
+
+        if (isset($result['error'])) {
+            return $this->buildErrorResponse($result['code'], $result['message']);
+        }
+
+        return [
+            'members_count' => $result['member_count'],
+        ];
+    }
+
     public function deletePost()
     {
         // TODO: Implement deletePost() method.
-    }
-
-    public function getStatistics(array $data)
-    {
-        // TODO: Implement metrics() method.
     }
 }

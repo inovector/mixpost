@@ -4,11 +4,13 @@ namespace Inovector\Mixpost;
 
 use Illuminate\Support\Facades\Gate;
 use Inovector\Mixpost\Commands\ClearSettingsCache;
+use Inovector\Mixpost\Commands\DeleteOldData;
 use Inovector\Mixpost\Commands\ImportAccountAudience;
 use Inovector\Mixpost\Commands\ProcessMetrics;
 use Inovector\Mixpost\Commands\PublishAssetsCommand;
 use Inovector\Mixpost\Commands\ImportAccountData;
 use Inovector\Mixpost\Commands\RunScheduledPosts;
+use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -37,6 +39,7 @@ class MixpostServiceProvider extends PackageServiceProvider
                 'create_mixpost_media_table',
                 'create_mixpost_settings_table',
                 'create_mixpost_imported_posts_table',
+                'create_mixpost_facebook_insights_table',
                 'create_mixpost_metrics_table',
                 'create_mixpost_audience_table',
             ])
@@ -46,11 +49,28 @@ class MixpostServiceProvider extends PackageServiceProvider
                 RunScheduledPosts::class,
                 ImportAccountAudience::class,
                 ImportAccountData::class,
-                ProcessMetrics::class
-            ]);
+                ProcessMetrics::class,
+                DeleteOldData::class
+            ])->hasInstallCommand(function (InstallCommand $command) {
+                $command
+                    ->startWith(function (InstallCommand $command) {
+                        $command->info("👋 Hi, I'm Mixpost, a Self-hosted social media management software");
+
+                        $command->comment('Publishing assets');
+                        $command->call('mixpost:publish-assets');
+                    })
+                    ->publishMigrations()
+                    ->askToRunMigrations()
+                    ->askToStarRepoOnGitHub('inovector/mixpost')
+                    ->endWith(function (InstallCommand $command) {
+                        $appUrl = config('app.url');
+
+                        $command->line("Visit the Mixpost UI at $appUrl/mixpost");
+                    });
+            });
     }
 
-    public function register()
+    public function packageRegistered()
     {
         $this->app->singleton('SocialProviderManager', function ($app) {
             return new SocialProviderManager($app);
@@ -63,16 +83,12 @@ class MixpostServiceProvider extends PackageServiceProvider
         $this->app->singleton('Services', function ($app) {
             return new Services($app);
         });
-
-        return parent::register();
     }
 
-    public function boot()
+    public function packageBooted()
     {
         Gate::define('viewMixpost', function () {
             return true;
         });
-
-        return parent::boot();
     }
 }

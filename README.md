@@ -46,7 +46,7 @@ composer require inovector/mixpost
 Publish the migrations with:
 
 ```bash
-php artisan vendor:publish --tag="mixpost-migrations"
+php artisan mixpost:install
 ```
 
 Mixpost uses [Job Batching](https://laravel.com/docs/9.x/queues#job-batching) and you should create a database migration
@@ -188,12 +188,6 @@ return [
 ];
 ```
 
-Publish the assets:
-
-```bash
-php artisan mixpost:publish-assets
-```
-
 Mixpost has the ability to generate images from video while uploading a video file. This would not be possible without
 FFmpeg installed on your server.
 You need to follow FFmpeg installation instructions on their [official website](https://ffmpeg.org/download.html).
@@ -303,7 +297,7 @@ protected function schedule(Schedule $schedule)
     $schedule->command('mixpost:import-account-data')->everyTwoHours();
     $schedule->command('mixpost:import-account-audience')->everyThreeHours();
     $schedule->command('mixpost:process-metrics')->everyThreeHours();
-    $schedule->command('mixpost:clear-settings-cache')->daily();
+    $schedule->command('mixpost:delete-old-data')->daily();
 }
 ```
 

@@ -2,12 +2,14 @@
 
 namespace Inovector\Mixpost\Jobs;
 
+use Carbon\Carbon;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Arr;
 use Inovector\Mixpost\Facades\SocialProviderManager;
 use Inovector\Mixpost\Models\Account;
 use Inovector\Mixpost\Models\ImportedPost;
@@ -62,21 +64,22 @@ class ImportTwitterPostsJob implements ShouldQueue
 
     protected function import(array $items): void
     {
-        foreach ($items as $item) {
-            ImportedPost::updateOrCreate([
+        $data = Arr::map($items, function ($item) {
+            return [
                 'account_id' => $this->account->id,
                 'provider_post_id' => $item->id,
-            ], [
-                'content' => ['text' => $item->text],
-                'metrics' => [
+                'content' => json_encode(['text' => $item->text]),
+                'metrics' => json_encode([
                     'user_profile_clicks' => $item->public_metrics->user_profile_clicks ?? 0,
                     'impressions' => $item->public_metrics->impression_count ?? 0,
                     'likes' => $item->public_metrics->like_count ?? 0,
                     'replies' => $item->public_metrics->reply_count ?? 0,
                     'retweets' => $item->public_metrics->retweet_count ?? 0,
-                ],
-                'created_at' => $item->created_at
-            ]);
-        }
+                ]),
+                'created_at' => Carbon::parse($item->created_at)->toDateString()
+            ];
+        });
+
+        ImportedPost::upsert($data, ['account_id', 'provider_post_id'], ['content', 'metrics']);
     }
 }
