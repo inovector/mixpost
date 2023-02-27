@@ -23,28 +23,6 @@ const getAudienceData = (value) => {
 </script>
 <template>
     <div class="row-px mt-2xl">
-        <div class="grid grid-cols-3 gap-sm">
-            <Panel>
-                <template #title><span v-tooltip="'The number of times where your posts were liked'">Page Visits</span>
-                </template>
-                <div class="font-bold text-indigo-500 text-2xl">12</div>
-            </Panel>
-
-            <Panel>
-                <template #title><span v-tooltip="'The number of times your posts have been engaged'">Engagement</span>
-                </template>
-                <div class="font-bold text-indigo-500 text-2xl">14</div>
-            </Panel>
-
-            <Panel>
-                <template #title><span v-tooltip="'The number of times people saw your posts'">Impressions</span>
-                </template>
-                <div class="font-semibold text-indigo-500 text-2xl">40</div>
-            </Panel>
-        </div>
-    </div>
-
-    <div class="row-px mt-2xl">
         <Panel>
             <template #title>Audience</template>
             <template #description>The number of members per day during the selected period</template>
