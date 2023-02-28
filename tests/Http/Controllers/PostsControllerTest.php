@@ -1,5 +1,6 @@
 <?php
 
+use Inovector\Mixpost\Enums\PostStatus;
 use function Pest\Faker\faker;
 use Inovector\Mixpost\Models\User;
 use Inovector\Mixpost\Models\Post;
@@ -46,7 +47,9 @@ it('can show validation on store a post', function () {
 });
 
 it('can update a post', function () {
-    $post = Post::factory()->create();
+    $post = Post::factory()->state([
+        'status' => PostStatus::DRAFT
+    ])->create();
 
     $post->versions()->createMany([
         [
