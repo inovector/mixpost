@@ -17,7 +17,7 @@ class Reports extends FormRequest
     {
         return [
             'account_id' => ['required', 'integer', 'exists:mixpost_accounts,id'],
-            'period' => ['string', Rule::in(['7_days', '30_days', '90_days'])]
+            'period' => ['required', 'string', Rule::in(['7_days', '30_days', '90_days'])]
         ];
     }
 

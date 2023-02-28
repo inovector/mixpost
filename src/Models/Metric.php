@@ -2,10 +2,13 @@
 
 namespace Inovector\Mixpost\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Metric extends Model
 {
+    use HasFactory;
+
     public $table = 'mixpost_metrics';
 
     protected $fillable = [
