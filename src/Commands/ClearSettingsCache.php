@@ -3,18 +3,17 @@
 namespace Inovector\Mixpost\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\File;
 use Inovector\Mixpost\Facades\Settings;
 
 class ClearSettingsCache extends Command
 {
     public $signature = 'mixpost:clear-settings-cache';
 
-    public $description = 'Publish compiled assets to your public folder';
+    public $description = 'Clear the settings from cache';
 
     public function handle(): int
     {
-        Settings::clearCache();
+        Settings::forgetAll();
 
         $this->info('Cache settings has been cleared!');
 

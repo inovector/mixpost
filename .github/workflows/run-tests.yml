@@ -7,20 +7,22 @@ on:
     branches: [main]
 
 jobs:
-  test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: true
-      matrix:
-        os: [ubuntu-latest]
-        php: [8.1]
-        laravel: [9.*]
-        stability: [prefer-lowest, prefer-stable]
-        include:
-          - laravel: 9.*
-            testbench: 7.*
+  run-tests:
+    runs-on: ubuntu-latest
 
-    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+        options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [8.2, 8.1]
+        laravel: [^9.0, ^10.0]
+
+    name: P${{ matrix.php }} - L${{ matrix.laravel }}
 
     steps:
       - name: Checkout code
@@ -30,18 +32,26 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, redis
           coverage: none
 
-      - name: Setup problem matchers
+      - name: Create database
         run: |
-          echo "::add-matcher::${{ runner.tool_cache }}/php.json"
-          echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+          sudo /etc/init.d/mysql start
+          mysql  -u root -proot -e 'CREATE DATABASE IF NOT EXISTS mixpost_test;'
+      - name: Set Laravel version
+        run: |
+          sed -i 's/^9.0|^10.0/${{ matrix.laravel }}/g' composer.json
+      - name: Install composer dependencies
+        uses: ramsey/composer-install@v2
+        env:
+          COMPOSER_ROOT_VERSION: dev-main
 
-      - name: Install dependencies
-        run: |
-          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
-          composer update --${{ matrix.stability }} --prefer-dist --no-interaction
+        with:
+          composer-options: "--prefer-dist --no-interaction"
 
       - name: Execute tests
-        run: vendor/bin/pest
+        run: composer test
+        env:
+          REDIS_PORT: ${{ job.services.redis.ports[6379] }}
+          DB_PASSWORD: root

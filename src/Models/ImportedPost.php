@@ -2,10 +2,13 @@
 
 namespace Inovector\Mixpost\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ImportedPost extends Model
 {
+    use HasFactory;
+
     public $table = 'mixpost_imported_posts';
 
     protected $fillable = [

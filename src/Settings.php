@@ -67,7 +67,7 @@ class Settings
         return Cache::get($this->resolveCacheKey($name), $default);
     }
 
-    public function forget($name): void
+    public function forget(string $name): void
     {
         Cache::forget($this->resolveCacheKey($name));
     }

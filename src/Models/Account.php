@@ -3,6 +3,7 @@
 namespace Inovector\Mixpost\Models;
 
 use Illuminate\Database\Eloquent\Casts\AsEncryptedArrayObject;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
@@ -10,6 +11,8 @@ use Inovector\Mixpost\Casts\AccountMediaCast;
 
 class Account extends Model
 {
+    use HasFactory;
+
     protected $table = 'mixpost_accounts';
 
     protected $fillable = [
