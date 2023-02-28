@@ -3,12 +3,15 @@
 namespace Inovector\Mixpost\Models;
 
 use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class Media extends Model
 {
+    use HasFactory;
+
     public $table = 'mixpost_media';
 
     protected $fillable = [

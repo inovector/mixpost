@@ -22,6 +22,8 @@ it('can upload an image', function () {
 
     $media = Media::latest()->first();
 
+    $this->filesystem()->assertExists($media->path);
+
     expect($response->json())->toBe((new MediaResource($media))->resolve());
 });
 
@@ -30,12 +32,15 @@ it('will resize image', function () {
 
     $file = UploadedFile::fake()->image('image.jpg', 1200, 1200);
 
-    $this->postJson(route('mixpost.media.upload'), [
+    $response = $this->postJson(route('mixpost.media.upload'), [
         'file' => $file
-    ])->assertStatus(201);
+    ]);
 
-    $media = Media::latest()->first();
+    $response->assertStatus(201);
 
+    $media = Media::find($response->json()['id']);
+
+    $this->filesystem()->assertExists($media->path);
     $this->filesystem()->assertExists($media->getConversion('thumb')['path']);
 });
 
