@@ -4,6 +4,7 @@ namespace Inovector\Mixpost\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
+use Inovector\Mixpost\Enums\PostScheduleStatus;
 use Inovector\Mixpost\Enums\PostStatus;
 use Inovector\Mixpost\Models\Post;
 
@@ -21,6 +22,7 @@ class PostFactory extends Factory
 
         return [
             'status' => $status->value,
+            'schedule_status' => $status === PostStatus::PUBLISHED ? PostScheduleStatus::PROCESSED : PostScheduleStatus::PENDING,
             'scheduled_at' => $status !== PostStatus::DRAFT ? $scheduled : null,
             'published_at' => $status === PostStatus::PUBLISHED ? $scheduled->addHours(rand(0, 5)) : null,
         ];

@@ -20,7 +20,7 @@ it('can upload an image', function () {
 
     $response->assertStatus(201);
 
-    $media = Media::latest()->first();
+    $media = Media::latest('id')->first();
 
     $this->filesystem()->assertExists($media->path);
 
