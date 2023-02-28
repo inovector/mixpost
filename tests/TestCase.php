@@ -2,6 +2,7 @@
 
 namespace Inovector\Mixpost\Tests;
 
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Foundation\Testing\RefreshDatabaseState;
@@ -11,7 +12,9 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Support\Facades\Storage;
 use Inovector\Mixpost\MixpostServiceProvider;
+use Intervention\Image\ImageServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
@@ -26,6 +29,7 @@ class TestCase extends Orchestra
 
         Redis::flushAll();
         Cache::clear();
+        $this->filesystem()->delete($this->filesystem()->allFiles());
 
         Gate::define('viewMixpost', fn() => true);
 
@@ -38,6 +42,7 @@ class TestCase extends Orchestra
     {
         return [
             MixpostServiceProvider::class,
+            ImageServiceProvider::class
         ];
     }
 
@@ -76,6 +81,16 @@ class TestCase extends Orchestra
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
         ]);
+
+        config()->set('mixpost.disk', 'mixpost_test');
+
+        config()->set('filesystems.disks.mixpost_test', [
+            'driver' => 'local',
+            'root' => storage_path('app/public/mixpost'),
+            'url' => env('APP_URL') . '/storage/mixpost',
+            'visibility' => 'public',
+            'throw' => false,
+        ]);
     }
 
     public function processQueuedJobs()
@@ -85,5 +100,10 @@ class TestCase extends Orchestra
                 $job['job']->handle();
             }
         }
+    }
+
+    public function filesystem(): Filesystem
+    {
+        return Storage::disk(config('mixpost.disk'));
     }
 }

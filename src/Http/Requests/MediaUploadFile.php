@@ -21,10 +21,8 @@ class MediaUploadFile extends FormRequest
 
     public function handle(): Media
     {
-        $now = now()->format('m-Y');
-
         return MediaUploader::fromFile($this->file('file'))
-            ->path("mixpost/$now")
+            ->path(now()->format('m-Y'))
             ->conversions([
                 MediaImageResizeConversion::name('thumb')->width(430),
                 MediaVideoThumbConversion::name('thumb')->atSecond(5)
@@ -34,6 +32,12 @@ class MediaUploadFile extends FormRequest
 
     public function messages(): array
     {
+        if (!$this->file('file')) {
+            return [
+                'file.required' => 'File is required'
+            ];
+        }
+
         $fileType = $this->isImage() ? 'image' : 'video';
         $max = $this->max() / 1024;
 
@@ -60,6 +64,10 @@ class MediaUploadFile extends FormRequest
     private function max()
     {
         $max = 0;
+
+        if (!$this->file('file')) {
+            return $max;
+        }
 
         if ($this->isImage()) {
             $max = config('mixpost.max_file_size.image');
