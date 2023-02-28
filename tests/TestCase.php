@@ -5,6 +5,7 @@ namespace Inovector\Mixpost\Tests;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Foundation\Testing\RefreshDatabaseState;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Queue;
@@ -21,7 +22,7 @@ class TestCase extends Orchestra
     {
         parent::setUp();
 
-        $this->withoutExceptionHandling();
+        Route::get('login', fn() => 'Login Form')->name('login');
 
         Redis::flushAll();
         Cache::clear();
@@ -45,6 +46,12 @@ class TestCase extends Orchestra
         if (!RefreshDatabaseState::$migrated) {
             $this->artisan('vendor:publish', ['--tag' => 'mixpost-migrations', '--force' => true])->run();
             $this->artisan('migrate:fresh', $this->migrateFreshUsing());
+
+            $migration = include __DIR__ . '/../vendor/orchestra/testbench-core/laravel/migrations/2014_10_12_000000_testbench_create_users_table.php';
+            $migration->up();
+
+            $migration = include __DIR__ . '/../vendor/orchestra/testbench-core/laravel/migrations/2019_08_19_000000_testbench_create_failed_jobs_table.php';
+            $migration->up();
 
             $this->app[Kernel::class]->setArtisan(null);
 

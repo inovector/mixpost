@@ -2,7 +2,7 @@
 
 return [
     /*
-     * Mixpost will redirect unauthorized users to the route specified here
+     * Mixpost will redirect unauthorized users to the route name specified here
      */
     'redirect_unauthorized_users_to_route' => 'login',
 
