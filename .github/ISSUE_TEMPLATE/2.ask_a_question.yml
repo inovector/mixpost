@@ -1,3 +1,9 @@
 name: Ask a question
 description: Ask the community for help
 labels: question
+body:
+  - type: textarea
+    attributes:
+      label: Detailed description
+    validations:
+      required: false
