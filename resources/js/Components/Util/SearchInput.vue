@@ -18,7 +18,7 @@ defineEmits(['update:modelValue']);
 </script>
 <template>
     <div class="relative">
-        <Input type="text" v-model="modelValue" @update:modelValue="$emit('update:modelValue', $event)" id="keyword"
+        <Input type="text" :value="modelValue" @update:modelValue="$emit('update:modelValue', $event)" id="keyword"
                :placeholder="placeholder"
                class="w-full pl-11 pr-11"/>
 
