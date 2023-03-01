@@ -1,6 +1,9 @@
 <?php
 
+use Inertia\Testing\AssertableInertia as Assert;
 use Inovector\Mixpost\Enums\PostStatus;
+use Inovector\Mixpost\Models\Account;
+use Inovector\Mixpost\Models\Tag;
 use function Pest\Faker\faker;
 use Inovector\Mixpost\Models\User;
 use Inovector\Mixpost\Models\Post;
@@ -8,6 +11,69 @@ use Carbon\Carbon;
 
 beforeEach(function () {
     test()->user = User::factory()->create();
+});
+
+it('shows post list', function () {
+    $this->actingAs(test()->user);
+
+    $this->publishAssets();
+
+    Account::factory()->count(3)->create();
+    Tag::factory(4)->create();
+    Post::factory()->count(5)->create();
+    Post::factory()->state([
+        'status' => PostStatus::FAILED
+    ])->count(1)->create();
+
+    $this->get(route('mixpost.posts.index'))
+        ->assertInertia(fn(Assert $page) => $page
+            ->component('Posts/Index')
+            ->has('accounts', 3)
+            ->has('tags', 4)
+            ->has('posts.data', 6)
+            ->has('filter')
+            ->where('has_failed_posts', true)
+        );
+});
+
+it('shows create form', function () {
+    $this->actingAs(test()->user);
+
+    $this->publishAssets();
+
+    Account::factory()->count(3)->create();
+    Tag::factory(4)->create();
+
+    $this->get(route('mixpost.posts.create'))
+        ->assertInertia(fn(Assert $page) => $page
+            ->component('Posts/CreateEdit')
+            ->has('accounts', 3)
+            ->has('tags', 4)
+            ->where('post', null)
+        );
+});
+
+it('shows edit form', function () {
+    $this->actingAs(test()->user);
+
+    $this->publishAssets();
+
+    Account::factory()->count(3)->create();
+    Tag::factory(4)->create();
+
+    $post = Post::factory()->state([
+        'status' => PostStatus::DRAFT
+    ])->create();
+
+    $this->get(route('mixpost.posts.edit', ['post' => $post]))
+        ->assertInertia(fn(Assert $page) => $page
+            ->component('Posts/CreateEdit')
+            ->has('accounts', 3)
+            ->has('tags', 4)
+            ->has('post')
+            ->where('post.id', $post->id)
+            ->where('post.status', $post->status->name)
+        );
 });
 
 it('can store a post', function () {
