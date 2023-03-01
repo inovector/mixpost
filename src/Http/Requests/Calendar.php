@@ -14,11 +14,14 @@ class Calendar extends FormRequest
 
     public function handle()
     {
-        $this->merge([
+        $data = [
             'calendar_type' => $this->type(),
             'date' => $this->selectedDate(),
             'exclude_status' => 'draft',
-        ]);
+        ];
+
+        $this->query->add($data);
+        $this->attributes->add($data);
     }
 
     public function selectedDate(): string

@@ -27,4 +27,13 @@ class PostFactory extends Factory
             'published_at' => $status === PostStatus::PUBLISHED ? $scheduled->addHours(rand(0, 5)) : null,
         ];
     }
+
+    public function withScheduledAtBetweenDates($start, $end)
+    {
+        return $this->state(function (array $attributes) use ($start, $end) {
+            return [
+                'scheduled_at' => $this->faker->dateTimeBetween($start, $end),
+            ];
+        });
+    }
 }

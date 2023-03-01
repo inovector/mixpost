@@ -18,6 +18,8 @@ class CalendarController extends Controller
 {
     public function index(Calendar $request): Response
     {
+        $request->handle();
+
         $posts = PostQuery::apply($request)->get();
 
         return Inertia::render('Calendar', [

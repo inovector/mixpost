@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Support\Facades\Storage;
+use Inertia\ServiceProvider;
 use Inovector\Mixpost\MixpostServiceProvider;
 use Intervention\Image\ImageServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
@@ -42,6 +43,7 @@ class TestCase extends Orchestra
     {
         return [
             MixpostServiceProvider::class,
+            ServiceProvider::class,
             ImageServiceProvider::class
         ];
     }
@@ -91,9 +93,11 @@ class TestCase extends Orchestra
             'visibility' => 'public',
             'throw' => false,
         ]);
+
+        config()->set('inertia.testing.ensure_pages_exist', false);
     }
 
-    public function processQueuedJobs()
+    public function processQueuedJobs(): void
     {
         foreach (Queue::pushedJobs() as $jobs) {
             foreach ($jobs as $job) {
@@ -105,5 +109,10 @@ class TestCase extends Orchestra
     public function filesystem(): Filesystem
     {
         return Storage::disk(config('mixpost.disk'));
+    }
+
+    public function publishAssets(): void
+    {
+        $this->artisan('mixpost:publish-assets', ['--force' => true])->run();
     }
 }
