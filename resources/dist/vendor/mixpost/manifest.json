@@ -11,33 +11,33 @@
     "file": "assets/fb-wow.ca50712c.svg",
     "src": "resources/img/fb-wow.svg"
   },
-  "resources/img/social-icons/mastodon/globe.svg": {
-    "file": "assets/globe.4f41e2b3.svg",
-    "src": "resources/img/social-icons/mastodon/globe.svg"
-  },
   "resources/img/fb-icons.png": {
     "file": "assets/fb-icons.855a0fcf.png",
     "src": "resources/img/fb-icons.png"
   },
-  "resources/img/social-icons/mastodon/reply.svg": {
-    "file": "assets/reply.69e79af6.svg",
-    "src": "resources/img/social-icons/mastodon/reply.svg"
+  "resources/img/social-icons/mastodon/globe.svg": {
+    "file": "assets/globe.4f41e2b3.svg",
+    "src": "resources/img/social-icons/mastodon/globe.svg"
   },
   "resources/img/social-icons/mastodon/retweet.svg": {
     "file": "assets/retweet.0437347b.svg",
     "src": "resources/img/social-icons/mastodon/retweet.svg"
   },
-  "resources/img/social-icons/mastodon/star.svg": {
-    "file": "assets/star.abade377.svg",
-    "src": "resources/img/social-icons/mastodon/star.svg"
+  "resources/img/social-icons/mastodon/reply.svg": {
+    "file": "assets/reply.69e79af6.svg",
+    "src": "resources/img/social-icons/mastodon/reply.svg"
+  },
+  "resources/img/social-icons/mastodon/ellipsis.svg": {
+    "file": "assets/ellipsis.065dffec.svg",
+    "src": "resources/img/social-icons/mastodon/ellipsis.svg"
   },
   "resources/img/social-icons/mastodon/bookmark.svg": {
     "file": "assets/bookmark.331e5819.svg",
     "src": "resources/img/social-icons/mastodon/bookmark.svg"
   },
-  "resources/img/social-icons/mastodon/ellipsis.svg": {
-    "file": "assets/ellipsis.065dffec.svg",
-    "src": "resources/img/social-icons/mastodon/ellipsis.svg"
+  "resources/img/social-icons/mastodon/star.svg": {
+    "file": "assets/star.abade377.svg",
+    "src": "resources/img/social-icons/mastodon/star.svg"
   },
   "resources/js/app.js": {
     "file": "assets/app.b3b20422.js",
