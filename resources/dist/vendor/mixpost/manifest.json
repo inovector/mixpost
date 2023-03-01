@@ -481,13 +481,13 @@
     "file": "assets/VerticallyScrollableContent.eda7d8b2.css",
     "src": "VerticallyScrollableContent.css"
   },
-  "resources/js/app.css": {
-    "file": "assets/app.ced4b21d.css",
-    "src": "resources/js/app.css"
-  },
   "DropdownItem.css": {
     "file": "assets/DropdownItem.b54678c7.css",
     "src": "DropdownItem.css"
+  },
+  "resources/js/app.css": {
+    "file": "assets/app.ced4b21d.css",
+    "src": "resources/js/app.css"
   },
   "resources/js/Pages/Posts/CreateEdit.css": {
     "file": "assets/CreateEdit.7ff9f593.css",
