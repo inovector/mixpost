@@ -10,13 +10,14 @@
 
 ## Introduction
 
-Mixpost it's the coolest Self-hosted social media management software. This package is the lite version of Mixpost PRO,
-and by integrating it into your Laravel project, you can schedule and organize your social content (Twitter and Facebook
-support only) all in one place without limits and monthly subscriptions.
+Mixpost it's the coolest Self-hosted social media management software. 
+
+This package is the Lite version of Mixpost Pro,
+and by integrating it into your Laravel project, you can easily create, schedule, publish, and manage social media content in one place, with no limits or monthly subscription fees.
 
 It's the perfect social media management solution for bloggers, crafters and entrepreneurs.
 
-**Mixpost is under development and will be released soon. Sign up to be notified when it's
+**Mixpost Pro is under development and will be released soon. Sign up to be notified when it's
 released [mixpost.app](https://mixpost.app/)**
 
 Join our community:
@@ -37,13 +38,13 @@ Join our community:
 
 ## Installation
 
-You can install the package via composer:
+You may use Composer to install Mixpost into your new Laravel project:
 
 ```bash
 composer require inovector/mixpost
 ```
 
-Publish the migrations with:
+After installing the Mixpost package, you may execute:
 
 ```bash
 php artisan mixpost:install
@@ -75,7 +76,7 @@ This is the contents of the published config file:
 ```php
 return [
     /*
-     * Mixpost will redirect unauthorized users to the route specified here
+     * Mixpost will redirect unauthorized users to the route name specified here
      */
     'redirect_unauthorized_users_to_route' => 'login',
 
@@ -322,7 +323,7 @@ public function boot()
 }
 ```
 
-Mixpost will redirect unauthorized users to the route specified in the `redirect_unauthorized_users_to_route` key of the
+Mixpost will redirect unauthorized users to the route name specified in the `redirect_unauthorized_users_to_route` key of the
 Mixpost config file.
 
 ## Visit the UI
@@ -344,15 +345,14 @@ Please see [Releases](../../releases) for more information what has changed rece
 By participating in this project you agree to these conditions 👇
 
 Please note that this project is a [commercial product](https://mixpost.app/), and this repository is the lite version
-of Mixpost PRO. We work hard to offer the community the best free social media manager solution and please read this
+of Mixpost Pro. We work hard to offer the community the best free social media manager solution and please read this
 section carefully.
 
 If you want to add a feature, it's better to open an issue before you start coding. It is important for us that features
-from the LITE version do not correlate with features from the Mixpost PRO. PRs with optimizations, bug fixes are
+from the Lite version do not correlate with features from the Mixpost Pro. PRs with optimizations, bug fixes are
 welcome.
 
-Please, be very clear on your commit messages and pull requests, empty pull request messages may be rejected without
-reason.
+Please, be very clear on your commit messages and pull requests, empty pull request messages may be rejected.
 
 When contributing code to Mixpost, you must follow
 the [PSR-12 Coding Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-12-extended-coding-style-guide.md).
