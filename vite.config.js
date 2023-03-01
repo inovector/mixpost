@@ -10,11 +10,11 @@ export default defineConfig(({command, mode}) => {
     const env = loadEnv(mode, process.cwd(), '')
 
     // Set the host based on APP_URL
-    let host = new URL(env.APP_URL).host
+    let host = env.APP_URL !== undefined ? new URL(env.APP_URL).host : null;
     let homeDir = homedir()
     let serverConfig = {}
 
-    if (homeDir) {
+    if (host && homeDir) {
         serverConfig = {
             https: {
                 key: fs.readFileSync(
