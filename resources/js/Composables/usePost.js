@@ -1,5 +1,6 @@
-import {computed} from "vue";
+import {computed, inject} from "vue";
 import {usePage} from "@inertiajs/inertia-vue3";
+import {filter, some} from "lodash";
 
 const usePost = () => {
     const post = computed(() => {
@@ -10,17 +11,47 @@ const usePost = () => {
         return post.value ? post.value.id : null;
     });
 
-    const isReadOnly = computed(() => {
+    const isInHistory = computed(() => {
         if (!post.value) {
             return false;
         }
 
-        return ['PUBLISHED', 'PUBLISHING', 'ERROR'].includes(post.value.status)
+        return ['PUBLISHED', 'FAILED'].includes(post.value.status)
+    })
+
+    const isScheduleProcessing = computed(() => {
+        if (!post.value) {
+            return false;
+        }
+
+        return post.value.status === 'PUBLISHING';
+    })
+
+    const editAllowed = computed(() => {
+        return !(isInHistory.value || isScheduleProcessing.value);
+    });
+
+    const accountsHitTextLimit = computed(() => {
+        const postContext = inject('postContext')
+
+        return filter(postContext.textLimit, {hit: true});
+    })
+
+    const accountsHitMediaLimit = computed(() => {
+        const postContext = inject('postContext')
+
+        return filter(postContext.mediaLimit, (item) => {
+            return item.photos.hit || item.videos.hit || item.gifs.hit || item.is_mixing;
+        });
     })
 
     return {
         postId,
-        isReadOnly: isReadOnly
+        isInHistory,
+        isScheduleProcessing,
+        editAllowed,
+        accountsHitTextLimit,
+        accountsHitMediaLimit
     }
 }
 

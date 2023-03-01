@@ -9,14 +9,6 @@ module.exports = {
         './resources/js/**/*.vue',
         './resources/js/**/*.js',
     ],
-    safelist: [
-        'text-twitter',
-        'border-twitter',
-        'bg-twitter',
-        'text-facebook',
-        'border-facebook',
-        'bg-facebook',
-    ],
     theme: {
         extend: {
             fontFamily: {
@@ -84,7 +76,8 @@ module.exports = {
                     "900": "#100E25"
                 },
                 facebook: '#1877f2',
-                twitter: '#1da1f2'
+                twitter: '#1da1f2',
+                mastodon: '#6364FF'
             },
             boxShadow: {
                 'mix': '0 5px 10px rgb(55 55 89 / 8%)',
@@ -96,6 +89,10 @@ module.exports = {
                 'lg': '1.5rem', // 6
                 'xl': '2rem', // 8
                 '2xl': '2.5rem', // 10
+            },
+            gridTemplateColumns: {
+                'week-time-sm': '48px repeat(7, 1fr)',
+                'week-time': '70px repeat(7, 1fr)'
             }
         },
     },

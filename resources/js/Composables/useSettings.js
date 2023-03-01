@@ -12,7 +12,7 @@ const useSettings = () => {
 
     return {
         getSetting,
-        timeZone: settings.value.time_zone,
+        timeZone: settings.value.timezone,
         timeFormat: settings.value.time_format,
         weekStartsOn: settings.value.week_starts_on
     }

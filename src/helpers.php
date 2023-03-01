@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Carbon;
 use Illuminate\Support\HtmlString;
-use Illuminate\Support\Arr;
 use Inovector\Mixpost\Facades\Settings;
 
 if (!function_exists('mixpostAssets')) {
@@ -31,15 +30,6 @@ if (!function_exists('mixpostAssets')) {
                 <link rel="stylesheet" href="/vendor/mixpost/{$manifest['resources/js/app.js']['css'][0]}">
             HTML
         );
-    }
-}
-
-if (!function_exists('socialProviderOptions')) {
-    function socialProviderOptions($provider)
-    {
-        $items = config('mixpost.social_provider_options');
-
-        return Arr::get($items, $provider);
     }
 }
 

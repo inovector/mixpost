@@ -18,7 +18,7 @@ class MediaImageResizeConversion extends MediaConversion
 
     public function canPerform(): bool
     {
-        return $this->isImage();
+        return $this->isImage() && !$this->isGifImage();
     }
 
     public function getPath(): string
@@ -42,7 +42,10 @@ class MediaImageResizeConversion extends MediaConversion
 
     public function handle(): MediaConversionData|null
     {
-        $image = Image::make($this->filesystem($this->getFromDisk())->url($this->getFilepath()));
+        // TODO: Check if works with S3 driver
+        $content = $this->filesystem($this->getFromDisk())->get($this->getFilepath());
+
+        $image = Image::make($content);
 
         $convert = $image->resize($this->width, $this->height, function ($constraint) {
             $constraint->aspectRatio();

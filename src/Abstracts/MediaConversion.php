@@ -2,7 +2,6 @@
 
 namespace Inovector\Mixpost\Abstracts;
 
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inovector\Mixpost\Contracts\MediaConversion as MediaConversionContract;
@@ -87,6 +86,11 @@ abstract class MediaConversion implements MediaConversionContract
     public function isImage(): bool
     {
         return Str::before($this->getFileMimeType(), '/') === 'image';
+    }
+
+    public function isGifImage(): bool
+    {
+        return $this->isImage() && Str::after($this->getFileMimeType(), '/') === 'gif';
     }
 
     public function isVideo(): bool

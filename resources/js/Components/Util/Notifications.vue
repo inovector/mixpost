@@ -1,36 +1,46 @@
 <script setup>
-import {ref, onMounted, onUnmounted, computed} from "vue";
+import {ref, onMounted, onUnmounted, computed, watch} from "vue";
+import {Link} from '@inertiajs/inertia-vue3';
+import {usePage} from "@inertiajs/inertia-vue3";
 import emitter from "@/Services/emitter";
+import SecondaryButton from "@/Components/Button/SecondaryButton.vue";
 import CheckIcon from "@/Icons/Check.vue"
 import ExclamationIcon from "@/Icons/Exclamation.vue"
 import XIcon from "@/Icons/X.vue"
 
 const variant = ref('info');
 const message = ref('');
+const button = ref(null)
 const show = ref(false);
 
 let showTimeout = null;
 
 onMounted(() => {
-    emitter.on('notify', e => open(e.variant, e.message));
+    emitter.on('notify', e => open(e.variant, e.message, e.button));
 });
 
 onUnmounted(() => {
     emitter.off('notify');
 });
 
-const open = (variantName, messageText) => {
+const open = (variantName, messageText, buttonObject) => {
     if (showTimeout) {
         clearTimeout(showTimeout);
     }
 
     variant.value = variantName;
-    message.value = messageText;
+    message.value = messageText.replace(/\n/g, '<br />');
+
+    if (buttonObject) {
+        button.value = buttonObject;
+    }
+
     show.value = true;
 
     showTimeout = setTimeout(() => {
         show.value = false;
-    }, 2500);
+        button.value = null;
+    }, 3000);
 }
 
 const close = () => {
@@ -39,6 +49,7 @@ const close = () => {
     }
 
     show.value = false
+    button.value = null
 }
 
 const variantIcon = computed(() => {
@@ -58,6 +69,31 @@ const variantColorClasses = computed(() => {
         'error': 'bg-red-100 text-red-600',
     }[variant.value]
 });
+
+// Flash Messages
+const flash = computed(() => {
+    return usePage().props.value.flash;
+});
+
+watch(() => flash, () => {
+    if (flash.value.success) {
+        open('success', flash.value.success);
+    }
+
+    if (flash.value.warning) {
+        open('warning', flash.value.warning);
+    }
+
+    if (flash.value.error) {
+        open('error', flash.value.error);
+    }
+
+    if (flash.value.info) {
+        open('info', flash.value.info);
+    }
+}, {
+    deep: true
+})
 </script>
 <template>
     <teleport to="body">
@@ -67,7 +103,8 @@ const variantColorClasses = computed(() => {
                     leave-active-class="transition ease-in duration-75"
                     leave-from-class="transform opacity-100 scale-100"
                     leave-to-class="transform opacity-0 scale-95">
-            <div v-show="show" class="absolute bottom-0 right-0 mr-xl mb-2xl flex px-lg py-md rounded-md bg-indigo-800 z-50"
+            <div v-show="show"
+                 class="absolute bottom-0 right-0 ml-sm md:ml-0 mr-sm md:mr-xl mb-2xl flex px-lg py-md rounded-md bg-indigo-800 shadow-mix z-50"
                  aria-live="polite">
                 <div class="flex items-center">
                     <div>
@@ -76,8 +113,15 @@ const variantColorClasses = computed(() => {
                             <component :is="variantIcon"/>
                         </div>
                     </div>
-                    <div class="text-gray-200">{{ message }}</div>
-                    <button @click="close" class="ml-2xl">
+                    <div>
+                        <div class="text-gray-200" v-html="message"/>
+                        <div v-if="button" class="mt-xs">
+                            <Link :href="button.href">
+                                <SecondaryButton @click="close">{{ button.name }}</SecondaryButton>
+                            </Link>
+                        </div>
+                    </div>
+                    <button @click="close" class="ml-2xl hover:rotate-90 transition-transform ease-in-out duration-300">
                         <XIcon class="text-gray-200"/>
                     </button>
                 </div>

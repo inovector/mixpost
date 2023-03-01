@@ -3,49 +3,69 @@
 namespace Inovector\Mixpost\Actions;
 
 use Illuminate\Database\Eloquent\Collection;
-use Inovector\Mixpost\Exceptions\MissingAccountContent;
+use Inovector\Mixpost\Support\Log;
 use Inovector\Mixpost\Facades\SocialProviderManager;
 use Inovector\Mixpost\Models\Account;
 use Inovector\Mixpost\Models\Media;
 use Inovector\Mixpost\Models\Post;
+use Exception;
 
 class AccountPublishPost
 {
-    public function __invoke(Account $account, Post $post): bool|array
+    public function __invoke(Account $account, Post $post): void
     {
         $content = $this->getContentVersion($account, $post->versions);
 
         if (empty($content)) {
-            $errors = "This account doesn't have content!";
+            $errors = ["This account version doesn't have content!"];
 
-            $this->setError($post, $account, $errors);
-
-            throw new MissingAccountContent($errors);
+            $this->insertErrors($post, $account, $errors);
         }
 
         $body = $this->cleanBody($content[0]['body']);
         $media = $this->collectMedia($content[0]['media']);
 
-        $provider = SocialProviderManager::connect($account->provider);
-        $provider->setCredentials($account->credentials);
+        $provider = SocialProviderManager::connect($account->provider, $account->values())->useAccessToken($account->access_token->toArray());
 
-        $response = $provider->publishPost($body, $media);
+        try {
+            $response = $provider->publishPost($body, $media);
 
-        if (!empty($response['errors'])) {
-            $this->setError($post, $account, $response['errors']);
+            if (isset($response['errors'])) {
+                $this->insertErrors($post, $account, $response['errors']);
+            }
 
-            return [
-                'errors' => $response['errors']
-            ];
+            if (isset($response['id'])) {
+                $this->insertProviderPostId($post, $account, $response['id']);
+            }
+        } catch (Exception $exception) {
+            Log::error("Publish: {$exception->getMessage()}",
+                [
+                    'account_id' => $account->id,
+                    'account_name' => $account->name,
+                    'account_provider' => $account->provider,
+                    'post_id' => $post->id,
+                    'trace' => $exception->getTrace(),
+                ]
+            );
+
+            $errors = ['Unexpected internal error.'];
+
+            $this->insertErrors($post, $account, $errors);
         }
-
-        return true;
     }
 
-    private function setError(Post $post, Account $account, $errors): void
+    private function insertErrors(Post $post, Account $account, $errors): void
     {
         $post->accounts()->updateExistingPivot($account->id, [
             'errors' => json_encode($errors)
+        ]);
+    }
+
+    private function insertProviderPostId(Post $post, Account $account, string $id): void
+    {
+        $post->accounts()->updateExistingPivot($account->id, [
+            'provider_post_id' => $id,
+            'errors' => null,
         ]);
     }
 
@@ -60,21 +80,37 @@ class AccountPublishPost
         return $accountVersion->content;
     }
 
-    private function collectMedia(array $media)
-    {
-        return Media::whereIn('id', $media)->get()->map(function ($item) {
-            return [
-                'id' => $item->id,
-                'path' => $item->getLargeFullPath(),
-                'name' => $item->name,
-                'mime_type' => $item->mime_type,
-                'size' => $item->size
-            ];
-        });
-    }
-
     private function cleanBody(string $text): string
     {
-        return str_replace(["<div>", "</div>"], ["", "\n"], $text);
+        $replaceDiv = str_replace(["<div>", "</div>"], ["", "\n"], $text);
+
+        return strip_tags($replaceDiv);
+    }
+
+    private function collectMedia(array $ids): array
+    {
+        $items = [];
+
+        $media = Media::whereIn('id', $ids)->get()->keyBy('id');
+
+        foreach ($ids as $id) {
+            $item = $media[$id] ?? null;
+
+            if (!$item) {
+                continue;
+            }
+
+            $items[] = [
+                'id' => $item->id,
+                'path' => $item->getFullPath(),
+                'thumb_path' => $item->getThumbFullPath(),
+                'name' => $item->name,
+                'mime_type' => $item->mime_type,
+                'is_image' => $item->isImage(),
+                'size' => $item->size
+            ];
+        }
+
+        return $items;
     }
 }

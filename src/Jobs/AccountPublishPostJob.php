@@ -18,7 +18,6 @@ class AccountPublishPostJob implements ShouldQueue
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $deleteWhenMissingModels = true;
-    public $tries = 1;
 
     public Account $account;
     public Post $post;
@@ -31,7 +30,11 @@ class AccountPublishPostJob implements ShouldQueue
 
     public function handle(AccountPublishPost $accountPublishPost)
     {
-        if ($this->post->isPublished()) {
+        if ($this->batch()->cancelled()) {
+            return;
+        }
+
+        if ($this->post->isInHistory()) {
             return;
         }
 

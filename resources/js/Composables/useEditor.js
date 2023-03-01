@@ -9,7 +9,9 @@ const useEditor = () => {
         Document,
         Div,
         Text,
-        Link
+        Link.configure({
+            openOnClick: false,
+        })
     ]
 
     const insertEmoji = ({editorId, emoji}) => {
@@ -30,11 +32,23 @@ const useEditor = () => {
         return text === '';
     }
 
+    const extractTextFromHtml = (htmlString) => {
+        const tempElement = document.createElement("div");
+        tempElement.innerHTML = htmlString;
+
+        const text = tempElement.innerText;
+
+        tempElement.remove();
+
+        return text;
+    }
+
     return {
         defaultExtensions,
         insertEmoji,
         focusEditor,
-        isDocEmpty
+        isDocEmpty,
+        extractTextFromHtml
     }
 }
 

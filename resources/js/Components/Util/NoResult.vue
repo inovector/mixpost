@@ -3,7 +3,7 @@ import ExclamationIcon from "@/Icons/Exclamation.vue"
 
 </script>
 <template>
-    <div class="flex items-center py-md px-md">
+    <div class="flex items-center">
         <div class="w-8 h-8 bg-cyan-100 text-cyan-600 rounded-full flex items-center justify-center mr-xs">
             <ExclamationIcon/>
         </div>

@@ -2,13 +2,19 @@
 
 namespace Inovector\Mixpost\Models;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Inovector\Mixpost\Enums\PostScheduleStatus;
 use Inovector\Mixpost\Enums\PostStatus;
 
 class Post extends Model
 {
+    use HasFactory;
+
     public $table = 'mixpost_posts';
 
     protected $fillable = [
@@ -19,6 +25,7 @@ class Post extends Model
 
     protected $casts = [
         'status' => PostStatus::class,
+        'schedule_status' => PostScheduleStatus::class,
         'scheduled_at' => 'datetime',
         'published_at' => 'datetime',
     ];
@@ -26,7 +33,7 @@ class Post extends Model
     public function accounts(): BelongsToMany
     {
         return $this->belongsToMany(Account::class, 'mixpost_post_accounts', 'post_id', 'account_id')
-            ->withPivot('errors')
+            ->withPivot(['errors', 'provider_post_id'])
             ->orderByPivot('id');
     }
 
@@ -41,14 +48,20 @@ class Post extends Model
             ->orderByPivot('id');
     }
 
-    public function canSchedule(): bool
+    public function scopeFailed(Builder $query): Builder
     {
-        return $this->status->name === PostStatus::DRAFT->name && $this->scheduled_at !== null;
+        return $query->where('status', PostStatus::FAILED->value);
     }
 
-    public function isPublishing(): bool
+    public function canSchedule(): bool
     {
-        return $this->status->name === PostStatus::PUBLISHING->name;
+        // TODO: check if original content is not empty
+        return $this->scheduled_at && !$this->scheduled_at->isPast() && $this->accounts()->exists();
+    }
+
+    public function isScheduled(): bool
+    {
+        return $this->status->name === PostStatus::SCHEDULED->name;
     }
 
     public function isPublished(): bool
@@ -56,15 +69,42 @@ class Post extends Model
         return $this->status->name === PostStatus::PUBLISHED->name;
     }
 
-    public function setScheduled()
+    public function isFailed(): bool
     {
-        $this->status = PostStatus::SCHEDULED->value;
+        return $this->status->name === PostStatus::FAILED->name;
+    }
+
+    public function isInHistory(): bool
+    {
+        return $this->isPublished() || $this->isFailed();
+    }
+
+    public function isScheduleProcessing(): bool
+    {
+        return $this->schedule_status->name === PostScheduleStatus::PROCESSING->name;
+    }
+
+    public function setDraft()
+    {
+        $this->status = PostStatus::DRAFT->value;
+        $this->schedule_status = PostScheduleStatus::PENDING;
         $this->save();
     }
 
-    public function setPublishing()
+    public function setScheduled(Carbon|null $date = null)
     {
-        $this->status = PostStatus::PUBLISHING->value;
+        $this->status = PostStatus::SCHEDULED->value;
+
+        if ($date) {
+            $this->scheduled_at = $date;
+        }
+
+        $this->save();
+    }
+
+    public function setScheduleProcessing()
+    {
+        $this->schedule_status = PostScheduleStatus::PROCESSING;
         $this->save();
     }
 
@@ -72,12 +112,14 @@ class Post extends Model
     {
         $this->status = PostStatus::PUBLISHED->value;
         $this->published_at = now();
+        $this->schedule_status = PostScheduleStatus::PROCESSED;
         $this->save();
     }
 
-    public function setError()
+    public function setFailed()
     {
-        $this->status = PostStatus::ERROR->value;
+        $this->status = PostStatus::FAILED->value;
+        $this->schedule_status = PostScheduleStatus::PROCESSED;
         $this->save();
     }
 }

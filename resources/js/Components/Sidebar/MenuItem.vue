@@ -15,7 +15,7 @@ defineProps({
 <template>
     <Link :href="url" class="py-2 flex flex-row items-center space-x-4 transition ease-in-out duration-200" :class="{'text-gray-900': active, 'text-gray-400 hover:text-gray-700': !active}">
         <div><slot name="icon" /></div>
-        <div class="font-semibold tracking-tight">
+        <div class="font-medium tracking-tight">
             <slot />
         </div>
     </Link>

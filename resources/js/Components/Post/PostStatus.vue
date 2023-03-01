@@ -5,6 +5,11 @@ const props = defineProps({
     value: {
         type: String,
         required: true
+    },
+    showName: {
+        type: Boolean,
+        required: false,
+        default: true
     }
 })
 
@@ -14,7 +19,7 @@ const classNames = computed(() => {
         'PUBLISHED': 'bg-lime-500',
         'PUBLISHING': 'bg-violet-500',
         'SCHEDULED': 'bg-cyan-500',
-        'ERROR': 'bg-red-500',
+        'FAILED': 'bg-red-500',
     }[props.value]
 })
 
@@ -24,13 +29,13 @@ const name = computed(() => {
         'PUBLISHED': 'Published',
         'PUBLISHING': 'Publishing',
         'SCHEDULED': 'Scheduled',
-        'ERROR': 'Error',
+        'FAILED': 'Failed',
     }[props.value]
 })
 </script>
 <template>
     <div class="flex items-center">
-        <div :class="[classNames]" class="w-4 h-4 mr-xs rounded-full"></div>
-        <div>{{ name }}</div>
+        <div :class="[classNames]" v-tooltip="`${showName ? '' : name}`" class="w-4 h-4 rounded-full"></div>
+        <div v-if="showName" class="ml-xs">{{ name }}</div>
     </div>
 </template>

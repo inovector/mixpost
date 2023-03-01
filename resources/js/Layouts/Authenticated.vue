@@ -3,23 +3,37 @@ import Sidebar from "@/Components/Sidebar/Sidebar.vue";
 import Navigation from "@/Components/Navigation/NavBar.vue";
 import Notifications from "@/Components/Util/Notifications.vue";
 
-import {provide, reactive} from "vue";
+import {onUnmounted, provide, reactive} from "vue";
+import {Inertia} from "@inertiajs/inertia";
 
 const context = reactive({
     showAside: false,
+    dashboard_filter: {
+        account_id: null,
+        period: '30_days'
+    }
 });
 
 provide('appContext', context);
+
+const removeStartEventListener = Inertia.on('start', () => {
+    context.showAside = false;
+});
+
+onUnmounted(() => {
+    removeStartEventListener();
+})
 </script>
 <template>
     <div class="flex flex-row h-screen min-h-full bg-stone-500">
-        <aside :class="{'translate-x-0': context.showAside, '-translate-x-full md:translate-x-0': !context.showAside}" class="aside fixed md:relative h-full z-50 transition-transform ease-in-out duration-200">
+        <aside :class="{'translate-x-0': context.showAside, '-translate-x-full xl:translate-x-0': !context.showAside}"
+               class="aside fixed xl:relative h-full z-50 transition-transform ease-in-out duration-200">
             <Sidebar/>
         </aside>
 
-        <main class="w-full md:main flex flex-col overflow-y-auto" scroll-region>
+        <main class="w-full xl:main flex flex-col overflow-y-auto" scroll-region>
             <Navigation/>
-            <slot />
+            <slot/>
         </main>
 
         <transition
@@ -30,8 +44,9 @@ provide('appContext', context);
             leave-from-class="opacity-100"
             leave-to-class="opacity-0"
         >
-            <div v-show="context.showAside" @click="context.showAside = false" class="fixed inset-0 z-10 transform transition-all">
-                <div class="absolute inset-0 bg-indigo-900 opacity-60" />
+            <div v-show="context.showAside" @click="context.showAside = false"
+                 class="fixed inset-0 z-10 transform transition-all">
+                <div class="absolute inset-0 bg-indigo-900 opacity-60"/>
             </div>
         </transition>
 

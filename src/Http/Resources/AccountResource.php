@@ -14,13 +14,12 @@ class AccountResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'username' => $this->username,
-            'image' => $this->image,
+            'image' => $this->image(),
             'provider' => $this->provider,
-            'provider_options' => socialProviderOptions($this->provider),
+            'provider_options' => $this->providerOptions(),
             'created_at' => $this->created_at->diffForHumans(),
-            // TODO: get errors if post account
-            'errors' => $this->whenPivotLoaded('mixpost_post_accounts', function() {
-                return $this->pivot->errors;
+            'errors' => $this->whenPivotLoaded('mixpost_post_accounts', function () {
+                return $this->pivot->errors ? json_decode($this->pivot->errors) : [];
             })
         ];
     }

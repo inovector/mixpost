@@ -2,6 +2,7 @@
 
 namespace Inovector\Mixpost\Abstracts;
 
+use Inovector\Mixpost\Contracts\SocialProvider;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
@@ -10,7 +11,7 @@ abstract class SocialProviderManager
 {
     protected Container $container;
     protected mixed $config;
-    protected array $providers = [];
+    protected mixed $values = [];
 
     public function __construct(Container $container)
     {
@@ -18,16 +19,16 @@ abstract class SocialProviderManager
         $this->config = $container->make('config');
     }
 
-    public function connect(string $provider)
+    public function connect(string $provider, array $values = [])
     {
-        // If the given provider has not been created before, we will create the instances
-        // here and cache it, so we can return it next time very quickly. If there is
-        // already a provider created by this name, we'll just return that instance.
-        if (!isset($this->providers[$provider])) {
-            $this->providers[$provider] = $this->createConnection($provider);
-        }
+        $this->setValues($values);
 
-        return $this->providers[$provider];
+        return $this->createConnection($provider);
+    }
+
+    protected function setValues(array $values): void
+    {
+        $this->values = $values;
     }
 
     private function createConnection(string $provider)
@@ -41,8 +42,14 @@ abstract class SocialProviderManager
         throw new InvalidArgumentException("Provider [$provider] not supported.");
     }
 
-    protected function buildConnectionProvider($provider, $config)
+    protected function buildConnectionProvider(string $provider, array $config): SocialProvider
     {
-        return new $provider($this->container->make('request'), $config['client_id'], $config['client_secret'], $config['redirect']);
+        $connection = (new $provider($this->container->make('request'), $config['client_id'], $config['client_secret'], $config['redirect'], array_merge($this->values, $config['values'] ?? [])));
+
+        if (!$connection instanceof SocialProvider) {
+            throw new \Exception('The provider must be an instance of SocialProvider');
+        }
+
+        return $connection;
     }
 }

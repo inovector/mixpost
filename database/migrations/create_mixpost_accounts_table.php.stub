@@ -16,11 +16,12 @@ return new class extends Migration
         Schema::create('mixpost_accounts', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('username');
-            $table->string('image')->nullable();
+            $table->string('username')->nullable();
+            $table->json('media')->nullable();
             $table->string('provider');
             $table->string('provider_id');
-            $table->json('credentials');
+            $table->json('data')->nullable();
+            $table->longText('access_token');
             $table->timestamps();
         });
     }

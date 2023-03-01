@@ -8,9 +8,12 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
+use Inovector\Mixpost\Actions\RedirectAfterDeletedPost;
 use Inovector\Mixpost\Builders\PostQuery;
+use Inovector\Mixpost\Facades\Services;
 use Inovector\Mixpost\Facades\Settings;
 use Inovector\Mixpost\Http\Requests\StorePost;
 use Inovector\Mixpost\Http\Requests\UpdatePost;
@@ -25,32 +28,41 @@ class PostsController extends Controller
 {
     public function index(Request $request): AnonymousResourceCollection|Response
     {
-        $query = PostQuery::apply($request)->latest('id')->paginate(20)->onEachSide(1)->withQueryString();
+        $posts = PostQuery::apply($request)->latest('id')->paginate(20)->onEachSide(1)->withQueryString();
 
         return Inertia::render('Posts/Index', [
             'accounts' => fn() => AccountResource::collection(Account::oldest()->get())->resolve(),
             'tags' => fn() => TagResource::collection(Tag::latest()->get())->resolve(),
             'filter' => [
-                'keyword' => $request->get('keyword', ''),
-                'status' => $request->get('status'),
-                'tags' => $request->get('tags', []),
-                'accounts' => $request->get('accounts', [])
+                'keyword' => $request->query('keyword', ''),
+                'status' => $request->query('status'),
+                'tags' => $request->query('tags', []),
+                'accounts' => $request->query('accounts', [])
             ],
-            'posts' => PostResource::collection($query)->additional([
+            'posts' => fn() => PostResource::collection($posts)->additional([
                 'filter' => [
-                    'accounts' => Arr::map($request->get('accounts', []), 'intval')
+                    'accounts' => Arr::map($request->query('accounts', []), 'intval')
                 ]
             ]),
+            'has_failed_posts' => Post::failed()->exists()
         ]);
     }
 
-    public function create(): Response
+    public function create(Request $request): Response
     {
         return Inertia::render('Posts/CreateEdit', [
             'default_accounts' => Settings::get('default_accounts'),
             'accounts' => AccountResource::collection(Account::oldest()->get())->resolve(),
             'tags' => TagResource::collection(Tag::latest()->get())->resolve(),
             'post' => null,
+            'schedule_at' => [
+                'date' => Str::before($request->route('schedule_at'), ' '),
+                'time' => Str::after($request->route('schedule_at'), ' '),
+            ],
+            'has_service' => [
+                'unsplash' => !!Services::get('unsplash', 'client_id'),
+                'tenor' => !!Services::get('tenor', 'client_id')
+            ]
         ]);
     }
 
@@ -68,7 +80,11 @@ class PostsController extends Controller
         return Inertia::render('Posts/CreateEdit', [
             'accounts' => AccountResource::collection(Account::oldest()->get())->resolve(),
             'tags' => TagResource::collection(Tag::latest()->get())->resolve(),
-            'post' => new PostResource($post)
+            'post' => new PostResource($post),
+            'has_service' => [
+                'unsplash' => !!Services::get('unsplash', 'client_id'),
+                'tenor' => !!Services::get('tenor', 'client_id')
+            ]
         ]);
     }
 
@@ -79,10 +95,10 @@ class PostsController extends Controller
         return response()->noContent();
     }
 
-    public function destroy($id): RedirectResponse
+    public function destroy(Request $request, RedirectAfterDeletedPost $redirectAfterPostDeleted, $id): RedirectResponse
     {
         Post::where('id', $id)->delete();
 
-        return redirect()->back();
+        return $redirectAfterPostDeleted($request);
     }
 }

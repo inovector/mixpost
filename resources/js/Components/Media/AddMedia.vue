@@ -1,17 +1,18 @@
 <script setup>
-import {computed, nextTick, ref, watch} from "vue";
-import NProgress from 'nprogress'
+import {computed, ref} from "vue";
+import useMedia from "@/Composables/useMedia";
 import useNotifications from "@/Composables/useNotifications";
 import DialogModal from "@/Components/Modal/DialogModal.vue"
-import UploadMedia from "@/Components/Media/UploadMedia.vue"
 import Tabs from "@/Components/Navigation/Tabs.vue"
 import Tab from "@/Components/Navigation/Tab.vue"
 import PrimaryButton from "@/Components/Button/PrimaryButton.vue";
 import SecondaryButton from "@/Components/Button/SecondaryButton.vue"
-import SectionTitle from "@/Components/DataDisplay/SectionTitle.vue";
-import MediaSelectable from "@/Components/Media/MediaSelectable.vue";
-import MediaFile from "@/Components/Media/MediaFile.vue";
-import Masonry from "@/Components/Layout/Masonry.vue";
+import MediaUploads from "@/Components/Media/MediaUploads.vue";
+import MediaStock from "@/Components/Media/MediaStock.vue";
+import MediaGifs from "@/Components/Media/MediaGifs.vue";
+import Preloader from "@/Components/Util/Preloader.vue"
+
+import XIcon from "@/Icons/X.vue"
 
 const props = defineProps({
     maxSelection: {
@@ -30,102 +31,54 @@ const {notify} = useNotifications();
 
 const show = ref(false);
 
-const activeTab = ref('upload');
+const {
+    activeTab,
+    tabs,
+    isDownloading,
+    downloadExternal,
+} = useMedia();
 
-const tabs = computed(() => {
-    return {
-        'upload': 'Upload',
-        'stock': 'Stock',
-        'gifs': 'GIFs'
-    };
+const sources = {
+    'uploads': MediaUploads,
+    'stock': MediaStock,
+    'gifs': MediaGifs
+};
+
+const sourceProperties = ref();
+
+const source = computed(() => {
+    return sources[activeTab.value]
 })
 
-const page = ref(1);
-const items = ref([]);
-const endlessPagination = ref(null);
-
-watch(show, () => {
-    if (!show.value) {
-        return;
-    }
-
-    createObserver();
+const selectedItems = computed(() => {
+    return sourceProperties.value ? sourceProperties.value.selected : [];
 })
 
-const fetchItems = () => {
-    if (!page.value) {
-        return;
-    }
-
-    NProgress.start();
-
-    axios.get(route('mixpost.media.fetch'), {
-        params: {
-            page: page.value
-        }
-    }).then(function (response) {
-        const nextLink = response.data.links.next;
-
-        if (nextLink) {
-            page.value = response.data.links.next.split('?page=')[1];
-        }
-
-        if (!nextLink) {
-            page.value = 0;
-        }
-
-        items.value = [...items.value, ...response.data.data];
-    }).catch(() => {
-        notify('error', 'Error retrieving media. Try again!');
-    }).finally(() => {
-        NProgress.done();
-    });
-}
-
-const createObserver = () => {
-    const observer = new IntersectionObserver((entries) => {
-        const isIntersecting = entries[0].isIntersecting;
-
-        if (isIntersecting) {
-            fetchItems();
-        }
-    });
-
-    nextTick(() => {
-        observer.observe(endlessPagination.value);
-    });
-}
-
-const selected = ref([]);
-
-const toggleSelect = (media) => {
-    const index = selected.value.findIndex(item => item.id === media.id);
-
-    if (index < 0 && !media.hasOwnProperty('error')) {
-        selected.value.push(media);
-    }
-
-    if (index >= 0) {
-        selected.value.splice(index, 1);
-    }
-}
-
-const isSelected = (media) => {
-    const index = selected.value.findIndex(item => item.id === media.id);
-
-    return index !== -1;
+const deselectAll = () => {
+    sourceProperties.value.deselectAll()
 }
 
 const close = () => {
-    selected.value = [];
+    deselectAll();
     show.value = false;
-    page.value = 1;
-    items.value = [];
+    activeTab.value = 'uploads'
 };
 
 const insert = () => {
-    emit('insert', selected.value);
-    close();
+    const toDownload = activeTab.value !== 'uploads';
+
+    if (toDownload) {
+        // Download external media files
+        downloadExternal(selectedItems.value, (response) => {
+            emit('insert', response.data);
+            close();
+        })
+    }
+
+    if (!toDownload) {
+        emit('insert', selectedItems.value);
+        close();
+    }
 }
 </script>
 <template>
@@ -143,6 +96,10 @@ const insert = () => {
         </template>
 
         <template #body>
+            <Preloader v-if="isDownloading" :opacity="75">
+                Downloading...
+            </Preloader>
+
             <Tabs>
                 <template v-for="(tabName, tabId) in tabs">
                     <Tab @click="activeTab = tabId" :active="activeTab === tabId">{{ tabName }}</Tab>
@@ -150,34 +107,21 @@ const insert = () => {
             </Tabs>
 
             <div class="mt-lg">
-                <UploadMedia :max-selection="maxSelection"
-                             :combines-mime-types="combinesMimeTypes"
-                             :selected="selected"
-                             :toggleSelect="toggleSelect"
-                             :isSelected="isSelected"
-                />
-            </div>
-
-            <div :class="{'mt-lg': items.length}">
-                <template v-if="items.length">
-                    <SectionTitle class="mb-4">Library</SectionTitle>
-
-                    <Masonry :items="items" v-if="show">
-                        <template #default="{item}">
-                            <MediaSelectable :active="isSelected(item)" @click="toggleSelect(item)">
-                                <MediaFile :media="item"/>
-                            </MediaSelectable>
-                        </template>
-                    </Masonry>
-                </template>
-                <div ref="endlessPagination" class="-z-10 w-full" :class="{'-mt-20': items.length}"/>
+                <component :is="source" ref="sourceProperties"/>
             </div>
         </template>
 
         <template #footer>
             <SecondaryButton @click="close" class="mr-xs">Cancel</SecondaryButton>
-            <PrimaryButton v-if="selected.length" @click="insert">Insert {{ selected.length }} items
-            </PrimaryButton>
+
+            <template v-if="selectedItems.length">
+                <SecondaryButton @click="deselectAll" v-tooltip.top="'Dismiss'" class="mr-xs">
+                    <XIcon class="!w-5 !h-5"/>
+                </SecondaryButton>
+
+                <PrimaryButton @click="insert">Insert {{ selectedItems.length }} items
+                </PrimaryButton>
+            </template>
         </template>
     </DialogModal>
 </template>

@@ -10,7 +10,7 @@ const toggleAside = () => {
 </script>
 <template>
     <nav
-        class="flex items-center justify-between md:hidden row-px bg-white border-b border-gray-200 shadow-mix h-12 p-2">
+        class="flex items-center justify-between xl:hidden row-px bg-white border-b border-gray-200 shadow-mix h-12 p-2">
         <button @click="toggleAside" class="outline-none">
             <MenuIcon/>
         </button>

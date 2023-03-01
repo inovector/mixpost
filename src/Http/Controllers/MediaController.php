@@ -2,24 +2,29 @@
 
 namespace Inovector\Mixpost\Http\Controllers;
 
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Routing\Controller;
 use Inertia\Inertia;
 use Inertia\Response;
-use Inovector\Mixpost\Http\Resources\MediaResource;
-use Inovector\Mixpost\Models\Media;
+use \Illuminate\Http\Response as HttpResponse;
+use Inovector\Mixpost\Facades\Services;
+use Inovector\Mixpost\Http\Requests\DeleteMedia;
 
 class MediaController extends Controller
 {
     public function index(): Response
     {
-        return Inertia::render('Media');
+        return Inertia::render('Media', [
+            'has_service' => [
+                'unsplash' => !!Services::get('unsplash', 'client_id'),
+                'tenor' => !!Services::get('tenor', 'client_id')
+            ]
+        ]);
     }
 
-    public function fetch(): AnonymousResourceCollection
+    public function destroy(DeleteMedia $deleteMediaFiles): HttpResponse
     {
-        $records = Media::latest('created_at')->simplePaginate(30);
+        $deleteMediaFiles->handle();
 
-        return MediaResource::collection($records);
+        return response()->noContent();
     }
 }

@@ -1,12 +1,11 @@
 <script setup>
-import {computed, inject} from "vue";
-import {get} from "lodash"
+import {computed} from "vue";
 import usePostVersions from "@/Composables/usePostVersions";
 import PostPreviewTwitter from "@/Components/Post/PostPreviewTwitter.vue"
 import PostPreviewFacebook from "@/Components/Post/PostPreviewFacebook.vue"
+import PostPreviewMastodon from "@/Components/Post/PostPreviewMastodon.vue"
 import Panel from "@/Components/Surface/Panel.vue";
-
-const postContext = inject('postContext')
+import Alert from "@/Components/Util/Alert.vue";
 
 const props = defineProps({
     accounts: {
@@ -40,7 +39,9 @@ const previews = computed(() => {
             content: accountVersion ? accountVersion.content : defaultVersion.value.content,
             providerComponent: {
                 'twitter': PostPreviewTwitter,
-                'facebook': PostPreviewFacebook,
+                'facebook_page': PostPreviewFacebook,
+                'facebook_group': PostPreviewFacebook,
+                'mastodon': PostPreviewMastodon
             }[account.provider]
         }
     });
@@ -49,6 +50,7 @@ const previews = computed(() => {
 <template>
     <template v-if="selectedAccounts.length">
         <template v-for="preview in previews" :key="preview.id">
+            <Alert v-if="preview.account.errors && preview.account.errors.length" variant="error" :closeable="false" class="mb-1">{{ preview.account.errors.join(',') }}</Alert>
             <div class="mb-lg last:mb-0">
                 <component :is="preview.providerComponent"
                            :name="preview.account.name"

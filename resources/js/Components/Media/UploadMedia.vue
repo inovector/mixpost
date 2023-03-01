@@ -26,6 +26,10 @@ const props = defineProps({
     },
     isSelected: {
         type: Function
+    },
+    columns: {
+        type: Number,
+        default: 3,
     }
 })
 
@@ -95,7 +99,7 @@ const startNextJob = (media) => {
     if (Object.keys(active.value).length > 0) {
         addCompletedJob(active.value, media);
 
-        if(props.toggleSelect) {
+        if (props.toggleSelect) {
             props.toggleSelect(media);
         }
     }
@@ -129,6 +133,7 @@ const dispatch = (files) => {
                     startNextJob(media);
                 }).catch((error) => {
                     startNextJob({
+                        name: file.name,
                         error: error.response.data.message
                     });
                 });
@@ -153,7 +158,7 @@ const uploadFile = (file) => {
 }
 
 const completedJobs = computed(() => {
-    return completed.value.filter(job => !job.media.error).reverse();
+    return completed.value.filter(() => true).reverse();
 });
 
 const selected = ref([]);
@@ -162,7 +167,7 @@ const selected = ref([]);
     <div @dragenter.prevent="dragEnter = !isLoading"
          @drop.prevent="onDrop"
          @dragover.prevent
-         :class="{'border-gray-400 bg-white': !dragEnter, 'border-cyan-500 bg-cyan-50': dragEnter}"
+         :class="{'border-gray-700 bg-white': !dragEnter, 'border-cyan-500 bg-cyan-50': dragEnter}"
          class="relative w-full flex items-center justify-center rounded-lg p-10 border-2 border-dashed transition-colors ease-in-out duration-200">
         <div class="relative flex flex-col justify-center">
             <div v-if="dragEnter"
@@ -173,7 +178,7 @@ const selected = ref([]);
                        class="!w-16 !h-16 mx-auto mb-xs transition-colors ease-in-out duration-200"/>
             <div class="text-center mb-1">Drag & drop files here, or
                 <label for="browse"
-                       class="text-indigo-500 hover:text-indigo-700 active:text-indigo-700 focus:outline-none focus:text-indigo-700 transition-colors ease-in-out duration-200">
+                       class="cursor-pointer text-indigo-500 hover:text-indigo-700 active:text-indigo-700 focus:outline-none focus:text-indigo-700 transition-colors ease-in-out duration-200">
                     Browse
                 </label>
             </div>
@@ -192,8 +197,8 @@ const selected = ref([]);
         @change="onBrowse"
     />
 
-    <div class="mt-lg">
-        <Masonry :items="completedJobs">
+    <div v-if="completedJobs.length" class="mt-lg">
+        <Masonry :items="completedJobs" :columns="columns">
             <template #default="{item}">
                 <MediaSelectable :active="isSelected(item.media)" @click="toggleSelect(item.media)">
                     <MediaFile :media="item.media"/>

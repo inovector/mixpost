@@ -2,40 +2,19 @@
 
 namespace Inovector\Mixpost\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use Inovector\Mixpost\Actions\PublishPost;
-use Inovector\Mixpost\Models\Post;
-use Symfony\Component\HttpFoundation\Response;
+use Inovector\Mixpost\Facades\Settings;
+use Inovector\Mixpost\Http\Requests\SchedulePost;
 
 class SchedulePostController extends Controller
 {
-    public function __invoke(Post $post, Request $request, PublishPost $publishPost)
+    public function __invoke(SchedulePost $schedulePost): JsonResponse
     {
-        if ($post->isPublishing()) {
-            return response()->json('This post is currently being published.', Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
+        $schedulePost->handle();
 
-        if (!$post->scheduled_at) {
-            if ($post->isPublished()) {
-                return response()->json('It has already been published', Response::HTTP_UNPROCESSABLE_ENTITY);
-            }
+        $scheduledAt = $schedulePost->getDateTime()->tz(Settings::get('timezone'))->format("D, M j, " . timeFormat());
 
-            $publishPost($post);
-
-            return response()->json('The post is being published');
-        }
-
-        if (!$post->canSchedule()) {
-            return response()->json('This post cannot be scheduled! It has already been scheduled or published.', Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
-        if ($post->scheduled_at->isPast()) {
-            return response()->json('This post cannot be scheduled! The scheduled date is in the past.', Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
-        $post->setScheduled();
-
-        return response()->json('The post has been scheduled');
+        return response()->json("The post has been scheduled.\n$scheduledAt");
     }
 }

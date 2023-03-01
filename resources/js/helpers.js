@@ -1,3 +1,7 @@
+import {isProxy, toRaw} from "vue";
+import {utcToZonedTime} from "date-fns-tz";
+import {format} from "date-fns";
+
 export function getWindowDimensions() {
     let width = Math.max(
         document.body.scrollWidth,
@@ -59,26 +63,25 @@ export function decomposeString(string) {
     return string.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
-export function changeTimeZone(date, timeZone) {
-    if (typeof date === 'string') {
-        return new Date(
-            new Date(date).toLocaleString('en-US', {
-                timeZone,
-            }),
-        );
-    }
+export function isTimePast(date, timeZone = null) {
+    const today = timeZone ? utcToZonedTime(new Date().toISOString(), timeZone) : new Date();
 
-    return new Date(
-        date.toLocaleString('en-US', {
-            timeZone,
-        }),
-    );
+    return date.getTime() < today.getTime()
 }
 
-export function isTimePast(date, currentTimezone = null) {
-    const currentTime = currentTimezone ? changeTimeZone(new Date(), currentTimezone) : new Date();
+export function isDatePast(date, timeZone = null) {
+    const today = timeZone ? utcToZonedTime(new Date().toISOString(), timeZone) : new Date();
 
-    return date.getTime() < currentTime.getTime()
+    today.setHours(0, 0, 0, 0);
+
+    return date < today;
+}
+
+export function isDateTimePast(datetime, timeZone = null) {
+    const today = timeZone ? utcToZonedTime(new Date().toISOString(), timeZone) : new Date();
+    today.setSeconds(0);
+
+    return datetime < today;
 }
 
 export function convertTime12to24(time12h) {
@@ -95,4 +98,18 @@ export function convertTime12to24(time12h) {
     }
 
     return `${hours}:${minutes}`;
+}
+
+export function convertTime24to12(time24h, customFormat = 'h:mmaaa') {
+    const date = new Date();
+
+    const [hours, minutes] = time24h.split(':');
+
+    date.setHours(hours, minutes);
+
+    return format(date, customFormat);
+}
+
+export function toRawIfProxy(obj) {
+    return isProxy(obj) ? toRaw(obj) : obj
 }

@@ -6,23 +6,17 @@ use Illuminate\Http\Request;
 
 interface SocialProvider
 {
-    public function __construct(Request $request, $clientId, $clientSecret, $redirectUrl);
-
-    public function setApiVersion(): void;
-
-    public function credentials(): static;
-
-    public function setCredentials(): void;
+    public function __construct(Request $request, string $clientId, string $clientSecret, string $redirectUrl, array $values = []);
 
     public function getAuthUrl(): string;
 
-    public function getAccessToken(): array;
+    public function requestAccessToken(array $params = []): array;
+
+    public function useAccessToken(array $token = []): static;
 
     public function getAccount();
 
-    public function publishPost($text, $media = []);
+    public function publishPost(string $text, array $media = [], array $params = []);
 
     public function deletePost();
-
-    public function getMetrics();
 }

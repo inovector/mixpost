@@ -2,6 +2,7 @@
 import {ref} from "vue";
 import {startsWith} from "lodash";
 import Draggable from 'vuedraggable'
+import usePost from "@/Composables/usePost";
 import DialogModal from "@/Components/Modal/DialogModal.vue"
 import MediaFile from "@/Components/Media/MediaFile.vue";
 import SecondaryButton from "@/Components/Button/SecondaryButton.vue";
@@ -13,6 +14,8 @@ const props = defineProps({
         required: true
     }
 })
+
+const {editAllowed} = usePost();
 
 const items = ref([]);
 const showView = ref(false);
@@ -42,6 +45,7 @@ const remove = (id) => {
     <div class="mt-lg">
         <Draggable
             :list="media"
+            :disabled="!editAllowed"
             v-bind="{
                 animation: 200,
                 group: 'media',
@@ -73,7 +77,7 @@ const remove = (id) => {
 
         <template #footer>
             <SecondaryButton @click="close" class="mr-xs">Close</SecondaryButton>
-            <DangerButton @click="remove(openedItem.id)">Remove</DangerButton>
+            <DangerButton v-if="editAllowed" @click="remove(openedItem.id)">Remove</DangerButton>
         </template>
     </DialogModal>
 </template>

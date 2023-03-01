@@ -32,6 +32,10 @@ const props = defineProps({
     },
     posts: {
         type: Object,
+    },
+    has_failed_posts: {
+        type: Boolean,
+        default: false
     }
 });
 
@@ -83,7 +87,8 @@ const confirmationDeletion = ref(false);
 const deletePosts = () => {
     Inertia.delete(route('mixpost.posts.multipleDelete'), {
         data: {
-            posts: selectedRecords.value
+            posts: selectedRecords.value,
+            status: filter.value.status
         },
         onSuccess() {
             deselectAllRecords();
@@ -100,15 +105,18 @@ const deletePosts = () => {
 
     <div class="row-py mb-2xl">
         <PageHeader title="Posts">
-            <PostsFilter v-model="filter"/>
+            <PostsFilter v-model="filter" class="ml-2"/>
         </PageHeader>
 
         <div class="w-full row-px">
             <Tabs>
-                <Tab @click="filter.status = null" :active="!filter.status">All</Tab>
-                <Tab @click="filter.status = 'draft'" :active="filter.status === 'draft'">Drafts</Tab>
-                <Tab @click="filter.status = 'scheduled'" :active="filter.status === 'scheduled'">Scheduled</Tab>
-                <Tab @click="filter.status = 'published'" :active="filter.status === 'published'">Published</Tab>
+                <Tab @click="filter.status = null" :active="!$page.props.filter.status">All</Tab>
+                <Tab @click="filter.status = 'draft'" :active="$page.props.filter.status === 'draft'">Drafts</Tab>
+                <Tab @click="filter.status = 'scheduled'" :active="$page.props.filter.status === 'scheduled'">Scheduled</Tab>
+                <Tab @click="filter.status = 'published'" :active="$page.props.filter.status === 'published'">Published</Tab>
+                <template v-if="has_failed_posts">
+                    <Tab @click="filter.status = 'failed'" :active="$page.props.filter.status === 'failed'" class="text-red-500">Failed</Tab>
+                </template>
             </Tabs>
         </div>
 
@@ -146,7 +154,7 @@ const deletePosts = () => {
                     </template>
                 </Table>
 
-                <NoResult v-if="!posts.meta.total">No posts found.</NoResult>
+                <NoResult v-if="!posts.meta.total" class="py-md px-md">No posts found.</NoResult>
             </Panel>
 
             <div v-if="posts.meta.links.length > 3" class="mt-lg">

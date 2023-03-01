@@ -6,6 +6,7 @@ import emitter from "@/Services/emitter";
 import History from '@tiptap/extension-history'
 import Placeholder from '@tiptap/extension-placeholder'
 import Typography from '@tiptap/extension-typography'
+import StripLinksOnPaste from "@/Extensions/TipTap/StripLinksOnPaste"
 
 const attrs = useAttrs();
 
@@ -43,7 +44,8 @@ const editor = useEditor({
             closeDoubleQuote: false,
             openSingleQuote: false,
             closeSingleQuote: false
-        })
+        }),
+        StripLinksOnPaste
     ]],
     editorProps: {
         attributes: {
@@ -98,7 +100,7 @@ watch(() => props.value, (value) => {
 <template>
     <div
         :class="{'border-indigo-200 ring ring-indigo-200 ring-opacity-50': focused}"
-        class="border border-gray-200 rounded-md p-5 pb-2 text-base transition-colors ease-in-out duration-200">
+        class="border border-gray-200 rounded-md p-md pb-xs text-base transition-colors ease-in-out duration-200">
         <editor-content :editor="editor"/>
         <slot :body-text="bodyText"/>
     </div>

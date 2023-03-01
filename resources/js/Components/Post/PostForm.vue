@@ -9,10 +9,9 @@ import EmojiPicker from '@/Components/Package/EmojiPicker.vue'
 import Panel from "@/Components/Surface/Panel.vue";
 import Account from "@/Components/Account/Account.vue"
 import PostVersionsTab from "@/Components/Post/PostVersionsTab.vue"
-import AddMedia from "@/Components/Media/AddMedia.vue"
+import PostAddMedia from "@/Components/Post/PostAddMedia.vue"
 import PostMedia from "@/Components/Post/PostMedia.vue"
-// import ProviderPostCharacterCount from "@/Components/Post/ProviderPostCharacterCount.vue"
-import PhotoIcon from "@/Icons/Photo.vue"
+import PostCharacterCount from "@/Components/Post/PostCharacterCount.vue"
 
 const postContext = inject('postContext')
 
@@ -27,12 +26,16 @@ const props = defineProps({
     },
 });
 
-const {isReadOnly} = usePost();
+const {editAllowed} = usePost();
 
 /**
  * Account
  */
 const selectAccount = (account) => {
+    if (!editAllowed.value) {
+        return;
+    }
+
     if (props.form.accounts.includes(account)) {
         props.form.accounts = props.form.accounts.filter(item => item !== account);
         return;
@@ -44,26 +47,19 @@ const selectAccount = (account) => {
     props.form.accounts = accounts;
 }
 
-const providersWithDisabledSimultaneousPosting = computed(() => {
+const selectedAccounts = computed(() => {
     return props.accounts.filter(function (account) {
-        return props.form.accounts.includes(account.id) && !account.provider_options.simultaneous_posting_on_multiple_accounts;
-    }).map(function (account) {
+        return isAccountSelected(account);
+    })
+});
+
+const providersWithDisabledSimultaneousPosting = computed(() => {
+    return selectedAccounts.value.filter((account) => {
+        return !account.provider_options.simultaneous_posting_on_multiple_accounts;
+    }).map((account) => {
         return account.provider;
     });
 });
-
-// const providersWithPostCharactersLimit = computed(() => {
-//     const items = props.accounts.filter(function (account) {
-//         return props.form.accounts.includes(account.id) && account.provider_options.post_characters_limit !== null;
-//     }).map(function (account) {
-//         return {
-//             provider: account.provider,
-//             limit: account.provider_options.post_characters_limit
-//         };
-//     });
-//
-//     return uniqBy(items, 'provider');
-// });
 
 const isAccountSelected = (account) => {
     return props.form.accounts.includes(account.id);
@@ -76,7 +72,12 @@ const isAccountUnselectable = (account) => {
 /**
  * Post content versions & Editor
  */
-const {versionObject, getOriginalVersion, getAccountVersion, getIndexAccountVersion} = usePostVersions();
+const {
+    versionObject,
+    getOriginalVersion,
+    getAccountVersion,
+    getIndexAccountVersion
+} = usePostVersions();
 
 const activeVersion = ref(0);
 
@@ -179,36 +180,30 @@ const {insertEmoji, focusEditor} = useEditor();
         <template v-for="(item, index) in content" :key="index">
             <Editor id="postEditor"
                     :value="item.body"
-                    :editable="!isReadOnly"
+                    :editable="editAllowed"
                     @update="updateContent(index, 'body', $event)"
                     placeholder="Type here something interesting for your audience...">
                 <template #default="props">
-                    <div class="flex items-center justify-between border-t border-gray-200 pt-4">
+                    <div class="relative flex items-center justify-between border-t border-gray-200 pt-md mt-md">
+                        <div v-if="!editAllowed" class="absolute w-full h-full"></div>
+
                         <div class="flex items-center space-x-xs">
                             <EmojiPicker
                                 @selected="insertEmoji({editorId: 'postEditor', emoji: $event})"
                                 @close="focusEditor({editorId: 'postEditor'})"
                             />
 
-                            <AddMedia @insert="updateContent(index, 'media', [...item.media, ...$event])">
-                                <button type="button" v-tooltip="'Media'"
-                                        class="text-stone-800 hover:text-indigo-500 transition-colors ease-in-out duration-200">
-                                    <PhotoIcon/>
-                                </button>
-                            </AddMedia>
+                            <PostAddMedia @insert="updateContent(index, 'media', [...item.media, ...$event])"
+                                          :selectedAccounts="selectedAccounts"
+                                          :activeVersion="activeVersion"
+                                          :versions="form.versions"
+                                          :media="item.media"/>
                         </div>
 
-                        <div class="flex items-center justify-center">
-                            <!--                            In development-->
-                            <!--                            <div class="flex items-center justify-center mr-5">-->
-                            <!--                                <template v-for="item in providersWithPostCharactersLimit" :key="item.provider">-->
-                            <!--                                    <ProviderPostCharacterCount :provider="item.provider"-->
-                            <!--                                                                       :character-limit="item.limit"-->
-                            <!--                                                                       :text="props.bodyText"-->
-                            <!--                                                                       @reached="postContext.reachedMaxCharacterLimit[item.provider] = $event"/>-->
-                            <!--                                </template>-->
-                            <!--                            </div>-->
-                        </div>
+                        <PostCharacterCount :selectedAccounts="selectedAccounts"
+                                            :activeVersion="activeVersion"
+                                            :versions="form.versions"
+                                            :text="props.bodyText"/>
                     </div>
                 </template>
             </Editor>

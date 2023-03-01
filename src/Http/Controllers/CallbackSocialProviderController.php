@@ -3,34 +3,33 @@
 namespace Inovector\Mixpost\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Inovector\Mixpost\Actions\UpdateOrCreateAccount;
 use Inovector\Mixpost\Facades\SocialProviderManager;
-use Inovector\Mixpost\Models\Account;
 
 class CallbackSocialProviderController extends Controller
 {
-    public function __invoke(string $providerName): RedirectResponse
+    public function __invoke(Request $request, UpdateOrCreateAccount $updateOrCreateAccount, string $providerName): RedirectResponse
     {
         $provider = SocialProviderManager::connect($providerName);
 
-        $credentials = $provider->getAccessToken();
+        if (!$provider->isOnlyUserAccount()) {
+            if (empty($provider->getCallbackResponse())) {
+                return redirect()->route('mixpost.accounts.index');
+            }
 
-        $provider->setCredentials($credentials);
+            return redirect()->route('mixpost.accounts.entities.index', ['provider' => $providerName])
+                ->with('mixpost_callback_response', $provider->getCallbackResponse());
+        }
+
+        $accessToken = $provider->requestAccessToken($provider->getCallbackResponse());
+
+        $provider->setAccessToken($accessToken);
 
         $account = $provider->getAccount();
 
-        Account::updateOrCreate(
-            [
-                'provider' => $providerName,
-                'provider_id' => $account['id']
-            ],
-            [
-                'name' => $account['name'],
-                'username' => $account['username'],
-                'image' => $account['image'],
-                'credentials' => $credentials,
-            ]
-        );
+        $updateOrCreateAccount($providerName, $account, $accessToken);
 
         return redirect()->route('mixpost.accounts.index');
     }

@@ -1,5 +1,6 @@
 <script setup>
 import {computed} from "vue";
+import useProviderClassesColor from "@/Composables/useProviderClassesColor";
 import ProviderIcon from "@/Components/Account/ProviderIcon.vue";
 import ExclamationCircleIcon from "@/Icons/ExclamationCircle.vue";
 
@@ -26,16 +27,14 @@ const props = defineProps({
     }
 })
 
-const borderClasses = computed(() => {
+const {borderClasses, activeBgClasses} = useProviderClassesColor(props.provider);
+
+const border = computed(() => {
     if (!props.active) {
         return 'border-stone-600';
     }
 
-    return 'border-' + props.provider;
-});
-
-const activeBgClasses = computed(() => {
-    return 'bg-' + props.provider;
+    return borderClasses.value;
 });
 
 const sizeImgClasses = computed(() => {
@@ -60,13 +59,14 @@ const iconClasses = computed(() => {
 </script>
 <template>
     <span class="flex items-center justify-center">
-        <span :class="borderClasses" class="flex items-center justify-center relative border-2 p-1 rounded-full bg-white">
+        <span :class="border"
+              class="flex items-center justify-center relative border-2 p-1 rounded-full bg-white">
             <span :class="[activeBgClasses, sizeImgClasses, {'grayscale': !active}]"
                   class="inline-flex justify-center items-center flex-shrink-0 rounded-full">
                 <img :src="imgUrl" class="object-cover w-full h-full rounded-full" alt=""/>
             </span>
             <span v-if="warningMessage" v-tooltip="warningMessage"
-                  class="flex items-center justify-center rounded-full absolute top-0 -ml-12 bg-red-500 text-white">
+                  class="flex items-center justify-center rounded-full absolute top-0 -ml-12 bg-orange-500 text-white">
                 <ExclamationCircleIcon :class="iconClasses"/>
             </span>
             <span :class="[iconWrapperClasses, {'grayscale': !active}]"

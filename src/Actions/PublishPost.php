@@ -10,7 +10,11 @@ class PublishPost
 {
     public function __invoke(Post $post): void
     {
-        $post->setPublishing();
+        if ($post->isScheduleProcessing()) {
+            return;
+        }
+
+        $post->setScheduleProcessing();
 
         $jobs = $post->accounts->map(function ($account) use ($post) {
             return new AccountPublishPostJob($account, $post);
@@ -19,15 +23,16 @@ class PublishPost
         Bus::batch($jobs)
             ->allowFailures()
             ->finally(function () use ($post) {
-                $accountsWithErrors = $post->accounts()->wherePivot('errors', '!=', null)->count();
+                $hasErrors = $post->accounts()->wherePivot('errors', '!=', null)->exists();
 
-                if ($post->accounts()->count() === $accountsWithErrors) {
-                    $post->setError();
+                if ($hasErrors) {
+                    $post->setFailed();
                     return;
                 }
 
                 $post->setPublished();
             })
+            ->onQueue('publish-post')
             ->dispatch();
     }
 }

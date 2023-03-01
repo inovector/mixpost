@@ -36,4 +36,9 @@
     <logging>
         <junit outputFile="build/report.junit.xml"/>
     </logging>
+    <php>
+        <env name="DB_PORT" value="3305"/>
+        <env name="CACHE_DRIVER" value="redis"/>
+        <env name="APP_KEY" value="base64:qzYIcSLNA/NsJSbH/V0vq/1Qz/aLx83jymQ1q37wf6w="/>
+    </php>
 </phpunit>

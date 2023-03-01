@@ -18,7 +18,12 @@ class PostFormRequest extends FormRequest
             'versions' => ['required', 'array', 'min:1'],
             'versions.*.content.*.body' => ['nullable', 'string'],
             'versions.*.content.*.media' => ['array'],
-            'versions.*.content.*.media.*' => ['integer'],
+            'versions.*.content.*.media.*' => ['integer']
         ];
+    }
+
+    protected function scheduledAt(): ?string
+    {
+        return $this->input('date') && $this->input('time') ? "{$this->input('date')} {$this->input('time')}" : null;
     }
 }

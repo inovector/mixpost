@@ -7,12 +7,15 @@ const props = defineProps({
     items: {
         type: Array,
         required: true
+    },
+    columns: {
+        type: Number,
+        default: 3,
     }
 })
 
 const bottomRef = ref(null);
 const columns = ref([]);
-const cursor = ref(0);
 const ready = ref(false);
 
 onMounted(() => {
@@ -31,7 +34,7 @@ const resizeHandler = debounce(() => {
 }, 300);
 
 const newColumns = () => {
-    let count = 3;
+    let count = props.columns;
 
     if (getWindowDimensions().width <= 768) {
         count = 2;
@@ -47,45 +50,27 @@ const newColumns = () => {
 }
 
 const addItem = (index) => {
-    const column = columns.value[index]
+    const columnIndex = index % columns.value.length;
 
-    if (props.items[cursor.value]) {
-        column.indexes.push(cursor.value)
-        cursor.value++
-    }
+    columns.value[columnIndex].indexes.push(index);
 }
 
 const fill = () => {
-    if (!ready.value) {
-        return
+    for (let i = 0; i < props.items.length; i++) {
+        addItem(i);
     }
-
-    if (cursor.value >= props.items.length) {
-        return
-    }
-
-    // Keep filling until no more items
-    nextTick(() => {
-        const bottom = maxBy(bottomRef.value, (spacer) => spacer.clientHeight || 0)
-
-        setTimeout(()=> {
-            addItem(bottom.dataset.column)
-            fill()
-        });
-    })
 }
 
 const redraw = () => {
     ready.value = false;
     columns.value.splice(0);
-    cursor.value = 0;
     columns.value.push(...newColumns())
     ready.value = true;
     fill();
 }
 
 watch(() => props.items, () => {
-    fill();
+    redraw();
 });
 </script>
 <template>

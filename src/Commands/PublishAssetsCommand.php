@@ -7,13 +7,15 @@ use Illuminate\Support\Facades\File;
 
 class PublishAssetsCommand extends Command
 {
-    public $signature = 'mixpost:publish-assets';
+    public $signature = 'mixpost:publish-assets {--force=}';
 
     public $description = 'Publish compiled assets to your public folder';
 
     public function handle(): int
     {
-        if (File::exists(public_path('vendor/mixpost'))) {
+        $force = boolval($this->option('force'));
+
+        if (!$force && File::exists(public_path('vendor/mixpost'))) {
             $this->comment('Your application already have the mixpost assets');
 
             if (!$this->confirm('Do you want to rewrite?')) {
@@ -21,7 +23,9 @@ class PublishAssetsCommand extends Command
             }
         }
 
+        File::deleteDirectory(public_path('vendor/mixpost'));
         File::copyDirectory(__DIR__ . '/../../resources/dist/vendor', public_path('vendor'));
+        File::copy(__DIR__ . '/../../resources/img/favicon.ico', public_path('vendor/mixpost/favicon.ico'));
 
         $this->info('Assets was published to [public/vendor/mixpost]');
 

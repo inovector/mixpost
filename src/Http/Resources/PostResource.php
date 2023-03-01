@@ -3,6 +3,7 @@
 namespace Inovector\Mixpost\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Inovector\Mixpost\Enums\PostStatus;
 use Inovector\Mixpost\Facades\Settings;
 
 class PostResource extends JsonResource
@@ -13,7 +14,7 @@ class PostResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'status' => $this->status->name,
+            'status' => $this->status(),
             'accounts' => AccountResource::collection($this->whenLoaded('accounts')),
             'versions' => PostVersionResource::collection($this->whenLoaded('versions')),
             'tags' => TagResource::collection($this->whenLoaded('tags')),
@@ -26,5 +27,14 @@ class PostResource extends JsonResource
                 'human' => $this->published_at?->tz(Settings::get('timezone'))->format("D, M j, " . timeFormat())
             ]
         ];
+    }
+
+    protected function status()
+    {
+        if ($this->isScheduleProcessing()) {
+            return 'PUBLISHING';
+        }
+
+        return $this->status->name;
     }
 }
