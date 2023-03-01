@@ -25,7 +25,7 @@ Join our community:
 - [Discord](https://discord.gg/5YdseZnK2Z)
 - [Facebook Private Group](https://www.facebook.com/groups/inovector)
 
-[<img src="./art/cover.png?v=2" />](https://mixpost.app)
+[<img src="./art/cover.png?v=3" />](https://mixpost.app)
 
 ## Requirements
 
