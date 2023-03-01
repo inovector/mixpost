@@ -3,6 +3,7 @@
 namespace Inovector\Mixpost;
 
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
@@ -11,6 +12,7 @@ use Inovector\Mixpost\ServiceFormRules\FacebookServiceFormRules;
 use Inovector\Mixpost\ServiceFormRules\TenorServiceFormRules;
 use Inovector\Mixpost\ServiceFormRules\TwitterServiceFormRules;
 use Inovector\Mixpost\ServiceFormRules\UnsplashServiceFormRules;
+use Inovector\Mixpost\Support\Log;
 
 class Services
 {
@@ -61,15 +63,27 @@ class Services
         $value = $this->getFromCache($name, function () use ($name) {
             $dbRecord = Service::where('name', $name)->first();
 
-            $payload = $dbRecord ? $dbRecord->credentials->toArray() : Arr::get($this->form(), $name, []);
+            try {
+                $payload = $dbRecord ? $dbRecord->credentials->toArray() : Arr::get($this->form(), $name, []);
 
-            $this->put($name, $payload);
+                $this->put($name, $payload);
 
-            return $payload;
+                return $payload;
+            } catch (DecryptException $exception) {
+                $this->logDecryptionError($name, $exception);
+
+                return [];
+            }
         });
 
         if (!is_array($value)) {
-            $value = json_decode(Crypt::decryptString($value), true);
+            try {
+                $value = json_decode(Crypt::decryptString($value), true);
+            } catch (DecryptException $exception) {
+                $this->logDecryptionError($name, $exception);
+
+                $value = [];
+            }
         }
 
         if ($credentialKey) {
@@ -106,5 +120,12 @@ class Services
     private function resolveCacheKey(string $key): string
     {
         return $this->config->get('mixpost.cache_prefix') . ".services.$key";
+    }
+
+    private function logDecryptionError($name, DecryptException $exception): void
+    {
+        Log::error("The application key cannot decrypt the service credentials: {$exception->getMessage()}", [
+            'name' => $name
+        ]);
     }
 }

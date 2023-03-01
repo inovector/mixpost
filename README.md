@@ -28,7 +28,7 @@ Join our community:
 
 ## Requirements
 
-* Laravel Framework >=9.0
+* Laravel Framework [v9, v10]
 * PHP 8.1 or higher
 * Database (eg: MySQL, PostgresSQL, SQLite)
 * Redis 6.2 or higher
@@ -49,7 +49,7 @@ Publish the migrations with:
 php artisan mixpost:install
 ```
 
-Mixpost uses [Job Batching](https://laravel.com/docs/9.x/queues#job-batching) and you should create a database migration
+Mixpost uses [Job Batching](https://laravel.com/docs/10.x/queues#job-batching) and you should create a database migration
 to build a table to contain meta information about your job batches.
 
 If your application does not yet have this table, it may be generated using the:
@@ -268,7 +268,7 @@ In the `config/queue.php` file you must add the `mixpost-redis` connection:
 
 Don't forget running `php artisan horizon`. In production, you need a way to keep your `horizon` processes running. For
 this reason, you need to configure a process
-monitor [Supervisor](https://laravel.com/docs/9.x/queues#supervisor-configuration) that can detect when your `horizon`
+monitor [Supervisor](https://laravel.com/docs/10.x/queues#supervisor-configuration) that can detect when your `horizon`
 processes exit and automatically restart them.
 
 Example of supervisor config:
