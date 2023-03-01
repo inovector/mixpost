@@ -28,7 +28,7 @@ Join our community:
 
 ## Requirements
 
-* Laravel Framework [v9, v10]
+* Laravel Framework [^9.0, ^10.0]
 * PHP 8.1 or higher
 * Database (eg: MySQL, PostgresSQL, SQLite)
 * Redis 6.2 or higher
