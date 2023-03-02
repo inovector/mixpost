@@ -3,6 +3,10 @@
     "file": "assets/calendar-disabled-item.e7fcf298.svg",
     "src": "resources/img/calendar-disabled-item.svg"
   },
+  "resources/img/fb-wow.svg": {
+    "file": "assets/fb-wow.ca50712c.svg",
+    "src": "resources/img/fb-wow.svg"
+  },
   "resources/img/fb-like.svg": {
     "file": "assets/fb-like.59c2ede2.svg",
     "src": "resources/img/fb-like.svg"
@@ -11,17 +15,17 @@
     "file": "assets/fb-icons.855a0fcf.png",
     "src": "resources/img/fb-icons.png"
   },
-  "resources/img/fb-wow.svg": {
-    "file": "assets/fb-wow.ca50712c.svg",
-    "src": "resources/img/fb-wow.svg"
-  },
-  "resources/img/social-icons/mastodon/globe.svg": {
-    "file": "assets/globe.4f41e2b3.svg",
-    "src": "resources/img/social-icons/mastodon/globe.svg"
-  },
   "resources/img/social-icons/mastodon/retweet.svg": {
     "file": "assets/retweet.0437347b.svg",
     "src": "resources/img/social-icons/mastodon/retweet.svg"
+  },
+  "resources/img/social-icons/mastodon/star.svg": {
+    "file": "assets/star.abade377.svg",
+    "src": "resources/img/social-icons/mastodon/star.svg"
+  },
+  "resources/img/social-icons/mastodon/ellipsis.svg": {
+    "file": "assets/ellipsis.065dffec.svg",
+    "src": "resources/img/social-icons/mastodon/ellipsis.svg"
   },
   "resources/img/social-icons/mastodon/reply.svg": {
     "file": "assets/reply.69e79af6.svg",
@@ -31,13 +35,9 @@
     "file": "assets/bookmark.331e5819.svg",
     "src": "resources/img/social-icons/mastodon/bookmark.svg"
   },
-  "resources/img/social-icons/mastodon/star.svg": {
-    "file": "assets/star.abade377.svg",
-    "src": "resources/img/social-icons/mastodon/star.svg"
-  },
-  "resources/img/social-icons/mastodon/ellipsis.svg": {
-    "file": "assets/ellipsis.065dffec.svg",
-    "src": "resources/img/social-icons/mastodon/ellipsis.svg"
+  "resources/img/social-icons/mastodon/globe.svg": {
+    "file": "assets/globe.4f41e2b3.svg",
+    "src": "resources/img/social-icons/mastodon/globe.svg"
   },
   "resources/js/app.js": {
     "file": "assets/app.f7b5907c.js",
@@ -477,13 +477,13 @@
       "_ReadDocHelp.4ddf1b7f.js"
     ]
   },
-  "DropdownItem.css": {
-    "file": "assets/DropdownItem.b54678c7.css",
-    "src": "DropdownItem.css"
-  },
   "VerticallyScrollableContent.css": {
     "file": "assets/VerticallyScrollableContent.eda7d8b2.css",
     "src": "VerticallyScrollableContent.css"
+  },
+  "DropdownItem.css": {
+    "file": "assets/DropdownItem.b54678c7.css",
+    "src": "DropdownItem.css"
   },
   "resources/js/Pages/Posts/CreateEdit.css": {
     "file": "assets/CreateEdit.7ff9f593.css",
