@@ -49,7 +49,7 @@ const save = () => {
                 <a href="https://unsplash.com/oauth/applications" class="link" target="_blank">Create
                     an App on Unsplash</a>.
             </p>
-            <ReadDocHelp class="mt-xs"/>
+            <ReadDocHelp href="https://mixpost.app/docs/1.0.0/unsplash" class="mt-xs"/>
         </template>
 
         <HorizontalGroup class="mt-lg">

@@ -48,7 +48,7 @@ const save = () => {
                 <a href="https://developers.facebook.com/apps" class="link" target="_blank">Create an App on
                     Facebook</a>. Select "Business" for the type of application.
             </p>
-            <ReadDocHelp class="mt-xs"/>
+            <ReadDocHelp href="https://mixpost.app/docs/1.0.0/facebook" class="mt-xs"/>
         </template>
 
         <HorizontalGroup class="mt-lg">
