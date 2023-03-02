@@ -46,7 +46,7 @@ const save = () => {
         <template #description>
             <a href="https://developer.twitter.com/en/portal/projects-and-apps" class="link" target="_blank">Create
                 an App on Twitter</a>. You will need to edit the App Permissions and allow "Read and Write".
-            <ReadDocHelp class="mt-xs"/>
+            <ReadDocHelp href="https://mixpost.app/docs/1.0.0/twitter" class="mt-xs"/>
         </template>
 
         <HorizontalGroup class="mt-lg">

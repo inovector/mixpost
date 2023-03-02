@@ -47,7 +47,7 @@ const save = () => {
                 <a href="https://console.cloud.google.com/" class="link" target="_blank">Create
                     an App on Google Console</a>.
             </p>
-            <ReadDocHelp class="mt-xs"/>
+            <ReadDocHelp href="https://mixpost.app/docs/1.0.0/tenor" class="mt-xs"/>
         </template>
 
         <HorizontalGroup class="mt-lg">
