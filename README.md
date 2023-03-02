@@ -1,4 +1,4 @@
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/support-ukraine.svg?t=1" />](https://supportukrainenow.org)
+[<img src="./art/standwithua.png" />](https://supportukrainenow.org)
 
 * * *
 
@@ -68,7 +68,7 @@ php artisan migrate
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --tag="mixpost-config"
+php artisan vendor:publish --tag=mixpost-config
 ```
 
 This is the contents of the published config file:
@@ -310,6 +310,8 @@ Don't forget to add a cron that running the scheduler:
 
 Mixpost does not come with any user management, we assume that you already provide this in your own app. You can use a
 gate check to determine who can access Mixpost.
+
+However, we have created a separate package [Mixpost Auth](https://github.com/inovector/mixpost-auth) that you can install very easily. Read the documentation of [this package](https://github.com/inovector/mixpost-auth) to find out how to install it.
 
 You can determine which users of your application are allowed to view the Mixpost UI by defining a gate check called
 viewMixpost in your `app/Providers/AppServiceProvider.php` file.
