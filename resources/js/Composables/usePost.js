@@ -4,7 +4,7 @@ import {filter, some} from "lodash";
 
 const usePost = () => {
     const post = computed(() => {
-        return usePage().props.value.post;
+        return usePage().props.post;
     });
 
     const postId = computed(() => {

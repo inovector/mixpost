@@ -72,7 +72,7 @@ const variantColorClasses = computed(() => {
 
 // Flash Messages
 const flash = computed(() => {
-    return usePage().props.value.flash;
+    return usePage().props.flash;
 });
 
 watch(() => flash, () => {

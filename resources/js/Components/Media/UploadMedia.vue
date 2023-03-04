@@ -35,7 +35,7 @@ const props = defineProps({
 
 const emit = defineEmits(['mediaSelect'])
 
-const mimeTypes = usePage().props.value.mixpost.mime_types;
+const mimeTypes = usePage().props.mixpost.mime_types;
 
 const input = ref(null);
 

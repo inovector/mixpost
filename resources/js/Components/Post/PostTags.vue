@@ -29,7 +29,7 @@ const searchText = ref('');
 const isLoading = ref(false);
 
 const tags = computed(() => {
-    return usePage().props.value.tags;
+    return usePage().props.tags;
 })
 
 const availableTags = computed(() => {

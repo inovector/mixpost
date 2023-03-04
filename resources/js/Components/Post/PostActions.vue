@@ -96,7 +96,7 @@ const schedule = (postNow = false) => {
 const confirmationPostNow = ref(false);
 
 const accounts = computed(() => {
-    return usePage().props.value.accounts.filter(account => props.form.accounts.includes(account.id));
+    return usePage().props.accounts.filter(account => props.form.accounts.includes(account.id));
 })
 </script>
 <template>

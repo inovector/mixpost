@@ -22,11 +22,11 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue']);
 
 const accounts = computed(() => {
-    return usePage().props.value.accounts;
+    return usePage().props.accounts;
 })
 
 const tags = computed(() => {
-    return usePage().props.value.tags;
+    return usePage().props.tags;
 })
 
 const total = computed(() => {
