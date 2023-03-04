@@ -1,6 +1,6 @@
 <script setup>
 import {ref, defineAsyncComponent} from "vue";
-import {Head, useForm} from '@inertiajs/inertia-vue3';
+import {Head, useForm} from '@inertiajs/vue3';
 import useNotifications from "@/Composables/useNotifications";
 import PageHeader from "@/Components/DataDisplay/PageHeader.vue";
 import Tabs from "@/Components/Navigation/Tabs.vue"

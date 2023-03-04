@@ -1,7 +1,7 @@
 <script setup>
 import {ref, onMounted, onUnmounted, computed, watch} from "vue";
-import {Link} from '@inertiajs/inertia-vue3';
-import {usePage} from "@inertiajs/inertia-vue3";
+import {Link} from '@inertiajs/vue3';
+import {usePage} from "@inertiajs/vue3";
 import emitter from "@/Services/emitter";
 import SecondaryButton from "@/Components/Button/SecondaryButton.vue";
 import CheckIcon from "@/Icons/Check.vue"

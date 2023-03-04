@@ -1,7 +1,7 @@
 <script setup>
 import {onMounted, onUnmounted, ref, watch} from "vue";
-import {Head} from '@inertiajs/inertia-vue3';
-import {Inertia} from "@inertiajs/inertia";
+import {Head} from '@inertiajs/vue3';
+import {router} from "@inertiajs/vue3";
 import emitter from "@/Services/emitter";
 import useNotifications from "@/Composables/useNotifications";
 import {cloneDeep, pickBy, throttle} from "lodash";
@@ -71,7 +71,7 @@ onUnmounted(() => {
 })
 
 watch(() => cloneDeep(filter.value), throttle(() => {
-    Inertia.get(route('mixpost.posts.index'), pickBy(filter.value), {
+    router.get(route('mixpost.posts.index'), pickBy(filter.value), {
         preserveState: true,
         only: ['posts', 'filter']
     });
@@ -85,7 +85,7 @@ const {notify} = useNotifications();
 const confirmationDeletion = ref(false);
 
 const deletePosts = () => {
-    Inertia.delete(route('mixpost.posts.multipleDelete'), {
+    router.delete(route('mixpost.posts.multipleDelete'), {
         data: {
             posts: selectedRecords.value,
             status: filter.value.status

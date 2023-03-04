@@ -1,7 +1,7 @@
 <script setup>
 import {computed, ref} from "vue";
-import {Inertia} from '@inertiajs/inertia'
-import {Head, Link} from '@inertiajs/inertia-vue3';
+import {router} from '@inertiajs/vue3'
+import {Head, Link} from '@inertiajs/vue3';
 import useNotifications from "@/Composables/useNotifications";
 import PageHeader from "@/Components/DataDisplay/PageHeader.vue";
 import Panel from "@/Components/Surface/Panel.vue";
@@ -42,7 +42,7 @@ const anyUnconfiguredServices = computed(() => {
 });
 
 const updateAccount = (accountId) => {
-    Inertia.put(route('mixpost.accounts.update', {account: accountId}), {}, {
+    router.put(route('mixpost.accounts.update', {account: accountId}), {}, {
         onSuccess(response) {
             if (response.props.flash.error) {
                 return;
@@ -54,7 +54,7 @@ const updateAccount = (accountId) => {
 }
 
 const deleteAccount = () => {
-    Inertia.delete(route('mixpost.accounts.delete', {account: confirmationAccountDeletion.value}), {
+    router.delete(route('mixpost.accounts.delete', {account: confirmationAccountDeletion.value}), {
         onStart() {
             accountIsDeleting.value = true;
         },

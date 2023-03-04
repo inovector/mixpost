@@ -1,6 +1,6 @@
 <script setup>
 import {computed, ref, watch} from "vue";
-import {usePage} from "@inertiajs/inertia-vue3";
+import {usePage} from "@inertiajs/vue3";
 import {nanoid} from 'nanoid'
 import Masonry from "@/Components/Layout/Masonry.vue";
 import MediaFile from "@/Components/Media/MediaFile.vue";

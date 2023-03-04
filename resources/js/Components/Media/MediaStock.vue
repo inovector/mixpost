@@ -1,6 +1,6 @@
 <script setup>
 import {computed, onMounted} from "vue";
-import {usePage, Link} from "@inertiajs/inertia-vue3";
+import {usePage, Link} from "@inertiajs/vue3";
 import useMedia from "@/Composables/useMedia";
 import MediaSelectable from "@/Components/Media/MediaSelectable.vue";
 import MediaFile from "@/Components/Media/MediaFile.vue";

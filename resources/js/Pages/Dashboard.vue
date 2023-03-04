@@ -1,6 +1,6 @@
 <script setup>
 import {computed, inject, onMounted, ref, watch} from "vue";
-import {Head, Link} from '@inertiajs/inertia-vue3';
+import {Head, Link} from '@inertiajs/vue3';
 import NProgress from 'nprogress'
 import {find} from "lodash";
 import useNotifications from "@/Composables/useNotifications";

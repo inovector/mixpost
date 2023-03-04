@@ -1,7 +1,7 @@
 <script setup>
 import {computed, ref} from "vue";
-import {usePage} from "@inertiajs/inertia-vue3";
-import {Inertia} from "@inertiajs/inertia";
+import {usePage} from "@inertiajs/vue3";
+import {router} from "@inertiajs/vue3";
 import emitter from "@/Services/emitter";
 import useNotifications from "@/Composables/useNotifications";
 import ConfirmationModal from "@/Components/Modal/ConfirmationModal.vue";
@@ -36,7 +36,7 @@ const filterStatus = computed(() => {
 const {notify} = useNotifications();
 
 const deletePost = () => {
-    Inertia.delete(route('mixpost.posts.delete', {post: props.itemId, status: filterStatus.value}), {
+    router.delete(route('mixpost.posts.delete', {post: props.itemId, status: filterStatus.value}), {
         onSuccess() {
             confirmationDeletion.value = false;
             notify('success', 'Post deleted')
@@ -47,7 +47,7 @@ const deletePost = () => {
 }
 
 const duplicate = () => {
-    Inertia.post(route('mixpost.posts.duplicate', {post: props.itemId}), {}, {
+    router.post(route('mixpost.posts.duplicate', {post: props.itemId}), {}, {
         onSuccess() {
             notify('success', 'Post duplicated')
         }

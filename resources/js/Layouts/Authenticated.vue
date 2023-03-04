@@ -4,7 +4,7 @@ import Navigation from "@/Components/Navigation/NavBar.vue";
 import Notifications from "@/Components/Util/Notifications.vue";
 
 import {onUnmounted, provide, reactive} from "vue";
-import {Inertia} from "@inertiajs/inertia";
+import {router} from "@inertiajs/vue3";
 
 const context = reactive({
     showAside: false,
@@ -16,7 +16,7 @@ const context = reactive({
 
 provide('appContext', context);
 
-const removeStartEventListener = Inertia.on('start', () => {
+const removeStartEventListener = router.on('start', () => {
     context.showAside = false;
 });
 

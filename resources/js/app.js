@@ -4,13 +4,13 @@ import 'floating-vue/dist/style.css'
 import '@css/overrideTooltip.css'
 
 import {createApp, h} from 'vue';
-import {createInertiaApp} from '@inertiajs/inertia-vue3';
+import {createInertiaApp} from '@inertiajs/vue3';
 import {InertiaProgress} from '@inertiajs/progress';
 import {resolvePageComponent} from 'laravel-vite-plugin/inertia-helpers';
 import {ZiggyVue} from '../../vendor/tightenco/ziggy/dist/vue.m';
 import {VTooltip} from 'floating-vue'
 import AuthenticatedLayout from '@/Layouts/Authenticated.vue';
-import {Inertia} from "@inertiajs/inertia";
+import {router} from "@inertiajs/vue3";
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Mixpost';
 
@@ -43,11 +43,11 @@ window.addEventListener('popstate', () => {
     stale = true;
 });
 
-Inertia.on('navigate', (event) => {
+router.on('navigate', (event) => {
     const page = event.detail.page;
 
     if (stale) {
-        Inertia.get(page.url, {}, { replace: true, preserveScroll: true, preserveState: false });
+        router.get(page.url, {}, { replace: true, preserveScroll: true, preserveState: false });
     }
 
     stale = false;

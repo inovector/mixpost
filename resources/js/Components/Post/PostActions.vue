@@ -1,8 +1,8 @@
 <script setup>
 import {computed, inject, ref} from "vue";
 import {format, parseISO} from "date-fns";
-import {Inertia} from "@inertiajs/inertia";
-import {usePage} from "@inertiajs/inertia-vue3";
+import {router} from "@inertiajs/vue3";
+import {usePage} from "@inertiajs/vue3";
 import usePost from "@/Composables/usePost";
 import useNotifications from "@/Composables/useNotifications";
 import useSettings from "@/Composables/useSettings";
@@ -70,7 +70,7 @@ const schedule = (postNow = false) => {
             href: route('mixpost.calendar', {date: props.form.date})
         });
 
-        Inertia.visit(route('mixpost.posts.index'));
+        router.visit(route('mixpost.posts.index'));
     }).catch((error) => {
         if (error.response.status !== 422) {
             notify('error', error.response.data.message);
@@ -86,7 +86,7 @@ const schedule = (postNow = false) => {
         }
 
         if (mustRefreshPage) {
-            Inertia.visit(route('mixpost.posts.edit', {post: postId.value}));
+            router.visit(route('mixpost.posts.edit', {post: postId.value}));
         }
     }).finally(() => {
         isLoading.value = false;
