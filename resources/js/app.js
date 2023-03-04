@@ -24,8 +24,8 @@ createInertiaApp({
 
         return page;
     },
-    setup({el, app, props, plugin}) {
-        return createApp({render: () => h(app, props)})
+    setup({el, App, props, plugin}) {
+        return createApp({render: () => h(App, props)})
             .use(plugin)
             .directive('tooltip', VTooltip)
             .use(ZiggyVue, Ziggy)
