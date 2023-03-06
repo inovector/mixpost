@@ -2,6 +2,10 @@
 
 All notable changes to `mixpost` will be documented in this file.
 
+## v1.0.2 - 2023-03-06
+
+Fixed searching posts by keyword
+
 ## v1.0.1 - 2023-03-02
 
 Dashboard Analytics
