@@ -1,6 +1,6 @@
 <script setup>
 import {computed} from "vue";
-import {Link} from '@inertiajs/inertia-vue3'
+import {Link} from '@inertiajs/vue3'
 import ChevronRightIcon from "@/Icons/ChevronRight.vue"
 import ChevronLeftIcon from "@/Icons/ChevronLeft.vue"
 

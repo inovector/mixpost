@@ -1,5 +1,5 @@
 <script setup>
-import {Head, useForm} from '@inertiajs/inertia-vue3';
+import {Head, useForm} from '@inertiajs/vue3';
 import useNotifications from "@/Composables/useNotifications";
 import PageHeader from "@/Components/DataDisplay/PageHeader.vue";
 import Panel from "@/Components/Surface/Panel.vue";

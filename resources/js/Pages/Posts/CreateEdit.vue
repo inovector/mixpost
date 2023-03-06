@@ -1,7 +1,7 @@
 <script setup>
 import {provide, reactive, ref, watch} from "vue";
-import {Head, useForm} from '@inertiajs/inertia-vue3';
-import {Inertia} from "@inertiajs/inertia";
+import {Head, useForm} from '@inertiajs/vue3';
+import {router} from "@inertiajs/vue3";
 import {cloneDeep, debounce} from "lodash";
 import useMounted from "@/Composables/useMounted";
 import usePost from "@/Composables/usePost";
@@ -48,7 +48,7 @@ const form = useForm({
 });
 
 const store = (data) => {
-    Inertia.post(route('mixpost.posts.store'), data, {
+    router.post(route('mixpost.posts.store'), data, {
         onSuccess() {
             triedToSave.value = true;
             // After redirect to the edit mode, it's necessary to track the tag changes
@@ -80,7 +80,7 @@ const update = (data) => {
         }
 
         if (mustRefreshPage) {
-            Inertia.visit(route('mixpost.posts.edit', {post: props.post.id}));
+            router.visit(route('mixpost.posts.edit', {post: props.post.id}));
         }
     }).finally(() => {
         triedToSave.value = true;

@@ -1,7 +1,7 @@
 <script setup>
 import {computed, ref} from "vue";
-import {Head} from '@inertiajs/inertia-vue3';
-import {Inertia} from "@inertiajs/inertia";
+import {Head} from '@inertiajs/vue3';
+import {router} from "@inertiajs/vue3";
 import usePostVersions from "@/Composables/usePostVersions";
 import useMedia from "@/Composables/useMedia";
 import PageHeader from '@/Components/DataDisplay/PageHeader.vue';
@@ -65,7 +65,7 @@ const use = () => {
 const {versionContentObject} = usePostVersions();
 
 const createPost = (media) => {
-    Inertia.post(route('mixpost.posts.store'), {
+    router.post(route('mixpost.posts.store'), {
         versions: [
             {
                 account_id: 0,

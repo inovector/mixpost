@@ -1,6 +1,6 @@
 <script setup>
 import {ref} from "vue";
-import {Inertia} from "@inertiajs/inertia";
+import {router} from "@inertiajs/vue3";
 import useNotifications from "@/Composables/useNotifications";
 import Panel from "@/Components/Surface/Panel.vue";
 import Input from "@/Components/Form/Input.vue";
@@ -23,7 +23,7 @@ const errors = ref({});
 const save = () => {
     errors.value = {};
 
-    Inertia.put(route('mixpost.services.update', {service: 'unsplash'}), props.form, {
+    router.put(route('mixpost.services.update', {service: 'unsplash'}), props.form, {
         preserveScroll: true,
         onSuccess() {
             notify('success', 'Unsplash credentials have been saved');

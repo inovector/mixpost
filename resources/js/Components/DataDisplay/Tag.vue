@@ -1,6 +1,6 @@
 <script setup>
 import {nextTick, ref} from "vue";
-import {Inertia} from "@inertiajs/inertia";
+import {router} from "@inertiajs/vue3";
 import useNotifications from "@/Composables/useNotifications";
 import {lightOrDark} from "@/helpers";
 import Dropdown from "@/Components/Dropdown/Dropdown.vue"
@@ -67,7 +67,7 @@ const renameTag = () => {
         return;
     }
 
-    Inertia.put(route('mixpost.tags.update', {tag: props.item.id}), {
+    router.put(route('mixpost.tags.update', {tag: props.item.id}), {
         action: 'name',
         name: renameText.value
     }, {
@@ -97,7 +97,7 @@ const closeChangeColorModal = () => {
 }
 
 const changeTagColor = () => {
-    Inertia.put(route('mixpost.tags.update', {tag: props.item.id}), {
+    router.put(route('mixpost.tags.update', {tag: props.item.id}), {
         action: 'color',
         hex_color: changeColorHex.value,
     }, {
@@ -116,7 +116,7 @@ const confirmationTagDeletion = ref(false);
 const isDeleting = ref(false);
 
 const deleteTag = () => {
-    Inertia.delete(route('mixpost.tags.delete', {tag: props.item.id}), {
+    router.delete(route('mixpost.tags.delete', {tag: props.item.id}), {
         onStart() {
             isDeleting.value = true;
         },

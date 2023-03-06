@@ -1,6 +1,6 @@
 <script setup>
 import {computed, ref, watch} from "vue";
-import {usePage} from "@inertiajs/inertia-vue3";
+import {usePage} from "@inertiajs/vue3";
 import {nanoid} from 'nanoid'
 import Masonry from "@/Components/Layout/Masonry.vue";
 import MediaFile from "@/Components/Media/MediaFile.vue";
@@ -35,7 +35,7 @@ const props = defineProps({
 
 const emit = defineEmits(['mediaSelect'])
 
-const mimeTypes = usePage().props.value.mixpost.mime_types;
+const mimeTypes = usePage().props.mixpost.mime_types;
 
 const input = ref(null);
 

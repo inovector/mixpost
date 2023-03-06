@@ -1,7 +1,7 @@
 <script setup>
 import {computed, ref, provide, watch} from "vue";
-import {Head} from '@inertiajs/inertia-vue3';
-import {Inertia} from "@inertiajs/inertia";
+import {Head} from '@inertiajs/vue3';
+import {router} from "@inertiajs/vue3";
 import {format} from "date-fns";
 import {cloneDeep, pickBy, throttle} from "lodash";
 import useSettings from "@/Composables/useSettings";
@@ -68,7 +68,7 @@ watch(() => cloneDeep(filter.value), throttle(() => {
 }, 300))
 
 const fetchPosts = (data) => {
-    Inertia.get(route('mixpost.calendar', data), {}, {
+    router.get(route('mixpost.calendar', data), {}, {
         preserveState: true,
         only: ['posts']
     });

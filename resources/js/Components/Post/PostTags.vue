@@ -1,7 +1,7 @@
 <script setup>
 import {computed, ref} from "vue";
-import {usePage} from '@inertiajs/inertia-vue3';
-import {Inertia} from "@inertiajs/inertia";
+import {usePage} from '@inertiajs/vue3';
+import {router} from "@inertiajs/vue3";
 import {difference, first, random} from "lodash";
 import usePost from "@/Composables/usePost";
 import {decomposeString} from "@/helpers";
@@ -29,7 +29,7 @@ const searchText = ref('');
 const isLoading = ref(false);
 
 const tags = computed(() => {
-    return usePage().props.value.tags;
+    return usePage().props.tags;
 })
 
 const availableTags = computed(() => {
@@ -87,7 +87,7 @@ const store = () => {
         return nonUsedColors[random(0, nonUsedColors.length)]
     }
 
-    Inertia.post(route('mixpost.tags.store'), {
+    router.post(route('mixpost.tags.store'), {
         name: searchText.value,
         hex_color: pickRandomColor()
     }, {
