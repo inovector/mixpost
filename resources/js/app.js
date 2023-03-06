@@ -31,9 +31,7 @@ createInertiaApp({
             .use(ZiggyVue, Ziggy)
             .mount(el);
     },
-    progress: {
-        color: '#4F46BB',
-    },
+    progress: false,
 });
 
 // Refresh page on history operation
@@ -47,7 +45,7 @@ router.on('navigate', (event) => {
     const page = event.detail.page;
 
     if (stale) {
-        router.get(page.url, {}, { replace: true, preserveScroll: true, preserveState: false });
+        router.get(page.url, {}, {replace: true, preserveScroll: true, preserveState: false});
     }
 
     stale = false;
