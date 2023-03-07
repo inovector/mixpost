@@ -122,11 +122,15 @@ class MastodonProvider extends SocialProvider
             }
 
             if (isset($result['error'])) {
-                $errors[] = $result['error'];
+                $errors[] = "File {$item['name']}: {$result['error']}";
                 continue;
             }
 
-            $ids[] = $result['id'];
+            if (isset($result['id'])) {
+                $ids[] = $result['id'];
+            } else {
+                $errors[] = "File {$item['name']}: could not be uploaded to the mastodon server.";
+            }
         }
 
         return [
