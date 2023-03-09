@@ -2,6 +2,16 @@
 
 All notable changes to `mixpost` will be documented in this file.
 
+## v1.1.0 - 2023-03-09
+
+- Upgraded to Inertia v1
+- Fix Mastodon upload media
+- Added new command **php artisan mixpost:create-mastodon-app {server}** for a Mastodon server
+- Load Google font locally (EU GDPR)
+- Fix responsive for page Services
+- Added scroll on mobile for list services on page Services
+- Fix the post media list on the Safari browser
+
 ## v1.0.2 - 2023-03-06
 
 Fixed searching posts by keyword
