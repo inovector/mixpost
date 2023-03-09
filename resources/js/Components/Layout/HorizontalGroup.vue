@@ -6,7 +6,7 @@
                 <slot name="title"/>
             </div>
 
-            <div v-if="$slots.default" class="w-full flex justify-end mt-xs sm:mt-0">
+            <div v-if="$slots.default" class="w-full flex sm:justify-end mt-xs sm:mt-0">
                 <slot/>
             </div>
         </div>

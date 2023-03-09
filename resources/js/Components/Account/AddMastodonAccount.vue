@@ -1,6 +1,6 @@
 <script setup>
 import {ref} from "vue";
-import {Inertia} from "@inertiajs/inertia";
+import {router} from "@inertiajs/vue3";
 import useNotifications from "@/Composables/useNotifications";
 import Input from "@/Components/Form/Input.vue";
 import PrimaryButton from "@/Components/Button/PrimaryButton.vue";
@@ -29,7 +29,7 @@ const createApp = () => {
 const oAuthRedirect = () => {
     isLoading.value = true;
 
-    Inertia.post(route('mixpost.accounts.add', {provider: 'mastodon'}), {server: server.value}, {
+    router.post(route('mixpost.accounts.add', {provider: 'mastodon'}), {server: server.value}, {
         onSuccess() {
             isLoading.value = false;
         }

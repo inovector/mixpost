@@ -8,7 +8,7 @@ import DialogModal from "@/Components/Modal/DialogModal.vue"
 import PrimaryButton from "@/Components/Button/PrimaryButton.vue"
 import SecondaryButton from "@/Components/Button/SecondaryButton.vue"
 import ExclamationCircleIcon from "@/Icons/ExclamationCircle.vue"
-import { Link } from '@inertiajs/inertia-vue3'
+import { Link } from '@inertiajs/vue3'
 import FlatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 import '@css/overrideFlatPickr.css'

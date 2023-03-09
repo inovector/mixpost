@@ -1,7 +1,7 @@
 <script setup>
 import {ref} from "vue";
-import {Inertia} from '@inertiajs/inertia'
-import {Head} from '@inertiajs/inertia-vue3';
+import {router} from '@inertiajs/vue3'
+import {Head} from '@inertiajs/vue3';
 import PageHeader from "@/Components/DataDisplay/PageHeader.vue";
 import Panel from "@/Components/Surface/Panel.vue";
 import Checkbox from "@/Components/Form/Checkbox.vue";
@@ -29,7 +29,7 @@ const save = () => {
         return;
     }
 
-    Inertia.post(route('mixpost.accounts.entities.store', {provider: props.provider}), {
+    router.post(route('mixpost.accounts.entities.store', {provider: props.provider}), {
         'items': form.value.selected
     });
 }

@@ -5,9 +5,6 @@
         "build": "vite build"
     },
     "devDependencies": {
-        "@inertiajs/inertia": "^0.11.0",
-        "@inertiajs/inertia-vue3": "^0.6.0",
-        "@inertiajs/progress": "^0.2.7",
         "@tailwindcss/forms": "^0.5.2",
         "@vitejs/plugin-vue": "^3.0.0",
         "autoprefixer": "^10.4.13",
@@ -24,6 +21,7 @@
         "vue": "^3.2.31"
     },
     "dependencies": {
+        "@inertiajs/vue3": "^1.0.2",
         "@jaames/iro": "^5.5.2",
         "@tiptap/core": "^2.0.0-beta.182",
         "@tiptap/extension-document": "^2.0.0-beta.17",
@@ -35,12 +33,14 @@
         "@tiptap/vue-3": "^2.0.0-beta.96",
         "chart.js": "^4.1.2",
         "chartjs-plugin-zoom": "^2.0.0",
+        "core-js": "^3.29.0",
         "date-fns": "^2.29.1",
         "date-fns-tz": "^1.3.7",
         "emoji-mart-vue-fast": "^11.1.1",
         "floating-vue": "^2.0.0-beta.17",
         "mitt": "^3.0.0",
         "nanoid": "^4.0.0",
+        "nprogress": "^0.2.0",
         "twitter-text": "^3.1.0",
         "vue-flatpickr-component": "^9.0.6",
         "vuedraggable": "^4.1.0"

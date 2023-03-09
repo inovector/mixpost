@@ -1,10 +1,10 @@
 import {computed, inject} from "vue";
-import {usePage} from "@inertiajs/inertia-vue3";
+import {usePage} from "@inertiajs/vue3";
 import {filter, some} from "lodash";
 
 const usePost = () => {
     const post = computed(() => {
-        return usePage().props.value.post;
+        return usePage().props.post;
     });
 
     const postId = computed(() => {

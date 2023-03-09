@@ -1,6 +1,6 @@
 <script setup>
 import {computed} from "vue";
-import {Inertia} from "@inertiajs/inertia";
+import {router} from "@inertiajs/vue3";
 import {isDateTimePast} from "@/helpers";
 import {addMinutes, format, getHours, parseISO} from "date-fns";
 import {utcToZonedTime} from "date-fns-tz";
@@ -70,7 +70,7 @@ const add = () => {
         scheduleAt = format(now, 'yyyy-MM-dd H:mm');
     }
 
-    Inertia.visit(route('mixpost.posts.create', {schedule_at: scheduleAt}));
+    router.visit(route('mixpost.posts.create', {schedule_at: scheduleAt}));
 }
 </script>
 <template>

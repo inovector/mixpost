@@ -1,5 +1,5 @@
 <script setup>
-import {Inertia} from "@inertiajs/inertia";
+import {router} from "@inertiajs/vue3";
 import {ref} from "vue";
 import useNotifications from "@/Composables/useNotifications";
 import Panel from "@/Components/Surface/Panel.vue";
@@ -23,7 +23,7 @@ const errors = ref({});
 const save = () => {
     errors.value = {};
 
-    Inertia.put(route('mixpost.services.update', {service: 'facebook'}), props.form, {
+    router.put(route('mixpost.services.update', {service: 'facebook'}), props.form, {
         preserveScroll: true,
         onSuccess() {
             notify('success', 'Facebook credentials have been saved');

@@ -1,6 +1,6 @@
 <script setup>
 import {computed} from "vue";
-import {usePage} from "@inertiajs/inertia-vue3";
+import {usePage} from "@inertiajs/vue3";
 import PrimaryButton from "@/Components/Button/PrimaryButton.vue";
 import Dropdown from "@/Components/Dropdown/Dropdown.vue";
 import Tag from "@/Components/DataDisplay/Tag.vue";
@@ -22,11 +22,11 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue']);
 
 const accounts = computed(() => {
-    return usePage().props.value.accounts;
+    return usePage().props.accounts;
 })
 
 const tags = computed(() => {
-    return usePage().props.value.tags;
+    return usePage().props.tags;
 })
 
 const total = computed(() => {

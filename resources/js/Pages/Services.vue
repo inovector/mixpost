@@ -1,6 +1,6 @@
 <script setup>
 import {ref, defineAsyncComponent} from "vue";
-import {Head, useForm} from '@inertiajs/inertia-vue3';
+import {Head, useForm} from '@inertiajs/vue3';
 import useNotifications from "@/Composables/useNotifications";
 import PageHeader from "@/Components/DataDisplay/PageHeader.vue";
 import Tabs from "@/Components/Navigation/Tabs.vue"
@@ -35,7 +35,7 @@ const tab = ref('twitter');
         </PageHeader>
 
         <div class="w-full row-px mb-lg">
-            <Tabs>
+            <Tabs class="overflow-x-auto !flex-nowrap max-w-full w-full">
                 <Tab @click="tab = 'twitter'" :active="tab === 'twitter'">
                     <span class="mr-xs"><TwitterIcon class="text-twitter !h-5 !w-5"/></span>
                     <span>Twitter</span>

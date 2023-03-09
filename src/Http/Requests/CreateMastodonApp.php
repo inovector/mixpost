@@ -4,11 +4,9 @@ namespace Inovector\Mixpost\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Support\Facades\Http;
-use Inovector\Mixpost\Actions\UpdateOrCreateService;
-use Exception;
 use Inovector\Mixpost\Facades\Services;
 use Symfony\Component\HttpFoundation\Response;
+use Inovector\Mixpost\Actions\CreateMastodonApp as CreateMastodonAppAction;
 
 class CreateMastodonApp extends FormRequest
 {
@@ -27,17 +25,10 @@ class CreateMastodonApp extends FormRequest
             return;
         }
 
-        try {
-            $credentials = Http::post("https:/{$this->input('server')}/api/v1/apps", [
-                'client_name' => config('app.name'),
-                'redirect_uris' => route('mixpost.callbackSocialProvider', ['provider' => 'mastodon']),
-                'scopes' => 'read write',
-                'website' => config('app.url')
-            ])->json();
+        $result = (new CreateMastodonAppAction())($this->input('server'));
 
-            (new UpdateOrCreateService())($serviceName, $credentials);
-        } catch (Exception $exception) {
-            $errors = ['server' => ['This Mastodon server is not responding or does not exist.']];
+        if (isset($result['error'])) {
+            $errors = ['server' => [$result['error']]];
 
             throw new HttpResponseException(
                 response()->json(['errors' => $errors], Response::HTTP_UNPROCESSABLE_ENTITY)

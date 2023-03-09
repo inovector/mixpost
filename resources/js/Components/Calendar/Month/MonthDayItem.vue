@@ -1,6 +1,6 @@
 <script setup>
 import {computed} from "vue";
-import {Inertia} from "@inertiajs/inertia";
+import {router} from "@inertiajs/vue3";
 import {format} from "date-fns";
 import {utcToZonedTime} from "date-fns-tz";
 import CalendarPostItem from "@/Components/Calendar/CalendarPostItem.vue";
@@ -42,7 +42,7 @@ const add = () => {
 
     let scheduleAt = `${props.day.date} ${format(now, 'H:mm')}`;
 
-    Inertia.visit(route('mixpost.posts.create', {schedule_at: scheduleAt}));
+    router.visit(route('mixpost.posts.create', {schedule_at: scheduleAt}));
 }
 </script>
 <template>

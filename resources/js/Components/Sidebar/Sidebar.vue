@@ -1,5 +1,5 @@
 <script setup>
-import {Link} from '@inertiajs/inertia-vue3';
+import {Link} from '@inertiajs/vue3';
 import Logo from "@/Components/DataDisplay/Logo.vue"
 import MenuItem from "@/Components/Sidebar/MenuItem.vue"
 import MenuDelimiter from "@/Components/Sidebar/MenuDelimiter.vue"
