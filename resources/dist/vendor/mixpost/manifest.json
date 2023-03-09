@@ -1,7 +1,31 @@
 {
+  "resources/fonts/Inter-Medium.ttf": {
+    "file": "assets/Inter-Medium.10d48331.ttf",
+    "src": "resources/fonts/Inter-Medium.ttf"
+  },
+  "resources/fonts/Inter-SemiBold.ttf": {
+    "file": "assets/Inter-SemiBold.e8cbc2b8.ttf",
+    "src": "resources/fonts/Inter-SemiBold.ttf"
+  },
+  "resources/fonts/Inter-ExtraBold.ttf": {
+    "file": "assets/Inter-ExtraBold.4e2473b9.ttf",
+    "src": "resources/fonts/Inter-ExtraBold.ttf"
+  },
+  "resources/fonts/Inter-Regular.ttf": {
+    "file": "assets/Inter-Regular.41ab0f70.ttf",
+    "src": "resources/fonts/Inter-Regular.ttf"
+  },
+  "resources/img/calendar-disabled-item.svg": {
+    "file": "assets/calendar-disabled-item.e7fcf298.svg",
+    "src": "resources/img/calendar-disabled-item.svg"
+  },
   "resources/img/fb-wow.svg": {
     "file": "assets/fb-wow.ca50712c.svg",
     "src": "resources/img/fb-wow.svg"
+  },
+  "resources/img/fb-like.svg": {
+    "file": "assets/fb-like.59c2ede2.svg",
+    "src": "resources/img/fb-like.svg"
   },
   "resources/img/fb-icons.png": {
     "file": "assets/fb-icons.855a0fcf.png",
@@ -11,33 +35,25 @@
     "file": "assets/globe.4f41e2b3.svg",
     "src": "resources/img/social-icons/mastodon/globe.svg"
   },
-  "resources/img/social-icons/mastodon/retweet.svg": {
-    "file": "assets/retweet.0437347b.svg",
-    "src": "resources/img/social-icons/mastodon/retweet.svg"
-  },
-  "resources/img/fb-like.svg": {
-    "file": "assets/fb-like.59c2ede2.svg",
-    "src": "resources/img/fb-like.svg"
-  },
   "resources/img/social-icons/mastodon/reply.svg": {
     "file": "assets/reply.69e79af6.svg",
     "src": "resources/img/social-icons/mastodon/reply.svg"
   },
-  "resources/img/social-icons/mastodon/bookmark.svg": {
-    "file": "assets/bookmark.331e5819.svg",
-    "src": "resources/img/social-icons/mastodon/bookmark.svg"
+  "resources/img/social-icons/mastodon/retweet.svg": {
+    "file": "assets/retweet.0437347b.svg",
+    "src": "resources/img/social-icons/mastodon/retweet.svg"
   },
   "resources/img/social-icons/mastodon/star.svg": {
     "file": "assets/star.abade377.svg",
     "src": "resources/img/social-icons/mastodon/star.svg"
   },
+  "resources/img/social-icons/mastodon/bookmark.svg": {
+    "file": "assets/bookmark.331e5819.svg",
+    "src": "resources/img/social-icons/mastodon/bookmark.svg"
+  },
   "resources/img/social-icons/mastodon/ellipsis.svg": {
     "file": "assets/ellipsis.065dffec.svg",
     "src": "resources/img/social-icons/mastodon/ellipsis.svg"
-  },
-  "resources/img/calendar-disabled-item.svg": {
-    "file": "assets/calendar-disabled-item.e7fcf298.svg",
-    "src": "resources/img/calendar-disabled-item.svg"
   },
   "resources/js/app.js": {
     "file": "assets/app.560f76c3.js",
@@ -55,7 +71,13 @@
       "resources/js/Pages/Settings.vue"
     ],
     "css": [
-      "assets/app.fc73d895.css"
+      "assets/app.d3987eb0.css"
+    ],
+    "assets": [
+      "assets/Inter-Regular.41ab0f70.ttf",
+      "assets/Inter-Medium.10d48331.ttf",
+      "assets/Inter-SemiBold.e8cbc2b8.ttf",
+      "assets/Inter-ExtraBold.4e2473b9.ttf"
     ]
   },
   "resources/js/Pages/Accounts/AccountEntities.vue": {
@@ -490,7 +512,7 @@
     "src": "resources/js/Pages/Posts/CreateEdit.css"
   },
   "resources/js/app.css": {
-    "file": "assets/app.fc73d895.css",
+    "file": "assets/app.d3987eb0.css",
     "src": "resources/js/app.css"
   }
 }
