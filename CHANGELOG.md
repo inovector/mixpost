@@ -2,6 +2,10 @@
 
 All notable changes to `mixpost` will be documented in this file.
 
+## v1.1.1 - 2023-03-12
+
+Fix Calendar Month on Safari browser.
+
 ## v1.1.0 - 2023-03-09
 
 - Upgraded to Inertia v1
