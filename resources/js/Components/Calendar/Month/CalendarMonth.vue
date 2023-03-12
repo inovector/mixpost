@@ -61,7 +61,7 @@ const today = computed(() => {
 });
 
 const month = computed(() => {
-    return getMonth(selectedDate.value) + 1;
+    return (getMonth(selectedDate.value) + 1).toString().padStart(2, '0');
 })
 
 const year = computed(() => {
@@ -87,7 +87,7 @@ const previousMonthDays = computed(() => {
 
     return [...Array(visibleNumberOfDaysFromPreviousMonth)].map(
         (day, index) => {
-            const date = new Date(`${getYear(previousMonth)}-${getMonth(previousMonth) + 1}-${previousMonthLastMondayDayOfMonth + index}`);
+            const date = new Date(`${getYear(previousMonth)}-${(getMonth(previousMonth) + 1).toString().padStart(2, '0')}-${(previousMonthLastMondayDayOfMonth + index).toString().padStart(2, '0')}`);
 
             return {
                 date: format(date, 'yyyy-MM-dd'),
@@ -100,7 +100,7 @@ const previousMonthDays = computed(() => {
 
 const currentMonthDays = computed(() => {
     return [...Array(numberOfDaysInMonth.value)].map((day, index) => {
-        const date = new Date(`${year.value}-${month.value}-${index + 1}`);
+        const date = new Date(`${year.value}-${month.value}-${(index + 1).toString().padStart(2, '0')}`);
 
         return {
             date: format(date, 'yyyy-MM-dd'),
@@ -121,7 +121,7 @@ const nextMonthDays = computed(() => {
 
     return [...Array(visibleNumberOfDaysFromNextMonth)].map((day, index) => {
         return {
-            date: format(new Date(`${getYear(nextMonth)}-${getMonth(nextMonth) + 1}-${index + 1}`), 'yyyy-MM-dd'),
+            date: format(new Date(`${getYear(nextMonth)}-${(getMonth(nextMonth) + 1).toString().padStart(2, '0')}-${(index + 1).toString().padStart(2, '0')}`), 'yyyy-MM-dd'),
             isDisabled: false,
             posts: []
         };
