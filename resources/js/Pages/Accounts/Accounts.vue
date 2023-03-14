@@ -156,7 +156,7 @@ const closeConfirmationAccountDeletion = () => {
             Delete account
         </template>
         <template #body>
-            Are you sure you would like to delete this account?
+            Are you sure you want to delete this account?
         </template>
         <template #footer>
             <SecondaryButton @click="closeConfirmationAccountDeletion" :disabled="accountIsDeleting"
