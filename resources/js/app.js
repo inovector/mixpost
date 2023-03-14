@@ -31,7 +31,9 @@ createInertiaApp({
             .use(ZiggyVue, Ziggy)
             .mount(el);
     },
-    progress: false,
+    progress: {
+        color: '#4F46BB',
+    },
 });
 
 // Refresh page on history operation
