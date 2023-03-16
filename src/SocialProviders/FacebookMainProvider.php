@@ -12,9 +12,21 @@ class FacebookMainProvider extends SocialProvider
     protected string $apiVersion = 'v15.0';
     protected string $apiUrl = 'https://graph.facebook.com';
 
+    protected string $scope = 'public_profile,pages_show_list,pages_read_engagement,read_insights,pages_manage_posts,publish_to_groups,groups_access_member_info';
+
     public function getAuthUrl(): string
     {
-        return '';
+        $params = [
+            'client_id' => $this->clientId,
+            'redirect_uri' => $this->redirectUrl,
+            'scope' => $this->scope,
+            'response_type' => 'code',
+            'state' => null
+        ];
+
+        $url = 'https://www.facebook.com/' . $this->apiVersion . '/dialog/oauth';
+
+        return $this->buildUrlFromBase($url, $params);
     }
 
     public function requestAccessToken(array $params = []): array
