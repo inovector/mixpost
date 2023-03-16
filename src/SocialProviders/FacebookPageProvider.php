@@ -10,21 +10,6 @@ class FacebookPageProvider extends FacebookMainProvider
 {
     public bool $onlyUserAccount = false;
 
-    public function getAuthUrl(): string
-    {
-        $params = [
-            'client_id' => $this->clientId,
-            'redirect_uri' => $this->redirectUrl,
-            'scope' => 'public_profile,pages_show_list,pages_read_engagement,read_insights,pages_manage_posts',
-            'response_type' => 'code',
-            'state' => null
-        ];
-
-        $url = 'https://www.facebook.com/' . $this->apiVersion . '/dialog/oauth';
-
-        return $this->buildUrlFromBase($url, $params);
-    }
-
     public function getAccount(): array
     {
         $filter = array_values(Arr::where($this->getEntities(), function ($entity) {

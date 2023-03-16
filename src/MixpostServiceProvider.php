@@ -56,7 +56,14 @@ class MixpostServiceProvider extends PackageServiceProvider
             ])->hasInstallCommand(function (InstallCommand $command) {
                 $command
                     ->startWith(function (InstallCommand $command) {
-                        $command->info("👋 Hi, I'm Mixpost, a Self-hosted social media management software");
+                        $this->writeSeparationLine($command);
+                        $command->line('Mixpost Lite Installation. Self-hosted social media management software.');
+                        $command->line('Laravel version: ' . app()->version());
+                        $command->line('PHP version: ' . trim(phpversion()));
+                        $command->line(' ');
+                        $command->line('Github: https://github.com/inovector/mixpost');
+                        $this->writeSeparationLine($command);
+                        $command->line('');
 
                         $command->comment('Publishing assets');
                         $command->call('mixpost:publish-assets');
@@ -92,5 +99,10 @@ class MixpostServiceProvider extends PackageServiceProvider
         Gate::define('viewMixpost', function () {
             return true;
         });
+    }
+
+    protected function writeSeparationLine(InstallCommand $command): void
+    {
+        $command->info('*---------------------------------------------------------------------------*');
     }
 }
