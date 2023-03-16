@@ -2,6 +2,12 @@
 
 All notable changes to `mixpost` will be documented in this file.
 
+## v1.1.2 - 2023-03-16
+
+- Changed the text of the installation command
+- Fix Progressbar
+- Optimize the scope of the Facebook provider
+
 ## v1.1.1 - 2023-03-12
 
 Fix Calendar Month on Safari browser.
