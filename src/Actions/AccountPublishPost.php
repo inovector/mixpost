@@ -3,6 +3,7 @@
 namespace Inovector\Mixpost\Actions;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\App;
 use Inovector\Mixpost\Support\Log;
 use Inovector\Mixpost\Facades\SocialProviderManager;
 use Inovector\Mixpost\Models\Account;
@@ -25,9 +26,9 @@ class AccountPublishPost
         $body = $this->cleanBody($content[0]['body']);
         $media = $this->collectMedia($content[0]['media']);
 
-        $provider = SocialProviderManager::connect($account->provider, $account->values())->useAccessToken($account->access_token->toArray());
-
         try {
+            $provider = SocialProviderManager::connect($account->provider, $account->values())->useAccessToken($account->access_token->toArray());
+
             $response = $provider->publishPost($body, $media);
 
             if (isset($response['errors'])) {
@@ -38,7 +39,7 @@ class AccountPublishPost
                 $this->insertProviderPostId($post, $account, $response['id']);
             }
         } catch (Exception $exception) {
-            Log::error("Publish: {$exception->getMessage()}",
+            Log::error($exception->getMessage(),
                 [
                     'account_id' => $account->id,
                     'account_name' => $account->name,
@@ -49,6 +50,10 @@ class AccountPublishPost
             );
 
             $errors = ['Unexpected internal error.'];
+
+            if (!App::environment('production')) {
+                $errors[] = $exception->getMessage();
+            }
 
             $this->insertErrors($post, $account, $errors);
         }

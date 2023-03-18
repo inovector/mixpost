@@ -2,7 +2,7 @@
 
 namespace Inovector\Mixpost\Models;
 
-use Illuminate\Database\Eloquent\Casts\AsEncryptedArrayObject;
+use Inovector\Mixpost\Casts\EncryptArrayObject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Inovector\Mixpost\Facades\Services as ServicesFacade;
@@ -19,7 +19,7 @@ class Service extends Model
     ];
 
     protected $casts = [
-        'credentials' => AsEncryptedArrayObject::class
+        'credentials' => EncryptArrayObject::class
     ];
 
     protected $hidden = [

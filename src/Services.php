@@ -60,11 +60,13 @@ class Services
 
     public function get(string $name, null|string $credentialKey = null)
     {
-        $value = $this->getFromCache($name, function () use ($name) {
+        $defaultPayload = Arr::get($this->form(), $name, []);
+
+        $value = $this->getFromCache($name, function () use ($name, $defaultPayload) {
             $dbRecord = Service::where('name', $name)->first();
 
             try {
-                $payload = $dbRecord ? $dbRecord->credentials->toArray() : Arr::get($this->form(), $name, []);
+                $payload = $dbRecord ? $dbRecord->credentials->toArray() : $defaultPayload;
 
                 $this->put($name, $payload);
 
@@ -72,7 +74,7 @@ class Services
             } catch (DecryptException $exception) {
                 $this->logDecryptionError($name, $exception);
 
-                return [];
+                return $defaultPayload;
             }
         });
 
@@ -82,7 +84,7 @@ class Services
             } catch (DecryptException $exception) {
                 $this->logDecryptionError($name, $exception);
 
-                $value = [];
+                $value = $defaultPayload;
             }
         }
 

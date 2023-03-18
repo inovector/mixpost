@@ -2,7 +2,7 @@
 
 namespace Inovector\Mixpost\Models;
 
-use Illuminate\Database\Eloquent\Casts\AsEncryptedArrayObject;
+use Inovector\Mixpost\Casts\EncryptArrayObject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -28,7 +28,7 @@ class Account extends Model
     protected $casts = [
         'media' => AccountMediaCast::class,
         'data' => 'array',
-        'access_token' => AsEncryptedArrayObject::class
+        'access_token' => EncryptArrayObject::class
     ];
 
     protected $hidden = [

@@ -50,7 +50,13 @@ const previews = computed(() => {
 <template>
     <template v-if="selectedAccounts.length">
         <template v-for="preview in previews" :key="preview.id">
-            <Alert v-if="preview.account.errors && preview.account.errors.length" variant="error" :closeable="false" class="mb-1">{{ preview.account.errors.join(',') }}</Alert>
+            <Alert v-if="preview.account.errors && preview.account.errors.length"
+                   variant="error"
+                   :closeable="false"
+                   class="mb-1">
+                <span v-html="preview.account.errors.join('</br>')"></span>
+            </Alert>
+
             <div class="mb-lg last:mb-0">
                 <component :is="preview.providerComponent"
                            :name="preview.account.name"
