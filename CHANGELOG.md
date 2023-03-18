@@ -2,6 +2,10 @@
 
 All notable changes to `mixpost` will be documented in this file.
 
+## v1.1.3 - 2023-03-18
+
+Fix & prevent errors when the app tries to decrypt data with a new key.
+
 ## v1.1.2 - 2023-03-16
 
 - Changed the text of the installation command
