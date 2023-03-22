@@ -22,6 +22,7 @@ import RefreshIcon from "@/Icons/Refresh.vue";
 import TrashIcon from "@/Icons/Trash.vue";
 import Alert from "@/Components/Util/Alert.vue";
 import PrimaryButton from "@/Components/Button/PrimaryButton.vue";
+import PureButton from "@/Components/Button/PureButton.vue";
 
 const props = defineProps({
     has_service: {
@@ -116,9 +117,9 @@ const closeConfirmationAccountDeletion = () => {
                         <div class="absolute top-0 right-0 mt-sm mr-sm">
                             <Dropdown width-classes="w-32">
                                 <template #trigger>
-                                    <SecondaryButton size="xs">
+                                    <PureButton>
                                         <EllipsisVerticalIcon/>
-                                    </SecondaryButton>
+                                    </PureButton>
                                 </template>
 
                                 <template #content>
