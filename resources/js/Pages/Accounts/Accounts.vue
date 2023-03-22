@@ -43,6 +43,7 @@ const anyUnconfiguredServices = computed(() => {
 
 const updateAccount = (accountId) => {
     router.put(route('mixpost.accounts.update', {account: accountId}), {}, {
+        preserveScroll: true,
         onSuccess(response) {
             if (response.props.flash.error) {
                 return;
@@ -55,6 +56,7 @@ const updateAccount = (accountId) => {
 
 const deleteAccount = () => {
     router.delete(route('mixpost.accounts.delete', {account: confirmationAccountDeletion.value}), {
+        preserveScroll: true,
         onStart() {
             accountIsDeleting.value = true;
         },
