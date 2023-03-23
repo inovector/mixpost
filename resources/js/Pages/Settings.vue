@@ -53,7 +53,7 @@ const save = () => {
                 <HorizontalGroup class="mt-lg">
                     <template #title>Time format</template>
 
-                    <div class="flex items-center md:justify-between space-x-sm">
+                    <div class="flex items-center space-x-sm">
                         <label>
                             <Radio v-model:checked="form.time_format" :value="12"/>
                             12 hour</label>
@@ -66,7 +66,7 @@ const save = () => {
                 <HorizontalGroup class="mt-lg">
                     <template #title>First day of week</template>
 
-                    <div class="flex items-center md:justify-between space-x-sm">
+                    <div class="flex items-center space-x-sm">
                         <label>
                             <Radio v-model:checked="form.week_starts_on" :value="0"/>
                             Sunday</label>

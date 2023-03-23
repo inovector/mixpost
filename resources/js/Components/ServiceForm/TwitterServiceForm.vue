@@ -51,18 +51,18 @@ const save = () => {
 
         <HorizontalGroup class="mt-lg">
             <template #title>API Key</template>
-            <div class="w-full">
-                <Input v-model="form.client_id" type="text" autocomplete="off"/>
+            <Input v-model="form.client_id" :error="errors.hasOwnProperty('client_id')" type="text" autocomplete="off"/>
+            <template #footer>
                 <Error :message="errors.client_id"/>
-            </div>
+            </template>
         </HorizontalGroup>
 
         <HorizontalGroup class="mt-lg">
             <template #title>API Secret</template>
-            <div class="w-full">
-                <Input v-model="form.client_secret" type="password" autocomplete="new-password"/>
+            <Input v-model="form.client_secret" :error="errors.hasOwnProperty('client_secret')" type="password" autocomplete="new-password"/>
+            <template #footer>
                 <Error :message="errors.client_secret"/>
-            </div>
+            </template>
         </HorizontalGroup>
 
         <PrimaryButton @click="save" class="mt-lg">Save</PrimaryButton>
