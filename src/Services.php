@@ -66,7 +66,7 @@ class Services
             $dbRecord = Service::where('name', $name)->first();
 
             try {
-                $payload = $dbRecord ? $dbRecord->credentials->toArray() : $defaultPayload;
+                $payload = $dbRecord ? array_merge($defaultPayload, $dbRecord->credentials->toArray()) : $defaultPayload;
 
                 $this->put($name, $payload);
 
