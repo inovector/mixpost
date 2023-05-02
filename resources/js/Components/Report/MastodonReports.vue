@@ -26,19 +26,19 @@ const getAudienceData = (value) => {
     <div class="row-px mt-2xl">
         <div class="grid grid-cols-3 gap-sm">
             <Panel>
-                <template #title><span v-tooltip="'The number of times where your posts were liked'">Likes</span>
+                <template #title><span v-tooltip="'The number of replies to your posts'">Replies</span>
                 </template>
-                <div class="font-bold text-indigo-500 text-2xl">{{ getMetricCount('likes') }}</div>
+                <div class="font-bold text-indigo-500 text-2xl">{{ getMetricCount('replies') }}</div>
             </Panel>
 
             <Panel>
-                <template #title><span v-tooltip="'The number of times your tweets have been retweeted'">Reblogs</span>
+                <template #title><span v-tooltip="'The number of times your posts have been reblogs'">Reblogs</span>
                 </template>
                 <div class="font-bold text-indigo-500 text-2xl">{{ getMetricCount('reblogs') }}</div>
             </Panel>
 
             <Panel>
-                <template #title><span v-tooltip="'The number of times people saw your posts'">Favourites</span>
+                <template #title><span v-tooltip="'The number of times your posts have been added to favorites'">Favourites</span>
                 </template>
                 <div class="font-bold text-indigo-500 text-2xl">{{ getMetricCount('favourites') }}</div>
             </Panel>
