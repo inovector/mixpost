@@ -10,7 +10,7 @@ interface SocialProvider
 
     public function getAuthUrl(): string;
 
-    public function requestAccessToken(array $params = []): array;
+    public function requestAccessToken(array $params): array;
 
     public function useAccessToken(array $token = []): static;
 

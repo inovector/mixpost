@@ -32,9 +32,9 @@ class TwitterProvider extends SocialProvider
         return $this->connection->url('oauth/authorize', ['oauth_token' => $result['oauth_token'], 'oauth_token_secret' => $result['oauth_token_secret']]);
     }
 
-    public function requestAccessToken(array $params = []): array
+    public function requestAccessToken(array $params): array
     {
-        $result = $this->connection->oauth('oauth/access_token', ['oauth_token' => $this->request->get('oauth_token'), 'oauth_verifier' => $this->request->get('oauth_verifier')]);
+        $result = $this->connection->oauth('oauth/access_token', ['oauth_token' => $params['oauth_token'], 'oauth_verifier' => $params['oauth_verifier']]);
 
         return [
             'oauth_token' => $result['oauth_token'],

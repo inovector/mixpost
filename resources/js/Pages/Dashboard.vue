@@ -109,7 +109,7 @@ watch(appContext.dashboard_filter, () => {
         </PageHeader>
 
         <div class="row-px flex items-center">
-            <div class="w-full md:w-1/2">
+            <div class="w-full">
                 <div v-if="accounts.length" class="flex flex-wrap items-center gap-sm">
                     <template v-for="account in accounts" :key="account.id">
                         <button @click="selectAccount(account)" type="button">
