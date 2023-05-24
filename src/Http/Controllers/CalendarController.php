@@ -20,7 +20,7 @@ class CalendarController extends Controller
     {
         $request->handle();
 
-        $posts = PostQuery::apply($request)->get();
+        $posts = PostQuery::apply($request)->oldest('scheduled_at')->get();
 
         return Inertia::render('Calendar', [
             'accounts' => fn() => AccountResource::collection(Account::oldest()->get())->resolve(),
