@@ -106,7 +106,7 @@ import UserMenu from "../Navigation/UserMenu.vue";
             <div class="flex items-center justify-center px-xl mt-xs">
                 <a href="https://mixpost.app/pricing"
                    class="text-green-500  hover:text-green-400 transition-colors ease-in-out duration-200 text-sm">
-                    Buy Mixpost Pro
+                    Upgrade to Mixpost Pro
                 </a>
             </div>
         </div>
