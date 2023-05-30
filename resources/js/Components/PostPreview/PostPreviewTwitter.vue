@@ -1,10 +1,10 @@
 <script setup>
 import {computed} from "vue";
 import useEditor from "@/Composables/useEditor";
-import ProviderIcon from "@/Components/Account/ProviderIcon.vue";
 import Panel from "@/Components/Surface/Panel.vue";
 import Gallery from "@/Components/ProviderGallery/Twitter/TwitterGallery.vue"
 import EditorReadOnly from "@/Components/Package/EditorReadOnly.vue";
+import {REPRESENTATIVE_DATA_TEXT} from "../../Constants/Text";
 
 const props = defineProps({
     name: {
@@ -33,13 +33,6 @@ const mainContent = computed(()=> {
 </script>
 <template>
     <Panel class="relative">
-        <div class="absolute right-0 top-0 -mt-sm -mr-xs">
-            <div class="flex items-center justify-center p-2 w-7 h-7 rounded-full bg-white border border-gray-200">
-                <div>
-                    <ProviderIcon provider="twitter" class="!w-5 !h-5"/>
-                </div>
-            </div>
-        </div>
         <div class="flex items-start">
             <div class="mr-sm">
                 <span class="inline-flex justify-center items-center flex-shrink-0 w-10 h-10 rounded-full">
@@ -58,7 +51,7 @@ const mainContent = computed(()=> {
 
                 <Gallery :media="mainContent.media"/>
 
-                <div class="mt-5 flex items-center justify-between">
+                <div v-tooltip="REPRESENTATIVE_DATA_TEXT" class="mt-5 flex items-center justify-between">
                     <div class="flex items-center">
                         <svg class="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
                             <g>

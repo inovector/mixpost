@@ -1,7 +1,6 @@
 <script setup>
 import {computed} from "vue";
 import useEditor from "@/Composables/useEditor";
-import ProviderIcon from "@/Components/Account/ProviderIcon.vue";
 import Panel from "@/Components/Surface/Panel.vue";
 import Gallery from "@/Components/ProviderGallery/Mastodon/MastodonGallery.vue"
 import EditorReadOnly from "@/Components/Package/EditorReadOnly.vue";
@@ -39,14 +38,6 @@ const mainContent = computed(()=> {
 </script>
 <template>
     <Panel class="relative">
-        <div class="absolute right-0 top-0 -mt-sm -mr-xs">
-            <div class="flex items-center justify-center p-2 w-7 h-7 rounded-full bg-white border border-gray-200">
-                <div>
-                    <ProviderIcon provider="mastodon" class="!w-5 !h-5"/>
-                </div>
-            </div>
-        </div>
-
         <div class="flex items-start justify-between">
            <div class="flex items-center">
                <div class="mr-sm">
@@ -56,7 +47,7 @@ const mainContent = computed(()=> {
                 </span>
                </div>
                <div>
-                   <div class="font-medium mr-xs font-semibold">{{ name }}</div>
+                   <div class="font-medium mr-xs">{{ name }}</div>
                    <div class="text-gray-400">@{{ username }}</div>
                </div>
            </div>
