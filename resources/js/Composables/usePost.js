@@ -1,6 +1,6 @@
 import {computed, inject} from "vue";
 import {usePage} from "@inertiajs/vue3";
-import {filter, some} from "lodash";
+import {filter} from "lodash";
 
 const usePost = () => {
     const post = computed(() => {
@@ -32,16 +32,16 @@ const usePost = () => {
     });
 
     const accountsHitTextLimit = computed(() => {
-        const postContext = inject('postContext')
+        const postCtx = inject('postCtx')
 
-        return filter(postContext.textLimit, {hit: true});
+        return filter(postCtx.textLimit, {hit: true});
     })
 
     const accountsHitMediaLimit = computed(() => {
-        const postContext = inject('postContext')
+        const postCtx = inject('postCtx')
 
-        return filter(postContext.mediaLimit, (item) => {
-            return item.photos.hit || item.videos.hit || item.gifs.hit || item.is_mixing;
+        return filter(postCtx.mediaLimit, (item) => {
+            return item.photos.hit || item.videos.hit || item.gifs.hit || item.mixing.hit;
         });
     })
 

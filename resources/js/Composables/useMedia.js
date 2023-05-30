@@ -1,9 +1,9 @@
 import NProgress from 'nprogress'
 import {computed, nextTick, ref, watch} from "vue";
-import useNotifications from "@/Composables/useNotifications";
 import {debounce} from "lodash";
+import useNotifications from "@/Composables/useNotifications";
 
-const useMedia = (routeName = 'mixpost.media.fetchUploads') => {
+const useMedia = (routeName = 'mixpost.media.fetchUploads', routeParams = {}) => {
     const {notify} = useNotifications();
 
     const activeTab = ref('uploads');
@@ -54,7 +54,7 @@ const useMedia = (routeName = 'mixpost.media.fetchUploads') => {
 
         NProgress.start();
 
-        axios.get(route(routeName), {
+        axios.get(route(routeName, routeParams), {
             params: {
                 page: page.value,
                 keyword: keyword.value
@@ -88,7 +88,8 @@ const useMedia = (routeName = 'mixpost.media.fetchUploads') => {
     const downloadExternal = (items, callback) => {
         isDownloading.value = true;
         NProgress.start();
-        axios.post(route('mixpost.media.download'), {
+
+        axios.post(route('mixpost.media.download', routeParams), {
             items
         }).then((response) => {
             callback(response);
@@ -109,7 +110,7 @@ const useMedia = (routeName = 'mixpost.media.fetchUploads') => {
         isDeleting.value = true;
         NProgress.start();
 
-        axios.delete(route('mixpost.media.delete'), {
+        axios.delete(route('mixpost.media.delete', routeParams), {
             data: {
                 items
             }

@@ -5,7 +5,7 @@ import {findIndex, minBy, debounce, filter} from "lodash";
 import useEditor from "@/Composables/useEditor";
 import usePostVersions from "@/Composables/usePostVersions";
 
-const postContext = inject('postContext')
+const postCtx = inject('postCtx')
 
 const props = defineProps({
     selectedAccounts: {
@@ -125,21 +125,23 @@ const calc = (limit, used) => {
 }
 
 const pushLimit = (data) => {
-    const index = postContext.textLimit.findIndex(
+    const index = postCtx.textLimit.findIndex(
         (object) => object.account_id === data.account_id
     )
     // If the account ID exists, replace the value
     if (index !== -1) {
-        postContext.textLimit.splice(index, 1, data)
+        postCtx.textLimit.splice(index, 1, data)
     }
     // If the account ID doesn't exist, push the new object to the array
     else {
-        postContext.textLimit.push(data)
+        postCtx.textLimit.push(data)
     }
 }
 
 const removeAllLimits = () => {
-    postContext.textLimit = [];
+    if (postCtx) {
+        postCtx.textLimit = [];
+    }
 }
 
 const initLimits = () => {

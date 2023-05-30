@@ -28,36 +28,35 @@ const resolveProvider = (provider) => {
             <div v-if="accountsHitTextLimit">
                 <p v-for="item in accountsHitTextLimit">
                     <span class="capitalize">{{ resolveProvider(item.provider) }}</span> can only fit {{ item.limit }}
-                    characters.
-                    <span v-if="item.account_name">Check out the <span class="font-semibold">{{
-                            item.account_name
-                        }}</span> version.</span>
+                    characters. <span v-if="item.account_name">Check out the <span class="font-semibold">{{
+                        item.account_name
+                    }}</span> version.</span>
                 </p>
             </div>
 
             <div v-if="accountsHitMediaLimit">
                 <p v-for="item in accountsHitMediaLimit">
-                <span v-if="item.is_mixing">
-                    <span>You cannot mix video, gif and images on {{ resolveProvider(item.provider) }}.</span>
-                </span>
+                    <span v-if="item.mixing.hit">
+                        <span>You cannot mix video, gif and images on {{ resolveProvider(item.mixing.provider) }}.</span>
+                    </span>
                     <span v-else>
                     <span v-if="item.photos.hit">
                         <span class="capitalize">{{
-                                resolveProvider(item.provider)
+                                resolveProvider(item.photos.provider)
                             }}</span> supports up to {{ item.photos.limit }} images.
                     </span>
                     <span v-if="item.videos.hit">
                         <span class="capitalize">{{
-                                resolveProvider(item.provider)
+                                resolveProvider(item.videos.provider)
                             }}</span> supports up to {{ item.videos.limit }} videos.
                     </span>
                     <span v-if="item.gifs.hit">
                         <span class="capitalize">{{
-                                resolveProvider(item.provider)
+                                resolveProvider(item.gifs.provider)
                             }}</span> supports up to {{ item.gifs.limit }} gifs.
                     </span>
                 </span>
-                    <span v-if="item.account_name">Check out the <span class="font-semibold">{{
+                    <span v-if="item.account_name"> Check out the <span class="font-semibold">{{
                             item.account_name
                         }}</span> version.</span>
                 </p>

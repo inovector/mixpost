@@ -27,7 +27,7 @@ const context = reactive({
     mediaLimit: []
 });
 
-provide('postContext', context);
+provide('postCtx', context);
 
 const {isMounted} = useMounted();
 const showPreview = ref(false);

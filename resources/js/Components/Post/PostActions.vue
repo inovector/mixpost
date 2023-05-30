@@ -28,7 +28,7 @@ const {postId, editAllowed, accountsHitTextLimit, accountsHitMediaLimit} = usePo
 
 const emit = defineEmits(['submit'])
 
-const postContext = inject('postContext')
+const postCtx = inject('postCtx')
 
 const timePicker = ref(false);
 
@@ -72,25 +72,29 @@ const schedule = (postNow = false) => {
 
         router.visit(route('mixpost.posts.index'));
     }).catch((error) => {
-        if (error.response.status !== 422) {
-            notify('error', error.response.data.message);
-            return;
-        }
-
-        const validationErrors = error.response.data.errors;
-
-        const mustRefreshPage = validationErrors.hasOwnProperty('in_history') || validationErrors.hasOwnProperty('publishing');
-
-        if (!mustRefreshPage) {
-            notify('error', validationErrors);
-        }
-
-        if (mustRefreshPage) {
-            router.visit(route('mixpost.posts.edit', {post: postId.value}));
-        }
+        handleValidationError(error);
     }).finally(() => {
         isLoading.value = false;
     })
+}
+
+const handleValidationError = (error) => {
+    if (error.response.status !== 422) {
+        notify('error', error.response.data.message);
+        return;
+    }
+
+    const validationErrors = error.response.data.errors;
+
+    const mustRefreshPage = validationErrors.hasOwnProperty('in_history') || validationErrors.hasOwnProperty('publishing');
+
+    if (!mustRefreshPage) {
+        notify('error', validationErrors);
+    }
+
+    if (mustRefreshPage) {
+        router.visit(route('mixpost.posts.edit', {post: postId.value}));
+    }
 }
 
 const confirmationPostNow = ref(false);

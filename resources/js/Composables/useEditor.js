@@ -20,6 +20,10 @@ const useEditor = () => {
         }
     }
 
+    const insertContent = ({editorId, text}) => {
+        emitter.emit('insertContent', {editorId, text});
+    }
+
     const focusEditor = ({editorId}) => {
         emitter.emit('focusEditor', {editorId});
     }
@@ -46,6 +50,7 @@ const useEditor = () => {
     return {
         defaultExtensions,
         insertEmoji,
+        insertContent,
         focusEditor,
         isDocEmpty,
         extractTextFromHtml
