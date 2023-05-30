@@ -19,7 +19,7 @@ const open = ref(false);
                 </div>
                 <div class="flex flex-col w-[calc(100%-3rem)]">
                     <div class="truncate">{{ user.name }}</div>
-                    <div class="text-gray-500 text-sm">
+                    <div class="text-gray-500 text-sm truncate">
                         {{ user.email }}
                     </div>
                 </div>

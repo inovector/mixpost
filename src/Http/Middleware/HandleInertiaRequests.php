@@ -2,6 +2,7 @@
 
 namespace Inovector\Mixpost\Http\Middleware;
 
+use Composer\InstalledVersions;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Inovector\Mixpost\Facades\Settings;
@@ -58,6 +59,7 @@ class HandleInertiaRequests extends Middleware
             },
             'mixpost' => [
                 'docs_link' => 'https://docs.inovector.com',
+                'version' => InstalledVersions::getVersion('inovector/mixpost'),
                 'mime_types' => config('mixpost.mime_types'),
                 'settings' => [
                     'timezone' => Settings::get('timezone'),

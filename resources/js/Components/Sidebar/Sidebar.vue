@@ -97,13 +97,14 @@ import UserMenu from "../Navigation/UserMenu.vue";
             </MenuGroupBody>
         </div>
 
-        <div class="px-xl pt-xl mb-1.5">
+        <div class="px-xl pt-xl mb-xl">
             <UserMenu/>
         </div>
 
         <div class="absolute bottom-0 mb-xs w-full">
             <MenuDelimiter/>
-            <div class="flex items-center justify-center px-xl mt-xs">
+            <div class="flex flex-col items-start  px-xl mt-xs">
+                <div class="text-sm text-gray-500">Lite version: {{ $page.props.mixpost.version }}</div>
                 <a href="https://mixpost.app/pricing"
                    class="text-green-500  hover:text-green-400 transition-colors ease-in-out duration-200 text-sm">
                     Upgrade to Mixpost Pro
