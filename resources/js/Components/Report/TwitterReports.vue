@@ -32,7 +32,7 @@ const getAudienceData = (value) => {
             </Alert>
         </div>
 
-        <div class="grid grid-cols-3 gap-sm">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-sm">
             <Panel>
                 <template #title><span v-tooltip="'The number of times where your posts were liked'">Likes</span>
                 </template>

@@ -13,6 +13,7 @@ import PhotoIcon from "@/Icons/Photo.vue"
 import PackageIcon from "@/Icons/Package.vue"
 import CogIcon from "@/Icons/Cog.vue"
 import ServerStackIcon from "@/Icons/ServerStack.vue"
+import UserMenu from "../Navigation/UserMenu.vue";
 </script>
 <template>
     <div class="w-full h-full flex flex-col py-2xl bg-white border-r border-gray-200">
@@ -26,7 +27,7 @@ import ServerStackIcon from "@/Icons/ServerStack.vue"
             <DarkButtonLink :href="route('mixpost.posts.create')" class="w-full"><PlusIcon class="mr-xs"/> Create post</DarkButtonLink>
         </div>
 
-        <div class="flex flex-col space-y-lg overflow-y-auto px-xl mt-2xl">
+        <div class="flex flex-col space-y-lg overflow-y-auto px-xl mt-2xl h-full">
             <MenuGroupBody>
                 <MenuItem :url="route('mixpost.dashboard')" :active="$page.component === 'Dashboard'">
                     <template #icon>
@@ -91,6 +92,10 @@ import ServerStackIcon from "@/Icons/ServerStack.vue"
                     Services
                 </MenuItem>
             </MenuGroupBody>
+        </div>
+
+        <div class="px-xl pt-xl">
+            <UserMenu/>
         </div>
     </div>
 </template>

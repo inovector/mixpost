@@ -2,6 +2,11 @@
 
 return [
     /*
+    * This option controls the default authentication "guard" for the Mixpost routes
+    */
+    'auth_guard' => env('MIXPOST_AUTH_GUARD', 'web'),
+
+    /*
      * Mixpost will redirect unauthorized users to the route name specified here
      */
     'redirect_unauthorized_users_to_route' => 'login',

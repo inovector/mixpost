@@ -2,6 +2,7 @@
 
 namespace Inovector\Mixpost;
 
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Support\Facades\Gate;
 use Inovector\Mixpost\Commands\ClearSettingsCache;
 use Inovector\Mixpost\Commands\CreateMastodonApp;
@@ -11,6 +12,7 @@ use Inovector\Mixpost\Commands\ProcessMetrics;
 use Inovector\Mixpost\Commands\PublishAssetsCommand;
 use Inovector\Mixpost\Commands\ImportAccountData;
 use Inovector\Mixpost\Commands\RunScheduledPosts;
+use Inovector\Mixpost\Exceptions\MixpostExceptionHandler;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -96,9 +98,16 @@ class MixpostServiceProvider extends PackageServiceProvider
 
     public function packageBooted()
     {
+        $this->registerExceptionHandler();
+
         Gate::define('viewMixpost', function () {
             return true;
         });
+    }
+
+    protected function registerExceptionHandler(): void
+    {
+        app()->bind(ExceptionHandler::class, MixpostExceptionHandler::class);
     }
 
     protected function writeSeparationLine(InstallCommand $command): void

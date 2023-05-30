@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
+import DefineOptions from 'unplugin-vue-define-options/vite'
 import fs from 'fs';
 import { resolve } from 'path';
 import { homedir } from 'os';
@@ -48,6 +49,7 @@ export default defineConfig(({command, mode}) => {
                     },
                 },
             }),
+            DefineOptions()
         ],
         resolve: {
             alias: {

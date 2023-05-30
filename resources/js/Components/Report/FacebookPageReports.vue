@@ -23,7 +23,7 @@ const getAudienceData = (value) => {
 </script>
 <template>
     <div class="row-px mt-2xl">
-        <div class="grid grid-cols-3 gap-sm">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-sm">
             <Panel>
                 <template #title><span v-tooltip="'The number of people who engaged with your Page. Engagement includes any click.'">Page Engaged Users</span>
                 </template>
