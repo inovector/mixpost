@@ -24,7 +24,10 @@ import UserMenu from "../Navigation/UserMenu.vue";
         </div>
 
         <div class="flex px-xl">
-            <DarkButtonLink :href="route('mixpost.posts.create')" class="w-full"><PlusIcon class="mr-xs"/> Create post</DarkButtonLink>
+            <DarkButtonLink :href="route('mixpost.posts.create')" class="w-full">
+                <PlusIcon class="mr-xs"/>
+                Create post
+            </DarkButtonLink>
         </div>
 
         <div class="flex flex-col space-y-lg overflow-y-auto px-xl mt-2xl h-full">
@@ -94,8 +97,18 @@ import UserMenu from "../Navigation/UserMenu.vue";
             </MenuGroupBody>
         </div>
 
-        <div class="px-xl pt-xl">
+        <div class="px-xl pt-xl mb-1.5">
             <UserMenu/>
+        </div>
+
+        <div class="absolute bottom-0 mb-xs w-full">
+            <MenuDelimiter/>
+            <div class="flex items-center justify-center px-xl mt-xs">
+                <a href="https://mixpost.app/pricing"
+                   class="text-green-500  hover:text-green-400 transition-colors ease-in-out duration-200 text-sm">
+                    Buy Mixpost Pro
+                </a>
+            </div>
         </div>
     </div>
 </template>
