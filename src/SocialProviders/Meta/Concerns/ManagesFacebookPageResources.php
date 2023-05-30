@@ -88,22 +88,6 @@ trait ManagesFacebookPageResources
         return $this->buildResponse($response);
     }
 
-    public function getPosts(): SocialProviderResponse
-    {
-        $data = [
-            'access_token' => $this->getAccessToken()['page_access_token'],
-            'metric' => 'page_engaged_users,page_post_engagements,page_posts_impressions',
-            'limit' => 100,
-            'period' => 'day',
-            'since' => Carbon::today('UTC')->subDays(90)->toDateString(),
-            'until' => Carbon::today('UTC')->toDateString(),
-        ];
-
-        $response = Http::get("$this->apiUrl/$this->apiVersion/{$this->values['provider_id']}/feed", $data);
-
-        return $this->buildResponse($response);
-    }
-
     public function deletePost($id): SocialProviderResponse
     {
         return $this->response(SocialProviderResponseStatus::OK, []);
