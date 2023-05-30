@@ -1,6 +1,6 @@
 <?php
 
-namespace Inovector\Mixpost\Traits\Enum;
+namespace Inovector\Mixpost\Concerns\Enum;
 
 trait EnumHandyMethods
 {

@@ -4,18 +4,20 @@ namespace Inovector\Mixpost\Jobs;
 
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Inovector\Mixpost\Actions\AccountPublishPost;
+use Inovector\Mixpost\Concerns\Job\HasSocialProviderJobRateLimit;
 use Inovector\Mixpost\Models\Account;
 use Inovector\Mixpost\Models\Post;
 
 class AccountPublishPostJob implements ShouldQueue
 {
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    use HasSocialProviderJobRateLimit;
 
     public $deleteWhenMissingModels = true;
 
@@ -28,7 +30,7 @@ class AccountPublishPostJob implements ShouldQueue
         $this->post = $post;
     }
 
-    public function handle(AccountPublishPost $accountPublishPost)
+    public function handle(AccountPublishPost $accountPublishPost): void
     {
         if ($this->batch()->cancelled()) {
             return;
@@ -38,6 +40,28 @@ class AccountPublishPostJob implements ShouldQueue
             return;
         }
 
-        $accountPublishPost($this->account, $this->post);
+        if ($retryAfter = $this->rateLimitExpiration()) {
+            $this->release($retryAfter);
+
+            return;
+        }
+
+        $response = $accountPublishPost($this->account, $this->post);
+
+        if ($response->hasExceededRateLimit()) {
+            $this->storeRateLimitExceeded($response->retryAfter(), $response->isAppLevel());
+            $this->release($response->retryAfter());
+
+            return;
+        }
+
+        if ($response->rateLimitAboutToBeExceeded()) {
+            $this->storeRateLimitExceeded($response->retryAfter(), $response->isAppLevel());
+        }
+
+        if ($response->hasError()) {
+            // We are deleting this job from queue because all info about the failed post is in the `mixpost_post_accounts` table.
+            $this->delete();
+        }
     }
 }

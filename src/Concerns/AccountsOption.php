@@ -1,6 +1,6 @@
 <?php
 
-namespace Inovector\Mixpost\Traits\Command;
+namespace Inovector\Mixpost\Concerns;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;

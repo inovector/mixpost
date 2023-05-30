@@ -6,6 +6,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Inovector\Mixpost\Models\Media;
+use Inovector\Mixpost\Util;
 
 class PostVersionResource extends JsonResource
 {
@@ -50,11 +51,11 @@ class PostVersionResource extends JsonResource
             ];
 
             if ($this->isIndexPage()) {
-                $data['excerpt'] = Str::limit(removeHtmlTags($item['body']), 150);
+                $data['excerpt'] = Str::limit(Util::removeHtmlTags($item['body']), 150);
             }
 
             if($this->isCalendarPage()) {
-                $data['excerpt'] = Str::limit(removeHtmlTags($item['body']), 50);
+                $data['excerpt'] = Str::limit(Util::removeHtmlTags($item['body']), 50);
             }
 
             return $data;

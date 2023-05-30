@@ -66,7 +66,7 @@ class PostsController extends Controller
         ]);
     }
 
-    public function store(StorePost $storePost)
+    public function store(StorePost $storePost): RedirectResponse
     {
         $post = $storePost->handle();
 

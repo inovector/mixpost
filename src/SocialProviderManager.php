@@ -4,10 +4,10 @@ namespace Inovector\Mixpost;
 
 use Inovector\Mixpost\Abstracts\SocialProviderManager as SocialProviderManagerAbstract;
 use Inovector\Mixpost\Facades\Services;
-use Inovector\Mixpost\SocialProviders\FacebookGroupProvider;
-use Inovector\Mixpost\SocialProviders\FacebookPageProvider;
-use Inovector\Mixpost\SocialProviders\TwitterProvider;
-use Inovector\Mixpost\SocialProviders\MastodonProvider;
+use Inovector\Mixpost\SocialProviders\Meta\FacebookGroupProvider;
+use Inovector\Mixpost\SocialProviders\Meta\FacebookPageProvider;
+use Inovector\Mixpost\SocialProviders\Twitter\TwitterProvider;
+use Inovector\Mixpost\SocialProviders\Mastodon\MastodonProvider;
 
 class SocialProviderManager extends SocialProviderManagerAbstract
 {

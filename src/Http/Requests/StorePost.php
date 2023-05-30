@@ -5,6 +5,7 @@ namespace Inovector\Mixpost\Http\Requests;
 use Illuminate\Support\Facades\DB;
 use Inovector\Mixpost\Enums\PostStatus;
 use Inovector\Mixpost\Models\Post;
+use Inovector\Mixpost\Util;
 
 class StorePost extends PostFormRequest
 {
@@ -13,7 +14,7 @@ class StorePost extends PostFormRequest
         return DB::transaction(function () {
             $record = Post::create([
                 'status' => PostStatus::DRAFT,
-                'scheduled_at' => $this->scheduledAt() ? convertTimeToUTC($this->scheduledAt()) : null
+                'scheduled_at' => $this->scheduledAt() ? Util::convertTimeToUTC($this->scheduledAt()) : null
             ]);
 
             $record->accounts()->attach($this->input('accounts', []));

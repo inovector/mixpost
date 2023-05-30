@@ -14,6 +14,6 @@ class SocialProviderManager extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'SocialProviderManager';
+        return 'MixpostSocialProviderManager';
     }
 }

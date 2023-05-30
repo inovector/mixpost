@@ -81,15 +81,15 @@ class MixpostServiceProvider extends PackageServiceProvider
 
     public function packageRegistered()
     {
-        $this->app->singleton('SocialProviderManager', function ($app) {
+        $this->app->singleton('MixpostSocialProviderManager', function ($app) {
             return new SocialProviderManager($app);
         });
 
-        $this->app->singleton('Settings', function ($app) {
+        $this->app->singleton('MixpostSettings', function ($app) {
             return new Settings($app);
         });
 
-        $this->app->singleton('Services', function ($app) {
+        $this->app->singleton('MixpostServices', function ($app) {
             return new Services($app);
         });
     }

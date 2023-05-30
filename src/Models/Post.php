@@ -2,8 +2,9 @@
 
 namespace Inovector\Mixpost\Models;
 
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -30,6 +31,20 @@ class Post extends Model
         'published_at' => 'datetime',
     ];
 
+    protected function scheduledAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => $this->attributes['scheduled_at'] ? Carbon::parse($this->attributes['scheduled_at'])->shiftTimezone('UTC') : null,
+        );
+    }
+
+    protected function publishedAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => $this->attributes['published_at'] ? Carbon::parse($this->attributes['published_at'])->shiftTimezone('UTC') : null,
+        );
+    }
+
     public function accounts(): BelongsToMany
     {
         return $this->belongsToMany(Account::class, 'mixpost_post_accounts', 'post_id', 'account_id')
@@ -51,6 +66,16 @@ class Post extends Model
     public function scopeFailed(Builder $query): Builder
     {
         return $query->where('status', PostStatus::FAILED->value);
+    }
+
+    public function scopeScheduled(Builder $query): Builder
+    {
+        return $query->where('status', PostStatus::SCHEDULED->value);
+    }
+
+    public function hasErrors(): bool
+    {
+        return $this->accounts()->wherePivot('errors', '!=', null)->exists();
     }
 
     public function canSchedule(): bool
@@ -84,14 +109,14 @@ class Post extends Model
         return $this->schedule_status->name === PostScheduleStatus::PROCESSING->name;
     }
 
-    public function setDraft()
+    public function setDraft(): void
     {
         $this->status = PostStatus::DRAFT->value;
         $this->schedule_status = PostScheduleStatus::PENDING;
         $this->save();
     }
 
-    public function setScheduled(Carbon|null $date = null)
+    public function setScheduled(Carbon|\Carbon\Carbon|null $date = null): void
     {
         $this->status = PostStatus::SCHEDULED->value;
 
@@ -102,21 +127,21 @@ class Post extends Model
         $this->save();
     }
 
-    public function setScheduleProcessing()
+    public function setScheduleProcessing(): void
     {
         $this->schedule_status = PostScheduleStatus::PROCESSING;
         $this->save();
     }
 
-    public function setPublished()
+    public function setPublished(): void
     {
         $this->status = PostStatus::PUBLISHED->value;
-        $this->published_at = now();
+        $this->published_at = Carbon::now()->utc();
         $this->schedule_status = PostScheduleStatus::PROCESSED;
         $this->save();
     }
 
-    public function setFailed()
+    public function setFailed(): void
     {
         $this->status = PostStatus::FAILED->value;
         $this->schedule_status = PostScheduleStatus::PROCESSED;

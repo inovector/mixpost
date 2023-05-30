@@ -3,11 +3,11 @@
 namespace Inovector\Mixpost\Commands;
 
 use Illuminate\Console\Command;
+use Inovector\Mixpost\Concerns\AccountsOption;
 use Inovector\Mixpost\Jobs\ImportFacebookGroupMembersJob;
 use Inovector\Mixpost\Jobs\ImportFacebookPageFollowersJob;
 use Inovector\Mixpost\Jobs\ImportMastodonFollowersJob;
 use Inovector\Mixpost\Jobs\ImportTwitterFollowersJob;
-use Inovector\Mixpost\Traits\Command\AccountsOption;
 
 class ImportAccountAudience extends Command
 {

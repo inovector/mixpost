@@ -20,6 +20,6 @@ class Settings extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'Settings';
+        return 'MixpostSettings';
     }
 }

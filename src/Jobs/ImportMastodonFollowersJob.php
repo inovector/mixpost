@@ -9,14 +9,21 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Inovector\Mixpost\Facades\SocialProviderManager;
+use Inovector\Mixpost\Concerns\Job\HasSocialProviderJobRateLimit;
+use Inovector\Mixpost\Concerns\Job\SocialProviderJobFail;
+use Inovector\Mixpost\Concerns\UsesSocialProviderManager;
 use Inovector\Mixpost\Models\Account;
 use Inovector\Mixpost\Models\Audience;
-use Inovector\Mixpost\Support\Log;
+use Inovector\Mixpost\SocialProviders\Mastodon\MastodonProvider;
+use Inovector\Mixpost\Support\SocialProviderResponse;
 
 class ImportMastodonFollowersJob implements ShouldQueue
 {
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    use UsesSocialProviderManager;
+    use HasSocialProviderJobRateLimit;
+    use SocialProviderJobFail;
 
     public $deleteWhenMissingModels = true;
 
@@ -27,36 +34,42 @@ class ImportMastodonFollowersJob implements ShouldQueue
         $this->account = $account;
     }
 
-    public function handle()
+    public function handle(): void
     {
-        $total = $this->getFollowersCount();
+        if ($retryAfter = $this->rateLimitExpiration()) {
+            $this->release($retryAfter);
 
-        if ($total === false) {
+            return;
+        }
+
+        /**
+         * @see MastodonProvider
+         * @var SocialProviderResponse $response
+         */
+        $response = $this->connectProvider($this->account)->getAccountMetrics();
+
+        if ($response->hasExceededRateLimit()) {
+            $this->storeRateLimitExceeded($response->retryAfter(), $response->isAppLevel());
+            $this->release($response->retryAfter());
+
+            return;
+        }
+
+        if ($response->rateLimitAboutToBeExceeded()) {
+            $this->storeRateLimitExceeded($response->retryAfter(), $response->isAppLevel());
+        }
+
+        if ($response->hasError()) {
+            $this->makeFail($response);
+
             return;
         }
 
         Audience::updateOrCreate([
             'account_id' => $this->account->id,
-            'date' => Carbon::now()->toDateString()
+            'date' => Carbon::today('UTC')
         ], [
-            'total' => $total
+            'total' => $response->followers_count ?? 0
         ]);
-    }
-
-    protected function getFollowersCount()
-    {
-        $connect = SocialProviderManager::connect($this->account->provider, $this->account->values())->useAccessToken($this->account->access_token->toArray());
-
-        $result = $connect->getAccountMetrics();
-
-        if (isset($result['error'])) {
-            Log::error("{$this->job->getName()}: {$result['error']['desc']}", $this->job->payload());
-
-            $this->delete();
-
-            return false;
-        }
-
-        return $result['followers_count'] ?? 0;
     }
 }

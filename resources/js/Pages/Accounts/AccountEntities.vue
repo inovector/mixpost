@@ -37,10 +37,10 @@ const save = () => {
 <template>
     <Head :title="title"/>
 
-    <div class="max-w-5xl mx-auto row-py">
+    <div class="w-full max-w-6xl mx-auto row-py">
         <PageHeader title="Choose entity">
             <template #description>
-                Select the social entities you want to connect to Mixpost
+                Select the social entities you want to connect
             </template>
         </PageHeader>
 
@@ -49,9 +49,22 @@ const save = () => {
                 <div v-for="entity in entities" class="mb-sm last:mb-0">
                     <label class="flex items-center cursor-pointer">
                         <Checkbox v-model:checked="form.selected" :value="entity.id" class="mr-md"/>
+
                         <span class="flex items-center">
-                            <img :src="entity.image" class="rounded-full w-8 h-8 object-cover mr-xs border border-gray-200" alt="Image"/>
-                            <span class="font-semibold">{{ entity.name }}</span>
+                            <img :src="entity.image"
+                                 class="rounded-full w-8 h-8 object-cover mr-xs border border-gray-200" alt="Image"/>
+                            <span>
+                               <span class="font-semibold">
+                                    <span>{{ entity.name }}</span>
+                                    <span v-if="entity.data &&
+                                    entity.data.hasOwnProperty('suffix') &&
+                                    entity.data.suffix.value">
+                                        ({{ entity.data.suffix.value }})
+                                    </span>
+                               </span>
+                               <span v-if="entity.connected"
+                                     class="block text-green-500 text-sm font-medium">Connected</span>
+                            </span>
                         </span>
                     </label>
                 </div>

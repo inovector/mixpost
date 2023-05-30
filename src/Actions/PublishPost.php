@@ -23,9 +23,7 @@ class PublishPost
         Bus::batch($jobs)
             ->allowFailures()
             ->finally(function () use ($post) {
-                $hasErrors = $post->accounts()->wherePivot('errors', '!=', null)->exists();
-
-                if ($hasErrors) {
+                if ($post->hasErrors()) {
                     $post->setFailed();
                     return;
                 }

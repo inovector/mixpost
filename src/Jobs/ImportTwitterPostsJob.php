@@ -10,14 +10,20 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Arr;
-use Inovector\Mixpost\Facades\SocialProviderManager;
+use Inovector\Mixpost\Concerns\Job\HasSocialProviderJobRateLimit;
+use Inovector\Mixpost\Concerns\Job\SocialProviderJobFail;
+use Inovector\Mixpost\Concerns\UsesSocialProviderManager;
 use Inovector\Mixpost\Models\Account;
 use Inovector\Mixpost\Models\ImportedPost;
-use Inovector\Mixpost\Support\Log;
+use Inovector\Mixpost\SocialProviders\Twitter\TwitterProvider;
 
 class ImportTwitterPostsJob implements ShouldQueue
 {
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    use UsesSocialProviderManager;
+    use HasSocialProviderJobRateLimit;
+    use SocialProviderJobFail;
 
     public $deleteWhenMissingModels = true;
 
@@ -30,36 +36,48 @@ class ImportTwitterPostsJob implements ShouldQueue
         $this->params = $params;
     }
 
-    public function handle()
+    public function handle(): void
     {
-        $result = $this->getTwitterPosts();
+        if ($retryAfter = $this->rateLimitExpiration()) {
+            $this->release($retryAfter);
 
-        if (!$result) {
             return;
         }
 
-        $this->import($result['data']);
+        /**
+         * @var TwitterProvider $provider
+         */
+        $provider = $this->connectProvider($this->account);
 
-        if (isset($result['meta']->next_token)) {
-            ImportTwitterPostsJob::dispatch($this->account, ['pagination_next_token' => $result['meta']->next_token])->delay(60);
-        }
-    }
-
-    protected function getTwitterPosts()
-    {
-        $connect = SocialProviderManager::connect($this->account->provider, $this->account->values())->useAccessToken($this->account->access_token->toArray());
-
-        $result = $connect->getUserTweetTimeline($this->account->provider_id, $this->params['pagination_next_token'] ?? '');
-
-        if (isset($result['error'])) {
-            Log::error("{$this->job->getName()}: {$result['error']['desc']}", $this->job->payload());
-
-            $this->delete();
-
-            return false;
+        // Twitter `free` Tier doesn't support endpoints from this job
+        if ($provider->getTier() === 'free') {
+            return;
         }
 
-        return $result;
+        $response = $provider->getUserTweetTimeline($this->account->provider_id, $this->params['pagination_next_token'] ?? '');
+
+        if ($response->hasExceededRateLimit()) {
+            $this->storeRateLimitExceeded($response->retryAfter(), $response->isAppLevel());
+            $this->release($response->retryAfter());
+
+            return;
+        }
+
+        if ($response->rateLimitAboutToBeExceeded()) {
+            $this->storeRateLimitExceeded($response->retryAfter(), $response->isAppLevel());
+        }
+
+        if ($response->hasError()) {
+            $this->makeFail($response);
+
+            return;
+        }
+
+        $this->import($response->data);
+
+        if (isset($response->meta->next_token)) {
+            ImportTwitterPostsJob::dispatch($this->account, ['pagination_next_token' => $response->meta->next_token])->delay(60);
+        }
     }
 
     protected function import(array $items): void
@@ -76,7 +94,7 @@ class ImportTwitterPostsJob implements ShouldQueue
                     'replies' => $item->public_metrics->reply_count ?? 0,
                     'retweets' => $item->public_metrics->retweet_count ?? 0,
                 ]),
-                'created_at' => Carbon::parse($item->created_at)->toDateString()
+                'created_at' => Carbon::parse($item->created_at, 'UTC')->toDateString()
             ];
         });
 

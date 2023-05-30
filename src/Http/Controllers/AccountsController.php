@@ -7,15 +7,15 @@ use Illuminate\Routing\Controller;
 use Inertia\Inertia;
 use Inertia\Response;
 use Inovector\Mixpost\Actions\UpdateOrCreateAccount;
+use Inovector\Mixpost\Concerns\UsesSocialProviderManager;
 use Inovector\Mixpost\Facades\Services;
-use Inovector\Mixpost\Facades\SocialProviderManager;
 use Inovector\Mixpost\Http\Resources\AccountResource;
 use Inovector\Mixpost\Models\Account;
-use Inovector\Mixpost\Support\Log;
-use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 class AccountsController extends Controller
 {
+    use UsesSocialProviderManager;
+
     public function index(): Response
     {
         return Inertia::render('Accounts/Accounts', [
@@ -29,28 +29,31 @@ class AccountsController extends Controller
 
     public function update(Account $account): RedirectResponse
     {
-        $provider = SocialProviderManager::connect($account->provider, $account->values());
-        $provider->setAccessToken($account->access_token->toArray());
+        $connection = $this->connectProvider($account);
 
-        $result = $provider->getAccount();
+        $response = $connection->getAccount();
 
-        if (isset($result['error'])) {
-            if ($result['error']['status'] === HttpResponse::HTTP_UNAUTHORIZED) {
+        if ($response->hasError()) {
+            if ($response->isUnauthorized()) {
                 return redirect()->back()->with('error', 'The account cannot be updated. Re-authenticate your account.');
             }
 
-            Log::error("Update Account: {$result['error']['desc']}", $account->toArray());
-
-            return redirect()->back()->with('error', 'The account cannot be updated. Internal Error!.');
+            return redirect()->back()->with('error', 'The account cannot be updated.');
         }
 
-        (new UpdateOrCreateAccount())($account->provider, $result, $account->access_token->toArray());
+        (new UpdateOrCreateAccount())($account->provider, $response->context(), $account->access_token->toArray());
 
         return redirect()->back();
     }
 
     public function delete(Account $account): RedirectResponse
     {
+        $connection = $this->connectProvider($account);
+
+        if (method_exists($connection, 'revokeToken')) {
+            $connection->revokeToken();
+        }
+
         $account->delete();
 
         return redirect()->back();

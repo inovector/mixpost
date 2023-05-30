@@ -3,10 +3,10 @@
 namespace Inovector\Mixpost\Commands;
 
 use Illuminate\Console\Command;
+use Inovector\Mixpost\Concerns\AccountsOption;
 use Inovector\Mixpost\Jobs\ImportFacebookInsightsJob;
 use Inovector\Mixpost\Jobs\ImportMastodonPostsJob;
 use Inovector\Mixpost\Jobs\ImportTwitterPostsJob;
-use Inovector\Mixpost\Traits\Command\AccountsOption;
 
 class ImportAccountData extends Command
 {

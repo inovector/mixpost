@@ -57,6 +57,7 @@ class HandleInertiaRequests extends Middleware
                 ];
             },
             'mixpost' => [
+                'docs_link' => 'https://docs.inovector.com',
                 'mime_types' => config('mixpost.mime_types'),
                 'settings' => [
                     'timezone' => Settings::get('timezone'),

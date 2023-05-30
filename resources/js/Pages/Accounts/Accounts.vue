@@ -143,7 +143,7 @@ const closeConfirmationAccountDeletion = () => {
                                 :active="true"
                             />
 
-                            <div class="mt-sm font-semibold text-center">{{ account.name }}</div>
+                            <div class="mt-sm font-semibold text-center break-words">{{ account.name }}</div>
                             <div class="mt-1 text-center text-stone-800">Added: {{ account.created_at }}</div>
                         </div>
                     </Panel>
@@ -175,10 +175,10 @@ const closeConfirmationAccountDeletion = () => {
            :closeable="true"
            @close="addAccountModal = false">
         <div class="flex flex-col">
-            <AddTwitterAccount v-if="$page.props.has_service.twitter"/>
             <AddFacebookPage v-if="$page.props.has_service.facebook"/>
             <AddFacebookGroup v-if="$page.props.has_service.facebook"/>
             <AddMastodonAccount/>
+            <AddTwitterAccount v-if="$page.props.has_service.twitter"/>
         </div>
     </Modal>
 </template>
