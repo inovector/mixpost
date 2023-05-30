@@ -15,10 +15,9 @@ Mixpost it's the coolest Self-hosted social media management software.
 This package is the Lite version of Mixpost Pro,
 and by integrating it into your Laravel project, you can easily create, schedule, publish, and manage social media content in one place, with no limits or monthly subscription fees.
 
-It's the perfect social media management solution for bloggers, crafters and entrepreneurs.
+It is the ideal social media management software for bloggers, artisans, entrepreneurs, and marketing teams looking to optimize internal costs.
 
-**Mixpost Pro is under development and will be released soon. Sign up to be notified when it's
-released [mixpost.app](https://mixpost.app/)**
+**[Unlock the full potential of Mixpost with Mixpost Pro](https://mixpost.app/pricing)**
 
 Join our community:
 
@@ -38,7 +37,9 @@ Join our community:
 
 ## Installation
 
-You may use Composer to install Mixpost into your new Laravel project:
+If you have experience with Laravel and PHP, but don't want to install Mixpost in an existing Laravel application, you can use our standalone app. This standalone app is a regular Laravel app, which Mixpost has been preinstalled with. You can [use Composer to create this standalone app](https://github.com/inovector/MixpostApp).
+
+If you already have a Laravel (9 or 10) application, you may use Composer to install Mixpost into your Laravel project:
 
 ```bash
 composer require inovector/mixpost
