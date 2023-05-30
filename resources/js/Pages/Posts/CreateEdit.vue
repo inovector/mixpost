@@ -18,7 +18,7 @@ import PostLimitErrors from "@/Components/Post/PostLimitErrors.vue";
 import EyeIcon from "@/Icons/Eye.vue"
 import EyeOffIcon from "@/Icons/EyeOff.vue"
 
-const props = defineProps(['post', 'schedule_at', 'accounts']);
+const props = defineProps(['post', 'schedule_at', 'accounts', 'prefill']);
 
 const post = props.post ? cloneDeep(props.post) : null;
 
@@ -41,7 +41,7 @@ const {notify} = useNotifications();
 
 const form = useForm({
     accounts: post ? post.accounts.map(account => account.id) : [],
-    versions: post ? post.versions : [versionObject(0, true)],
+    versions: post ? post.versions : [versionObject(0, true, props.prefill.body)],
     tags: post ? post.tags : [],
     date: post ? post.scheduled_at.date : props.schedule_at.date,
     time: post ? post.scheduled_at.time : props.schedule_at.time,

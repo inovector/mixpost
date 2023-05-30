@@ -53,6 +53,25 @@ it('shows create form', function () {
         );
 });
 
+it('shows create form with prefill body', function () {
+    $this->actingAs(test()->user);
+
+    $this->publishAssets();
+
+    Account::factory()->count(3)->create();
+    Tag::factory(4)->create();
+
+    $this->get(route('mixpost.posts.create', [
+        'body' => 'testbody',
+    ]))
+        ->assertInertia(fn(Assert $page) => $page
+            ->component('Posts/CreateEdit')
+            ->has('accounts', 3)
+            ->has('tags', 4)
+            ->where('prefill.body', 'testbody')
+        );
+});
+
 it('shows edit form', function () {
     $this->actingAs(test()->user);
 
