@@ -51,6 +51,16 @@ After installing the Mixpost package, you may execute:
 php artisan mixpost:install
 ```
 
+To ensure that these assets get republished each time Mixpost is updated, we strongly advise you to add the following command to the `post-update-cmd` of the scripts section of your `composer.json`.
+
+```bash
+"scripts": {
+    "post-update-cmd": [
+        "@php artisan mixpost:publish-assets --force=true"
+    ]
+}
+```
+
 Mixpost uses [Job Batching](https://laravel.com/docs/10.x/queues#job-batching) and you should create a database migration
 to build a table to contain meta information about your job batches.
 
