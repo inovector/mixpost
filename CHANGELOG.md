@@ -2,6 +2,27 @@
 
 All notable changes to `mixpost` will be documented in this file.
 
+## v1.2.0 - 2023-05-31
+
+- Twitter API Refactory
+- Support Facebook API v.17 (added "business_management" scope)
+- Add a "docs" link to the service form
+- Add User menu in the sidebar
+- Support update profile information
+- Support update password
+- Social Providers' Rate-Limit optimized
+- Customize the error page
+- Link to the post on the social platform
+- Improve post validation
+- Improve preview post
+- Improve connecting account entities
+- Fix calendar posts order
+- Fix account long name
+- Fix post tag creation
+- Show the current version in the footer of the sidebar
+- Prefill the body on creating a post by URL ?body=the text
+- Add minor improvements and bug fixes
+
 ## v1.1.3 - 2023-03-18
 
 Fix & prevent errors when the app tries to decrypt data with a new key.
