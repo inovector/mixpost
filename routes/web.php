@@ -102,7 +102,7 @@ Route::middleware([
         Route::prefix('profile')->name('profile.')->group(function () {
             Route::get('/', [ProfileController::class, 'index'])->name('index');
             Route::put('user', UpdateAuthUserController::class)->name('updateUser');
-            Route::put('password', UpdateAuthUserPasswordController::class)->name('changePassword');
+            Route::put('password', UpdateAuthUserPasswordController::class)->name('updatePassword');
         });
 
         Route::post('logout', [AuthenticatedController::class, 'destroy'])

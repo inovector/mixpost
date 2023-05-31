@@ -15,7 +15,7 @@ const form = useForm({
     password_confirmation: ''
 });
 const save = () => {
-    form.put(route('mixpost.profile.changePassword'), {
+    form.put(route('mixpost.profile.updatePassword'), {
         preserveScroll: true,
         onSuccess() {
             form.reset();
