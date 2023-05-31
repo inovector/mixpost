@@ -28,7 +28,7 @@ test('calendar page - Month type', function () {
             'status' => PostStatus::SCHEDULED,
             'schedule_status' => PostScheduleStatus::PENDING,
         ])
-        ->withScheduledAtBetweenDates(Carbon::now()->subMonth()->startOfMonth(), Carbon::now()->subMonth()->endOfMonth())
+        ->withScheduledAtBetweenDates(Carbon::now()->subMonths(3)->startOfMonth(), Carbon::now()->subMonths(3)->endOfMonth())
         ->create();
 
     Post::factory()
@@ -61,7 +61,7 @@ test('calendar page - Week type', function () {
             'status' => PostStatus::SCHEDULED,
             'schedule_status' => PostScheduleStatus::PENDING,
         ])
-        ->withScheduledAtBetweenDates(Carbon::now()->subMonth()->startOfWeek(), Carbon::now()->subMonth()->endOfWeek())
+        ->withScheduledAtBetweenDates(Carbon::now()->subMonths(3)->startOfWeek(), Carbon::now()->subMonths(3)->endOfWeek())
         ->create();
 
     Post::factory()
