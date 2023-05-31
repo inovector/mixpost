@@ -2,7 +2,7 @@
 
 namespace Inovector\Mixpost\Enums;
 
-use Inovector\Mixpost\Traits\Enum\EnumHandyMethods;
+use Inovector\Mixpost\Concerns\Enum\EnumHandyMethods;
 
 enum FacebookInsightType: int
 {

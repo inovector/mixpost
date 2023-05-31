@@ -13,7 +13,7 @@ import PostAddMedia from "@/Components/Post/PostAddMedia.vue"
 import PostMedia from "@/Components/Post/PostMedia.vue"
 import PostCharacterCount from "@/Components/Post/PostCharacterCount.vue"
 
-const postContext = inject('postContext')
+const postCtx = inject('postCtx')
 
 const props = defineProps({
     form: {
@@ -99,7 +99,10 @@ const addVersion = (accountId) => {
     let newVersion = versionObject(accountId);
 
     // Copy content from the default version to the new version
-    newVersion.content = cloneDeep(getOriginalVersion(props.form.versions).content);
+    const originalVersion = getOriginalVersion(props.form.versions);
+
+    newVersion.content = cloneDeep(originalVersion.content);
+    newVersion.options = cloneDeep(originalVersion.options);
 
     props.form.versions.push(newVersion);
 
@@ -148,7 +151,7 @@ watch(() => props.form.accounts, () => {
     setupVersions();
 });
 
-const {insertEmoji, focusEditor} = useEditor();
+const {insertEmoji, insertContent, focusEditor} = useEditor();
 </script>
 <template>
     <div class="flex flex-wrap items-center gap-sm mb-lg">
@@ -157,6 +160,7 @@ const {insertEmoji, focusEditor} = useEditor();
                     :disabled="isAccountUnselectable(account)">
                 <Account
                     :provider="account.provider"
+                    :name="account.name"
                     :img-url="account.image"
                     :warning-message="isAccountUnselectable(account) ? capitalize(account.provider) + ' does not allow simultaneous posting of identical content to multiple accounts.' : ''"
                     :active="isAccountSelected(account)"

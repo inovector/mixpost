@@ -6,11 +6,11 @@ const usePostVersions = () => {
         };
     }
 
-    const versionObject = (accountId = 0, isOriginal = false) => {
+    const versionObject = (accountId = 0, isOriginal = false, body = '') => {
         return {
             account_id: accountId,
             is_original: isOriginal,
-            content: [versionContentObject()]
+            content: [versionContentObject(body)]
         }
     }
 

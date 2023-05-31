@@ -13,7 +13,8 @@ it('can update a service', function () {
 
     $credentials = [
         'client_id' => 'my-client-id',
-        'client_secret' => 'my-client-secret'
+        'client_secret' => 'my-client-secret',
+        'tier' => 'free'
     ];
 
     $this->putJson(route('mixpost.services.update', ['service' => 'twitter']), $credentials)->assertStatus(302);

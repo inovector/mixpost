@@ -81,10 +81,10 @@ const store = () => {
         const nonUsedColors = difference(colorList, tags.value.map(tag => tag.hex_color));
 
         if (!nonUsedColors.length) {
-            return colorList[random(0, colorList.length)]
+            return colorList[random(0, colorList.length - 1)]
         }
 
-        return nonUsedColors[random(0, nonUsedColors.length)]
+        return nonUsedColors[random(0, nonUsedColors.length - 1)]
     }
 
     router.post(route('mixpost.tags.store'), {

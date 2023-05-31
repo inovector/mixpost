@@ -15,10 +15,9 @@ Mixpost it's the coolest Self-hosted social media management software.
 This package is the Lite version of Mixpost Pro,
 and by integrating it into your Laravel project, you can easily create, schedule, publish, and manage social media content in one place, with no limits or monthly subscription fees.
 
-It's the perfect social media management solution for bloggers, crafters and entrepreneurs.
+It is the ideal social media management software for bloggers, artisans, entrepreneurs, and marketing teams looking to optimize internal costs.
 
-**Mixpost Pro is under development and will be released soon. Sign up to be notified when it's
-released [mixpost.app](https://mixpost.app/)**
+**[Unlock the full potential of Mixpost with Mixpost Pro](https://mixpost.app/pricing)**
 
 Join our community:
 
@@ -38,7 +37,9 @@ Join our community:
 
 ## Installation
 
-You may use Composer to install Mixpost into your new Laravel project:
+If you have experience with Laravel and PHP, but don't want to install Mixpost in an existing Laravel application, you can use our standalone app. This standalone app is a regular Laravel app, which Mixpost has been preinstalled with. You can [use Composer to create this standalone app](https://github.com/inovector/MixpostApp).
+
+If you already have a Laravel (9 or 10) application, you may use Composer to install Mixpost into your Laravel project:
 
 ```bash
 composer require inovector/mixpost
@@ -69,124 +70,6 @@ You can publish the config file with:
 
 ```bash
 php artisan vendor:publish --tag=mixpost-config
-```
-
-This is the contents of the published config file:
-
-```php
-return [
-    /*
-     * Mixpost will redirect unauthorized users to the route name specified here
-     */
-    'redirect_unauthorized_users_to_route' => 'login',
-
-    /*
-     * The disk on which to store added files.
-     * Choose one or more of the disks you've configured in config/filesystems.php.
-     */
-    'disk' => env('MIXPOST_DISK', 'public'),
-
-    /*
-     * Indicate that the uploaded file should be no more than the given number of kilobytes.
-     * Adding a larger file will result in an exception.
-     */
-    'max_file_size' => [
-        'image' => 1024 * 5, // 5MB
-        'gif' => 1024 * 15, // 15MB
-        'video' => 1024 * 200 // 200MB
-    ],
-
-    /*
-     * Accepted mime types for media library upload.
-     * These are all supported mime types for the image and video files. We do not guarantee that it will work with other types.
-     * If you need to remove certain mime types, you are free to do so from here.
-     */
-    'mime_types' => [
-        'image/jpg',
-        'image/jpeg',
-        'image/gif',
-        'image/png',
-        'video/mp4'
-    ],
-
-    /*
-     * The path where to store temporary files while performing image conversions.
-     * If set to null, storage_path('mixpost-media/temp') will be used.
-     */
-    'temporary_directory_path' => null,
-
-    /*
-     * FFMPEG & FFProbe binaries paths, only used if you try to generate video thumbnails
-     */
-    'ffmpeg_path' => env('FFMPEG_PATH', '/usr/bin/ffmpeg'),
-    'ffprobe_path' => env('FFPROBE_PATH', '/usr/bin/ffprobe'),
-
-    /*
-     * Define cache prefix
-     */
-    'cache_prefix' => env('MIXPOST_CACHE_PREFIX', 'mixpost'),
-
-    /*
-     * Define log channel
-     * Captures connection errors with social networks or third parties used in Mixpost in a separate channel.
-     * Leave blank if you want to use Laravel's default log channel
-     */
-    'log_channel' => env('MIXPOST_LOG_CHANNEL'),
-
-    /*
-     * The media component is integrated with third-party services Unsplash.com and Tenor.com
-     * Defines the default terms for displaying media resources
-     */
-    'external_media_terms' => ['young', 'social', 'mix', 'content', 'viral', 'trend', 'test', 'light', 'true', 'false', 'marketing', 'self-hosted', 'ambient', 'writer', 'technology'],
-
-    /*
-     * Options for each social network
-     * We recommend leaving these options unchanged
-     * You only change them when the API policy of the social networks changes, and you know what you are doing.
-     */
-    'social_provider_options' => [
-        'twitter' => [
-            'simultaneous_posting_on_multiple_accounts' => false,
-            'post_character_limit' => 280,
-            'media_limit' => [
-                'photos' => 4,
-                'videos' => 1,
-                'gifs' => 1,
-                'allow_mixing' => false,
-            ]
-        ],
-        'facebook_page' => [
-            'simultaneous_posting_on_multiple_accounts' => true,
-            'post_character_limit' => 5000,
-            'media_limit' => [
-                'photos' => 10,
-                'videos' => 1,
-                'gifs' => 1,
-                'allow_mixing' => false,
-            ]
-        ],
-        'facebook_group' => [
-            'simultaneous_posting_on_multiple_accounts' => true,
-            'post_character_limit' => 5000,
-            'media_limit' => [
-                'photos' => 10,
-                'videos' => 1,
-                'gifs' => 1,
-                'allow_mixing' => false,
-            ]
-        ],
-        'mastodon' => [
-            'simultaneous_posting_on_multiple_accounts' => true,
-            'post_character_limit' => 500,
-            'media_limit' => [
-                'photos' => 4,
-                'videos' => 1,
-                'gifs' => 1,
-                'allow_mixing' => false,
-            ]
-        ]
-    ],
-];
 ```
 
 Mixpost has the ability to generate images from video while uploading a video file. This would not be possible without
@@ -229,7 +112,7 @@ named `mixpost-heavy` to both the `production` and `local` environment.
                 'connection' => 'mixpost-redis',
                 'queue' => ['publish-post'],
                 'balance' => 'auto',
-                'processes' => 3,
+                'processes' => 8,
                 'tries' => 1,
                 'timeout' => 60 * 60,
             ],
@@ -281,8 +164,6 @@ command=php /path-to-your-project/artisan horizon
 autostart=true
 autorestart=true
 user=your_user_name
-redirect_stderr=true
-stdout_logfile=/path-to-your-project/storage/logs/horizon.log
 stopwaitsecs=3600
 ```
 

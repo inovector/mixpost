@@ -7,6 +7,8 @@ import History from '@tiptap/extension-history'
 import Placeholder from '@tiptap/extension-placeholder'
 import Typography from '@tiptap/extension-typography'
 import StripLinksOnPaste from "@/Extensions/TipTap/StripLinksOnPaste"
+import Hashtag from "@/Extensions/TipTap/Hashtag"
+import UserTag from "@/Extensions/TipTap/UserTag"
 
 const attrs = useAttrs();
 
@@ -45,7 +47,9 @@ const editor = useEditor({
             openSingleQuote: false,
             closeSingleQuote: false
         }),
-        StripLinksOnPaste
+        StripLinksOnPaste,
+        Hashtag,
+        UserTag
     ]],
     editorProps: {
         attributes: {
@@ -78,6 +82,12 @@ onMounted(() => {
         }
     });
 
+    emitter.on('insertContent', e => {
+        if (isEditor(e.editorId)) {
+            editor.value.commands.insertContent(e.text);
+        }
+    });
+
     emitter.on('focusEditor', e => {
         if (isEditor(e.editorId)) {
             editor.value.commands.focus();
@@ -88,6 +98,7 @@ onMounted(() => {
 onUnmounted(() => {
     editor.value.destroy();
     emitter.off('insertEmoji');
+    emitter.off('insertContent');
     emitter.off('focusEditor');
 });
 

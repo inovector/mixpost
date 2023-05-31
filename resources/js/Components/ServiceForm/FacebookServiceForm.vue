@@ -48,23 +48,24 @@ const save = () => {
                 <a href="https://developers.facebook.com/apps" class="link" target="_blank">Create an App on
                     Facebook</a>. Select "Business" for the type of application.
             </p>
-            <ReadDocHelp href="https://mixpost.app/docs/1.0.0/facebook" class="mt-xs"/>
+            <ReadDocHelp :href="`${$page.props.mixpost.docs_link}/books/services-configuration-mixpost/page/facebook`" class="mt-xs"/>
         </template>
 
         <HorizontalGroup class="mt-lg">
             <template #title>App ID</template>
-            <div class="w-full">
-                <Input v-model="form.client_id" type="text" class="w-full" autocomplete="off"/>
+            <Input v-model="form.client_id" :error="errors.hasOwnProperty('client_id')" type="text" class="w-full" autocomplete="off"/>
+
+            <template #footer>
                 <Error :message="errors.client_id"/>
-            </div>
+            </template>
         </HorizontalGroup>
 
         <HorizontalGroup class="mt-lg">
             <template #title>App secret</template>
-            <div class="w-full">
-                <Input v-model="form.client_secret" type="password" class="w-full" autocomplete="new-password"/>
+            <Input v-model="form.client_secret" :error="errors.hasOwnProperty('client_secret')" type="password" class="w-full" autocomplete="new-password"/>
+            <template #footer>
                 <Error :message="errors.client_secret"/>
-            </div>
+            </template>
         </HorizontalGroup>
 
         <PrimaryButton @click="save" class="mt-lg">Save</PrimaryButton>

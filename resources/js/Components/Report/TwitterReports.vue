@@ -1,6 +1,7 @@
 <script setup>
 import Panel from "@/Components/Surface/Panel.vue";
 import ChartBar from "@/Components/Package/ChartBar.vue";
+import Alert from "../Util/Alert.vue";
 
 const props = defineProps({
     data: {
@@ -23,7 +24,15 @@ const getAudienceData = (value) => {
 </script>
 <template>
     <div class="row-px mt-2xl">
-        <div class="grid grid-cols-3 gap-sm">
+        <div v-if="data.tier === 'free'" class="mb-lg">
+            <Alert variant="warning" :closeable="false">
+                <div>You are using Free Tier Twitter API. Reports may be limited.</div>
+                <a href="https://developer.twitter.com/en/portal/dashboard" target="_blank" class="underline">Upgrade
+                    Twitter API Tier</a>
+            </Alert>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-sm">
             <Panel>
                 <template #title><span v-tooltip="'The number of times where your posts were liked'">Likes</span>
                 </template>

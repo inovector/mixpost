@@ -47,15 +47,15 @@ const save = () => {
                 <a href="https://console.cloud.google.com/" class="link" target="_blank">Create
                     an App on Google Console</a>.
             </p>
-            <ReadDocHelp href="https://mixpost.app/docs/1.0.0/tenor" class="mt-xs"/>
+            <ReadDocHelp :href="`${$page.props.mixpost.docs_link}/books/services-configuration-mixpost/page/tenor`" class="mt-xs"/>
         </template>
 
         <HorizontalGroup class="mt-lg">
             <template #title>API Key</template>
-            <div class="w-full">
-                <Input v-model="form.client_id" type="text" autocomplete="off"/>
+            <Input v-model="form.client_id" :error="errors.hasOwnProperty('client_id')" type="text" autocomplete="off"/>
+            <template #footer>
                 <Error :message="errors.client_id"/>
-            </div>
+            </template>
         </HorizontalGroup>
 
         <PrimaryButton @click="save" class="mt-lg">Save</PrimaryButton>

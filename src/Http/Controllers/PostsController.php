@@ -59,6 +59,9 @@ class PostsController extends Controller
                 'date' => Str::before($request->route('schedule_at'), ' '),
                 'time' => Str::after($request->route('schedule_at'), ' '),
             ],
+            'prefill' => [
+                'body' => $request->query('body', '')
+            ],
             'has_service' => [
                 'unsplash' => !!Services::get('unsplash', 'client_id'),
                 'tenor' => !!Services::get('tenor', 'client_id')
@@ -66,7 +69,7 @@ class PostsController extends Controller
         ]);
     }
 
-    public function store(StorePost $storePost)
+    public function store(StorePost $storePost): RedirectResponse
     {
         $post = $storePost->handle();
 

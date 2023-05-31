@@ -22,6 +22,7 @@ import RefreshIcon from "@/Icons/Refresh.vue";
 import TrashIcon from "@/Icons/Trash.vue";
 import Alert from "@/Components/Util/Alert.vue";
 import PrimaryButton from "@/Components/Button/PrimaryButton.vue";
+import PureButton from "@/Components/Button/PureButton.vue";
 
 const props = defineProps({
     has_service: {
@@ -43,6 +44,7 @@ const anyUnconfiguredServices = computed(() => {
 
 const updateAccount = (accountId) => {
     router.put(route('mixpost.accounts.update', {account: accountId}), {}, {
+        preserveScroll: true,
         onSuccess(response) {
             if (response.props.flash.error) {
                 return;
@@ -55,6 +57,7 @@ const updateAccount = (accountId) => {
 
 const deleteAccount = () => {
     router.delete(route('mixpost.accounts.delete', {account: confirmationAccountDeletion.value}), {
+        preserveScroll: true,
         onStart() {
             accountIsDeleting.value = true;
         },
@@ -114,9 +117,9 @@ const closeConfirmationAccountDeletion = () => {
                         <div class="absolute top-0 right-0 mt-sm mr-sm">
                             <Dropdown width-classes="w-32">
                                 <template #trigger>
-                                    <SecondaryButton size="xs">
+                                    <PureButton>
                                         <EllipsisVerticalIcon/>
-                                    </SecondaryButton>
+                                    </PureButton>
                                 </template>
 
                                 <template #content>
@@ -140,7 +143,7 @@ const closeConfirmationAccountDeletion = () => {
                                 :active="true"
                             />
 
-                            <div class="mt-sm font-semibold text-center">{{ account.name }}</div>
+                            <div class="mt-sm font-semibold text-center break-words">{{ account.name }}</div>
                             <div class="mt-1 text-center text-stone-800">Added: {{ account.created_at }}</div>
                         </div>
                     </Panel>
@@ -172,10 +175,10 @@ const closeConfirmationAccountDeletion = () => {
            :closeable="true"
            @close="addAccountModal = false">
         <div class="flex flex-col">
-            <AddTwitterAccount v-if="$page.props.has_service.twitter"/>
             <AddFacebookPage v-if="$page.props.has_service.facebook"/>
             <AddFacebookGroup v-if="$page.props.has_service.facebook"/>
             <AddMastodonAccount/>
+            <AddTwitterAccount v-if="$page.props.has_service.twitter"/>
         </div>
     </Modal>
 </template>

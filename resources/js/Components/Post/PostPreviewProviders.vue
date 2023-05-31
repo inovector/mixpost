@@ -1,18 +1,16 @@
 <script setup>
 import {computed} from "vue";
 import usePostVersions from "@/Composables/usePostVersions";
-import PostPreviewTwitter from "@/Components/Post/PostPreviewTwitter.vue"
-import PostPreviewFacebook from "@/Components/Post/PostPreviewFacebook.vue"
-import PostPreviewMastodon from "@/Components/Post/PostPreviewMastodon.vue"
+import PostPreviewTwitter from "@/Components/PostPreview/PostPreviewTwitter.vue"
+import PostPreviewFacebook from "@/Components/PostPreview/PostPreviewFacebook.vue"
+import PostPreviewMastodon from "@/Components/PostPreview/PostPreviewMastodon.vue"
 import Panel from "@/Components/Surface/Panel.vue";
 import Alert from "@/Components/Util/Alert.vue";
+import ProviderIcon from "../Account/ProviderIcon.vue";
+import ArrowTopRightOnSquare from "../../Icons/ArrowTopRightOnSquare.vue";
 
 const props = defineProps({
     accounts: {
-        required: true,
-        type: Array,
-    },
-    selectedAccounts: {
         required: true,
         type: Array,
     },
@@ -29,9 +27,7 @@ const defaultVersion = computed(() => {
 });
 
 const previews = computed(() => {
-    return props.accounts.filter((account) => {
-        return props.selectedAccounts.includes(account.id);
-    }).map((account) => {
+    return props.accounts.map((account) => {
         const accountVersion = getAccountVersion(props.versions, account.id);
 
         return {
@@ -46,24 +42,54 @@ const previews = computed(() => {
         }
     });
 })
+
+const hasErrors = (errors) => {
+    if (errors && Array.isArray(errors)) {
+        return errors.length > 0;
+    }
+
+    return errors && typeof errors === 'object';
+}
 </script>
 <template>
-    <template v-if="selectedAccounts.length">
-        <template v-for="preview in previews" :key="preview.id">
-            <Alert v-if="preview.account.errors && preview.account.errors.length"
+    <template v-if="accounts.length">
+        <template v-for="preview in previews" :key="preview.account.id">
+            <Alert v-if="hasErrors(preview.account.errors)"
                    variant="error"
                    :closeable="false"
                    class="mb-1">
-                <span v-html="preview.account.errors.join('</br>')"></span>
+                <!--TODO: print human error-->
+                <div class="overflow-x-auto">
+                    <div class="hyphens-none">{{ preview.account.errors }}</div>
+                </div>
             </Alert>
 
-            <div class="mb-lg last:mb-0">
+            <div class="mb-lg last:mb-0 relative">
                 <component :is="preview.providerComponent"
                            :name="preview.account.name"
                            :username="preview.account.username"
                            :image="preview.account.image"
                            :content="preview.content"
+                           :options="preview.options"
                 />
+
+                <div class="absolute right-0 top-0 -mt-sm -mr-xs">
+                    <div class="flex items-center">
+                        <div v-if="preview.account.external_url"
+                             class="mr-xs flex items-center justify-center p-2 w-7 h-7 rounded-full bg-white border border-gray-200">
+                            <a :href="preview.account.external_url" target="_blank" class="link">
+                                <ArrowTopRightOnSquare class="!w-5 !h-5"/>
+                            </a>
+                        </div>
+
+                        <div
+                            class="flex items-center justify-center p-2 w-7 h-7 rounded-full bg-white border border-gray-200">
+                            <div>
+                                <ProviderIcon :provider="preview.account.provider" class="!w-5 !h-5"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </template>
     </template>

@@ -22,7 +22,7 @@ const form = useForm(props.services);
 
 const {notify} = useNotifications();
 
-const tab = ref('twitter');
+const tab = ref('facebook');
 </script>
 <template>
     <Head :title="pageTitle"/>
@@ -36,14 +36,14 @@ const tab = ref('twitter');
 
         <div class="w-full row-px mb-lg">
             <Tabs class="overflow-x-auto !flex-nowrap max-w-full w-full">
-                <Tab @click="tab = 'twitter'" :active="tab === 'twitter'">
-                    <span class="mr-xs"><TwitterIcon class="text-twitter !h-5 !w-5"/></span>
-                    <span>Twitter</span>
-                </Tab>
-
                 <Tab @click="tab = 'facebook'" :active="tab === 'facebook'">
                     <span class="mr-xs"><FacebookIcon class="text-facebook !h-5 !w-5"/></span>
                     <span>Facebook</span>
+                </Tab>
+
+                <Tab @click="tab = 'twitter'" :active="tab === 'twitter'">
+                    <span class="mr-xs"><TwitterIcon class="text-twitter !h-5 !w-5"/></span>
+                    <span>Twitter</span>
                 </Tab>
 
                 <Tab @click="tab = 'unsplash'" :active="tab === 'unsplash'">
@@ -58,12 +58,12 @@ const tab = ref('twitter');
         </div>
 
         <div class="row-px">
-            <template v-if="tab === 'twitter'">
-                <TwitterServiceForm :form="form.twitter"/>
-            </template>
-
             <template v-if="tab === 'facebook'">
                 <FacebookServiceForm :form="form.facebook"/>
+            </template>
+
+            <template v-if="tab === 'twitter'">
+                <TwitterServiceForm :form="form.twitter"/>
             </template>
 
             <template v-if="tab === 'unsplash'">

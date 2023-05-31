@@ -2,6 +2,8 @@
 import {watch} from "vue";
 import {useEditor, EditorContent} from "@tiptap/vue-3";
 import useEditorHelper from "@/Composables/useEditor";
+import Hashtag from "@/Extensions/TipTap/Hashtag"
+import UserTag from "@/Extensions/TipTap/UserTag"
 
 const props = defineProps({
     value: {
@@ -14,7 +16,10 @@ const {defaultExtensions} = useEditorHelper();
 const editor = useEditor({
     editable: false,
     content: props.value,
-    extensions: defaultExtensions,
+    extensions: [...defaultExtensions, ...[
+        Hashtag,
+        UserTag
+    ]],
 });
 
 watch(() => props.value, () => {

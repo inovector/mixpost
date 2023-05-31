@@ -33,7 +33,7 @@ class SchedulePost extends FormRequest
             if ($this->input('postNow')) {
                 // Add the current time + 1 minute for the `scheduled_at` field without save it into database.
                 // canSchedule method require that the `scheduled_at` field is not null and not in the past.
-                $this->post->setAttribute('scheduled_at', now()->addMinute());
+                $this->post->setAttribute('scheduled_at', Carbon::now()->utc()->addMinute());
             }
 
             if (!$this->post->canSchedule()) {
@@ -49,6 +49,6 @@ class SchedulePost extends FormRequest
 
     public function getDateTime(): Carbon|\Carbon\Carbon
     {
-        return $this->input('postNow') ? now() : $this->post->scheduled_at;
+        return $this->input('postNow') ? Carbon::now()->utc() : $this->post->scheduled_at;
     }
 }

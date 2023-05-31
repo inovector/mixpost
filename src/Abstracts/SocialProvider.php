@@ -3,11 +3,17 @@
 namespace Inovector\Mixpost\Abstracts;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Http;
+use Inovector\Mixpost\Concerns\UsesSocialProviderResponse;
 use Inovector\Mixpost\Contracts\SocialProvider as SocialProviderContract;
 use Exception;
+use Inovector\Mixpost\Models\Account;
 
 abstract class SocialProvider implements SocialProviderContract
 {
+    use UsesSocialProviderResponse;
+
     // For some social service providers, it is enough that the user himself can manage the content.
     // But some providers, such as Facebook, require a user account to select some entities to manage (pages or groups).
     // When you need to change this value, just overwrite it in the provider class that extends this class.
@@ -82,18 +88,48 @@ abstract class SocialProvider implements SocialProviderContract
         $this->request->session()->forget(self::ACCESS_TOKEN_SESSION_NAME);
     }
 
+    public function tokenIsAboutToExpire(): bool
+    {
+        $expires_in = $this->getAccessToken()['expires_in'];
+
+        $expiresAt = Carbon::createFromTimestamp($expires_in, 'UTC');
+        $minutesAhead = Carbon::now('UTC')->addMinute();
+
+        return $expiresAt->lte($minutesAhead);
+    }
+
+    public function updateToken(array $newAccessToken): void
+    {
+        $accessToken = array_merge($this->getAccessToken(), $newAccessToken);
+
+        $this->useAccessToken($accessToken);
+
+        if ($account = Account::find($this->values['account_id'])) {
+            $account->update([
+                'access_token' => $accessToken
+            ]);
+        }
+    }
+
+    public function getHttpClient(): Http
+    {
+        return resolve(Http::class);
+    }
+
     public function buildUrlFromBase(string $url, array $params): string
     {
         return $url . '?' . http_build_query($params, '', '&');
     }
 
-    public function buildErrorResponse(int $status, string $desc): array
+    public function rateLimitExceedContext(int $retryAfter, ?string $customText = null): array
     {
+        $defaultText = 'The rate limit has been exceeded';
+        $date = Carbon::now('UTC')->addSeconds($retryAfter)->format('Y-m-d');
+
         return [
-            'error' => [
-                'status' => $status,
-                'desc' => $desc
-            ]
+            'rate_limit_exceed' => true,
+            'message' => $customText ?? $defaultText,
+            'next_attempt_at' => $date
         ];
     }
 }

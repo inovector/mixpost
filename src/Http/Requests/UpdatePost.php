@@ -3,8 +3,8 @@
 namespace Inovector\Mixpost\Http\Requests;
 
 use Illuminate\Support\Facades\DB;
-use Inovector\Mixpost\Enums\PostStatus;
 use Inovector\Mixpost\Models\Post;
+use Inovector\Mixpost\Util;
 
 class UpdatePost extends PostFormRequest
 {
@@ -40,7 +40,7 @@ class UpdatePost extends PostFormRequest
 
 
             return $this->post->update([
-                'scheduled_at' => $this->scheduledAt() ? convertTimeToUTC($this->scheduledAt()) : null,
+                'scheduled_at' => $this->scheduledAt() ? Util::convertTimeToUTC($this->scheduledAt()) : null,
             ]);
         });
     }

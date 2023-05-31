@@ -5,6 +5,7 @@ namespace Inovector\Mixpost\Actions;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Inovector\Mixpost\Facades\SocialProviderManager;
+use Inovector\Mixpost\Support\SocialProviderResponse;
 use InvalidArgumentException;
 
 class StoreProviderEntitiesAsAccounts
@@ -24,10 +25,14 @@ class StoreProviderEntitiesAsAccounts
     {
         $provider = SocialProviderManager::connect('facebook_page');
 
-        // Get entities with access token
-        $getEntities = $provider->getEntities(withAccessToken: true);
+        /**
+         * Get entities with access token
+         *
+         * @var SocialProviderResponse $responseEntities
+         */
+        $responseEntities = $provider->getEntities(withAccessToken: true);
 
-        $entities = Arr::where($getEntities, function ($entity) use ($items) {
+        $entities = Arr::where($responseEntities->context(), function ($entity) use ($items) {
             return in_array($entity['id'], $items);
         });
 
@@ -44,20 +49,28 @@ class StoreProviderEntitiesAsAccounts
     {
         $provider = SocialProviderManager::connect('facebook_group');
 
-        $getEntities = $provider->getEntities();
+        /**
+         * Get entities with access token
+         *
+         * @var SocialProviderResponse $entities
+         */
+        $entities = $provider->getEntities();
 
-        $filterEntities = Arr::where($getEntities, function ($entity) use ($items) {
+        $filterEntities = Arr::where($entities->context(), function ($entity) use ($items) {
             return in_array($entity['id'], $items);
         });
 
+        /**
+         * @var SocialProviderResponse $userAccount
+         */
         $userAccount = $provider->getUserAccount();
 
         $entities = Arr::map($filterEntities, function ($entity) use ($userAccount) {
             return array_merge($entity, [
                 'data' => [
                     'user' => [
-                        'id' => $userAccount['id'],
-                        'name' => $userAccount['name']
+                        'id' => $userAccount->context()['id'],
+                        'name' => $userAccount->context()['name']
                     ]
                 ],
             ]);

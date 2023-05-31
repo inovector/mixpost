@@ -11,15 +11,22 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Inovector\Mixpost\Concerns\Job\HasSocialProviderJobRateLimit;
+use Inovector\Mixpost\Concerns\Job\SocialProviderJobFail;
+use Inovector\Mixpost\Concerns\UsesSocialProviderManager;
 use Inovector\Mixpost\Enums\FacebookInsightType;
-use Inovector\Mixpost\Facades\SocialProviderManager;
 use Inovector\Mixpost\Models\Account;
 use Inovector\Mixpost\Models\FacebookInsight;
-use Inovector\Mixpost\Support\Log;
+use Inovector\Mixpost\SocialProviders\Meta\FacebookPageProvider;
+use Inovector\Mixpost\Support\SocialProviderResponse;
 
 class ImportFacebookInsightsJob implements ShouldQueue
 {
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    use UsesSocialProviderManager;
+    use HasSocialProviderJobRateLimit;
+    use SocialProviderJobFail;
 
     public $deleteWhenMissingModels = true;
 
@@ -30,47 +37,55 @@ class ImportFacebookInsightsJob implements ShouldQueue
         $this->account = $account;
     }
 
-    public function handle()
+    public function handle(): void
     {
-        $insights = $this->getInsights();
+        if ($retryAfter = $this->rateLimitExpiration()) {
+            $this->release($retryAfter);
 
-        if (empty($insights)) {
             return;
         }
+
+        /**
+         * @see FacebookPageProvider
+         * @var SocialProviderResponse $response
+         */
+        $response = $this->connectProvider($this->account)->getPageInsights();
+
+        if ($response->hasExceededRateLimit()) {
+            $this->storeRateLimitExceeded($response->retryAfter(), $response->isAppLevel());
+            $this->release($response->retryAfter());
+
+            return;
+        }
+
+        if ($response->rateLimitAboutToBeExceeded()) {
+            $this->storeRateLimitExceeded($response->retryAfter(), $response->isAppLevel());
+        }
+
+        if ($response->hasError()) {
+            $this->makeFail($response);
+
+            return;
+        }
+
+        $insights = $response->context()['data'];
 
         foreach ($insights as $insight) {
             $this->importInsights(FacebookInsightType::fromName(Str::upper($insight['name'])), $insight['values']);
         }
     }
 
-    protected function importInsights(FacebookInsightType $type, array $items)
+    protected function importInsights(FacebookInsightType $type, array $items): void
     {
         $data = Arr::map($items, function ($item) use ($type) {
             return [
                 'account_id' => $this->account->id,
                 'type' => $type,
-                'date' => Carbon::parse($item['end_time'])->toDateString(),
+                'date' => Carbon::parse($item['end_time'], 'UTC')->toDateString(),
                 'value' => $item['value'],
             ];
         });
 
         FacebookInsight::upsert($data, ['account_id', 'type', 'date'], ['value']);
-    }
-
-    protected function getInsights()
-    {
-        $connect = SocialProviderManager::connect($this->account->provider, $this->account->values())->useAccessToken($this->account->access_token->toArray());
-
-        $result = $connect->getPageInsights();
-
-        if (isset($result['error'])) {
-            Log::error("{$this->job->getName()}: {$result['error']['desc']}", $this->job->payload());
-
-            $this->delete();
-
-            return false;
-        }
-
-        return $result['data'] ?? [];
     }
 }

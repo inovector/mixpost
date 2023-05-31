@@ -149,7 +149,6 @@ const closePreview = () => {
 
                 <PostPreviewProviders v-if="preview"
                                       :accounts="item.accounts"
-                                      :selected-accounts="item.accounts.map(account => account.id)"
                                       :versions="item.versions"
                 />
             </template>

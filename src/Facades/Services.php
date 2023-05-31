@@ -21,6 +21,6 @@ class Services extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'Services';
+        return 'MixpostServices';
     }
 }

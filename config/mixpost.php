@@ -2,6 +2,16 @@
 
 return [
     /*
+    * This option controls the default authentication "guard" for the Mixpost routes
+    */
+    'auth_guard' => env('MIXPOST_AUTH_GUARD', 'web'),
+
+    /*
+    * If you use another model for users, you can change it here.
+    */
+    'user_model' => \Inovector\Mixpost\Models\User::class,
+
+    /*
      * Mixpost will redirect unauthorized users to the route name specified here
      */
     'redirect_unauthorized_users_to_route' => 'login',

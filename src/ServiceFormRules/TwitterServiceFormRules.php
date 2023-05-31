@@ -2,6 +2,7 @@
 
 namespace Inovector\Mixpost\ServiceFormRules;
 
+use Illuminate\Validation\Rule;
 use Inovector\Mixpost\Contracts\ServiceFormRules;
 
 class TwitterServiceFormRules implements ServiceFormRules
@@ -10,7 +11,8 @@ class TwitterServiceFormRules implements ServiceFormRules
     {
         return [
             'client_id' => '',
-            'client_secret' => ''
+            'client_secret' => '',
+            'tier' => 'free'
         ];
     }
 
@@ -19,6 +21,7 @@ class TwitterServiceFormRules implements ServiceFormRules
         return [
             'client_id' => ['required'],
             'client_secret' => ['required'],
+            'tier' => ['required', Rule::in(['legacy', 'free', 'basic'])]
         ];
     }
 
@@ -26,7 +29,8 @@ class TwitterServiceFormRules implements ServiceFormRules
     {
         return [
             'client_id' => 'The API Key is required.',
-            'client_secret' => 'The API Secret is required.'
+            'client_secret' => 'The API Secret is required.',
+            'tier' => 'Tier is invalid.'
         ];
     }
 }

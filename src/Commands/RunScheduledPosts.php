@@ -3,6 +3,7 @@
 namespace Inovector\Mixpost\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Carbon;
 use Inovector\Mixpost\Actions\PublishPost;
 use Inovector\Mixpost\Enums\PostScheduleStatus;
 use Inovector\Mixpost\Enums\PostStatus;
@@ -19,7 +20,7 @@ class RunScheduledPosts extends Command
         Post::with('accounts')
             ->where('status', PostStatus::SCHEDULED->value)
             ->where('schedule_status', PostScheduleStatus::PENDING->value)
-            ->where('scheduled_at', '<=', now()->tz('UTC'))
+            ->where('scheduled_at', '<=', Carbon::now()->utc())
             ->each(function (Post $post) {
                 (new PublishPost())($post);
             });

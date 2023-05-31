@@ -10,14 +10,21 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Arr;
-use Inovector\Mixpost\Facades\SocialProviderManager;
+use Inovector\Mixpost\Concerns\Job\HasSocialProviderJobRateLimit;
+use Inovector\Mixpost\Concerns\Job\SocialProviderJobFail;
+use Inovector\Mixpost\Concerns\UsesSocialProviderManager;
 use Inovector\Mixpost\Models\Account;
 use Inovector\Mixpost\Models\ImportedPost;
-use Inovector\Mixpost\Support\Log;
+use Inovector\Mixpost\SocialProviders\Mastodon\MastodonProvider;
+use Inovector\Mixpost\Support\SocialProviderResponse;
 
 class ImportMastodonPostsJob implements ShouldQueue
 {
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    use UsesSocialProviderManager;
+    use HasSocialProviderJobRateLimit;
+    use SocialProviderJobFail;
 
     public $deleteWhenMissingModels = true;
 
@@ -30,38 +37,51 @@ class ImportMastodonPostsJob implements ShouldQueue
         $this->params = $params;
     }
 
-    public function handle()
+    public function handle(): void
     {
-        $result = $this->getPosts();
+        if ($retryAfter = $this->rateLimitExpiration()) {
+            $this->release($retryAfter);
 
-        if (!$result) {
             return;
         }
 
-        $this->import($result);
+        /**
+         * @see MastodonProvider
+         * @var SocialProviderResponse $response
+         */
+        $response = $this->connectProvider($this->account)->getUserStatuses($this->account->provider_id, $this->params['max_id'] ?? '');
+
+        if ($response->hasExceededRateLimit()) {
+            $this->storeRateLimitExceeded($response->retryAfter(), $response->isAppLevel());
+            $this->release($response->retryAfter());
+
+            return;
+        }
+
+        if ($response->rateLimitAboutToBeExceeded()) {
+            $this->storeRateLimitExceeded($response->retryAfter(), $response->isAppLevel());
+        }
+
+        if ($response->hasError()) {
+            $this->makeFail($response);
+
+            return;
+        }
+
+        $posts = $this->filterPosts($response->data);
+
+        $this->import($posts);
 
         // If more than 40(limit of page items), there is a probability that there are others.
-        if (count($result) >= 40) {
-            ImportMastodonPostsJob::dispatch($this->account, ['max_id' => Arr::last($result)['id']])->delay(60);
+        if (count($posts) >= 40) {
+            ImportMastodonPostsJob::dispatch($this->account, ['max_id' => Arr::last($posts)['id']])->delay(60 * 15);
         }
     }
 
-    protected function getPosts()
+    protected function filterPosts(array $data): array
     {
-        $connect = SocialProviderManager::connect($this->account->provider, $this->account->values())->useAccessToken($this->account->access_token->toArray());
-
-        $result = $connect->getAccountStatuses($this->account->provider_id, $this->params['max_id'] ?? '');
-
-        if (isset($result['error'])) {
-            Log::error("{$this->job->getName()}: {$result['error']['desc']}", $this->job->payload());
-
-            $this->delete();
-
-            return false;
-        }
-
-        return Arr::where($result, function ($item) {
-            return Carbon::parse($item['created_at'])->greaterThan(Carbon::now()->subDays(90));
+        return Arr::where($data, function ($item) {
+            return Carbon::parse($item['created_at'], 'UTC')->greaterThan(Carbon::now('UTC')->subDays(90));
         });
     }
 
@@ -77,7 +97,7 @@ class ImportMastodonPostsJob implements ShouldQueue
                     'reblogs' => $item['reblogs_count'],
                     'favourites' => $item['favourites_count'],
                 ]),
-                'created_at' => Carbon::parse($item['created_at'])->toDateString()
+                'created_at' => Carbon::parse($item['created_at'], 'UTC')->toDateString()
             ];
         });
 

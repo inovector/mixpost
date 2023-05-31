@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
+import DefineOptions from 'unplugin-vue-define-options/vite'
 import fs from 'fs';
 import { resolve } from 'path';
 import { homedir } from 'os';
@@ -15,13 +16,15 @@ export default defineConfig(({command, mode}) => {
     let serverConfig = {}
 
     if (host && homeDir) {
+        const certificatesPath = env.CERTIFICATES_PATH !== undefined ? env.CERTIFICATES_PATH : `.config/valet/Certificates/${host}`;
+
         serverConfig = {
             https: {
                 key: fs.readFileSync(
-                    resolve(homeDir, `.config/valet/Certificates/${host}.key`),
+                    resolve(homeDir, `${certificatesPath}.key`),
                 ),
                 cert: fs.readFileSync(
-                    resolve(homeDir, `.config/valet/Certificates/${host}.crt`),
+                    resolve(homeDir, `${certificatesPath}.crt`),
                 ),
             },
             hmr: {
@@ -48,6 +51,7 @@ export default defineConfig(({command, mode}) => {
                     },
                 },
             }),
+            DefineOptions()
         ],
         resolve: {
             alias: {

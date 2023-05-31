@@ -1,5 +1,5 @@
 <script setup>
-import {provide, reactive, ref, watch} from "vue";
+import {computed, provide, reactive, ref, watch} from "vue";
 import {Head, useForm} from '@inertiajs/vue3';
 import {router} from "@inertiajs/vue3";
 import {cloneDeep, debounce} from "lodash";
@@ -18,7 +18,7 @@ import PostLimitErrors from "@/Components/Post/PostLimitErrors.vue";
 import EyeIcon from "@/Icons/Eye.vue"
 import EyeOffIcon from "@/Icons/EyeOff.vue"
 
-const props = defineProps(['post', 'schedule_at']);
+const props = defineProps(['post', 'schedule_at', 'accounts', 'prefill']);
 
 const post = props.post ? cloneDeep(props.post) : null;
 
@@ -27,7 +27,7 @@ const context = reactive({
     mediaLimit: []
 });
 
-provide('postContext', context);
+provide('postCtx', context);
 
 const {isMounted} = useMounted();
 const showPreview = ref(false);
@@ -41,10 +41,18 @@ const {notify} = useNotifications();
 
 const form = useForm({
     accounts: post ? post.accounts.map(account => account.id) : [],
-    versions: post ? post.versions : [versionObject(0, true)],
+    versions: post ? post.versions : [versionObject(0, true, props.prefill.body)],
     tags: post ? post.tags : [],
     date: post ? post.scheduled_at.date : props.schedule_at.date,
     time: post ? post.scheduled_at.time : props.schedule_at.time,
+});
+
+const postAccounts = computed(() => {
+    if (isInHistory.value) {
+        return props.post.accounts;
+    }
+
+    return props.accounts.filter(account => form.accounts.includes(account.id));
 });
 
 const store = (data) => {
@@ -189,8 +197,7 @@ watch(form, debounce(() => {
                     <PageHeader title="Preview"/>
 
                     <div class="row-px">
-                        <PostPreviewProviders :accounts="$page.props.accounts"
-                                              :selected-accounts="form.accounts"
+                        <PostPreviewProviders :accounts="postAccounts"
                                               :versions="form.versions"
                         />
                     </div>

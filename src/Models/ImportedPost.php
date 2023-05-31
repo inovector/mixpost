@@ -22,7 +22,7 @@ class ImportedPost extends Model
     protected $casts = [
         'content' => 'array',
         'metrics' => 'array',
-        'created_at' => 'date'
+        'created_at' => 'date' // TODO: change type of this column from `date` to `datetime`
     ];
 
     public $timestamps = false;
