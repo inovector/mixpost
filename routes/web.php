@@ -9,6 +9,9 @@ use Inovector\Mixpost\Http\Controllers\CalendarController;
 use Inovector\Mixpost\Http\Controllers\CallbackSocialProviderController;
 use Inovector\Mixpost\Http\Controllers\CreateMastodonAppController;
 use Inovector\Mixpost\Http\Controllers\DashboardController;
+use Inovector\Mixpost\Http\Controllers\UpdateAuthUserController;
+use Inovector\Mixpost\Http\Controllers\UpdateAuthUserPasswordController;
+use Inovector\Mixpost\Http\Controllers\ProfileController;
 use Inovector\Mixpost\Http\Controllers\ReportsController;
 use Inovector\Mixpost\Http\Controllers\DeletePostsController;
 use Inovector\Mixpost\Http\Controllers\DuplicatePostController;
@@ -96,8 +99,14 @@ Route::middleware([
             Route::post('create-mastodon-app', CreateMastodonAppController::class)->name('createMastodonApp');
         });
 
-        Route::get('callback/{provider}', CallbackSocialProviderController::class)->name('callbackSocialProvider');
+        Route::prefix('profile')->name('profile.')->group(function () {
+            Route::get('/', [ProfileController::class, 'index'])->name('index');
+            Route::put('user', UpdateAuthUserController::class)->name('updateUser');
+            Route::put('password', UpdateAuthUserPasswordController::class)->name('changePassword');
+        });
 
         Route::post('logout', [AuthenticatedController::class, 'destroy'])
             ->name('logout');
+
+        Route::get('callback/{provider}', CallbackSocialProviderController::class)->name('callbackSocialProvider');
     });

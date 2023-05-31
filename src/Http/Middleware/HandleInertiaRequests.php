@@ -5,11 +5,16 @@ namespace Inovector\Mixpost\Http\Middleware;
 use Composer\InstalledVersions;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Inovector\Mixpost\Concerns\UsesAuth;
 use Inovector\Mixpost\Facades\Settings;
+use Inovector\Mixpost\Http\Resources\UserResource;
+use Inovector\Mixpost\Models\User;
 use Tightenco\Ziggy\Ziggy;
 
 class HandleInertiaRequests extends Middleware
 {
+    use UsesAuth;
+
     /**
      * The root template that is loaded on the first page visit.
      *
@@ -41,9 +46,7 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request)
     {
         return array_merge(parent::share($request), [
-            'auth' => [
-                'user' => $request->user(),
-            ],
+            'auth' => $this->auth(),
             'ziggy' => function () use ($request) {
                 return array_merge((new Ziggy)->toArray(), [
                     'location' => $request->url(),
@@ -68,5 +71,26 @@ class HandleInertiaRequests extends Middleware
                 ]
             ]
         ]);
+    }
+
+    protected function auth(): array
+    {
+        if (!self::getAuthGuard()->check()) {
+            return [
+                'user' => null
+            ];
+        }
+
+        $user = self::getAuthGuard()->user();
+
+        // If `Auth Middleware` was not resolved first
+        // return empty auth
+        if (!$user instanceof User) {
+            return [];
+        }
+
+        return [
+            'user' => new UserResource($user),
+        ];
     }
 }

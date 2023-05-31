@@ -5,6 +5,7 @@ import Dropdown from "@/Components/Dropdown/Dropdown.vue";
 import DropdownItem from "@/Components/Dropdown/DropdownItem.vue";
 import ArrowRightOnRectangleIcon from "@/Icons/ArrowRightOnRectangle.vue";
 import UserCircle from "../../Icons/UserCircle.vue";
+import PencilSquare from "../../Icons/PencilSquare.vue";
 
 const {user} = useAuth();
 
@@ -27,6 +28,13 @@ const open = ref(false);
         </template>
 
         <template #content>
+            <DropdownItem :href="route('mixpost.profile.index')">
+                <template #icon>
+                    <PencilSquare/>
+                </template>
+                Edit profile
+            </DropdownItem>
+
             <DropdownItem :href="route('mixpost.logout')" linkAs="button" linkMethod="post">
                 <template #icon>
                     <ArrowRightOnRectangleIcon/>
