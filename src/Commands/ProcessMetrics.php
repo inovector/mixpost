@@ -4,8 +4,8 @@ namespace Inovector\Mixpost\Commands;
 
 use Illuminate\Console\Command;
 use Inovector\Mixpost\Concerns\AccountsOption;
-use Inovector\Mixpost\Jobs\ProcessMastodonMetricsJob;
-use Inovector\Mixpost\Jobs\ProcessTwitterMetricsJob;
+use Inovector\Mixpost\SocialProviders\Mastodon\Jobs\ProcessMastodonMetricsJob;
+use Inovector\Mixpost\SocialProviders\Twitter\Jobs\ProcessTwitterMetricsJob;
 
 class ProcessMetrics extends Command
 {

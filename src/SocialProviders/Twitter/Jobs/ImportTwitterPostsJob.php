@@ -1,6 +1,6 @@
 <?php
 
-namespace Inovector\Mixpost\Jobs;
+namespace Inovector\Mixpost\SocialProviders\Twitter\Jobs;
 
 use Carbon\Carbon;
 use Illuminate\Bus\Batchable;
