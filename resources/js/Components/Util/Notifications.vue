@@ -75,7 +75,7 @@ const flash = computed(() => {
     return usePage().props.flash;
 });
 
-watch(() => flash, () => {
+watch(() => flash.value, () => {
     if (flash.value.success) {
         open('success', flash.value.success);
     }

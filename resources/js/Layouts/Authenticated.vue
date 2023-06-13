@@ -27,7 +27,7 @@ onUnmounted(() => {
 <template>
     <div class="flex flex-row h-screen min-h-full bg-stone-500">
         <aside :class="{'translate-x-0': context.showAside, '-translate-x-full xl:translate-x-0': !context.showAside}"
-               class="aside fixed xl:relative h-full z-50 transition-transform ease-in-out duration-200">
+               class="aside fixed xl:relative h-full z-40 transition-transform ease-in-out duration-200">
             <Sidebar/>
         </aside>
 
