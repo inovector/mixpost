@@ -62,10 +62,7 @@ class PostsController extends Controller
             'prefill' => [
                 'body' => $request->query('body', '')
             ],
-            'has_service' => [
-                'unsplash' => !!Services::get('unsplash', 'client_id'),
-                'tenor' => !!Services::get('tenor', 'client_id')
-            ]
+            'is_configured_service' =>  Services::isConfigured()
         ]);
     }
 
@@ -84,10 +81,7 @@ class PostsController extends Controller
             'accounts' => AccountResource::collection(Account::oldest()->get())->resolve(),
             'tags' => TagResource::collection(Tag::latest()->get())->resolve(),
             'post' => new PostResource($post),
-            'has_service' => [
-                'unsplash' => !!Services::get('unsplash', 'client_id'),
-                'tenor' => !!Services::get('tenor', 'client_id')
-            ]
+            'is_configured_service' =>  Services::isConfigured()
         ]);
     }
 

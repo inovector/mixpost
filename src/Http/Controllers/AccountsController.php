@@ -20,10 +20,7 @@ class AccountsController extends Controller
     {
         return Inertia::render('Accounts/Accounts', [
             'accounts' => AccountResource::collection(Account::latest()->get())->resolve(),
-            'has_service' => [
-                'twitter' => !!Services::get('twitter', 'client_id'),
-                'facebook' => !!Services::get('facebook', 'client_id')
-            ]
+            'is_configured_service' => Services::isConfigured(),
         ]);
     }
 

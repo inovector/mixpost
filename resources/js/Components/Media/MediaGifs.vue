@@ -19,7 +19,7 @@ const props = defineProps({
 })
 
 const enabled = computed(() => {
-    return usePage().props.has_service.tenor;
+    return usePage().props.is_configured_service.tenor;
 })
 
 const {

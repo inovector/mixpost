@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static array all()
  * @method static void forgetAll()
  * @method static void put(string $name, array $value)
+ * @method static isConfigured(?string $service = null)
  * @method static void forget(string $name)
  *
  * @see \Inovector\Mixpost\Services

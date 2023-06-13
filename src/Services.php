@@ -53,6 +53,19 @@ class Services
         ][$service];
     }
 
+    public function isConfigured(?string $service = null): array|bool
+    {
+        $list = Arr::map($this->form(), function ($_, $service) {
+            return !!$this->get($service, 'client_id');
+        });
+
+        if ($service) {
+            return $list[$service];
+        }
+
+        return $list;
+    }
+
     public function put(string $name, array $value): void
     {
         Cache::put($this->resolveCacheKey($name), Crypt::encryptString(json_encode($value)));
