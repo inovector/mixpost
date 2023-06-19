@@ -4,6 +4,7 @@ namespace Inovector\Mixpost;
 
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Support\Facades\Gate;
+use Inovector\Mixpost\Commands\ClearServicesCache;
 use Inovector\Mixpost\Commands\ClearSettingsCache;
 use Inovector\Mixpost\Commands\CreateMastodonApp;
 use Inovector\Mixpost\Commands\DeleteOldData;
@@ -50,6 +51,7 @@ class MixpostServiceProvider extends PackageServiceProvider
                 PublishAssetsCommand::class,
                 CreateMastodonApp::class,
                 ClearSettingsCache::class,
+                ClearServicesCache::class,
                 RunScheduledPosts::class,
                 ImportAccountAudience::class,
                 ImportAccountData::class,
