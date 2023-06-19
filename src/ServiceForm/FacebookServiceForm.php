@@ -1,10 +1,11 @@
 <?php
 
-namespace Inovector\Mixpost\ServiceFormRules;
+namespace Inovector\Mixpost\ServiceForm;
 
-use Inovector\Mixpost\Contracts\ServiceFormRules;
 
-class FacebookServiceFormRules implements ServiceFormRules
+use Inovector\Mixpost\Abstracts\ServiceForm;
+
+class FacebookServiceForm extends ServiceForm
 {
     static function form(): array
     {

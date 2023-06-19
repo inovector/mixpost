@@ -7,11 +7,12 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
+use Inovector\Mixpost\Abstracts\ServiceForm;
 use Inovector\Mixpost\Models\Service;
-use Inovector\Mixpost\ServiceFormRules\FacebookServiceFormRules;
-use Inovector\Mixpost\ServiceFormRules\TenorServiceFormRules;
-use Inovector\Mixpost\ServiceFormRules\TwitterServiceFormRules;
-use Inovector\Mixpost\ServiceFormRules\UnsplashServiceFormRules;
+use Inovector\Mixpost\ServiceForm\FacebookServiceForm;
+use Inovector\Mixpost\ServiceForm\TenorServiceForm;
+use Inovector\Mixpost\ServiceForm\TwitterServiceForm;
+use Inovector\Mixpost\ServiceForm\UnsplashServiceForm;
 use Inovector\Mixpost\Support\Log;
 
 class Services
@@ -23,40 +24,33 @@ class Services
         $this->config = $container->make('config');
     }
 
-    public function form(): array
+    public function services(?string $name = null): array|string
     {
-        return [
-            'twitter' => TwitterServiceFormRules::form(),
-            'facebook' => FacebookServiceFormRules::form(),
-            'unsplash' => UnsplashServiceFormRules::form(),
-            'tenor' => TenorServiceFormRules::form(),
+        $services = [
+            'facebook' => FacebookServiceForm::class,
+            'twitter' => TwitterServiceForm::class,
+            'unsplash' => UnsplashServiceForm::class,
+            'tenor' => TenorServiceForm::class,
         ];
+
+        foreach ($services as $service) {
+            if (!app($service) instanceof ServiceForm) {
+                throw new \Exception("The `$service` must be an instance of Abstracts\ServiceForm");
+            }
+        }
+
+        if ($name) {
+            return $services[$name];
+        }
+
+        return $services;
     }
 
-    public function rules(string $service): array
-    {
-        return [
-            'twitter' => TwitterServiceFormRules::rules(),
-            'facebook' => FacebookServiceFormRules::rules(),
-            'unsplash' => UnsplashServiceFormRules::rules(),
-            'tenor' => TenorServiceFormRules::rules(),
-        ][$service];
-    }
-
-    public function messages(string $service): array
-    {
-        return [
-            'twitter' => TwitterServiceFormRules::messages(),
-            'facebook' => FacebookServiceFormRules::messages(),
-            'unsplash' => UnsplashServiceFormRules::messages(),
-            'tenor' => TenorServiceFormRules::messages(),
-        ][$service];
-    }
-
+    // TODO - implement `isActive` instead `isConfigured`
     public function isConfigured(?string $service = null): array|bool
     {
-        $list = Arr::map($this->form(), function ($_, $service) {
-            return !!$this->get($service, 'client_id');
+        $list = Arr::map($this->services(), function ($_, $provider) {
+            return !!$this->get($provider, 'client_id');
         });
 
         if ($service) {
@@ -73,7 +67,7 @@ class Services
 
     public function get(string $name, null|string $credentialKey = null)
     {
-        $defaultPayload = Arr::get($this->form(), $name, []);
+        $defaultPayload = $this->services($name)::form();
 
         $value = $this->getFromCache($name, function () use ($name, $defaultPayload) {
             $dbRecord = Service::where('name', $name)->first();
@@ -110,8 +104,15 @@ class Services
 
     public function all(): array
     {
-        return Arr::map($this->form(), function ($payload, $name) {
+        return Arr::map($this->services(), function ($payload, $name) {
             return $this->get($name);
+        });
+    }
+
+    public function configs(): array
+    {
+        return Arr::map($this->all(), function ($payload, $name) {
+            return Arr::only($payload, $this->services($name)::$configs);
         });
     }
 
@@ -127,7 +128,7 @@ class Services
 
     public function forgetAll(): void
     {
-        foreach ($this->form() as $name => $payload) {
+        foreach (array_keys($this->services()) as $name) {
             $this->forget($name);
         }
     }
