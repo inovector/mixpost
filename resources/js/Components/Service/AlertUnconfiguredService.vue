@@ -12,7 +12,9 @@ const props = defineProps({
 })
 
 const any = computed(() => {
-    return Object.keys(props.isConfigured).some((service) => props.isConfigured[service] !== true)
+    return Object.keys(props.isConfigured).some((service) => {
+        return !['tenor', 'unsplash'].includes(service) && props.isConfigured[service] !== true
+    })
 });
 </script>
 <template>
