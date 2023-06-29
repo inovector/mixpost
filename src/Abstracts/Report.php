@@ -5,6 +5,7 @@ namespace Inovector\Mixpost\Abstracts;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Inovector\Mixpost\Contracts\ProviderReports;
 use Inovector\Mixpost\Models\Account;
@@ -19,7 +20,9 @@ abstract class Report implements ProviderReports
             ->groupBy('date')
             ->when($period, function (Builder $query) use ($period) {
                 return $this->queryPeriod($query, $period);
-            })->pluck('total', 'date');
+            })
+            ->orderBy('date', 'asc')
+            ->pluck('total', 'date');
 
         $period = match ($period) {
             '7_days' => CarbonPeriod::create(Carbon::now('UTC')->subDays(6), Carbon::now('UTC')),
@@ -30,11 +33,12 @@ abstract class Report implements ProviderReports
         $dataset = collect($period)->map(function ($item) use ($report) {
             $firstDate = $report->keys()->first();
 
-            $total = intval($report[$item->toDateString()] ?? 0);
+            $total = Arr::get($report, $item->toDateString());
+            $value = $total !== null ? intval($total) : null;
 
             return [
                 'label' => $item->format('M j'),
-                'value' => $firstDate ? ($item->toDateString() >= $firstDate ? $total : null) : null,
+                'value' => $firstDate ? ($item->toDateString() >= $firstDate ? $value : null) : null,
             ];
         });
 
