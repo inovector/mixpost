@@ -2,6 +2,15 @@
 
 All notable changes to `mixpost` will be documented in this file.
 
+## v1.3.0 - 2023-06-29
+
+- Refractory Services class
+- Put Jobs into the social provider folder
+- Add `clear-services-cache` command
+- Fix modal z-index
+- Fix alert configured service
+- Fix missing day value of audience report
+
 ## v1.2.0 - 2023-05-31
 
 - Twitter API Refactory
