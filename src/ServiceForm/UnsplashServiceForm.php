@@ -1,10 +1,10 @@
 <?php
 
-namespace Inovector\Mixpost\ServiceFormRules;
+namespace Inovector\Mixpost\ServiceForm;
 
-use Inovector\Mixpost\Contracts\ServiceFormRules;
+use Inovector\Mixpost\Abstracts\ServiceForm;
 
-class UnsplashServiceFormRules implements ServiceFormRules
+class UnsplashServiceForm extends ServiceForm
 {
     static function form(): array
     {

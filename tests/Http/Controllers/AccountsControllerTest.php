@@ -20,8 +20,8 @@ it('show list of accounts on Accounts page with service alerts', function () {
         ->assertInertia(fn(Assert $page) => $page
             ->component('Accounts/Accounts')
             ->has('accounts', 3)
-            ->where('has_service.twitter', false)
-            ->where('has_service.facebook', false)
+            ->where('is_configured_service.twitter', false)
+            ->where('is_configured_service.facebook', false)
         );
 });
 
@@ -42,7 +42,7 @@ it('show list of accounts on Accounts page without service alerts', function () 
         ->assertInertia(fn(Assert $page) => $page
             ->component('Accounts/Accounts')
             ->has('accounts', 3)
-            ->where('has_service.twitter', true)
-            ->where('has_service.facebook', true)
+            ->where('is_configured_service.twitter', true)
+            ->where('is_configured_service.facebook', true)
         );
 });

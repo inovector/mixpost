@@ -1,6 +1,6 @@
 <?php
 
-namespace Inovector\Mixpost\Jobs;
+namespace Inovector\Mixpost\SocialProviders\Meta\Jobs;
 
 use Carbon\Carbon;
 use Illuminate\Bus\Batchable;
@@ -14,10 +14,10 @@ use Inovector\Mixpost\Concerns\Job\SocialProviderJobFail;
 use Inovector\Mixpost\Concerns\UsesSocialProviderManager;
 use Inovector\Mixpost\Models\Account;
 use Inovector\Mixpost\Models\Audience;
-use Inovector\Mixpost\SocialProviders\Mastodon\MastodonProvider;
+use Inovector\Mixpost\SocialProviders\Meta\FacebookGroupProvider;
 use Inovector\Mixpost\Support\SocialProviderResponse;
 
-class ImportMastodonFollowersJob implements ShouldQueue
+class ImportFacebookGroupMembersJob implements ShouldQueue
 {
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -43,10 +43,10 @@ class ImportMastodonFollowersJob implements ShouldQueue
         }
 
         /**
-         * @see MastodonProvider
+         * @see FacebookGroupProvider
          * @var SocialProviderResponse $response
          */
-        $response = $this->connectProvider($this->account)->getAccountMetrics();
+        $response = $this->connectProvider($this->account)->getGroupMetrics();
 
         if ($response->hasExceededRateLimit()) {
             $this->storeRateLimitExceeded($response->retryAfter(), $response->isAppLevel());
@@ -67,9 +67,9 @@ class ImportMastodonFollowersJob implements ShouldQueue
 
         Audience::updateOrCreate([
             'account_id' => $this->account->id,
-            'date' => Carbon::today('UTC')
+            'date' => Carbon::today('UTC')->toDateString()
         ], [
-            'total' => $response->followers_count ?? 0
+            'total' => $response->member_count ?? 0
         ]);
     }
 }

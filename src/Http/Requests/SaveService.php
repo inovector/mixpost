@@ -7,34 +7,36 @@ use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
 use Inovector\Mixpost\Actions\UpdateOrCreateService;
 use Inovector\Mixpost\Facades\Services as ServicesFacade;
-use Inovector\Mixpost\Models\Service as ServiceModel;
 
 class SaveService extends FormRequest
 {
     public function rules(): array
     {
-        $keys = array_keys(ServicesFacade::form());
+        $keys = array_keys(ServicesFacade::services());
 
-        $serviceRules = ServicesFacade::rules($this->route('service'));
+        $serviceRules = $this->service()::rules();
 
         return array_merge($serviceRules, [Rule::in($keys)]);
     }
 
     public function handle(): void
     {
-        $name = $this->route('service');
-
-        $form = ServicesFacade::form()[$name];
+        $form = $this->service()::form();
 
         $value = Arr::map($form, function ($item, $key) {
             return $this->input($key);
         });
 
-        (new UpdateOrCreateService())($name, $value);
+        (new UpdateOrCreateService())($this->route('service'), $value);
     }
 
     public function messages(): array
     {
-        return ServicesFacade::messages($this->route('service'));
+        return $this->service()::messages();
+    }
+
+    protected function service()
+    {
+        return ServicesFacade::services($this->route('service'));
     }
 }

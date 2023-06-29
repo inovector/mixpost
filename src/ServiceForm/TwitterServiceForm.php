@@ -1,12 +1,14 @@
 <?php
 
-namespace Inovector\Mixpost\ServiceFormRules;
+namespace Inovector\Mixpost\ServiceForm;
 
 use Illuminate\Validation\Rule;
-use Inovector\Mixpost\Contracts\ServiceFormRules;
+use Inovector\Mixpost\Abstracts\ServiceForm;
 
-class TwitterServiceFormRules implements ServiceFormRules
+class TwitterServiceForm extends ServiceForm
 {
+    public static array $configs = ['tier'];
+
     static function form(): array
     {
         return [

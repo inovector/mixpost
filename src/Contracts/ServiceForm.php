@@ -2,7 +2,7 @@
 
 namespace Inovector\Mixpost\Contracts;
 
-interface ServiceFormRules
+interface ServiceForm
 {
     public static function form(): array;
 

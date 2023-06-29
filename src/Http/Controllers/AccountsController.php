@@ -4,6 +4,7 @@ namespace Inovector\Mixpost\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Arr;
 use Inertia\Inertia;
 use Inertia\Response;
 use Inovector\Mixpost\Actions\UpdateOrCreateAccount;
@@ -20,10 +21,7 @@ class AccountsController extends Controller
     {
         return Inertia::render('Accounts/Accounts', [
             'accounts' => AccountResource::collection(Account::latest()->get())->resolve(),
-            'has_service' => [
-                'twitter' => !!Services::get('twitter', 'client_id'),
-                'facebook' => !!Services::get('facebook', 'client_id')
-            ]
+            'is_configured_service' => Arr::except(Services::isConfigured(), ['unsplash', 'tenor']),
         ]);
     }
 
