@@ -26,6 +26,6 @@ class AuthenticatedController extends Controller
             return Inertia::location(route(config('mixpost.redirect_unauthorized_users_to_route')));
         }
 
-        return redirect()->away(config('mixpost.redirect_unauthorized_users_to_route'));
+        return redirect()->away(route(config('mixpost.redirect_unauthorized_users_to_route')));
     }
 }
