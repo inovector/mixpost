@@ -2,6 +2,10 @@
 
 All notable changes to `mixpost` will be documented in this file.
 
+## v1.3.1 - 2023-07-12
+
+- Fix logout redirect away
+
 ## v1.3.0 - 2023-06-29
 
 - Refractory Services class
