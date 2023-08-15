@@ -24,7 +24,7 @@ class Services
         $this->config = $container->make('config');
     }
 
-    public function services(?string $name = null): array|string
+    public function services(?string $name = null): array|string|null
     {
         $services = [
             'facebook' => FacebookServiceForm::class,
@@ -40,7 +40,7 @@ class Services
         }
 
         if ($name) {
-            return $services[$name];
+            return $services[$name] ?? null;
         }
 
         return $services;
@@ -67,7 +67,8 @@ class Services
 
     public function get(string $name, null|string $credentialKey = null)
     {
-        $defaultPayload = $this->services($name)::form();
+        $serviceClass = $this->services($name);
+        $defaultPayload = $serviceClass ? $serviceClass::form() : [];
 
         $value = $this->getFromCache($name, function () use ($name, $defaultPayload) {
             $dbRecord = Service::where('name', $name)->first();
