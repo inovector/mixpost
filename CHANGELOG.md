@@ -2,6 +2,10 @@
 
 All notable changes to `mixpost` will be documented in this file.
 
+## v1.3.2 - 2023-08-15
+
+- Fix Services when the form is undefined (Mastodon)
+
 ## v1.3.1 - 2023-07-12
 
 - Fix logout redirect away
