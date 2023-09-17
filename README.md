@@ -19,8 +19,6 @@ It is the ideal social media management software for bloggers, artisans, entrepr
 
 **[Unlock the full potential of Mixpost with Mixpost Pro](https://mixpost.app/pricing)**
 
-<a href="https://www.buymeacoffee.com/dimabotezatu" target="_blank"><img src="https://mixpost.s3.eu-central-1.amazonaws.com/website/buy+a+tea.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
-
 Join our community:
 
 - [Discord](https://discord.gg/5YdseZnK2Z)
