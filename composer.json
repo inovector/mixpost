@@ -21,6 +21,7 @@
         "php": "^8.1",
         "ext-fileinfo": "*",
         "abraham/twitteroauth": "^4.0",
+        "guzzlehttp/guzzle": "^7.5",
         "illuminate/contracts": "^9.28|^10.0",
         "inertiajs/inertia-laravel": "^0.6.9",
         "intervention/image": "^2.7",

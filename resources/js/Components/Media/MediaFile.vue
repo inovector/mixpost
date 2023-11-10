@@ -47,7 +47,7 @@ const isVideo = computed(() => {
                 :src="media.thumb_url"
                 loading="lazy"
                 alt="Image"
-                class="w-auto object-cover rounded-md"
+                class="w-full rounded-md"
                 :class="imgHeightClass"
             />
         </div>
