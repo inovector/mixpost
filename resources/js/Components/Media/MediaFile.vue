@@ -1,5 +1,4 @@
 <script setup>
-import {startsWith} from "lodash";
 import {computed} from "vue";
 import ExclamationCircleIcon from "@/Icons/ExclamationCircle.vue"
 import VideoSolidIcon from "@/Icons/VideoSolid.vue"
@@ -21,10 +20,6 @@ const imgHeightClass = computed(() => {
         'sm': 'h-20'
     }[props.imgHeight]
 })
-
-const isVideo = computed(() => {
-    return startsWith(props.media.mime_type, 'video');
-})
 </script>
 <template>
     <figure class="relative">
@@ -33,7 +28,7 @@ const isVideo = computed(() => {
             class="relative flex rounded"
             :class="{'border border-red-500 p-5': media.hasOwnProperty('error')}"
         >
-             <span v-if="isVideo" class="absolute top-0 right-0 mt-1 mr-1">
+            <span v-if="media.is_video" class="absolute top-0 right-0 mt-1 mr-1">
                 <VideoSolidIcon class="!w-4 !h-4 text-white"/>
             </span>
 
