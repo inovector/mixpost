@@ -2,6 +2,18 @@
 
 All notable changes to `mixpost` will be documented in this file.
 
+## v1.4.0 - 2023-12-02
+
+- Added Unsplash trigger download Job
+- Added Unsplash credit attributes
+- Optimize provider preview checking video format
+- Fixed vulnerability on download media
+- Fixed media library item width
+
+**Internal Changes**
+
+- Modified value of `external_media_terms` config
+
 ## v1.3.2 - 2023-08-15
 
 - Fix Services when the form is undefined (Mastodon)
