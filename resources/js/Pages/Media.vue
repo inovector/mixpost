@@ -52,7 +52,10 @@ const use = () => {
     const toDownload = activeTab.value !== 'uploads';
 
     if (toDownload) {
-        downloadExternal(selectedItems.value, (response) => {
+        downloadExternal(selectedItems.value.map((item) => {
+            const {id, url, download_data} = item;
+            return {id, url, download_data};
+        }), (response) => {
             createPost(response.data);
         });
     }

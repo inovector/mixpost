@@ -18,7 +18,8 @@ class MediaResource extends JsonResource
             'url' => $this->getUrl(),
             'thumb_url' => $this->isImageGif() ? $this->getUrl() : $this->getThumbUrl(),
             'is_video' => $this->isVideo(),
-            'credit_url' => $this->credit_url ?? null
+            'credit_url' => $this->credit_url ?? null,
+            'download_data' => $this->download_data ?? null,
         ];
     }
 }

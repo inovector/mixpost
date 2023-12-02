@@ -4,6 +4,7 @@ namespace Inovector\Mixpost\Http\Middleware;
 
 use Composer\InstalledVersions;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Inertia\Middleware;
 use Inovector\Mixpost\Concerns\UsesAuth;
 use Inovector\Mixpost\Facades\Settings;
@@ -60,10 +61,13 @@ class HandleInertiaRequests extends Middleware
                     'info' => $request->session()->get('info'),
                 ];
             },
+            'app' => [
+                'name' => Config::get('app.name')
+            ],
             'mixpost' => [
                 'docs_link' => 'https://docs.inovector.com',
                 'version' => InstalledVersions::getVersion('inovector/mixpost'),
-                'mime_types' => config('mixpost.mime_types'),
+                'mime_types' => Config::get('mixpost.mime_types'),
                 'settings' => [
                     'timezone' => Settings::get('timezone'),
                     'time_format' => Settings::get('time_format'),

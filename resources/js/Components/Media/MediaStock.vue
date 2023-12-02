@@ -1,6 +1,7 @@
 <script setup>
 import {computed, onMounted} from "vue";
 import {usePage, Link} from "@inertiajs/vue3";
+import {snakeCase} from "lodash";
 import useMedia from "@/Composables/useMedia";
 import MediaSelectable from "@/Components/Media/MediaSelectable.vue";
 import MediaFile from "@/Components/Media/MediaFile.vue";
@@ -16,6 +17,10 @@ const props = defineProps({
         type: Number,
         default: 3
     }
+})
+
+const appName = computed(() => {
+    return snakeCase(usePage().props.app.name);
 })
 
 const enabled = computed(() => {
@@ -53,8 +58,13 @@ defineExpose({selected, deselectAll})
                     <MediaSelectable v-if="item" :active="isSelected(item)" @click="toggleSelect(item)">
                         <MediaFile :media="item" class="group">
                             <MediaCredit>
-                                <div>Image from Unsplash</div>
-                                <div>By <a :href="item.credit_url" target="_blank" class="link">{{ item.name }}</a></div>
+                                <div>Image from <a
+                                    :href="`https://unsplash.com/?utm_source=${appName}&utm_medium=referral`"
+                                    target="_blank" class="link">Unsplash</a>
+                                </div>
+                                <div>By <a :href="`${item.credit_url}?utm_source=${appName}&utm_medium=referral`"
+                                           target="_blank" class="link">{{ item.name }}</a>
+                                </div>
                             </MediaCredit>
                         </MediaFile>
                     </MediaSelectable>

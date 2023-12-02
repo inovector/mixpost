@@ -90,7 +90,8 @@ const useMedia = (routeName = 'mixpost.media.fetchUploads', routeParams = {}) =>
         NProgress.start();
 
         axios.post(route('mixpost.media.download', routeParams), {
-            items
+            items,
+            from: activeTab.value,
         }).then((response) => {
             callback(response);
         }).catch(() => {

@@ -48,6 +48,7 @@ class MediaFetchGifsController extends Controller
             ]);
 
             $media->setAttribute('id', $item['id']);
+            $media->setAttribute('download_data', 'false');
 
             return $media;
         });
