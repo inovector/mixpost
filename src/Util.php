@@ -6,10 +6,16 @@ use DateTimeInterface;
 use DateTimeZone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Config;
 use Inovector\Mixpost\Facades\Settings;
 
 class Util
 {
+    public static function config(string $key, mixed $default = null)
+    {
+        return Config::get("mixpost.$key", $default);
+    }
+
     public static function isMixpostRequest(Request $request): bool
     {
         $path = 'mixpost';

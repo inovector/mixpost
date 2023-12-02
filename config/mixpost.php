@@ -73,7 +73,7 @@ return [
      * The media component is integrated with third-party services Unsplash.com and Tenor.com
      * Defines the default terms for displaying media resources
      */
-    'external_media_terms' => ['young', 'social', 'mix', 'content', 'viral', 'trend', 'test', 'light', 'true', 'false', 'marketing', 'self-hosted', 'ambient', 'writer', 'technology'],
+    'external_media_terms' => ['social', 'mix', 'content', 'popular', 'viral', 'trend', 'light', 'marketing', 'self-hosted', 'ambient', 'writer', 'technology'],
 
     /*
      * Options for each social network
