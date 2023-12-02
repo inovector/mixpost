@@ -1,1 +1,0 @@
-import{o,c as n,g as r}from"./app.728ed408.js";const s=["type"],c={__name:"PureButton",props:{type:{type:String,default:"button"}},setup(t){return(e,a)=>(o(),n("button",{type:t.type,class:"relative inline-flex items-center text-gray-400 hover:text-indigo-500 transition-colors ease-in-out duration-200"},[r(e.$slots,"default")],8,s))}};export{c as _};
