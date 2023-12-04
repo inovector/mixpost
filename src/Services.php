@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Crypt;
 use Inovector\Mixpost\Abstracts\ServiceForm;
 use Inovector\Mixpost\Models\Service;
 use Inovector\Mixpost\ServiceForm\FacebookServiceForm;
+use Inovector\Mixpost\ServiceForm\MeetupServiceForm;
 use Inovector\Mixpost\ServiceForm\TenorServiceForm;
 use Inovector\Mixpost\ServiceForm\TwitterServiceForm;
 use Inovector\Mixpost\ServiceForm\UnsplashServiceForm;
@@ -31,6 +32,7 @@ class Services
             'twitter' => TwitterServiceForm::class,
             'unsplash' => UnsplashServiceForm::class,
             'tenor' => TenorServiceForm::class,
+            'meetup' => MeetupServiceForm::class,
         ];
 
         foreach ($services as $service) {

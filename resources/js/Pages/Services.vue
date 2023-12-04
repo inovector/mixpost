@@ -7,12 +7,14 @@ import Tabs from "@/Components/Navigation/Tabs.vue"
 import Tab from "@/Components/Navigation/Tab.vue"
 import TwitterIcon from "@/Icons/Twitter.vue";
 import FacebookIcon from "@/Icons/Facebook.vue";
+import MeetupIcon from "@/Icons/Meetup.vue";
 import UnsplashIcon from "@/Icons/Unsplash.vue";
 
 const TwitterServiceForm = defineAsyncComponent(() => import("@/Components/ServiceForm/TwitterServiceForm.vue"));
 const FacebookServiceForm = defineAsyncComponent(() => import("@/Components/ServiceForm/FacebookServiceForm.vue"));
 const UnsplashServiceForm = defineAsyncComponent(() => import("@/Components/ServiceForm/UnsplashServiceForm.vue"));
 const TenorServiceForm = defineAsyncComponent(() => import("@/Components/ServiceForm/TenorServiceForm.vue"));
+const MeetupServiceForm = defineAsyncComponent(() => import("@/Components/ServiceForm/MeetupServiceForm.vue"));
 
 const pageTitle = 'Third Party Services';
 
@@ -46,6 +48,11 @@ const tab = ref('facebook');
                     <span>Twitter</span>
                 </Tab>
 
+                <Tab @click="tab = 'meetup'" :active="tab === 'meetup'">
+                    <span class="mr-xs"><MeetupIcon class="text-meetup !h-5 !w-5"/></span>
+                    <span>Meetup</span>
+                </Tab>
+
                 <Tab @click="tab = 'unsplash'" :active="tab === 'unsplash'">
                     <span class="mr-xs"><UnsplashIcon class="text-black !h-5 !w-5"/></span>
                     <span>Unsplash</span>
@@ -68,6 +75,10 @@ const tab = ref('facebook');
 
             <template v-if="tab === 'unsplash'">
                 <UnsplashServiceForm :form="form.unsplash"/>
+            </template>
+
+            <template v-if="tab === 'meetup'">
+                <MeetupServiceForm :form="form.meetup"/>
             </template>
 
             <template v-if="tab === 'tenor'">
