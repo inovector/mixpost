@@ -7,13 +7,13 @@
     "file": "assets/Inter-Medium.10d48331.ttf",
     "src": "resources/fonts/Inter-Medium.ttf"
   },
-  "resources/fonts/Inter-Bold.ttf": {
-    "file": "assets/Inter-Bold.790c108b.ttf",
-    "src": "resources/fonts/Inter-Bold.ttf"
-  },
   "resources/fonts/Inter-SemiBold.ttf": {
     "file": "assets/Inter-SemiBold.e8cbc2b8.ttf",
     "src": "resources/fonts/Inter-SemiBold.ttf"
+  },
+  "resources/fonts/Inter-Bold.ttf": {
+    "file": "assets/Inter-Bold.790c108b.ttf",
+    "src": "resources/fonts/Inter-Bold.ttf"
   },
   "resources/img/calendar-disabled-item.svg": {
     "file": "assets/calendar-disabled-item.e7fcf298.svg",
@@ -570,13 +570,13 @@
       "_ReadDocHelp.d12e69a3.js"
     ]
   },
-  "VerticallyScrollableContent.css": {
-    "file": "assets/VerticallyScrollableContent.eda7d8b2.css",
-    "src": "VerticallyScrollableContent.css"
-  },
   "resources/js/Pages/Posts/CreateEdit.css": {
     "file": "assets/CreateEdit.073297db.css",
     "src": "resources/js/Pages/Posts/CreateEdit.css"
+  },
+  "VerticallyScrollableContent.css": {
+    "file": "assets/VerticallyScrollableContent.eda7d8b2.css",
+    "src": "VerticallyScrollableContent.css"
   },
   "resources/js/app.css": {
     "file": "assets/app.9cafd788.css",
