@@ -9,15 +9,48 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/inovector/mixpost.svg?style=flat-square)](https://packagist.org/packages/inovector/mixpost)
 
 ## Introduction
+**Mixpost** it's the coolest **Self hosted social media management software**. 
 
-Mixpost it's the coolest Self-hosted social media management software. 
+This package is the **Lite version** of Mixpost Pro.
 
-This package is the Lite version of Mixpost Pro,
-and by integrating it into your Laravel project, you can easily create, schedule, publish, and manage social media content in one place, with no limits or monthly subscription fees.
+Mixpost is a robust and versatile **social media management platform**, designed to streamline **social media operations** and enhance **content marketing strategies**. Our platform empowers brands and businesses to effectively manage their **online presence**, leading them to success in the dynamic digital landscape. Mixpost's mission is to offer a comprehensive and powerful solution, enabling users to elevate their **social media management** and achieve tangible results.
+
+The platform allows users to craft, organize, and schedule their content for times when their audience is most engaged and active. Mixpost's user-friendly **scheduling system** ensures that content publishing is seamless and efficient. It also facilitates team collaboration by allowing users to assign tasks, manage permissions, and monitor team performance, optimizing team interactions and workflow. Additionally, Mixpost automates post scheduling to ensure maximum audience reach and engagement, significantly boosting interaction and customer engagement.
+
+Trusted by a wide range of users, Mixpost stands out as a proficient and influential tool for social media management and content marketing. It is perfectly suited for enterprises, small to medium businesses, marketing agencies, solopreneurs, and e-commerce stores.
+
+**_Highlighting Features of Mixpost_**
+
+**Mixpost** offers a multitude of features, making **social media management** more effective and simpler:
+
+**Streamlined Social Account Management:**
+Bring all your social media accounts together in one place for smarter and more efficient management.
+
+**Advanced Analytics:**
+Gain insights into your audience's behavior and preferences. Mixpost provides detailed analytics, allowing you to choose from preset reports or create custom ones based on the data that matters most to you.
+
+**Post Versions and Conditions:**
+Tailor your content for each social network and automate follow-up comments on high-performing posts, enhancing engagement and reach.
+
+**Efficient Media Library:**
+Quickly access and reuse media files like images, GIFs, and videos, and integrate with stock image sources for a diverse range of content.
+
+**Team Collaboration and Workspaces:**
+Foster team collaboration with dedicated workspaces. Discuss ideas, manage tasks, and monitor performance, all from a centralized platform.
+
+**Queue and Calendar Management:**
+Build a natural content posting schedule and visualize your strategy with an easy-to-use calendar.
+
+**Customizable Post Templates:**
+Boost efficiency with reusable post templates, perfect for maintaining consistency across your social media channels.
+
+**Dynamic Variables and Hashtag Groups:**
+Insert dynamic text and organize your hashtags strategically for increased post effectiveness.
+And many more features that make Mixpost a standout choice for managing social media and content marketing. Discover all the features in detail at Mixpost Features.
 
 It is the ideal social media management software for bloggers, artisans, entrepreneurs, and marketing teams looking to optimize internal costs.
 
-**[Unlock the full potential of Mixpost with Mixpost Pro](https://mixpost.app/pricing)**
+**[Unlock the full potential of Mixpost with Mixpost Pro/Enterprise](https://mixpost.app/pricing)**
 
 Join our community:
 
