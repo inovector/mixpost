@@ -570,10 +570,6 @@
       "_ReadDocHelp.d12e69a3.js"
     ]
   },
-  "resources/js/Pages/Posts/CreateEdit.css": {
-    "file": "assets/CreateEdit.073297db.css",
-    "src": "resources/js/Pages/Posts/CreateEdit.css"
-  },
   "VerticallyScrollableContent.css": {
     "file": "assets/VerticallyScrollableContent.eda7d8b2.css",
     "src": "VerticallyScrollableContent.css"
@@ -581,5 +577,9 @@
   "resources/js/app.css": {
     "file": "assets/app.9cafd788.css",
     "src": "resources/js/app.css"
+  },
+  "resources/js/Pages/Posts/CreateEdit.css": {
+    "file": "assets/CreateEdit.073297db.css",
+    "src": "resources/js/Pages/Posts/CreateEdit.css"
   }
 }
