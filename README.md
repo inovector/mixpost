@@ -54,7 +54,7 @@ It is the ideal social media management software for bloggers, artisans, entrepr
 
 Join our community:
 
-- [Discord](https://discord.gg/5YdseZnK2Z)
+- [Discord](https://mixpost.app/discord)
 - [Facebook Private Group](https://www.facebook.com/groups/inovector)
 
 [<img src="./art/cover.png?v=3" />](https://mixpost.app)
