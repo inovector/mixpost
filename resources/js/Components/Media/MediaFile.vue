@@ -11,6 +11,10 @@ const props = defineProps({
     imgHeight: {
         type: String,
         default: 'full'
+    },
+    imgWidthFull: {
+        type: Boolean,
+        default: true
     }
 })
 
@@ -43,7 +47,7 @@ const imgHeightClass = computed(() => {
                 loading="lazy"
                 alt="Image"
                 class="w-full rounded-md"
-                :class="imgHeightClass"
+                :class="[imgHeightClass, {'w-full': imgWidthFull}]"
             />
         </div>
     </figure>
