@@ -63,7 +63,7 @@ Join our community:
 
 * Laravel Framework [^9.0, ^10.0]
 * PHP 8.1 or higher
-* Database (eg: MySQL, PostgresSQL, SQLite)
+* Database (eg: MySQL, MariaDB)
 * Redis 6.2 or higher
 * Web Server (eg: Apache, Nginx, IIS)
 * URL Rewrite (eg: mod_rewrite for Apache)
