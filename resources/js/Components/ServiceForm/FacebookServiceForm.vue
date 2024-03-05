@@ -4,6 +4,7 @@ import {ref} from "vue";
 import useNotifications from "@/Composables/useNotifications";
 import Panel from "@/Components/Surface/Panel.vue";
 import Input from "@/Components/Form/Input.vue";
+import Select from "@/Components/Form/Select.vue";
 import FacebookIcon from "@/Icons/Facebook.vue";
 import PrimaryButton from "@/Components/Button/PrimaryButton.vue";
 import HorizontalGroup from "@/Components/Layout/HorizontalGroup.vue";
@@ -46,7 +47,7 @@ const save = () => {
         <template #description>
             <p>
                 <a href="https://developers.facebook.com/apps" class="link" target="_blank">Create an App on
-                    Facebook</a>. Select "Business" for the type of application.
+                    Facebook</a>.
             </p>
             <ReadDocHelp :href="`${$page.props.mixpost.docs_link}/books/services-configuration-mixpost/page/facebook`" class="mt-xs"/>
         </template>
@@ -65,6 +66,25 @@ const save = () => {
             <Input v-model="form.client_secret" :error="errors.hasOwnProperty('client_secret')" type="password" class="w-full" autocomplete="new-password"/>
             <template #footer>
                 <Error :message="errors.client_secret"/>
+            </template>
+        </HorizontalGroup>
+
+        <HorizontalGroup class="mt-lg">
+            <template #title>
+                <label for="version">API Version</label>
+            </template>
+
+            <Select v-model="form.api_version"
+                    :error="errors.hasOwnProperty('api_version')"
+                    id="version">
+                <option value="v19.0">v19.0</option>
+                <option value="v18.0">v18.0</option>
+                <option value="v17.0">v17.0</option>
+                <option value="v16.0">v16.0</option>
+            </Select>
+
+            <template #footer>
+                <Error :message="errors.api_version"/>
             </template>
         </HorizontalGroup>
 

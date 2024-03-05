@@ -2,8 +2,10 @@
 
 namespace Inovector\Mixpost\SocialProviders\Meta;
 
+use Illuminate\Http\Request;
 use Inovector\Mixpost\Abstracts\SocialProvider;
 use Inovector\Mixpost\Http\Resources\AccountResource;
+use Inovector\Mixpost\SocialProviders\Meta\Concerns\ManagesConfig;
 use Inovector\Mixpost\SocialProviders\Meta\Concerns\ManagesMetaResources;
 use Inovector\Mixpost\SocialProviders\Meta\Concerns\ManagesRateLimit;
 use Inovector\Mixpost\SocialProviders\Meta\Concerns\MetaOauth;
@@ -12,14 +14,59 @@ class MetaProvider extends SocialProvider
 {
     use ManagesRateLimit;
     use MetaOauth;
+    use ManagesConfig;
     use ManagesMetaResources;
 
     public array $callbackResponseKeys = ['code'];
 
-    protected string $apiVersion = 'v16.0';
+    protected string $apiVersion;
     protected string $apiUrl = 'https://graph.facebook.com';
 
-    protected string $scope = 'public_profile,business_management,pages_show_list,pages_read_engagement,read_insights,pages_manage_posts,publish_to_groups,groups_access_member_info';
+    protected string $scope;
+
+    public function __construct(Request $request, string $clientId, string $clientSecret, string $redirectUrl, array $values = [])
+    {
+        $this->setApiVersion();
+
+        $this->setScope();
+
+        parent::__construct($request, $clientId, $clientSecret, $redirectUrl, $values);
+    }
+
+    protected function setApiVersion(): void
+    {
+        $this->apiVersion = $this->getApiVersionConfig();
+    }
+
+    protected function setScope(): void
+    {
+        $this->scope = implode(',', $this->getSupportedScopeList());
+    }
+
+    public function getSupportedScopeList(): array
+    {
+        return match ($this->apiVersion) {
+            'v16.0' => [
+                'pages_show_list',
+                'read_insights',
+                'pages_manage_posts',
+                'publish_to_groups',
+            ],
+            'v17.0', 'v18.0' => [
+                'business_management',
+                'pages_show_list',
+                'read_insights',
+                'pages_manage_posts',
+                'publish_to_groups',
+            ],
+            default => [
+                'business_management',
+                'pages_show_list',
+                'read_insights',
+                'pages_manage_posts',
+            ]
+        };
+    }
 
     public function getAuthUrl(): string
     {
