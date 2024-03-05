@@ -55,7 +55,7 @@ const remove = (id) => {
         >
             <template #item="{element}">
                 <div role="button" class="cursor-pointer" @click="open(element)">
-                    <MediaFile :media="element" img-height="sm"/>
+                    <MediaFile :media="element" img-height="sm" :imgWidthFull="false"/>
                 </div>
             </template>
         </Draggable>

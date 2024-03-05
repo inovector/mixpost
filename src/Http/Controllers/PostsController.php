@@ -23,12 +23,20 @@ use Inovector\Mixpost\Http\Resources\TagResource;
 use Inovector\Mixpost\Models\Account;
 use Inovector\Mixpost\Models\Post;
 use Inovector\Mixpost\Models\Tag;
+use Inovector\Mixpost\Support\EagerLoadPostVersionsMedia;
 
 class PostsController extends Controller
 {
     public function index(Request $request): AnonymousResourceCollection|Response
     {
-        $posts = PostQuery::apply($request)->latest('id')->paginate(20)->onEachSide(1)->withQueryString();
+        $posts = PostQuery::apply($request)
+            ->latest()
+            ->latest('id')
+            ->paginate(20)
+            ->onEachSide(1)
+            ->withQueryString();
+
+        EagerLoadPostVersionsMedia::apply($posts);
 
         return Inertia::render('Posts/Index', [
             'accounts' => fn() => AccountResource::collection(Account::oldest()->get())->resolve(),
@@ -76,6 +84,8 @@ class PostsController extends Controller
     public function edit(Post $post): Response
     {
         $post->load('accounts', 'versions', 'tags');
+
+        EagerLoadPostVersionsMedia::apply($post);
 
         return Inertia::render('Posts/CreateEdit', [
             'accounts' => AccountResource::collection(Account::oldest()->get())->resolve(),

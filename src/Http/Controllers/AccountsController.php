@@ -12,6 +12,7 @@ use Inovector\Mixpost\Concerns\UsesSocialProviderManager;
 use Inovector\Mixpost\Facades\Services;
 use Inovector\Mixpost\Http\Resources\AccountResource;
 use Inovector\Mixpost\Models\Account;
+use Inovector\Mixpost\SocialProviders\Meta\MetaProvider;
 
 class AccountsController extends Controller
 {
@@ -22,6 +23,9 @@ class AccountsController extends Controller
         return Inertia::render('Accounts/Accounts', [
             'accounts' => AccountResource::collection(Account::latest()->get())->resolve(),
             'is_configured_service' => Arr::except(Services::isConfigured(), ['unsplash', 'tenor']),
+            'additionally' => [
+                'meta_app_version'=> MetaProvider::getApiVersionConfig()
+            ]
         ]);
     }
 
