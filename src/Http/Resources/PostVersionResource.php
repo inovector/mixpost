@@ -3,6 +3,7 @@
 namespace Inovector\Mixpost\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Inovector\Mixpost\Models\Media;
@@ -34,42 +35,29 @@ class PostVersionResource extends JsonResource
 
     protected function content(): Collection
     {
-        $mediaCollection = $this->mediaCollection();
+        $items = $this->content_with_relations ?? $this->content;
 
-        return collect($this->content)->map(function ($item) use ($mediaCollection) {
+        return collect($items)->map(function ($item) {
             $data = [
                 'body' => (string)$item['body'],
-                'media' => collect($item['media'])->map(function ($mediaId) use ($mediaCollection) {
-                    $media = $mediaCollection->where('id', $mediaId)->first();
-
-                    if (!$media) {
-                        return null;
+                'media' => Arr::map($item['media'], function ($mediaItem) {
+                    if ($mediaItem instanceof Media) {
+                        return new MediaResource($mediaItem);
                     }
 
-                    return new MediaResource($media);
-                })->filter()->values()
+                    return $mediaItem;
+                })
             ];
 
             if ($this->isIndexPage()) {
                 $data['excerpt'] = Str::limit(Util::removeHtmlTags($item['body']), 150);
             }
 
-            if($this->isCalendarPage()) {
+            if ($this->isCalendarPage()) {
                 $data['excerpt'] = Str::limit(Util::removeHtmlTags($item['body']), 50);
             }
 
             return $data;
         });
-    }
-
-    protected function mediaCollection()
-    {
-        $mediaIds = [];
-
-        foreach ($this->content as $item) {
-            $mediaIds = array_merge($mediaIds, $item['media']);
-        }
-
-        return Media::whereIn('id', $mediaIds)->get();
     }
 }
