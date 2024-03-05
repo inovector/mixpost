@@ -1,0 +1,9 @@
+name: Collect all important information about service onboarding
+description: Collection of all necessary information for the onboarding of a service to Mixpost.
+labels: question
+body:
+  - type: textarea
+    attributes:
+      label: Detailed description
+    validations:
+      required: false
