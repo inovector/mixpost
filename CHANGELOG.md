@@ -2,6 +2,20 @@
 
 All notable changes to `mixpost` will be documented in this file.
 
+## v1.5.0 - 2024-03-05
+
+### Added
+
+- Added support for Facebook v19.0
+
+### Fixed
+
+- Fixed image media library in Safari
+
+### Miscellaneous
+
+- Optimized posts query
+
 ## v1.4.0 - 2023-12-02
 
 - Added Unsplash trigger download Job
