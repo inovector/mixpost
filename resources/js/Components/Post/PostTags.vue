@@ -138,7 +138,7 @@ const store = () => {
                         </div>
                     </div>
 
-                    <div class="mt-4">
+                    <div class="mt-xs">
                         <Input v-model="searchText"
                                @keyup.enter="store"
                                type="text"

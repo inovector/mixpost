@@ -1,5 +1,7 @@
 <script setup>
 import Modal from '@/Components/Modal/Modal.vue';
+import PureButton from "../Button/PureButton.vue";
+import X from "../../Icons/X.vue";
 
 const emit = defineEmits(['close']);
 
@@ -37,8 +39,12 @@ const close = () => {
     >
         <div class="w-full h-full min-h-full max-h-max relative overflow-x-hidden overflow-y-auto">
             <div class="flex flex-col h-full w-full">
-                <div v-if="$slots.header" class="px-lg py-md text-lg">
+                <div v-if="$slots.header" class="flex justify-between px-lg py-md text-lg">
                     <slot name="header"/>
+
+                    <template v-if="closeable">
+                        <PureButton @click="close"><X/></PureButton>
+                    </template>
                 </div>
 
                 <div class="p-lg h-full overflow-x-hidden overflow-y-auto" :class="{'pt-0': $slots.header}">

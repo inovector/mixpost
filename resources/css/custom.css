@@ -26,6 +26,10 @@
     .link {
         @apply text-blue-500 hover:text-blue-400 transition-colors ease-in-out duration-200;
     }
+
+    .link-lighter {
+        @apply text-blue-300 hover:text-blue-200 transition-colors ease-in-out duration-200;
+    }
 }
 
 @layer utilities {
@@ -35,6 +39,26 @@
 
     .row-py {
         @apply py-10;
+    }
+
+    .row-py {
+        @apply py-8;
+    }
+
+    .row-mb {
+        @apply mb-8;
+    }
+
+    .row-mt {
+        @apply mb-8;
+    }
+
+    .m-container {
+        @apply max-w-6xl;
+    }
+
+    .s-container {
+        @apply max-w-3xl;
     }
 
     /* Firefox */
