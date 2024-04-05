@@ -2,7 +2,8 @@
 
 namespace Inovector\Mixpost\Support;
 
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Inovector\Mixpost\Models\Media;
@@ -63,14 +64,20 @@ class EagerLoadPostVersionsMedia
         return array_unique($mediaIds);
     }
 
-    protected function getMediaCollection(): Collection
+    protected function getMediaCollection(): Collection|EloquentCollection
     {
-        $mediaItems = Media::findMany($this->extractMediaIds());
+        $mediaIds = $this->extractMediaIds();
+
+        if (empty($mediaIds)) {
+            return collect();
+        }
+
+        $mediaItems = Media::findMany($mediaIds);
 
         return $mediaItems->keyBy('id');
     }
 
-    protected function parseResult(): Model|Collection|LengthAwarePaginator|\Illuminate\Support\Collection
+    protected function parseResult(): Model|Collection|EloquentCollection|LengthAwarePaginator
     {
         if ($this->postResult instanceof Model) {
             return collect([$this->postResult]);

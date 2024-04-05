@@ -40,7 +40,7 @@ const open = (variantName, messageText, buttonObject) => {
     showTimeout = setTimeout(() => {
         show.value = false;
         button.value = null;
-    }, 3000);
+    }, 5000);
 }
 
 const close = () => {

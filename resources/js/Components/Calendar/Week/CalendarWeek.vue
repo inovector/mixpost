@@ -106,7 +106,7 @@ const onScroll = throttle(($event) => {
 </script>
 <template>
     <div class="bg-white ">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between p-lg">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between py-lg row-px">
             <div class="flex items-center space-x-xs mb-xs md:mb-0">
                 <DateSelector
                     :currentDate="today"

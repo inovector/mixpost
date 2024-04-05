@@ -11,7 +11,7 @@ defineProps({
     }
 });
 
-const classes = 'flex items-center p-sm w-full rounded-md text-gray-800 hover:bg-gray-100 transition ease-in-out duration-200';
+const classes = 'flex items-center p-sm w-full first:rounded-t-md last:rounded-b-md text-gray-800 hover:bg-gray-100 transition ease-in-out duration-200';
 const iconClass = 'mr-xs';
 </script>
 <template>

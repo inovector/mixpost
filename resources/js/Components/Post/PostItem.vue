@@ -154,7 +154,7 @@ const closePreview = () => {
             </template>
             <template #footer>
                 <template v-if="preview">
-                    <div class="mr-xs">
+                    <div class="mr-xs flex items-center">
                         <PostItemActions :item-id="item.id"/>
                     </div>
                     <SecondaryButton @click="closePreview">Close</SecondaryButton>
