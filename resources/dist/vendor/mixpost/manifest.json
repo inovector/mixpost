@@ -19,13 +19,13 @@
     "file": "assets/calendar-disabled-item.e7fcf298.svg",
     "src": "resources/img/calendar-disabled-item.svg"
   },
-  "resources/img/fb-wow.svg": {
-    "file": "assets/fb-wow.ca50712c.svg",
-    "src": "resources/img/fb-wow.svg"
-  },
   "resources/img/fb-like.svg": {
     "file": "assets/fb-like.59c2ede2.svg",
     "src": "resources/img/fb-like.svg"
+  },
+  "resources/img/fb-wow.svg": {
+    "file": "assets/fb-wow.ca50712c.svg",
+    "src": "resources/img/fb-wow.svg"
   },
   "resources/img/fb-icons.png": {
     "file": "assets/fb-icons.855a0fcf.png",
@@ -35,13 +35,13 @@
     "file": "assets/globe.4f41e2b3.svg",
     "src": "resources/img/social-icons/mastodon/globe.svg"
   },
-  "resources/img/social-icons/mastodon/reply.svg": {
-    "file": "assets/reply.69e79af6.svg",
-    "src": "resources/img/social-icons/mastodon/reply.svg"
-  },
   "resources/img/social-icons/mastodon/retweet.svg": {
     "file": "assets/retweet.0437347b.svg",
     "src": "resources/img/social-icons/mastodon/retweet.svg"
+  },
+  "resources/img/social-icons/mastodon/reply.svg": {
+    "file": "assets/reply.69e79af6.svg",
+    "src": "resources/img/social-icons/mastodon/reply.svg"
   },
   "resources/img/social-icons/mastodon/star.svg": {
     "file": "assets/star.abade377.svg",
@@ -575,12 +575,12 @@
     "file": "assets/VerticallyScrollableContent.eda7d8b2.css",
     "src": "VerticallyScrollableContent.css"
   },
-  "resources/js/Pages/Posts/CreateEdit.css": {
-    "file": "assets/CreateEdit.073297db.css",
-    "src": "resources/js/Pages/Posts/CreateEdit.css"
-  },
   "resources/js/app.css": {
     "file": "assets/app.ff216bdc.css",
     "src": "resources/js/app.css"
+  },
+  "resources/js/Pages/Posts/CreateEdit.css": {
+    "file": "assets/CreateEdit.073297db.css",
+    "src": "resources/js/Pages/Posts/CreateEdit.css"
   }
 }
