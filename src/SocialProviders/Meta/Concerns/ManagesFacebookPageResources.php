@@ -77,7 +77,7 @@ trait ManagesFacebookPageResources
     {
         $data = [
             'access_token' => $this->getAccessToken()['page_access_token'],
-            'metric' => 'page_engaged_users,page_post_engagements,page_posts_impressions',
+            'metric' => 'page_post_engagements,page_posts_impressions', // facebook deprecated `page_engaged_users` metric
             'period' => 'day',
             'since' => Carbon::today('UTC')->subDays(90)->toDateString(),
             'until' => Carbon::today('UTC')->toDateString(),

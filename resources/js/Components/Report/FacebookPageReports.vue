@@ -23,12 +23,13 @@ const getAudienceData = (value) => {
 </script>
 <template>
     <div class="row-px mt-2xl">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-sm">
-            <Panel>
-                <template #title><span v-tooltip="'The number of people who engaged with your Page. Engagement includes any click.'">Page Engaged Users</span>
-                </template>
-                <div class="font-bold text-indigo-500 text-2xl">{{ getMetricCount('page_engaged_users') }}</div>
-            </Panel>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-sm">
+            <!--            Facebook deprecated `page_engaged_users` metric-->
+<!--            <Panel>-->
+<!--                <template #title><span v-tooltip="'The number of people who engaged with your Page. Engagement includes any click.'">Page Engaged Users</span>-->
+<!--                </template>-->
+<!--                <div class="font-bold text-indigo-500 text-2xl">{{ getMetricCount('page_engaged_users') }}</div>-->
+<!--            </Panel>-->
 
             <Panel>
                 <template #title><span v-tooltip="'The number of times people have engaged with your posts through reactions, comments, shares and more.'">Post Engagements</span>
