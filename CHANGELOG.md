@@ -2,6 +2,13 @@
 
 All notable changes to `mixpost` will be documented in this file.
 
+## v1.5.1 - 2024-04-05
+
+**Miscellaneous**
+
+- Removed Facebook deprecated`page_engaged_users` metric
+- Improved design CSS
+
 ## v1.5.0 - 2024-03-05
 
 ### Added
