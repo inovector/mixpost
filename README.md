@@ -27,7 +27,7 @@ Trusted by a wide range of users, Mixpost stands out as a proficient and influen
 Bring all your social media accounts together in one place for smarter and more efficient management.
 
 **Advanced Analytics:**
-Gain insights into your audience's behavior and preferences. Mixpost provides detailed analytics, allowing you to choose from preset reports or create custom ones based on the data that matters most to you.
+Gain insights into your audience's behavior and preferences. Mixpost provides detailed analytics, for each platform according to the data shared. We do our best to make sure our API integrations are up to date, to provide seamless analytics experience accross all social media platforms.
 
 **Post Versions and Conditions:**
 Tailor your content for each social network and automate follow-up comments on high-performing posts, enhancing engagement and reach.
