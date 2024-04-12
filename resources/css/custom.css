@@ -23,6 +23,10 @@
         height: calc(theme('height.screen') - 90px);
     }
 
+    .form-field {
+        @apply max-w-xl;
+    }
+
     .link {
         @apply text-blue-500 hover:text-blue-400 transition-colors ease-in-out duration-200;
     }
@@ -38,19 +42,15 @@
     }
 
     .row-py {
-        @apply py-10;
-    }
-
-    .row-py {
-        @apply py-8;
+        @apply py-3 sm:py-6 lg:py-8;
     }
 
     .row-mb {
-        @apply mb-8;
+        @apply mb-3 sm:mb-6 lg:mb-8;
     }
 
     .row-mt {
-        @apply mb-8;
+        @apply mt-3 sm:mt-6 lg:mb-8;
     }
 
     .m-container {

@@ -71,7 +71,7 @@ const closeConfirmationAccountDeletion = () => {
 <template>
     <Head :title="title"/>
 
-    <div class="w-full max-w-5xl mx-auto row-py">
+    <div class="w-full mx-auto row-py">
         <PageHeader :title="title">
             <template #description>
                 Connect a social account you'd like to manage.
@@ -81,7 +81,7 @@ const closeConfirmationAccountDeletion = () => {
         <div class="mt-lg row-px w-full">
             <AlertUnconfiguredService :isConfigured="$page.props.is_configured_service"/>
 
-            <div class="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+            <div class="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
                 <button @click="addAccountModal = true"
                         class="border border-indigo-800 rounded-lg hover:border-indigo-500 hover:text-indigo-500 transition-colors ease-in-out duration-200">
                     <span class="block p-lg">

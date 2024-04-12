@@ -13,6 +13,7 @@ use Inovector\Mixpost\Http\Resources\PostResource;
 use Inovector\Mixpost\Http\Resources\TagResource;
 use Inovector\Mixpost\Models\Account;
 use Inovector\Mixpost\Models\Tag;
+use Inovector\Mixpost\Support\EagerLoadPostVersionsMedia;
 
 class CalendarController extends Controller
 {
@@ -21,6 +22,8 @@ class CalendarController extends Controller
         $request->handle();
 
         $posts = PostQuery::apply($request)->oldest('scheduled_at')->get();
+
+        EagerLoadPostVersionsMedia::apply($posts);
 
         return Inertia::render('Calendar', [
             'accounts' => fn() => AccountResource::collection(Account::oldest()->get())->resolve(),

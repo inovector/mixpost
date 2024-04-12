@@ -25,7 +25,7 @@ const save = () => {
 <template>
     <Head title="Settings"/>
 
-    <div class="row-py mb-2xl w-full max-w-3xl mx-auto">
+    <div class="row-py mb-2xl w-full mx-auto">
         <PageHeader title="Settings"/>
 
         <div class="row-px">
@@ -36,7 +36,7 @@ const save = () => {
                     The app will use these settings to display your calendar & analytics.
                 </template>
 
-                <HorizontalGroup class="mt-lg">
+                <HorizontalGroup>
                     <template #title>Timezone</template>
 
                     <div>
@@ -75,9 +75,9 @@ const save = () => {
                             Monday</label>
                     </div>
                 </HorizontalGroup>
-            </Panel>
 
-            <PrimaryButton @click="save" class="mt-lg">Save settings</PrimaryButton>
+                <PrimaryButton @click="save" class="mt-lg">Save settings</PrimaryButton>
+            </Panel>
         </div>
     </div>
 </template>

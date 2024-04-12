@@ -6,7 +6,7 @@ import ExclamationCircleIcon from "@/Icons/ExclamationCircle.vue";
 
 const props = defineProps({
     imgUrl: {
-        type: String,
+        type: [String, null],
         required: true,
     },
     provider: {
@@ -70,9 +70,9 @@ const iconClasses = computed(() => {
                 <ExclamationCircleIcon :class="iconClasses"/>
             </span>
             <span :class="[iconWrapperClasses, {'grayscale': !active}]"
-                  class="flex items-center justify-center absolute bg-white p-2 rounded-full ">
+                  class="flex items-center justify-center absolute bg-white p-md rounded-full">
                 <span>
-                    <ProviderIcon :provider="props.provider" :class="[iconClasses]"/>
+                    <ProviderIcon :provider="props.provider"/>
                 </span>
             </span>
         </span>

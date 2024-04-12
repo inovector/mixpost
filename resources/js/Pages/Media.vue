@@ -96,7 +96,7 @@ const deleteSelectedItems = () => {
 <template>
     <Head title="Media Library"/>
 
-    <div class="max-w-5xl w-full mx-auto row-py mb-2xl">
+    <div class="w-full mx-auto row-py">
         <PageHeader title="Media Library"/>
 
         <div class="w-full row-px">

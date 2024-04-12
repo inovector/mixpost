@@ -92,6 +92,7 @@ watch(() => flash.value, () => {
         open('info', flash.value.info);
     }
 }, {
+    immediate: true,
     deep: true
 })
 </script>
