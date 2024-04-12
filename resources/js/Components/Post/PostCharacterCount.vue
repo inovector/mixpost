@@ -1,5 +1,7 @@
 <script setup>
 import {computed, inject, onMounted, watch} from "vue";
+import CountTextCharacters from "../../Util/CountTextCharacters";
+import Mastodon from "../../SocialProviders/Mastodon";
 import Twitter from "twitter-text";
 import {findIndex, minBy, debounce, filter} from "lodash";
 import useEditor from "@/Composables/useEditor";
@@ -19,15 +21,11 @@ const props = defineProps({
     activeVersion: {
         type: Number,
         required: true,
-    },
-    text: { // Text of current version
-        type: String,
-        default: ''
     }
 });
 
 const {accountHasVersion} = usePostVersions();
-const {extractTextFromHtml} = useEditor();
+const {getTextFromHtmlString} = useEditor();
 
 const accountsWithTextLimit = computed(() => {
     return props.selectedAccounts.filter((account) => {
@@ -105,15 +103,23 @@ const getEnabledVersions = () => {
     });
 }
 
-const getTextLength = (provider, text = null) => {
-    const _text = (text ? text : props.text).replace(/[\r\n]+/g, ' ')
+const getPostBody = (version) => {
+    const item = props.versions.find((versionItem) => versionItem.account_id === version);
 
-    return {
-        'twitter': Twitter.getTweetLength(_text),
-        'facebook_page': _text.length,
-        'facebook_group': _text.length,
-        'mastodon': _text.length,
-    }[provider]
+    return item ? item.content[0].body : '';
+}
+
+const getContentLength = (provider, text = null) => {
+    const content = text ? text : getTextFromHtmlString(getPostBody(props.activeVersion));
+
+    switch (provider) {
+        case 'mastodon':
+            return Mastodon.getPostLength(content);
+        case 'twitter':
+            return Twitter.getTweetLength(content);
+        default:
+            return CountTextCharacters.getLength(content);
+    }
 }
 
 const isAccountSelected = (accountId) => {
@@ -152,9 +158,9 @@ const initLimits = () => {
             return;
         }
 
-        const text = extractTextFromHtml(version.content[0].body);
+        const text = getTextFromHtmlString(version.content[0].body);
         const provider = getProvider(version.account_id);
-        const remaining = calc(limit, getTextLength(provider, text));
+        const remaining = calc(limit, getContentLength(provider, text));
 
         pushLimit({
             account_id: version.account_id,
@@ -175,7 +181,7 @@ const limitActiveVersion = computed(() => {
 });
 
 const characterUsedActiveVersion = computed(() => {
-    return getTextLength(providerActiveVersion.value);
+    return getContentLength(providerActiveVersion.value);
 });
 
 const remaining = computed(() => {

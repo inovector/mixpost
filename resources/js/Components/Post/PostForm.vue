@@ -206,8 +206,7 @@ const {insertEmoji, insertContent, focusEditor} = useEditor();
 
                         <PostCharacterCount :selectedAccounts="selectedAccounts"
                                             :activeVersion="activeVersion"
-                                            :versions="form.versions"
-                                            :text="props.bodyText"/>
+                                            :versions="form.versions"/>
                     </div>
                 </template>
             </Editor>
