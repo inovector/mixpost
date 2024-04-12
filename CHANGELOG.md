@@ -2,6 +2,22 @@
 
 All notable changes to `mixpost` will be documented in this file.
 
+## v1.5.2 - 2024-04-12
+
+**Fixes**
+
+- Fixed pasting empty lines to the editor
+- Fixed Mastodon post count of text characters
+- Fixed loading media files in the calendar
+
+**Changes**
+
+- Renamed Twitter to X (icon changed)
+
+**Miscellaneous**
+
+- Improved design
+
 ## v1.5.1 - 2024-04-05
 
 **Miscellaneous**
