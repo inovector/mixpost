@@ -2,6 +2,7 @@ import './bootstrap';
 import '../css/app.css';
 import 'floating-vue/dist/style.css'
 import '@css/overrideTooltip.css'
+import "@css/proseMirror.css";
 
 import {createApp, h} from 'vue';
 import {createInertiaApp} from '@inertiajs/vue3';

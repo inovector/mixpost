@@ -1,0 +1,11 @@
+.ProseMirror div.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    float: left;
+    color: theme('colors.gray.400');
+    pointer-events: none;
+    height: 0;
+}
+
+.ProseMirror a {
+    color: theme('colors.blue.500');
+}
