@@ -8,8 +8,8 @@ import TwitterIcon from "@/Icons/Twitter.vue";
             <TwitterIcon class="text-twitter"/>
         </span>
         <span class="flex flex-col items-start">
-            <span class="font-semibold">Twitter</span>
-            <span>Connect a new Twitter profile</span>
+            <span class="font-semibold">X</span>
+            <span>Connect a new X profile</span>
         </span>
     </Link>
 </template>

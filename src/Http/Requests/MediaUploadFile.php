@@ -9,6 +9,7 @@ use Inovector\Mixpost\MediaConversions\MediaVideoThumbConversion;
 use Inovector\Mixpost\Models\Media;
 use Inovector\Mixpost\Support\MediaUploader;
 use Illuminate\Validation\Rules\File;
+use Inovector\Mixpost\Util;
 
 class MediaUploadFile extends FormRequest
 {
@@ -84,10 +85,8 @@ class MediaUploadFile extends FormRequest
         return $max;
     }
 
-    private function allowedTypes(): string
+    private function allowedTypes(): array
     {
-        return collect(config('mixpost.mime_types'))->map(function ($mime) {
-            return Str::after($mime, '/');
-        })->implode(',');
+        return Util::config('mime_types');
     }
 }

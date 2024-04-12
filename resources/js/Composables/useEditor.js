@@ -11,6 +11,7 @@ const useEditor = () => {
         Text,
         Link.configure({
             openOnClick: false,
+            linkOnPaste: false,
         })
     ]
 
@@ -36,15 +37,36 @@ const useEditor = () => {
         return text === '';
     }
 
-    const extractTextFromHtml = (htmlString) => {
+    const getTextFromHtmlString = (htmlString) => {
         const tempElement = document.createElement("div");
         tempElement.innerHTML = htmlString;
 
-        const text = tempElement.innerText;
+        const innerHTML = tempElement.innerHTML;
 
         tempElement.remove();
 
-        return text;
+        // Replace empty divs with a placeholder newline character
+        let result = innerHTML.replace(/<div><\/div>/g, '\n');
+
+        // Replace start div tags with newline
+        result = result.replace(/<div>/g, '\n');
+
+        // Remove all remaining HTML tags (closing div tags in this case)
+        result = result.replace(/<\/div>/g, '');
+
+        // Remove all remaining HTML tags
+        result = result.replace(/<\/?[^>]+(>|$)/g, "");
+        // Replace a tags with their inner text
+        // result = result.replace(/<a\s+[^>]*>(.*?)<\/a>/gi, '$1');
+
+        // Remove first newline character if the body starts with a div tag
+        // This is a workaround for the fact that the first character is a
+        // new line when the body starts with a div tag.
+        if (innerHTML.startsWith('<div>')) {
+            result = result.substring(1);
+        }
+
+        return result;
     }
 
     return {
@@ -53,7 +75,7 @@ const useEditor = () => {
         insertContent,
         focusEditor,
         isDocEmpty,
-        extractTextFromHtml
+        getTextFromHtmlString,
     }
 }
 

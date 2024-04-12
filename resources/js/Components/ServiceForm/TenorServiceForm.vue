@@ -8,6 +8,7 @@ import PrimaryButton from "@/Components/Button/PrimaryButton.vue";
 import HorizontalGroup from "@/Components/Layout/HorizontalGroup.vue";
 import Error from "@/Components/Form/Error.vue";
 import ReadDocHelp from "@/Components/Util/ReadDocHelp.vue";
+import TenorIcon from "@/Icons/Tenor.vue";
 
 const props = defineProps({
     form: {
@@ -37,6 +38,7 @@ const save = () => {
     <Panel>
         <template #title>
             <div class="flex items-center">
+                <span class="mr-xs"><TenorIcon/></span>
                 Tenor
             </div>
         </template>

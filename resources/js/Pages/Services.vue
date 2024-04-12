@@ -1,13 +1,12 @@
 <script setup>
 import {ref, defineAsyncComponent} from "vue";
 import {Head, useForm} from '@inertiajs/vue3';
-import useNotifications from "@/Composables/useNotifications";
 import PageHeader from "@/Components/DataDisplay/PageHeader.vue";
 import Tabs from "@/Components/Navigation/Tabs.vue"
 import Tab from "@/Components/Navigation/Tab.vue"
-import TwitterIcon from "@/Icons/Twitter.vue";
-import FacebookIcon from "@/Icons/Facebook.vue";
+import ProviderIcon from "@/Components/Account/ProviderIcon.vue";
 import UnsplashIcon from "@/Icons/Unsplash.vue";
+import TenorIcon from "@/Icons/Tenor.vue";
 
 const TwitterServiceForm = defineAsyncComponent(() => import("@/Components/ServiceForm/TwitterServiceForm.vue"));
 const FacebookServiceForm = defineAsyncComponent(() => import("@/Components/ServiceForm/FacebookServiceForm.vue"));
@@ -20,14 +19,12 @@ const props = defineProps(['services'])
 
 const form = useForm(props.services);
 
-const {notify} = useNotifications();
-
 const tab = ref('facebook');
 </script>
 <template>
     <Head :title="pageTitle"/>
 
-    <div class="row-py mb-2xl w-full max-w-3xl mx-auto">
+    <div class="row-py w-full mx-auto">
         <PageHeader :title="pageTitle">
             <template #description>
                 This page is for storing the credentials for third party services.
@@ -35,24 +32,34 @@ const tab = ref('facebook');
         </PageHeader>
 
         <div class="w-full row-px mb-lg">
-            <Tabs class="overflow-x-auto !flex-nowrap max-w-full w-full">
+            <Tabs class="overflow-x-auto !flex-nowrap 2xl:!flex-wrap 2xl:gap-sm max-w-full w-full">
                 <Tab @click="tab = 'facebook'" :active="tab === 'facebook'">
-                    <span class="mr-xs"><FacebookIcon class="text-facebook !h-5 !w-5"/></span>
-                    <span>Facebook</span>
+                    <template #icon>
+                        <ProviderIcon provider="facebook"/>
+                    </template>
+
+                    Facebook
                 </Tab>
 
                 <Tab @click="tab = 'twitter'" :active="tab === 'twitter'">
-                    <span class="mr-xs"><TwitterIcon class="text-twitter !h-5 !w-5"/></span>
-                    <span>Twitter</span>
+                    <template #icon>
+                        <ProviderIcon provider="twitter"/>
+                    </template>
+                    X
                 </Tab>
 
                 <Tab @click="tab = 'unsplash'" :active="tab === 'unsplash'">
-                    <span class="mr-xs"><UnsplashIcon class="text-black !h-5 !w-5"/></span>
-                    <span>Unsplash</span>
+                    <template #icon>
+                        <UnsplashIcon class="text-black"/>
+                    </template>
+                    Unsplash
                 </Tab>
 
                 <Tab @click="tab = 'tenor'" :active="tab === 'tenor'">
-                    <span>Tenor</span>
+                    <template #icon>
+                        <TenorIcon/>
+                    </template>
+                    Tenor
                 </Tab>
             </Tabs>
         </div>

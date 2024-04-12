@@ -47,9 +47,23 @@ class PostContentParser
             return '';
         }
 
-        $replaceDiv = str_replace(["<div>", "</div>"], ["", "\n"], $text);
+        // Replace empty div tags with a newline
+        $result = preg_replace('/<div><\/div>/i', "\n", $text);
 
-        $decode = html_entity_decode($replaceDiv);
+        // Replace start div tags with newline
+        $result = preg_replace('/<div>/i', "\n", $result);
+
+        // Remove all remaining HTML tags (closing div tags in this case)
+        $result = preg_replace('/<\/div>/i', '', $result);
+
+        // Since preg_replace doesn't have a direct equivalent for checking if the
+        // content starts with a specific tag before manipulation like in JavaScript,
+        // we manually check the first character for a newline and remove it if present.
+        if (str_starts_with($result, "\n")) {
+            $result = substr($result, 1);
+        }
+
+        $decode = html_entity_decode($result);
 
         return strip_tags($decode);
     }

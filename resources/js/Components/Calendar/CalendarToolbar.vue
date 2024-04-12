@@ -7,7 +7,7 @@ const calendarFilter = inject('calendarFilter');
 </script>
 <template>
     <div class="flex items-center space-x-md">
-        <PostsFilter v-model="calendarFilter"/>
         <CalendarSwitchType/>
+        <PostsFilter v-model="calendarFilter"/>
     </div>
 </template>

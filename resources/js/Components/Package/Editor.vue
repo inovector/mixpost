@@ -1,5 +1,5 @@
 <script setup>
-import {ref, onMounted, onUnmounted, useAttrs, computed, watch} from "vue";
+import {ref, onMounted, onUnmounted, useAttrs, watch} from "vue";
 import {useEditor, EditorContent} from '@tiptap/vue-3'
 import useEditorHelper from "@/Composables/useEditor";
 import emitter from "@/Services/emitter";
@@ -9,6 +9,7 @@ import Typography from '@tiptap/extension-typography'
 import StripLinksOnPaste from "@/Extensions/TipTap/StripLinksOnPaste"
 import Hashtag from "@/Extensions/TipTap/Hashtag"
 import UserTag from "@/Extensions/TipTap/UserTag"
+import ClipboardTextParser from "../../Extensions/ProseMirror/ClipboardTextParser";
 
 const attrs = useAttrs();
 
@@ -22,13 +23,12 @@ const props = defineProps({
     },
     placeholder: {
         type: String,
-        default: ''
+        default: 'Start writing your post...'
     }
 });
 
 const emit = defineEmits(['update']);
 
-const el = ref();
 const focused = ref(false);
 
 const {defaultExtensions} = useEditorHelper();
@@ -39,7 +39,7 @@ const editor = useEditor({
     extensions: [...defaultExtensions, ...[
         History,
         Placeholder.configure({
-            placeholder: 'Start writing your post...',
+            placeholder: props.placeholder,
         }),
         Typography.configure({
             openDoubleQuote: false,
@@ -55,6 +55,7 @@ const editor = useEditor({
         attributes: {
             class: 'focus:outline-none min-h-[150px]',
         },
+        clipboardTextParser: ClipboardTextParser,
     },
     onUpdate: () => {
         emit('update', editor.value.getHTML());
@@ -65,10 +66,6 @@ const editor = useEditor({
     onBlur: () => {
         focused.value = false;
     }
-});
-
-const bodyText = computed(() => {
-    return editor.value && !editor.value.isEmpty ? editor.value.view.dom.innerText : '';
 });
 
 const isEditor = (id) => {
@@ -110,22 +107,9 @@ watch(() => props.value, (value) => {
 </script>
 <template>
     <div
-        :class="{'border-indigo-200 ring ring-indigo-200 ring-opacity-50': focused}"
+        :class="{'border-primary-200 ring ring-primary-200 ring-opacity-50': focused}"
         class="border border-gray-200 rounded-md p-md pb-xs text-base transition-colors ease-in-out duration-200">
         <editor-content :editor="editor"/>
-        <slot :body-text="bodyText"/>
+        <slot/>
     </div>
 </template>
-<style>
-.ProseMirror p.is-editor-empty:first-child::before {
-    content: attr(data-placeholder);
-    float: left;
-    color: theme('colors.gray.400');
-    pointer-events: none;
-    height: 0;
-}
-
-.ProseMirror a {
-    color: theme('colors.blue.500');
-}
-</style>

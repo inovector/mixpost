@@ -42,7 +42,8 @@ return [
         'image/jpeg',
         'image/gif',
         'image/png',
-        'video/mp4'
+        'video/mp4',
+        'video/x-m4v'
     ],
 
     /*
