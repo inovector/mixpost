@@ -1,11 +1,11 @@
 {
-  "resources/fonts/Inter-Regular.ttf": {
-    "file": "assets/Inter-Regular.41ab0f70.ttf",
-    "src": "resources/fonts/Inter-Regular.ttf"
-  },
   "resources/fonts/Inter-SemiBold.ttf": {
     "file": "assets/Inter-SemiBold.e8cbc2b8.ttf",
     "src": "resources/fonts/Inter-SemiBold.ttf"
+  },
+  "resources/fonts/Inter-Regular.ttf": {
+    "file": "assets/Inter-Regular.41ab0f70.ttf",
+    "src": "resources/fonts/Inter-Regular.ttf"
   },
   "resources/fonts/Inter-Medium.ttf": {
     "file": "assets/Inter-Medium.10d48331.ttf",
@@ -23,13 +23,13 @@
     "file": "assets/fb-like.59c2ede2.svg",
     "src": "resources/img/fb-like.svg"
   },
-  "resources/img/fb-wow.svg": {
-    "file": "assets/fb-wow.ca50712c.svg",
-    "src": "resources/img/fb-wow.svg"
-  },
   "resources/img/fb-icons.png": {
     "file": "assets/fb-icons.855a0fcf.png",
     "src": "resources/img/fb-icons.png"
+  },
+  "resources/img/fb-wow.svg": {
+    "file": "assets/fb-wow.ca50712c.svg",
+    "src": "resources/img/fb-wow.svg"
   },
   "resources/img/social-icons/mastodon/globe.svg": {
     "file": "assets/globe.4f41e2b3.svg",
@@ -563,13 +563,13 @@
       "_ProviderIcon.0162c270.js"
     ]
   },
-  "VerticallyScrollableContent.css": {
-    "file": "assets/VerticallyScrollableContent.eda7d8b2.css",
-    "src": "VerticallyScrollableContent.css"
-  },
   "resources/js/Pages/Posts/CreateEdit.css": {
     "file": "assets/CreateEdit.e8219db1.css",
     "src": "resources/js/Pages/Posts/CreateEdit.css"
+  },
+  "VerticallyScrollableContent.css": {
+    "file": "assets/VerticallyScrollableContent.eda7d8b2.css",
+    "src": "VerticallyScrollableContent.css"
   },
   "resources/js/app.css": {
     "file": "assets/app.1760bad0.css",
