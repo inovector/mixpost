@@ -65,7 +65,7 @@ class HandleInertiaRequests extends Middleware
                 'name' => Config::get('app.name')
             ],
             'mixpost' => [
-                'docs_link' => 'https://docs.inovector.com',
+                'docs_link' => 'https://docs.mixpost.app',
                 'version' => InstalledVersions::getVersion('inovector/mixpost'),
                 'mime_types' => Config::get('mixpost.mime_types'),
                 'settings' => [

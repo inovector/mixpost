@@ -24,7 +24,7 @@ const props = defineProps({
 })
 
 const label = computed(() => {
-    return format(new Date(props.day.date), 'd');
+    return format(new Date(`${props.day.date}T00:00:00`), 'd');
 })
 
 const style = computed(() => {
@@ -40,7 +40,7 @@ const style = computed(() => {
 const add = () => {
     const now = utcToZonedTime(new Date().toISOString(), props.timeZone);
 
-    let scheduleAt = `${props.day.date} ${format(now, 'H:mm')}`;
+    let scheduleAt = `${props.day.date} ${format(now, 'HH:mm')}`;
 
     router.visit(route('mixpost.posts.create', {schedule_at: scheduleAt}));
 }

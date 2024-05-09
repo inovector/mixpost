@@ -49,7 +49,7 @@ const save = () => {
                 <a href="https://developers.facebook.com/apps" class="link" target="_blank">Create an App on
                     Facebook</a>.
             </p>
-            <ReadDocHelp :href="`${$page.props.mixpost.docs_link}/books/services-configuration-mixpost/page/facebook`" class="mt-xs"/>
+            <ReadDocHelp :href="`${$page.props.mixpost.docs_link}/services/social/facebook/`" class="mt-xs"/>
         </template>
 
         <HorizontalGroup class="mt-lg">

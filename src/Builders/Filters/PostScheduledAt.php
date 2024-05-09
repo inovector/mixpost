@@ -13,8 +13,8 @@ class PostScheduledAt implements Filter
         $date = Carbon::parse($value['date']);
 
         if ($value['calendar_type'] === 'month') {
-            return $builder->whereYear('scheduled_at', $date->year)
-                ->whereMonth('scheduled_at', $date->month);
+            return $builder->whereDate('scheduled_at', '>=', $date->clone()->startOfMonth()->subDays(10)->toDateString())
+                ->whereDate('scheduled_at', '<=', $date->clone()->endOfMonth()->addDays(10)->toDateString());
         }
 
         if ($value['calendar_type'] === 'week') {
