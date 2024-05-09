@@ -2,6 +2,22 @@
 
 All notable changes to `mixpost` will be documented in this file.
 
+## v1.6.0 - 2024-05-09
+
+**Fixes**
+
+- Fixed media file item in the Safari browser
+- Calendar Month: Fix timezone with (-)
+- Calendar Month: Get posts for prev&next month
+
+**Changes**
+
+- Changed documentation URL
+
+**Miscellaneous**
+
+- Support `s3` disk for X (Twitter)
+
 ## v1.5.2 - 2024-04-12
 
 **Fixes**
