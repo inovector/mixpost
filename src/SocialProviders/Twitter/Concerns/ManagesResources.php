@@ -71,7 +71,7 @@ trait ManagesResources
             $postParameters['media']['media_ids'] = $mediaResult['ids'];
         }
 
-        $postResult = $this->connection->post('tweets', $postParameters, true);
+        $postResult = $this->connection->post('tweets', $postParameters, ['jsonPayload' => true]);
 
         return $this->buildResponse($postResult, function () use ($postResult) {
             return [
@@ -105,7 +105,7 @@ trait ManagesResources
                     'media_type' => $item->mime_type,
                     'media_category' => $item->isImageGif() ? 'tweet_gif' : 'tweet_video',
                     'total_bytes' => $item->size,
-                ], true);
+                ], ['chunkedUpload' => true]);
             }
 
             if (!$result) {
