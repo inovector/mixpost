@@ -46,7 +46,7 @@ const props = defineProps({
 
 const emit = defineEmits(['dateSelected'])
 
-const selectedDate = ref(new Date(props.initialDate));
+const selectedDate = ref(new Date(`${props.initialDate}T00:00:00`));
 
 const days = computed(() => {
     return [
@@ -81,18 +81,18 @@ const previousMonthDays = computed(() => {
         ? firstDayOfTheMonthWeekday - props.weekStartsOn
         : props.weekStartsOn ? 6 : 0;
 
-    const previousMonthLastMondayDayOfMonth = getDate(subDays(new Date(currentMonthDays.value[0].date), visibleNumberOfDaysFromPreviousMonth))
+    const previousMonthLastMondayDayOfMonth = getDate(subDays(new Date(`${currentMonthDays.value[0].date}T00:00:00`), visibleNumberOfDaysFromPreviousMonth))
 
     const previousMonth = subMonths(selectedDate.value, 1);
 
     return [...Array(visibleNumberOfDaysFromPreviousMonth)].map(
         (day, index) => {
-            const date = new Date(`${getYear(previousMonth)}-${(getMonth(previousMonth) + 1).toString().padStart(2, '0')}-${(previousMonthLastMondayDayOfMonth + index).toString().padStart(2, '0')}`);
+            const date = new Date(`${getYear(previousMonth)}-${(getMonth(previousMonth) + 1).toString().padStart(2, '0')}-${(previousMonthLastMondayDayOfMonth + index).toString().padStart(2, '0')}T00:00:00`);
 
             return {
                 date: format(date, 'yyyy-MM-dd'),
                 isDisabled: isDatePast(date, props.timeZone),
-                posts: []
+                posts: getDayPosts(date)
             };
         }
     );
@@ -100,7 +100,7 @@ const previousMonthDays = computed(() => {
 
 const currentMonthDays = computed(() => {
     return [...Array(numberOfDaysInMonth.value)].map((day, index) => {
-        const date = new Date(`${year.value}-${month.value}-${(index + 1).toString().padStart(2, '0')}`);
+        const date = new Date(`${year.value}-${month.value}-${(index + 1).toString().padStart(2, '0')}T00:00:00`);
 
         return {
             date: format(date, 'yyyy-MM-dd'),
@@ -120,16 +120,18 @@ const nextMonthDays = computed(() => {
     const nextMonth = addMonths(selectedDate.value, 1);
 
     return [...Array(visibleNumberOfDaysFromNextMonth)].map((day, index) => {
+        const date = new Date(`${getYear(nextMonth)}-${(getMonth(nextMonth) + 1).toString().padStart(2, '0')}-${(index + 1).toString().padStart(2, '0')}T00:00:00`);
+
         return {
-            date: format(new Date(`${getYear(nextMonth)}-${(getMonth(nextMonth) + 1).toString().padStart(2, '0')}-${(index + 1).toString().padStart(2, '0')}`), 'yyyy-MM-dd'),
+            date: format(date, 'yyyy-MM-dd'),
             isDisabled: false,
-            posts: []
+            posts: getDayPosts(date)
         };
     });
 })
 
 const getWeekday = (date) => {
-    return getDay(typeof date === 'string' ? new Date(date) : date);
+    return getDay(typeof date === 'string' ? new Date(`${date}T00:00:00`) : date);
 }
 
 const getDayPosts = (date) => {
