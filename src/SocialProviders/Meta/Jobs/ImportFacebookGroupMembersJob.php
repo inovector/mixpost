@@ -17,6 +17,8 @@ use Inovector\Mixpost\Models\Audience;
 use Inovector\Mixpost\SocialProviders\Meta\FacebookGroupProvider;
 use Inovector\Mixpost\Support\SocialProviderResponse;
 
+// @deprecated
+// We will remove this feature soon
 class ImportFacebookGroupMembersJob implements ShouldQueue
 {
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;

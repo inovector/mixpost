@@ -6,6 +6,8 @@ use Inovector\Mixpost\Http\Resources\AccountResource;
 use Inovector\Mixpost\SocialProviders\Meta\Concerns\ManagesFacebookGroupResources;
 use Inovector\Mixpost\SocialProviders\Meta\Concerns\ManagesFacebookOAuth;
 
+// @deprecated
+// We will remove this feature soon
 class FacebookGroupProvider extends MetaProvider
 {
     use ManagesFacebookOAuth;

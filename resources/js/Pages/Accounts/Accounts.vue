@@ -10,7 +10,6 @@ import ConfirmationModal from "@/Components/Modal/ConfirmationModal.vue"
 import Account from "@/Components/Account/Account.vue"
 import AddTwitterAccount from "@/Components/Account/AddTwitterAccount.vue"
 import AddFacebookPage from "@/Components/Account/AddFacebookPage.vue"
-import AddFacebookGroup from "@/Components/Account/AddFacebookGroup.vue"
 import AddMastodonAccount from "@/Components/Account/AddMastodonAccount.vue"
 import SecondaryButton from "@/Components/Button/SecondaryButton.vue"
 import DangerButton from "@/Components/Button/DangerButton.vue"
@@ -155,7 +154,6 @@ const closeConfirmationAccountDeletion = () => {
            @close="addAccountModal = false">
         <div class="flex flex-col">
             <AddFacebookPage v-if="$page.props.is_configured_service.facebook"/>
-            <AddFacebookGroup v-if="$page.props.is_configured_service.facebook"/>
             <AddMastodonAccount/>
             <AddTwitterAccount v-if="$page.props.is_configured_service.twitter"/>
         </div>

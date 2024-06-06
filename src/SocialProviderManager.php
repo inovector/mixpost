@@ -29,14 +29,16 @@ class SocialProviderManager extends SocialProviderManagerAbstract
         return $this->buildConnectionProvider(FacebookPageProvider::class, $config);
     }
 
-    protected function connectFacebookGroupProvider()
-    {
-        $config = Services::get('facebook');
-
-        $config['redirect'] = route('mixpost.callbackSocialProvider', ['provider' => 'facebook_group']);
-
-        return $this->buildConnectionProvider(FacebookGroupProvider::class, $config);
-    }
+// @deprecated
+// We will remove this feature soon
+//    protected function connectFacebookGroupProvider()
+//    {
+//        $config = Services::get('facebook');
+//
+//        $config['redirect'] = route('mixpost.callbackSocialProvider', ['provider' => 'facebook_group']);
+//
+//        return $this->buildConnectionProvider(FacebookGroupProvider::class, $config);
+//    }
 
     protected function connectMastodonProvider()
     {
