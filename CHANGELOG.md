@@ -2,6 +2,16 @@
 
 All notable changes to `mixpost` will be documented in this file.
 
+## v1.7.0 - 2024-06-06
+
+**Changes**
+
+- Support `v20` for Facebook API
+
+**Miscellaneous**
+
+- Expanded compatibility of the post keyword filter with additional database versions
+
 ## v1.6.0 - 2024-05-09
 
 **Fixes**
