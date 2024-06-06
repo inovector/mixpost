@@ -5,7 +5,6 @@ namespace Inovector\Mixpost\Commands;
 use Illuminate\Console\Command;
 use Inovector\Mixpost\Concerns\AccountsOption;
 use Inovector\Mixpost\SocialProviders\Mastodon\Jobs\ImportMastodonFollowersJob;
-use Inovector\Mixpost\SocialProviders\Meta\Jobs\ImportFacebookGroupMembersJob;
 use Inovector\Mixpost\SocialProviders\Meta\Jobs\ImportFacebookPageFollowersJob;
 use Inovector\Mixpost\SocialProviders\Twitter\Jobs\ImportTwitterFollowersJob;
 
@@ -23,7 +22,6 @@ class ImportAccountAudience extends Command
             $job = match ($account->provider) {
                 'twitter' => ImportTwitterFollowersJob::class,
                 'facebook_page' => ImportFacebookPageFollowersJob::class,
-                'facebook_group' => ImportFacebookGroupMembersJob::class,
                 'mastodon' => ImportMastodonFollowersJob::class,
                 default => null,
             };

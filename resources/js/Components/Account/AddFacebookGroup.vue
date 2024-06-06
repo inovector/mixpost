@@ -1,4 +1,6 @@
 <script setup>
+// @deprecated
+// We will remove this feature soon
 import { Link, usePage } from '@inertiajs/vue3'
 import FacebookIcon from "@/Icons/Facebook.vue";
 import Badge from "../DataDisplay/Badge.vue";

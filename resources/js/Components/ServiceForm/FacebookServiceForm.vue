@@ -77,6 +77,7 @@ const save = () => {
             <Select v-model="form.api_version"
                     :error="errors.hasOwnProperty('api_version')"
                     id="version">
+                <option value="v20.0">v20.0</option>
                 <option value="v19.0">v19.0</option>
                 <option value="v18.0">v18.0</option>
                 <option value="v17.0">v17.0</option>

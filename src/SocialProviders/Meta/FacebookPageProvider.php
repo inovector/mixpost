@@ -2,7 +2,6 @@
 
 namespace Inovector\Mixpost\SocialProviders\Meta;
 
-use Illuminate\Support\Str;
 use Inovector\Mixpost\Http\Resources\AccountResource;
 use Inovector\Mixpost\SocialProviders\Meta\Concerns\ManagesFacebookOAuth;
 use Inovector\Mixpost\SocialProviders\Meta\Concerns\ManagesFacebookPageResources;

@@ -50,20 +50,18 @@ class MetaProvider extends SocialProvider
                 'pages_show_list',
                 'read_insights',
                 'pages_manage_posts',
-                'publish_to_groups',
-            ],
-            'v17.0', 'v18.0' => [
-                'business_management',
-                'pages_show_list',
-                'read_insights',
-                'pages_manage_posts',
-                'publish_to_groups',
+                'instagram_basic',
+                'instagram_content_publish',
+                'instagram_manage_insights'
             ],
             default => [
                 'business_management',
                 'pages_show_list',
                 'read_insights',
                 'pages_manage_posts',
+                'instagram_basic',
+                'instagram_content_publish',
+                'instagram_manage_insights'
             ]
         };
     }

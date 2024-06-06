@@ -45,45 +45,47 @@ class StoreProviderEntitiesAsAccounts
         }
     }
 
-    private function storeFacebookGroups(array $items): void
-    {
-        $provider = SocialProviderManager::connect('facebook_group');
-
-        /**
-         * Get entities with access token
-         *
-         * @var SocialProviderResponse $entities
-         */
-        $entities = $provider->getEntities();
-
-        $filterEntities = Arr::where($entities->context(), function ($entity) use ($items) {
-            return in_array($entity['id'], $items);
-        });
-
-        /**
-         * @var SocialProviderResponse $userAccount
-         */
-        $userAccount = $provider->getUserAccount();
-
-        $entities = Arr::map($filterEntities, function ($entity) use ($userAccount) {
-            return array_merge($entity, [
-                'data' => [
-                    'user' => [
-                        'id' => $userAccount->context()['id'],
-                        'name' => $userAccount->context()['name']
-                    ]
-                ],
-            ]);
-        });
-
-        $accessToken = $provider->getAccessToken();
-
-        foreach ($entities as $account) {
-            (new UpdateOrCreateAccount())(
-                providerName: 'facebook_group',
-                account: $account,
-                accessToken: $accessToken
-            );
-        }
-    }
+// @deprecated
+// We will remove this feature soon
+//    private function storeFacebookGroups(array $items): void
+//    {
+//        $provider = SocialProviderManager::connect('facebook_group');
+//
+//        /**
+//         * Get entities with access token
+//         *
+//         * @var SocialProviderResponse $entities
+//         */
+//        $entities = $provider->getEntities();
+//
+//        $filterEntities = Arr::where($entities->context(), function ($entity) use ($items) {
+//            return in_array($entity['id'], $items);
+//        });
+//
+//        /**
+//         * @var SocialProviderResponse $userAccount
+//         */
+//        $userAccount = $provider->getUserAccount();
+//
+//        $entities = Arr::map($filterEntities, function ($entity) use ($userAccount) {
+//            return array_merge($entity, [
+//                'data' => [
+//                    'user' => [
+//                        'id' => $userAccount->context()['id'],
+//                        'name' => $userAccount->context()['name']
+//                    ]
+//                ],
+//            ]);
+//        });
+//
+//        $accessToken = $provider->getAccessToken();
+//
+//        foreach ($entities as $account) {
+//            (new UpdateOrCreateAccount())(
+//                providerName: 'facebook_group',
+//                account: $account,
+//                accessToken: $accessToken
+//            );
+//        }
+//    }
 }
