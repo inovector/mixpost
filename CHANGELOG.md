@@ -2,6 +2,13 @@
 
 All notable changes to `mixpost` will be documented in this file.
 
+## v1.7.1 - 2024-06-14
+
+**Fixes**
+
+- Fixed Facebook service version validation.
+- Fixed confirmation process for removing post versions.
+
 ## v1.7.0 - 2024-06-06
 
 **Changes**
