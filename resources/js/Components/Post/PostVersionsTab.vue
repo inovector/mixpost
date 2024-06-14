@@ -100,7 +100,7 @@ const remove = () => {
 
                         <div v-if="!version.is_original"
                              class="absolute hidden group-hover:flex items-center top-0 right-0 pb-2 pl-0.5 h-full bg-white">
-                            <button @click.prevent="confirmationRemoval = version"
+                            <button @click.prevent.stop="confirmationRemoval = version"
                                     class="inline-flex text-gray-300 group-hover:text-gray-500 hover:!text-red-500 transition-colors ease-in-out duration-200">
                                 <XIcon class="!w-4 !h-4"/>
                             </button>
