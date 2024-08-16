@@ -8,7 +8,6 @@ import UnsplashIcon from "@/Icons/Unsplash.vue";
 import PrimaryButton from "@/Components/Button/PrimaryButton.vue";
 import HorizontalGroup from "@/Components/Layout/HorizontalGroup.vue";
 import Error from "@/Components/Form/Error.vue";
-import ReadDocHelp from "@/Components/Util/ReadDocHelp.vue";
 
 const props = defineProps({
     form: {
@@ -49,7 +48,6 @@ const save = () => {
                 <a href="https://unsplash.com/oauth/applications" class="link" target="_blank">Create
                     an App on Unsplash</a>.
             </p>
-            <ReadDocHelp :href="`${$page.props.mixpost.docs_link}/services/media//unsplash`" class="mt-xs"/>
         </template>
 
         <HorizontalGroup class="mt-lg">
