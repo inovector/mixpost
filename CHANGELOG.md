@@ -2,6 +2,12 @@
 
 All notable changes to `mixpost` will be documented in this file.
 
+## v1.7.2 - 2024-08-16
+
+**Miscellaneous**
+
+- Removed Unsplash doc link.
+
 ## v1.7.1 - 2024-06-14
 
 **Fixes**
