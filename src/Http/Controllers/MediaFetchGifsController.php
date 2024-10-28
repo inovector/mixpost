@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Inovector\Mixpost\Facades\Services;
@@ -27,7 +28,7 @@ class MediaFetchGifsController extends Controller
 
         $items = Http::get("https://tenor.googleapis.com/v2/search", [
             'key' => $clientId,
-            'client_key' => Str::slug(env('APP_NAME', 'mixpost'), '_'),
+            'client_key' => Str::slug(Config::get('app.name', 'mixpost'), '_'),
             'q' => $request->query('keyword', Arr::random($terms)),
             'limit' => 30,
         ]);

@@ -40,7 +40,7 @@ const imgHeightClass = computed(() => {
                 <ExclamationCircleIcon class="w-8 h-8 mx-auto text-red-500"/>
                 <div class="mt-xs">{{ media.name }}</div>
                 <div class="mt-xs text-red-500">{{
-                        media.error ? media.error : $t('media.error_uploading_media')
+                        media.error ? media.error : 'Error uploading media.'
                     }}
                 </div>
             </div>
