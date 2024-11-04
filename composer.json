@@ -1,12 +1,14 @@
 {
     "name": "inovector/mixpost",
-    "description": "Self-hosted social media management software",
+    "description": "Self-hosted social media management software.",
     "keywords": [
-        "inovector",
-        "mixpost",
-        "social",
-        "scheduling",
-        "laravel"
+        "social-media-management",
+        "content-scheduling",
+        "social-platform-integration",
+        "calendar-scheduling",
+        "self-hosted",
+        "open-sourced",
+        "mixpost"
     ],
     "homepage": "https://github.com/inovector/mixpost",
     "license": "MIT",
@@ -18,11 +20,11 @@
         }
     ],
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "ext-fileinfo": "*",
-        "guzzlehttp/guzzle": "^7.5",
-        "illuminate/contracts": "^9.28|^10.0",
-        "inertiajs/inertia-laravel": "^0.6.9",
+        "guzzlehttp/guzzle": "^7.8",
+        "illuminate/contracts": "^10.47|^11.0",
+        "inertiajs/inertia-laravel": "^1.0",
         "inovector/twitteroauth": "^7.0",
         "intervention/image": "^2.7",
         "php-ffmpeg/php-ffmpeg": "^1.0",
@@ -31,15 +33,16 @@
         "tightenco/ziggy": "1.*"
     },
     "require-dev": {
-        "nunomaduro/collision": "^6.0",
-        "orchestra/testbench": "^7.0",
-        "pestphp/pest": "^1.21",
-        "pestphp/pest-plugin-faker": "^1.0",
-        "pestphp/pest-plugin-laravel": "^1.1",
+        "laradumps/laradumps": "^3.1",
+        "nunomaduro/collision": "^8.1",
+        "orchestra/testbench": "^9.2",
+        "pestphp/pest": "^2.34",
+        "pestphp/pest-plugin-faker": "^2.0",
+        "pestphp/pest-plugin-laravel": "^2.0",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan-deprecation-rules": "^1.0",
         "phpstan/phpstan-phpunit": "^1.0",
-        "phpunit/phpunit": "^9.5"
+        "phpunit/phpunit": "^10.5"
     },
     "autoload": {
         "psr-4": {

@@ -1,6 +1,6 @@
 <?php
 
-use function Pest\Faker\faker;
+use function Pest\Faker\fake;
 use Inovector\Mixpost\Models\User;
 use Inovector\Mixpost\Models\Tag;
 
@@ -13,7 +13,7 @@ it('can store a tag', function () {
 
     $this->post(route('mixpost.tags.store'), [
         'name' => 'Test',
-        'hex_color' => faker()->hexColor
+        'hex_color' => fake()->hexColor
     ])->assertStatus(302);
 
     expect(Tag::where('name', 'Test')->first() !== null)->toBeTrue();

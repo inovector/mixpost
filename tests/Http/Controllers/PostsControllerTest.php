@@ -4,7 +4,7 @@ use Inertia\Testing\AssertableInertia as Assert;
 use Inovector\Mixpost\Enums\PostStatus;
 use Inovector\Mixpost\Models\Account;
 use Inovector\Mixpost\Models\Tag;
-use function Pest\Faker\faker;
+use function Pest\Faker\fake;
 use Inovector\Mixpost\Models\User;
 use Inovector\Mixpost\Models\Post;
 use Carbon\Carbon;
@@ -105,7 +105,7 @@ it('can store a post', function () {
                 'is_original' => true,
                 'content' => [
                     [
-                        'body' => faker()->paragraph,
+                        'body' => fake()->paragraph,
                         'media' => []
                     ]
                 ]
@@ -142,7 +142,7 @@ it('can update a post', function () {
             'is_original' => true,
             'content' => [
                 [
-                    'body' => faker()->paragraph,
+                    'body' => fake()->paragraph,
                     'media' => []
                 ]
             ]
@@ -160,7 +160,7 @@ it('can update a post', function () {
                 'is_original' => true,
                 'content' => [
                     [
-                        'body' => faker()->paragraph,
+                        'body' => fake()->paragraph,
                         'media' => []
                     ]
                 ]

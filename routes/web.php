@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use Inovector\Mixpost\Http\Controllers\AccountEntitiesController;
 use Inovector\Mixpost\Http\Controllers\AccountsController;
@@ -104,6 +106,11 @@ Route::middleware([
             Route::put('user', UpdateAuthUserController::class)->name('updateUser');
             Route::put('password', UpdateAuthUserPasswordController::class)->name('updatePassword');
         });
+
+        Route::get('refresh-csrf-token', function (Request $request) {
+            $request->session()->regenerateToken();
+            return response(Config::get('app.name'));
+        })->name('refreshCsrfToken');
 
         Route::post('logout', [AuthenticatedController::class, 'destroy'])
             ->name('logout');

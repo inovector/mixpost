@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Inertia\ServiceProvider;
 use Inovector\Mixpost\MixpostServiceProvider;
 use Intervention\Image\ImageServiceProvider;
@@ -51,14 +52,27 @@ class TestCase extends Orchestra
     protected function refreshTestDatabase()
     {
         if (!RefreshDatabaseState::$migrated) {
-            $this->artisan('vendor:publish', ['--tag' => 'mixpost-migrations', '--force' => true])->run();
+            if ($this->appMajorVersion() > 10) {
+                $this->artisan('vendor:publish', ['--tag' => 'mixpost-migrations', '--force' => true]);
+            } else {
+                $this->artisan('vendor:publish', ['--tag' => 'mixpost-migrations', '--force' => true])->run();
+            }
+
             $this->artisan('migrate:fresh', $this->migrateFreshUsing());
 
-            $migration = include __DIR__ . '/../vendor/orchestra/testbench-core/laravel/migrations/2014_10_12_000000_testbench_create_users_table.php';
-            $migration->up();
+            if ($this->app->version() > 10) {
+                $migration = include __DIR__ . '/../vendor/orchestra/testbench-core/laravel/migrations/0001_01_01_000000_testbench_create_users_table.php';
+                $migration->up();
 
-            $migration = include __DIR__ . '/../vendor/orchestra/testbench-core/laravel/migrations/2019_08_19_000000_testbench_create_failed_jobs_table.php';
-            $migration->up();
+                $migration = include __DIR__ . '/../vendor/orchestra/testbench-core/laravel/migrations/0001_01_01_000002_testbench_create_jobs_table.php';
+                $migration->up();
+            } else {
+                $migration = include __DIR__ . '/../vendor/orchestra/testbench-core/laravel/migrations/2014_10_12_000000_testbench_create_users_table.php';
+                $migration->up();
+
+                $migration = include __DIR__ . '/../vendor/orchestra/testbench-core/laravel/migrations/2019_08_19_000000_testbench_create_failed_jobs_table.php';
+                $migration->up();
+            }
 
             $this->app[Kernel::class]->setArtisan(null);
 
@@ -114,5 +128,10 @@ class TestCase extends Orchestra
     public function publishAssets(): void
     {
         $this->artisan('mixpost:publish-assets', ['--force' => true])->run();
+    }
+
+    private function appMajorVersion(): int
+    {
+        return (int)Str::of($this->app->version())->explode('.')->first();
     }
 }

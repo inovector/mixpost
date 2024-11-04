@@ -56,7 +56,7 @@ export default defineConfig(({command, mode}) => {
         resolve: {
             alias: {
                 '@css': '/resources/css',
-                '@img': 'resources/img'
+                '@img': '/resources/img'
             },
         },
         server: serverConfig

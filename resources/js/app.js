@@ -8,7 +8,7 @@ import {createApp, h} from 'vue';
 import {createInertiaApp} from '@inertiajs/vue3';
 import {resolvePageComponent} from 'laravel-vite-plugin/inertia-helpers';
 import {ZiggyVue} from '../../vendor/tightenco/ziggy/dist/vue.m';
-import {VTooltip} from 'floating-vue'
+import {vTooltip} from 'floating-vue'
 import AuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import {router} from "@inertiajs/vue3";
 
@@ -28,7 +28,7 @@ createInertiaApp({
     setup({el, App, props, plugin}) {
         return createApp({render: () => h(App, props)})
             .use(plugin)
-            .directive('tooltip', VTooltip)
+            .directive('tooltip', vTooltip)
             .use(ZiggyVue, Ziggy)
             .mount(el);
     },
