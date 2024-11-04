@@ -7,6 +7,7 @@ import PrimaryButton from "@/Components/Button/PrimaryButton.vue";
 import Radio from "@/Components/Form/Radio.vue";
 import Select from "@/Components/Form/Select.vue";
 import HorizontalGroup from "@/Components/Layout/HorizontalGroup.vue";
+import Input from "../Components/Form/Input.vue";
 
 const props = defineProps(['settings', 'timezone_list'])
 
@@ -74,6 +75,15 @@ const save = () => {
                             <Radio v-model:checked="form.week_starts_on" :value="1"/>
                             Monday</label>
                     </div>
+                </HorizontalGroup>
+
+                <HorizontalGroup class="mt-lg">
+                    <template #title>Admin Email</template>
+                    <template #description>
+                        This email will be used for all admin notifications.
+                    </template>
+
+                    <Input v-model="form.admin_email" type="email"/>
                 </HorizontalGroup>
 
                 <PrimaryButton @click="save" class="mt-lg">Save settings</PrimaryButton>

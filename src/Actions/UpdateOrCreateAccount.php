@@ -21,6 +21,7 @@ class UpdateOrCreateAccount
                 'username' => $account['username'] ?? null,
                 'media' => $this->media($account['image'], $providerName),
                 'data' => $account['data'] ?? null,
+                'authorized' => true,
                 'access_token' => $accessToken,
             ]
         );

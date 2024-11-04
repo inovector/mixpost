@@ -5,7 +5,7 @@ namespace Inovector\Mixpost\Reports;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Inovector\Mixpost\Abstracts\Report;
-use Inovector\Mixpost\Facades\Services;
+use Inovector\Mixpost\Facades\ServiceManager;
 use Inovector\Mixpost\Models\Account;
 use Inovector\Mixpost\Models\Metric;
 
@@ -16,7 +16,7 @@ class TwitterReports extends Report
         return [
             'metrics' => $this->metrics($account, $period),
             'audience' => $this->audience($account, $period),
-            'tier' => Services::get('twitter', 'tier') ?? 'legacy'
+            'tier' => ServiceManager::get('twitter', 'tier') ?? 'legacy'
         ];
     }
 

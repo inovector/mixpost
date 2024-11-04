@@ -36,7 +36,7 @@ trait ManagesRateLimit
         return [
             'limit' => intval(Arr::get($headers, 'x_rate_limit_limit')),
             'remaining' => intval(Arr::get($headers, 'x_rate_limit_remaining', 0)),
-            'retry_after' => Carbon::now('UTC')->diffInSeconds($timeToRegainAccess),
+            'retry_after' => (int)Carbon::now('UTC')->diffInSeconds($timeToRegainAccess),
         ];
     }
 
@@ -51,9 +51,7 @@ trait ManagesRateLimit
         if (isset($response->status) && $response->status === 401) {
             return $this->response(
                 SocialProviderResponseStatus::UNAUTHORIZED,
-                ['detail' => 'Unauthorized'],
-                $rateLimitAboutToBeExceeded,
-                $usage['retry_after']
+                ['access_token_expired']
             );
         }
 

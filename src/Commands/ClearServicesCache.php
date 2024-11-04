@@ -3,7 +3,7 @@
 namespace Inovector\Mixpost\Commands;
 
 use Illuminate\Console\Command;
-use Inovector\Mixpost\Facades\Services;
+use Inovector\Mixpost\Facades\ServiceManager;
 
 class ClearServicesCache extends Command
 {
@@ -13,7 +13,7 @@ class ClearServicesCache extends Command
 
     public function handle(): int
     {
-        Services::forgetAll();
+        ServiceManager::forgetAll();
 
         $this->info('Cache services has been cleared!');
 

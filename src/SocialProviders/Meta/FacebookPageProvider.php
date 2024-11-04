@@ -13,6 +13,16 @@ class FacebookPageProvider extends MetaProvider
 
     public bool $onlyUserAccount = false;
 
+    public static function name(): string
+    {
+        return 'Facebook';
+    }
+
+    protected function accessToken(): string
+    {
+        return $this->getAccessToken()['page_access_token'];
+    }
+
     public static function externalPostUrl(AccountResource $accountResource): string
     {
         return "https://www.facebook.com/{$accountResource->pivot->provider_post_id}";

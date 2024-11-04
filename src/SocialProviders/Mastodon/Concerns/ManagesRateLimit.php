@@ -12,24 +12,6 @@ use Inovector\Mixpost\Support\SocialProviderResponse;
 trait ManagesRateLimit
 {
     /**
-     * Rate limit
-     *
-     * @see https://docs.joinmastodon.org/api/rate-limits/#headers
-     * @see https://docs.joinmastodon.org/client/intro/#http
-     * @see https://docs.joinmastodon.org/entities/Error
-     */
-    public function getRateLimitUsage(array $headers): array
-    {
-        $timestampToRegainAccess = Carbon::parse(Arr::get($headers, 'X-RateLimit-Reset.0'));
-
-        return [
-            'limit' => intval(Arr::get($headers, 'X-RateLimit-Limit.0')),
-            'remaining' => intval(Arr::get($headers, 'X-RateLimit-Remaining.0')),
-            'retry_after' => Carbon::now('UTC')->diffInSeconds($timestampToRegainAccess),
-        ];
-    }
-
-    /**
      * @param $response Response
      */
     public function buildResponse($response, Closure $okResult = null): SocialProviderResponse
@@ -57,11 +39,36 @@ trait ManagesRateLimit
             );
         }
 
+        if ($response->status() === 401) {
+            return $this->response(
+                SocialProviderResponseStatus::UNAUTHORIZED,
+                ['access_token_expired']
+            );
+        }
+
         return $this->response(
             SocialProviderResponseStatus::ERROR,
             $response->json(),
             $rateLimitAboutToBeExceeded,
             $retryAfter
         );
+    }
+
+    /**
+     * Rate limit
+     *
+     * @see https://docs.joinmastodon.org/api/rate-limits/#headers
+     * @see https://docs.joinmastodon.org/client/intro/#http
+     * @see https://docs.joinmastodon.org/entities/Error
+     */
+    public function getRateLimitUsage(array $headers): array
+    {
+        $timestampToRegainAccess = Carbon::parse(Arr::get($headers, 'X-RateLimit-Reset.0'));
+
+        return [
+            'limit' => intval(Arr::get($headers, 'X-RateLimit-Limit.0')),
+            'remaining' => intval(Arr::get($headers, 'X-RateLimit-Remaining.0')),
+            'retry_after' => (int)Carbon::now('UTC')->diffInSeconds($timestampToRegainAccess),
+        ];
     }
 }

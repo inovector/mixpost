@@ -78,7 +78,9 @@ const closeConfirmationAccountDeletion = () => {
         </PageHeader>
 
         <div class="mt-lg row-px w-full">
-            <AlertUnconfiguredService :isConfigured="$page.props.is_configured_service"/>
+            <AlertUnconfiguredService
+                :isConfigured="$page.props.is_configured_service"
+            />
 
             <div class="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
                 <button @click="addAccountModal = true"
@@ -101,11 +103,11 @@ const closeConfirmationAccountDeletion = () => {
                                 </template>
 
                                 <template #content>
-                                    <DropdownItem @click="updateAccount(account.id)" as="button">
+                                    <DropdownItem @click="updateAccount(account.uuid)" as="button">
                                         <RefreshIcon class="!w-5 !h-5 mr-1"/>
                                         Refresh
                                     </DropdownItem>
-                                    <DropdownItem @click="confirmationAccountDeletion = account.id" as="button">
+                                    <DropdownItem @click="confirmationAccountDeletion = account.uuid" as="button">
                                         <TrashIcon class="!w-5 !h-5 mr-1 text-red-500"/>
                                         Delete
                                     </DropdownItem>
@@ -120,7 +122,15 @@ const closeConfirmationAccountDeletion = () => {
                                 :provider="account.provider"
                                 :active="true"
                             />
-
+                            <div
+                                v-if="!account.authorized"
+                                class="absolute top-0 left-0"
+                            >
+                                <div
+                                    v-tooltip="'Unauthorized'"
+                                    class="w-md h-md bg-red-500 rounded-full"
+                                ></div>
+                            </div>
                             <div class="mt-sm font-semibold text-center break-words">{{ account.name }}</div>
                             <div class="mt-1 text-center text-stone-800">Added: {{ account.created_at }}</div>
                         </div>
@@ -153,9 +163,13 @@ const closeConfirmationAccountDeletion = () => {
            :closeable="true"
            @close="addAccountModal = false">
         <div class="flex flex-col">
-            <AddFacebookPage v-if="$page.props.is_configured_service.facebook"/>
+            <AddFacebookPage
+                v-if="$page.props.is_service_active.facebook"
+            />
             <AddMastodonAccount/>
-            <AddTwitterAccount v-if="$page.props.is_configured_service.twitter"/>
+            <AddTwitterAccount
+                v-if="$page.props.is_service_active.twitter"
+            />
         </div>
     </Modal>
 </template>

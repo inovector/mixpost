@@ -13,7 +13,7 @@ class PostResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'id' => $this->id,
+            'id' => $this->uuid,
             'status' => $this->status(),
             'accounts' => AccountResource::collection($this->whenLoaded('accounts')),
             'versions' => PostVersionResource::collection($this->whenLoaded('versions')),
@@ -21,7 +21,7 @@ class PostResource extends JsonResource
             'scheduled_at' => [
                 'date' => $this->scheduled_at?->tz(Settings::get('timezone'))->toDateString(),
                 'time' => $this->scheduled_at?->tz(Settings::get('timezone'))->format('H:i'),
-                'human' => $this->scheduled_at?->tz(Settings::get('timezone'))->format("D, M j, " . Util::timeFormat())
+                'human' => $this->scheduled_at ? Util::dateTimeFormat($this->scheduled_at, Settings::get('timezone')) : null,
             ],
             'published_at' => [
                 'human' => $this->published_at?->tz(Settings::get('timezone'))->format("D, M j, " . Util::timeFormat())

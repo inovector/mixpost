@@ -27,6 +27,11 @@ class MastodonProvider extends SocialProvider
         parent::__construct($request, $clientId, $clientSecret, $redirectUrl, $values);
     }
 
+    public static function service(): string
+    {
+        return 'mastodon';
+    }
+
     public static function externalPostUrl(AccountResource $accountResource): string
     {
         $server = $accountResource->data['server'] ?? 'undefined';

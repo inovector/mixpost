@@ -13,7 +13,8 @@ class ServiceFactory extends Factory
     {
         return [
             'name' => $this->faker->domainName,
-            'credentials' => ['client_id' => $this->faker->randomDigit(), 'client_secret' => $this->faker->randomDigit()]
+            'configuration' => ['client_id' => $this->faker->randomDigit(), 'client_secret' => $this->faker->randomDigit()],
+            'active' => $this->faker->boolean(),
         ];
     }
 }

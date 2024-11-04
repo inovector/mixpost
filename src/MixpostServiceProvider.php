@@ -3,17 +3,20 @@
 namespace Inovector\Mixpost;
 
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Inovector\Mixpost\Commands\ClearServicesCache;
 use Inovector\Mixpost\Commands\ClearSettingsCache;
 use Inovector\Mixpost\Commands\CreateMastodonApp;
 use Inovector\Mixpost\Commands\DeleteOldData;
 use Inovector\Mixpost\Commands\ImportAccountAudience;
+use Inovector\Mixpost\Commands\ImportAccountData;
 use Inovector\Mixpost\Commands\ProcessMetrics;
 use Inovector\Mixpost\Commands\PublishAssetsCommand;
-use Inovector\Mixpost\Commands\ImportAccountData;
 use Inovector\Mixpost\Commands\RunScheduledPosts;
+use Inovector\Mixpost\Events\AccountUnauthorized;
 use Inovector\Mixpost\Exceptions\MixpostExceptionHandler;
+use Inovector\Mixpost\Listeners\SendAccountUnauthorizedNotification;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -33,19 +36,7 @@ class MixpostServiceProvider extends PackageServiceProvider
             ->hasViews()
             ->hasRoute('web')
             ->hasMigrations([
-                'create_mixpost_services_table',
-                'create_mixpost_accounts_table',
-                'create_mixpost_posts_table',
-                'create_mixpost_post_accounts_table',
-                'create_mixpost_post_versions_table',
-                'create_mixpost_tags_table',
-                'create_mixpost_tag_post_table',
-                'create_mixpost_media_table',
-                'create_mixpost_settings_table',
-                'create_mixpost_imported_posts_table',
-                'create_mixpost_facebook_insights_table',
-                'create_mixpost_metrics_table',
-                'create_mixpost_audience_table',
+                'create_mixpost_tables'
             ])
             ->hasCommands([
                 PublishAssetsCommand::class,
@@ -93,18 +84,25 @@ class MixpostServiceProvider extends PackageServiceProvider
             return new Settings($app);
         });
 
-        $this->app->singleton('MixpostServices', function ($app) {
-            return new Services($app);
+        $this->app->singleton('MixpostServiceManager', function ($app) {
+            return new ServiceManager($app);
         });
     }
 
     public function packageBooted()
     {
+        $this->bootEvents();
+
         $this->registerExceptionHandler();
 
         Gate::define('viewMixpost', function () {
             return true;
         });
+    }
+
+    protected function bootEvents(): void
+    {
+        Event::listen(AccountUnauthorized::class, SendAccountUnauthorizedNotification::class);
     }
 
     protected function registerExceptionHandler(): void

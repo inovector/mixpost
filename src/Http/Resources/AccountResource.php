@@ -4,7 +4,6 @@ namespace Inovector\Mixpost\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Inovector\Mixpost\SocialProviders\Mastodon\MastodonProvider;
-use Inovector\Mixpost\SocialProviders\Meta\FacebookGroupProvider;
 use Inovector\Mixpost\SocialProviders\Meta\FacebookPageProvider;
 use Inovector\Mixpost\SocialProviders\Twitter\TwitterProvider;
 
@@ -16,11 +15,15 @@ class AccountResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'uuid' => $this->uuid,
             'name' => $this->name,
             'username' => $this->username,
             'image' => $this->image(),
             'provider' => $this->provider,
+            'provider_name' => $this->providerName(),
             'provider_options' => $this->providerOptions(),
+            'data' => $this->data,
+            'authorized' => $this->authorized,
             'created_at' => $this->created_at->diffForHumans(),
             'external_url' => $this->whenPivotLoaded('mixpost_post_accounts', function () {
                 if (!$this->pivot->provider_post_id) {
@@ -40,7 +43,6 @@ class AccountResource extends JsonResource
         return match ($this->provider) {
             'twitter' => TwitterProvider::externalPostUrl($this),
             'facebook_page' => FacebookPageProvider::externalPostUrl($this),
-            'facebook_group' => FacebookGroupProvider::externalPostUrl($this),
             'mastodon' => MastodonProvider::externalPostUrl($this),
             default => '#'
         };

@@ -4,7 +4,7 @@ namespace Inovector\Mixpost\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Inovector\Mixpost\Facades\Services;
+use Inovector\Mixpost\Facades\ServiceManager;
 use Symfony\Component\HttpFoundation\Response;
 use Inovector\Mixpost\Actions\CreateMastodonApp as CreateMastodonAppAction;
 
@@ -21,7 +21,7 @@ class CreateMastodonApp extends FormRequest
     {
         $serviceName = "mastodon.{$this->input('server')}";
 
-        if (Services::get($serviceName)) {
+        if (ServiceManager::get($serviceName, 'configuration')) {
             return;
         }
 

@@ -22,7 +22,7 @@ class AccountPublishPost
         if (empty($content)) {
             $errors = ['This account version has no content.'];
 
-            $this->insertErrors($post, $account, $errors);
+            $post->insertErrors($account, $errors);
 
             return new SocialProviderResponse(SocialProviderResponseStatus::ERROR, $errors);
         }
@@ -34,31 +34,13 @@ class AccountPublishPost
         );
 
         if ($response->hasError()) {
-            // TODO: Create a column for system error in `mixpost_post_accounts`
-            $this->insertErrors($post, $account, $response->context());
+            $post->insertErrors($account, $response->context());
 
             return $response;
         }
 
-        $this->insertProviderPostData($post, $account, $response);
+        $post->insertProviderData($account, $response);
 
         return $response;
-    }
-
-    private function insertErrors(Post $post, Account $account, $errors): void
-    {
-        $post->accounts()->updateExistingPivot($account->id, [
-            'errors' => json_encode($errors)
-        ]);
-    }
-
-    private function insertProviderPostData(Post $post, Account $account, SocialProviderResponse $response): void
-    {
-        $post->accounts()->updateExistingPivot($account->id, [
-            'provider_post_id' => $response->id,
-// TODO: add `data` column to `mixpost_post_accounts` table
-//            'data' => $response->data ? json_encode($response->data) : null,
-            'errors' => null,
-        ]);
     }
 }

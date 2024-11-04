@@ -5,6 +5,7 @@ namespace Inovector\Mixpost\SocialProviders\Meta;
 use Illuminate\Http\Request;
 use Inovector\Mixpost\Abstracts\SocialProvider;
 use Inovector\Mixpost\Http\Resources\AccountResource;
+use Inovector\Mixpost\Services\FacebookService;
 use Inovector\Mixpost\SocialProviders\Meta\Concerns\ManagesConfig;
 use Inovector\Mixpost\SocialProviders\Meta\Concerns\ManagesMetaResources;
 use Inovector\Mixpost\SocialProviders\Meta\Concerns\ManagesRateLimit;
@@ -33,6 +34,11 @@ class MetaProvider extends SocialProvider
         parent::__construct($request, $clientId, $clientSecret, $redirectUrl, $values);
     }
 
+    public static function service(): string
+    {
+        return FacebookService::class;
+    }
+
     protected function setApiVersion(): void
     {
         $this->apiVersion = $this->getApiVersionConfig();
@@ -50,18 +56,24 @@ class MetaProvider extends SocialProvider
                 'pages_show_list',
                 'read_insights',
                 'pages_manage_posts',
+                'pages_read_engagement',
+                'pages_manage_engagement',
                 'instagram_basic',
                 'instagram_content_publish',
-                'instagram_manage_insights'
+                'instagram_manage_insights',
+                'instagram_manage_comments',
             ],
             default => [
                 'business_management',
                 'pages_show_list',
                 'read_insights',
                 'pages_manage_posts',
+                'pages_read_engagement',
+                'pages_manage_engagement',
                 'instagram_basic',
                 'instagram_content_publish',
-                'instagram_manage_insights'
+                'instagram_manage_insights',
+                'instagram_manage_comments',
             ]
         };
     }

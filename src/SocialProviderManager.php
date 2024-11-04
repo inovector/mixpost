@@ -3,17 +3,30 @@
 namespace Inovector\Mixpost;
 
 use Inovector\Mixpost\Abstracts\SocialProviderManager as SocialProviderManagerAbstract;
-use Inovector\Mixpost\Facades\Services;
-use Inovector\Mixpost\SocialProviders\Meta\FacebookGroupProvider;
+use Inovector\Mixpost\Facades\ServiceManager;
 use Inovector\Mixpost\SocialProviders\Meta\FacebookPageProvider;
 use Inovector\Mixpost\SocialProviders\Twitter\TwitterProvider;
 use Inovector\Mixpost\SocialProviders\Mastodon\MastodonProvider;
 
 class SocialProviderManager extends SocialProviderManagerAbstract
 {
+    protected array $providers = [];
+
+    public function providers(): array
+    {
+        if (!empty($this->providers)) {
+            return $this->providers;
+        }
+
+        return $this->providers = [
+            'twitter' => TwitterProvider::class,
+            'facebook_page' => FacebookPageProvider::class,
+        ];
+    }
+
     protected function connectTwitterProvider()
     {
-        $config = Services::get('twitter');
+        $config = ServiceManager::get('twitter', 'configuration');
 
         $config['redirect'] = route('mixpost.callbackSocialProvider', ['provider' => 'twitter']);
 
@@ -22,23 +35,12 @@ class SocialProviderManager extends SocialProviderManagerAbstract
 
     protected function connectFacebookPageProvider()
     {
-        $config = Services::get('facebook');
+        $config = ServiceManager::get('facebook', 'configuration');
 
         $config['redirect'] = route('mixpost.callbackSocialProvider', ['provider' => 'facebook_page']);
 
         return $this->buildConnectionProvider(FacebookPageProvider::class, $config);
     }
-
-// @deprecated
-// We will remove this feature soon
-//    protected function connectFacebookGroupProvider()
-//    {
-//        $config = Services::get('facebook');
-//
-//        $config['redirect'] = route('mixpost.callbackSocialProvider', ['provider' => 'facebook_group']);
-//
-//        return $this->buildConnectionProvider(FacebookGroupProvider::class, $config);
-//    }
 
     protected function connectMastodonProvider()
     {
@@ -54,7 +56,7 @@ class SocialProviderManager extends SocialProviderManagerAbstract
             $serverName = $this->values['data']['server']; // Get the server value that have been set on SocialProviderManager::connect($provider, array $values = [])
         }
 
-        $config = Services::get("mastodon.$serverName");
+        $config = ServiceManager::get("mastodon.$serverName", 'configuration');
 
         $config['redirect'] = route('mixpost.callbackSocialProvider', ['provider' => 'mastodon']);
         $config['values'] = [

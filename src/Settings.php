@@ -24,6 +24,7 @@ class Settings
             'date_format' => 'human',
             'time_format' => 12,
             'week_starts_on' => 1,
+            'admin_email' => '',
             'default_accounts' => [],
         ];
     }
@@ -34,6 +35,7 @@ class Settings
             'timezone' => ['required', 'timezone'],
             'time_format' => ['required', Rule::in([12, 24])],
             'week_starts_on' => ['required', Rule::in([0, 1])],
+            'admin_email' => ['sometimes', 'nulled', 'email'],
         ];
     }
 

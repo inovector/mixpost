@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Inovector\Mixpost\Concerns\Model\HasUuid;
 use Inovector\Mixpost\Support\MediaFilesystem;
 use Inovector\Mixpost\Support\MediaTemporaryDirectory;
 use League\Flysystem\FilesystemAdapter;
@@ -15,6 +16,7 @@ use League\Flysystem\Local\LocalFilesystemAdapter;
 class Media extends Model
 {
     use HasFactory;
+    use HasUuid;
 
     public $table = 'mixpost_media';
 

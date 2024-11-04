@@ -6,10 +6,11 @@ use Inovector\Mixpost\Models\Service;
 
 class UpdateOrCreateService
 {
-    public function __invoke(string $name, array $value): Service
+    public function __invoke(string $name, array $configuration, bool $active = false): Service
     {
         return Service::updateOrCreate(['name' => $name], [
-            'credentials' => $value
+            'configuration' => $configuration,
+            'active' => $active
         ]);
     }
 }

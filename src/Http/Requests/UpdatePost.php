@@ -12,7 +12,7 @@ class UpdatePost extends PostFormRequest
 
     public function withValidator($validator)
     {
-        $this->post = Post::findOrFail($this->route('post'));
+        $this->post = Post::firstOrFailByUuid($this->route('post'));
 
         $validator->after(function ($validator) {
             if ($this->post->isInHistory()) {
@@ -39,9 +39,10 @@ class UpdatePost extends PostFormRequest
             $this->post->versions()->createMany($this->input('versions'));
 
 
-            return $this->post->update([
-                'scheduled_at' => $this->scheduledAt() ? Util::convertTimeToUTC($this->scheduledAt()) : null,
-            ]);
+            $this->post->setScheduled(
+                datetime: $this->scheduledAt() ? Util::convertTimeToUTC($this->scheduledAt()) : null,
+                status: null,
+            );
         });
     }
 }

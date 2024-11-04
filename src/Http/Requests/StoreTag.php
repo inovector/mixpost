@@ -19,11 +19,9 @@ class StoreTag extends FormRequest
 
     public function handle()
     {
-        return Tag::insert([
+        return Tag::create([
             'name' => $this->input('name'),
             'hex_color' => Str::after($this->input('hex_color'), '#'),
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
     }
 }

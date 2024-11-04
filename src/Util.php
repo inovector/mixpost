@@ -29,6 +29,13 @@ class Util
         return Carbon::parse($time, $tz ?: Settings::get('timezone'))->utc();
     }
 
+    public static function dateTimeFormat(Carbon $datetime, DateTimeZone|string|null $tz = null): string
+    {
+        $format = $datetime->year === now($tz)->year ? 'M j, ' . self::timeFormat() : 'M j, Y, ' . self::timeFormat();
+
+        return $datetime->tz($tz ?: Settings::get('timezone'))->translatedFormat($format);
+    }
+
     public static function timeFormat(): string
     {
         return Settings::get('time_format') == 24 ? 'H:i' : 'h:ia';

@@ -21,6 +21,7 @@ class PostFactory extends Factory
         $scheduled = now()->addDays(rand(1, 30));
 
         return [
+            'uuid' => $this->faker->uuid,
             'status' => $status->value,
             'schedule_status' => $status === PostStatus::PUBLISHED ? PostScheduleStatus::PROCESSED : PostScheduleStatus::PENDING,
             'scheduled_at' => $status !== PostStatus::DRAFT ? $scheduled : null,

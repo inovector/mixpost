@@ -84,13 +84,13 @@ it('shows edit form', function () {
         'status' => PostStatus::DRAFT
     ])->create();
 
-    $this->get(route('mixpost.posts.edit', ['post' => $post]))
+    $this->get(route('mixpost.posts.edit', ['post' => $post->uuid]))
         ->assertInertia(fn(Assert $page) => $page
             ->component('Posts/CreateEdit')
             ->has('accounts', 3)
             ->has('tags', 4)
             ->has('post')
-            ->where('post.id', $post->id)
+            ->where('post.id', $post->uuid)
             ->where('post.status', $post->status->name)
         );
 });
@@ -115,7 +115,7 @@ it('can store a post', function () {
 
     $post = Post::first();
 
-    $response->assertStatus(302)->assertRedirectToRoute('mixpost.posts.edit', ['post' => $post]);
+    $response->assertStatus(302)->assertRedirectToRoute('mixpost.posts.edit', ['post' => $post->uuid]);
 });
 
 it('can prevent unauthorized users to store a post', function () {

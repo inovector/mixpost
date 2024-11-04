@@ -2,16 +2,21 @@
 
 namespace Inovector\Mixpost\Models;
 
-use Inovector\Mixpost\Casts\EncryptArrayObject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Inovector\Mixpost\Casts\AccountMediaCast;
+use Inovector\Mixpost\Casts\EncryptArrayObject;
+use Inovector\Mixpost\Concerns\Model\HasUuid;
+use Inovector\Mixpost\Events\AccountUnauthorized;
+use Inovector\Mixpost\Facades\SocialProviderManager;
+use Inovector\Mixpost\SocialProviders\Mastodon\MastodonProvider;
 
 class Account extends Model
 {
     use HasFactory;
+    use HasUuid;
 
     protected $table = 'mixpost_accounts';
 
@@ -22,18 +27,22 @@ class Account extends Model
         'provider',
         'provider_id',
         'data',
+        'authorized',
         'access_token'
     ];
 
     protected $casts = [
         'media' => AccountMediaCast::class,
         'data' => 'array',
+        'authorized' => 'boolean',
         'access_token' => EncryptArrayObject::class
     ];
 
     protected $hidden = [
         'access_token'
     ];
+
+    protected ?string $providerClass = null;
 
     protected static function booted()
     {
@@ -64,10 +73,68 @@ class Account extends Model
         return [
             'account_id' => $this->id,
             'provider_id' => $this->provider_id,
+            'provider' => $this->provider,
             'name' => $this->name,
             'username' => $this->username,
             'data' => $this->data
         ];
+    }
+
+    public function getProviderClass()
+    {
+        if ($this->providerClass) {
+            return $this->providerClass;
+        }
+
+        return $this->providerClass = SocialProviderManager::providers()[$this->provider] ?? null;
+    }
+
+    public function providerName(): string
+    {
+        if (!$provider = $this->getProviderClass()) {
+            return $this->provider;
+        }
+
+        return $provider::name();
+    }
+
+    public function isServiceActive(): bool
+    {
+        if (!$this->getProviderClass()) {
+            return false;
+        }
+
+        if ($this->getProviderClass() === MastodonProvider::class) {
+            return true;
+        }
+
+        return $this->getProviderClass()::service()::isActive();
+    }
+
+    public function isAuthorized(): bool
+    {
+        return $this->authorized;
+    }
+
+    public function isUnauthorized(): bool
+    {
+        return !$this->authorized;
+    }
+
+    public function setUnauthorized(bool $dispatchEvent = true): void
+    {
+        $this->authorized = false;
+        $this->save();
+
+        if ($dispatchEvent) {
+            AccountUnauthorized::dispatch($this);
+        }
+    }
+
+    public function setAuthorized(): void
+    {
+        $this->authorized = true;
+        $this->save();
     }
 
     public function providerOptions()

@@ -4,7 +4,6 @@ namespace Inovector\Mixpost\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Inovector\Mixpost\Reports\FacebookGroupReports;
 use Inovector\Mixpost\Reports\FacebookPageReports;
 use Inovector\Mixpost\Reports\MastodonReports;
 use Inovector\Mixpost\Reports\TwitterReports;
@@ -28,7 +27,6 @@ class Reports extends FormRequest
         $providerReports = match ($account->provider) {
             'twitter' => TwitterReports::class,
             'facebook_page' => FacebookPageReports::class,
-            'facebook_group' => FacebookGroupReports::class,
             'mastodon' => MastodonReports::class,
             default => null
         };

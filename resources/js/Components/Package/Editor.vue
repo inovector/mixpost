@@ -107,7 +107,7 @@ watch(() => props.value, (value) => {
 </script>
 <template>
     <div
-        :class="{'border-primary-200 ring ring-primary-200 ring-opacity-50': focused}"
+        :class="{'border-indigo-200 ring ring-indigo-200 ring-opacity-50': focused}"
         class="border border-gray-200 rounded-md p-md pb-xs text-base transition-colors ease-in-out duration-200">
         <editor-content :editor="editor"/>
         <slot/>

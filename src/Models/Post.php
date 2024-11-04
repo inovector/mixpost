@@ -9,12 +9,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Inovector\Mixpost\Concerns\Model\HasUuid;
 use Inovector\Mixpost\Enums\PostScheduleStatus;
 use Inovector\Mixpost\Enums\PostStatus;
+use Inovector\Mixpost\Support\SocialProviderResponse;
 
 class Post extends Model
 {
     use HasFactory;
+    use HasUuid;
 
     public $table = 'mixpost_posts';
 
@@ -116,12 +119,14 @@ class Post extends Model
         $this->save();
     }
 
-    public function setScheduled(Carbon|\Carbon\Carbon|null $date = null): void
+    public function setScheduled(Carbon|\Carbon\Carbon|null $datetime = null, ?PostStatus $status = PostStatus::SCHEDULED): void
     {
-        $this->status = PostStatus::SCHEDULED->value;
+        $this->scheduled_at = $datetime;
 
-        if ($date) {
-            $this->scheduled_at = $date;
+        // Do not update status if is null
+        // Is used to update only the scheduled_at
+        if ($status) {
+            $this->status = $status;
         }
 
         $this->save();
@@ -146,5 +151,21 @@ class Post extends Model
         $this->status = PostStatus::FAILED->value;
         $this->schedule_status = PostScheduleStatus::PROCESSED;
         $this->save();
+    }
+
+    public function insertProviderData(Account $account, SocialProviderResponse $response): void
+    {
+        $this->accounts()->updateExistingPivot($account->id, [
+            'provider_post_id' => $response->id,
+            'data' => $response->data ? json_encode($response->data) : null,
+            'errors' => null,
+        ]);
+    }
+
+    public function insertErrors(Account $account, $errors): void
+    {
+        $this->accounts()->updateExistingPivot($account->id, [
+            'errors' => json_encode($errors)
+        ]);
     }
 }

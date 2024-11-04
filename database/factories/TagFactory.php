@@ -13,6 +13,7 @@ class TagFactory extends Factory
     public function definition()
     {
         return [
+            'uuid' => $this->faker->uuid(),
             'name' => $this->faker->domainName,
             'hex_color' => Str::after($this->faker->hexColor, '#')
         ];
