@@ -116,7 +116,7 @@ const confirmationTagDeletion = ref(false);
 const isDeleting = ref(false);
 
 const deleteTag = () => {
-    router.delete(route('mixpost.tags.delete', {tag: props.item.id}), {
+    router.delete(route('mixpost.tags.delete', {tag: props.item.uuid}), {
         onStart() {
             isDeleting.value = true;
         },
