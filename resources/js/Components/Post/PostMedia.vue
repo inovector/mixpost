@@ -55,7 +55,7 @@ const remove = (id) => {
         >
             <template #item="{element}">
                 <div role="button" class="cursor-pointer" @click="open(element)">
-                    <MediaFile :media="element" img-height="sm" :imgWidthFull="false"/>
+                    <MediaFile :media="element" img-height="sm" :imgWidthFull="false" :showCaption="false"/>
                 </div>
             </template>
         </Draggable>
@@ -67,6 +67,8 @@ const remove = (id) => {
         </template>
 
         <template #body>
+            <figcaption class="mb-xs text-sm">{{ openedItem.name }}</figcaption>
+
             <video v-if="isVideo(openedItem.mime_type)" class="w-auto h-full" controls>
                 <source :src="openedItem.url" :type="openedItem.mime_type">
                 Your browser does not support the video tag.

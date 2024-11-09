@@ -15,6 +15,10 @@ const props = defineProps({
     imgWidthFull: {
         type: Boolean,
         default: true
+    },
+    showCaption: {
+        type: Boolean,
+        default: true
     }
 })
 
@@ -26,13 +30,13 @@ const imgHeightClass = computed(() => {
 })
 </script>
 <template>
-    <figure class="relative">
+    <figure :class="{'border border-gray-200 rounded-md p-xs bg-stone-500': showCaption}" class="group relative">
         <slot/>
         <div
             class="relative flex rounded"
-            :class="{'border border-red-500 p-5': media.hasOwnProperty('error')}"
+            :class="{'border border-red-500 p-md': media.hasOwnProperty('error')}"
         >
-            <span v-if="media.is_video" class="absolute top-0 right-0 mt-1 mr-1">
+            <span v-if="media.is_video" class="absolute top-0 left-0 mt-1 ml-1">
                 <VideoSolidIcon class="!w-4 !h-4 text-white"/>
             </span>
 
@@ -47,11 +51,15 @@ const imgHeightClass = computed(() => {
 
             <img
                 :src="media.thumb_url"
-                loading="lazy"
+                :title="media.name"
                 alt="Image"
+                loading="lazy"
                 class="rounded-md"
                 :class="[imgHeightClass, {'w-full': imgWidthFull}]"
             />
         </div>
+        <template v-if="showCaption">
+            <figcaption class="mt-xs text-sm">{{ media.name }}</figcaption>
+        </template>
     </figure>
 </template>
