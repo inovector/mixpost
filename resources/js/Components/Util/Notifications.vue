@@ -110,7 +110,7 @@ watch(() => flash.value, () => {
                 <div class="flex items-center">
                     <div>
                         <div :class="variantColorClasses"
-                             class="w-8 h-8 rounded-full flex items-center justify-center mr-sm">
+                             class="w-8 h-8 rounded-full flex items-center justify-center mr-sm rtl:mr-0 rtl:ml-sm">
                             <component :is="variantIcon"/>
                         </div>
                     </div>
@@ -122,7 +122,7 @@ watch(() => flash.value, () => {
                             </Link>
                         </div>
                     </div>
-                    <button @click="close" class="ml-2xl hover:rotate-90 transition-transform ease-in-out duration-300">
+                    <button @click="close" class="ml-2xl rtl:ml-0 rtl:mr-2xl hover:rotate-90 transition-transform ease-in-out duration-300">
                         <XIcon class="text-gray-200"/>
                     </button>
                 </div>

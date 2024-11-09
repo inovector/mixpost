@@ -35,7 +35,7 @@ class Settings
             'timezone' => ['required', 'timezone'],
             'time_format' => ['required', Rule::in([12, 24])],
             'week_starts_on' => ['required', Rule::in([0, 1])],
-            'admin_email' => ['sometimes', 'nulled', 'email'],
+            'admin_email' => ['required', 'email'],
         ];
     }
 

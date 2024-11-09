@@ -8,6 +8,7 @@ import Radio from "@/Components/Form/Radio.vue";
 import Select from "@/Components/Form/Select.vue";
 import HorizontalGroup from "@/Components/Layout/HorizontalGroup.vue";
 import Input from "../Components/Form/Input.vue";
+import Error from "../Components/Form/Error.vue";
 
 const props = defineProps(['settings', 'timezone_list'])
 
@@ -31,6 +32,23 @@ const save = () => {
 
         <div class="row-px">
             <Panel>
+                <template #title>Admin Notifications</template>
+                <template #description>
+                    This email will be used for all admin notifications.
+                </template>
+
+                <HorizontalGroup class="mt-lg">
+                    <template #title>Admin Email</template>
+
+                    <Input v-model="form.admin_email" type="email"  :error="form.errors.admin_email !== undefined"/>
+
+                    <template #footer>
+                        <Error :message="form.errors.admin_email"/>
+                    </template>
+                </HorizontalGroup>
+            </Panel>
+
+            <Panel class="mt-lg">
                 <template #title>Time settings</template>
 
                 <template #description>
@@ -76,18 +94,9 @@ const save = () => {
                             Monday</label>
                     </div>
                 </HorizontalGroup>
-
-                <HorizontalGroup class="mt-lg">
-                    <template #title>Admin Email</template>
-                    <template #description>
-                        This email will be used for all admin notifications.
-                    </template>
-
-                    <Input v-model="form.admin_email" type="email"/>
-                </HorizontalGroup>
-
-                <PrimaryButton @click="save" class="mt-lg">Save settings</PrimaryButton>
             </Panel>
+
+            <PrimaryButton @click="save" class="mt-lg">Save settings</PrimaryButton>
         </div>
     </div>
 </template>
