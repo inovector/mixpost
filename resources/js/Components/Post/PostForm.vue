@@ -13,8 +13,9 @@ import PostAddMedia from "@/Components/Post/PostAddMedia.vue"
 import PostMedia from "@/Components/Post/PostMedia.vue"
 import PostCharacterCount from "@/Components/Post/PostCharacterCount.vue"
 import Flex from "../Layout/Flex.vue";
-
-const postCtx = inject('postCtx')
+import EditorButton from "../Button/EditorButton.vue";
+import Plus from "../../Icons/Plus.vue";
+import UpgradePro from "../Pro/UpgradePro.vue";
 
 const props = defineProps({
     form: {
@@ -209,9 +210,18 @@ const {insertEmoji, insertContent, focusEditor} = useEditor();
                         </Flex>
 
 
-                        <PostCharacterCount :selectedAccounts="selectedAccounts"
-                                            :activeVersion="activeVersion"
-                                            :versions="form.versions"/>
+                       <Flex>
+                           <PostCharacterCount :selectedAccounts="selectedAccounts"
+                                               :activeVersion="activeVersion"
+                                               :versions="form.versions"/>
+
+                          <Flex>
+                              <EditorButton>
+                                  <Plus/>
+                              </EditorButton>
+                              <UpgradePro/>
+                          </Flex>
+                       </Flex>
                     </Flex>
                 </template>
             </Editor>

@@ -36,7 +36,7 @@ const {timeFormat, weekStartsOn} = useSettings();
 
 const scheduleTime = computed(() => {
     if (props.form.date && props.form.time) {
-        return format(new Date(parseISO(props.form.date + ' ' + props.form.time)), `E, MMM do, 'at' ${timeFormat === 24 ? 'kk:mm' : 'h:mmaaa'}`, {
+        return format(new Date(parseISO(props.form.date + ' ' + props.form.time)), `MMM do, ${timeFormat === 24 ? 'kk:mm' : 'h:mmaaa'}`, {
             weekStartsOn: weekStartsOn
         });
     }
