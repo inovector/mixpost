@@ -12,6 +12,7 @@ import PostVersionsTab from "@/Components/Post/PostVersionsTab.vue"
 import PostAddMedia from "@/Components/Post/PostAddMedia.vue"
 import PostMedia from "@/Components/Post/PostMedia.vue"
 import PostCharacterCount from "@/Components/Post/PostCharacterCount.vue"
+import Flex from "../Layout/Flex.vue";
 
 const postCtx = inject('postCtx')
 
@@ -188,10 +189,11 @@ const {insertEmoji, insertContent, focusEditor} = useEditor();
                     @update="updateContent(index, 'body', $event)"
                     placeholder="Type here something interesting for your audience...">
                 <template #default="props">
-                    <div class="relative flex items-center justify-between border-t border-gray-200 pt-md mt-md">
+                    <Flex :responsive="false"
+                          class="relative justify-between border-t border-gray-200 pt-md mt-md">
                         <div v-if="!editAllowed" class="absolute w-full h-full"></div>
 
-                        <div class="flex items-center space-x-xs">
+                        <Flex>
                             <EmojiPicker
                                 @selected="insertEmoji({editorId: 'postEditor', emoji: $event})"
                                 @close="focusEditor({editorId: 'postEditor'})"
@@ -202,12 +204,13 @@ const {insertEmoji, insertContent, focusEditor} = useEditor();
                                           :activeVersion="activeVersion"
                                           :versions="form.versions"
                                           :media="item.media"/>
-                        </div>
+                        </Flex>
+
 
                         <PostCharacterCount :selectedAccounts="selectedAccounts"
                                             :activeVersion="activeVersion"
                                             :versions="form.versions"/>
-                    </div>
+                    </Flex>
                 </template>
             </Editor>
 
