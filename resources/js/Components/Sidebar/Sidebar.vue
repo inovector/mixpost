@@ -10,7 +10,7 @@ import PlusIcon from "@/Icons/Plus.vue"
 import GridIcon from "@/Icons/Grid.vue"
 import CalendarIcon from "@/Icons/Calendar.vue"
 import PhotoIcon from "@/Icons/Photo.vue"
-import PackageIcon from "@/Icons/Package.vue"
+import ShareIcon from "@/Icons/Share.vue"
 import CogIcon from "@/Icons/Cog.vue"
 import ServerStackIcon from "@/Icons/ServerStack.vue"
 import UserMenu from "../Navigation/UserMenu.vue";
@@ -78,7 +78,7 @@ import UserMenu from "../Navigation/UserMenu.vue";
             <MenuGroupBody>
                 <MenuItem :url="route('mixpost.accounts.index')" :active="$page.component === 'Accounts/Accounts'">
                     <template #icon>
-                        <PackageIcon/>
+                        <ShareIcon/>
                     </template>
                     Accounts
                 </MenuItem>
