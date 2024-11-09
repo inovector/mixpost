@@ -16,6 +16,7 @@ import ServerStackIcon from "@/Icons/ServerStack.vue"
 import UserMenu from "../Navigation/UserMenu.vue";
 import QueueList from "../../Icons/QueueList.vue";
 import InformationCircle from "../../Icons/InformationCircle.vue";
+import Document from "../../Icons/Document.vue";
 </script>
 <template>
     <div class="w-full h-full flex flex-col py-2xl bg-white border-r border-gray-200">
@@ -115,6 +116,12 @@ import InformationCircle from "../../Icons/InformationCircle.vue";
                         <InformationCircle/>
                     </template>
                     Status
+                </MenuItem>
+                <MenuItem :url="route('mixpost.system.logs.index')" :active="$page.component === 'System/Logs'">
+                    <template #icon>
+                        <Document/>
+                    </template>
+                    Logs
                 </MenuItem>
             </MenuGroupBody>
         </div>

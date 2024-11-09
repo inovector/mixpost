@@ -1,13 +1,13 @@
 <?php
 
-namespace Inovector\Mixpost\Http\Base\Controllers\Admin;
+namespace Inovector\Mixpost\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Inertia\Inertia;
 use Inertia\Response;
-use Inovector\Mixpost\Http\Base\Requests\Admin\ClearSystemLog;
-use Inovector\Mixpost\Http\Base\Requests\Admin\DownloadSystemLog;
+use Inovector\Mixpost\Http\Requests\ClearSystemLog;
+use Inovector\Mixpost\Http\Requests\DownloadSystemLog;
 use Inovector\Mixpost\Support\SystemLogs;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -17,7 +17,7 @@ class SystemLogsController extends Controller
     {
         $systemLogs = new SystemLogs();
 
-        return Inertia::render('Admin/System/Logs', [
+        return Inertia::render('System/Logs', [
             'logs' => $systemLogs->logs()
         ]);
     }
@@ -42,6 +42,6 @@ class SystemLogsController extends Controller
     {
         $clearSystemLog->handle();
 
-        return redirect()->back()->with('success', __('mixpost::system.log_file_cleared'));
+        return redirect()->back()->with('success', 'Log file cleared successfully!');
     }
 }
