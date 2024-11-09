@@ -189,6 +189,8 @@ const {insertEmoji, insertContent, focusEditor} = useEditor();
                     @update="updateContent(index, 'body', $event)"
                     placeholder="Type here something interesting for your audience...">
                 <template #default="props">
+                    <PostMedia :media="item.media"/>
+
                     <Flex :responsive="false"
                           class="relative justify-between border-t border-gray-200 pt-md mt-md">
                         <div v-if="!editAllowed" class="absolute w-full h-full"></div>
@@ -213,8 +215,6 @@ const {insertEmoji, insertContent, focusEditor} = useEditor();
                     </Flex>
                 </template>
             </Editor>
-
-            <PostMedia :media="item.media"/>
         </template>
     </Panel>
 </template>
