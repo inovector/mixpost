@@ -27,6 +27,7 @@
         "inertiajs/inertia-laravel": "^1.0",
         "inovector/twitteroauth": "^7.0",
         "intervention/image": "^2.7",
+        "laravel/horizon": "^5.0",
         "php-ffmpeg/php-ffmpeg": "^1.0",
         "spatie/laravel-package-tools": "^1.14",
         "spatie/temporary-directory": "^2.1",

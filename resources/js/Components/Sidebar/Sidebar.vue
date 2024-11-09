@@ -15,6 +15,7 @@ import CogIcon from "@/Icons/Cog.vue"
 import ServerStackIcon from "@/Icons/ServerStack.vue"
 import UserMenu from "../Navigation/UserMenu.vue";
 import QueueList from "../../Icons/QueueList.vue";
+import InformationCircle from "../../Icons/InformationCircle.vue";
 </script>
 <template>
     <div class="w-full h-full flex flex-col py-2xl bg-white border-r border-gray-200">
@@ -95,12 +96,25 @@ import QueueList from "../../Icons/QueueList.vue";
                     </template>
                     Settings
                 </MenuItem>
-                <MenuDelimiter/>
-                <MenuItem :url="`/${$page.props.app.horizon_path}`" :external="true" externalTarget="_blank">
+            </MenuGroupBody>
+            <MenuDelimiter/>
+            <MenuGroupHeader>
+                System
+            </MenuGroupHeader>
+            <MenuGroupBody>
+                <template v-if="$page.props.app.horizon_path">
+                    <MenuItem :url="`/${$page.props.app.horizon_path}`" :external="true" externalTarget="_blank">
+                        <template #icon>
+                            <QueueList/>
+                        </template>
+                        Laravel Horizon
+                    </MenuItem>
+                </template>
+                <MenuItem :url="route('mixpost.system.status')" :active="$page.component === 'System/Status'">
                     <template #icon>
-                        <QueueList/>
+                        <InformationCircle/>
                     </template>
-                    Laravel Horizon
+                    Status
                 </MenuItem>
             </MenuGroupBody>
         </div>

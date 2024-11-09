@@ -76,4 +76,16 @@ class Util
 
         return true;
     }
+
+    public static function getDatabaseDriver(?string $connection = null): string
+    {
+        $key = is_null($connection) ? Config::get('database.default') : $connection;
+
+        return strtolower(Config::get('database.connections.' . $key . '.driver'));
+    }
+
+    public static function isMysqlDatabase(?string $connection = null): bool
+    {
+        return self::getDatabaseDriver($connection) === 'mysql';
+    }
 }

@@ -11,6 +11,7 @@ use Inovector\Mixpost\Http\Controllers\CalendarController;
 use Inovector\Mixpost\Http\Controllers\CallbackSocialProviderController;
 use Inovector\Mixpost\Http\Controllers\CreateMastodonAppController;
 use Inovector\Mixpost\Http\Controllers\DashboardController;
+use Inovector\Mixpost\Http\Controllers\SystemStatusController;
 use Inovector\Mixpost\Http\Controllers\UpdateAuthUserController;
 use Inovector\Mixpost\Http\Controllers\UpdateAuthUserPasswordController;
 use Inovector\Mixpost\Http\Controllers\ProfileController;
@@ -105,6 +106,10 @@ Route::middleware([
             Route::get('/', [ProfileController::class, 'index'])->name('index');
             Route::put('user', UpdateAuthUserController::class)->name('updateUser');
             Route::put('password', UpdateAuthUserPasswordController::class)->name('updatePassword');
+        });
+
+        Route::prefix('system')->name('system.')->group(function () {
+            Route::get('status', SystemStatusController::class)->name('status');
         });
 
         Route::get('refresh-csrf-token', function (Request $request) {
