@@ -14,6 +14,7 @@ import ShareIcon from "@/Icons/Share.vue"
 import CogIcon from "@/Icons/Cog.vue"
 import ServerStackIcon from "@/Icons/ServerStack.vue"
 import UserMenu from "../Navigation/UserMenu.vue";
+import QueueList from "../../Icons/QueueList.vue";
 </script>
 <template>
     <div class="w-full h-full flex flex-col py-2xl bg-white border-r border-gray-200">
@@ -82,17 +83,24 @@ import UserMenu from "../Navigation/UserMenu.vue";
                     </template>
                     Accounts
                 </MenuItem>
+                <MenuItem :url="route('mixpost.services.index')" :active="$page.component === 'Services'">
+                    <template #icon>
+                        <ServerStackIcon/>
+                    </template>
+                    Services
+                </MenuItem>
                 <MenuItem :url="route('mixpost.settings.index')" :active="$page.component === 'Settings'">
                     <template #icon>
                         <CogIcon/>
                     </template>
                     Settings
                 </MenuItem>
-                <MenuItem :url="route('mixpost.services.index')" :active="$page.component === 'Services'">
+                <MenuDelimiter/>
+                <MenuItem :url="`/${$page.props.app.horizon_path}`" :external="true" externalTarget="_blank">
                     <template #icon>
-                        <ServerStackIcon/>
+                        <QueueList/>
                     </template>
-                    Services
+                    Laravel Horizon
                 </MenuItem>
             </MenuGroupBody>
         </div>
