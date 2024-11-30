@@ -10,6 +10,8 @@ use Inovector\Mixpost\SocialProviders\Meta\Concerns\ManagesConfig;
 use Inovector\Mixpost\SocialProviders\Meta\Concerns\ManagesMetaResources;
 use Inovector\Mixpost\SocialProviders\Meta\Concerns\ManagesRateLimit;
 use Inovector\Mixpost\SocialProviders\Meta\Concerns\MetaOauth;
+use Inovector\Mixpost\Support\SocialProviderPostConfigs;
+use Inovector\Mixpost\Util;
 
 class MetaProvider extends SocialProvider
 {
@@ -81,6 +83,21 @@ class MetaProvider extends SocialProvider
     public function getAuthUrl(): string
     {
         return '';
+    }
+
+    public static function postConfigs(): SocialProviderPostConfigs
+    {
+        return SocialProviderPostConfigs::make()
+            ->simultaneousPosting(Util::config('social_provider_options.facebook_page.simultaneous_posting_on_multiple_accounts'))
+            ->minTextChar(1)
+            ->minPhotos(1)
+            ->minVideos(1)
+            ->minGifs(1)
+            ->maxTextChar(Util::config('social_provider_options.facebook_page.post_character_limit'))
+            ->maxPhotos(Util::config('social_provider_options.facebook_page.media_limit.photos'))
+            ->maxVideos(Util::config('social_provider_options.facebook_page.media_limit.videos'))
+            ->maxGifs(Util::config('social_provider_options.facebook_page.media_limit.gifs'))
+            ->allowMixingMediaTypes(Util::config('social_provider_options.facebook_page.allow_mixing'));
     }
 
     public static function externalPostUrl(AccountResource $accountResource): string

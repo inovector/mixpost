@@ -3,9 +3,6 @@
 namespace Inovector\Mixpost\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Inovector\Mixpost\SocialProviders\Mastodon\MastodonProvider;
-use Inovector\Mixpost\SocialProviders\Meta\FacebookPageProvider;
-use Inovector\Mixpost\SocialProviders\Twitter\TwitterProvider;
 
 class AccountResource extends JsonResource
 {
@@ -21,7 +18,7 @@ class AccountResource extends JsonResource
             'image' => $this->image(),
             'provider' => $this->provider,
             'provider_name' => $this->providerName(),
-            'provider_options' => $this->providerOptions(),
+            'post_configs' => $this->postConfigs(),
             'data' => $this->data,
             'authorized' => $this->authorized,
             'created_at' => $this->created_at->diffForHumans(),
@@ -40,11 +37,10 @@ class AccountResource extends JsonResource
 
     protected function getExternalPostUrl(): ?string
     {
-        return match ($this->provider) {
-            'twitter' => TwitterProvider::externalPostUrl($this),
-            'facebook_page' => FacebookPageProvider::externalPostUrl($this),
-            'mastodon' => MastodonProvider::externalPostUrl($this),
-            default => '#'
-        };
+        if ($provider = $this->resource->getProviderClass()) {
+            return $provider::externalPostUrl($this);
+        }
+
+        return '#';
     }
 }

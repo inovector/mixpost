@@ -1,8 +1,9 @@
 <script setup>
-import {computed, inject, ref} from "vue";
+import {computed, ref} from "vue";
 import {format, parseISO} from "date-fns";
 import {router} from "@inertiajs/vue3";
 import {usePage} from "@inertiajs/vue3";
+import usePostValidator from "../../Composables/usePostValidator.js";
 import usePost from "@/Composables/usePost";
 import useNotifications from "@/Composables/useNotifications";
 import useSettings from "@/Composables/useSettings";
@@ -24,11 +25,10 @@ const props = defineProps({
     }
 });
 
-const {postId, editAllowed, accountsHitTextLimit, accountsHitMediaLimit} = usePost();
+const {postId, editAllowed} = usePost();
+const {validationPassed} = usePostValidator();
 
 const emit = defineEmits(['submit'])
-
-const postCtx = inject('postCtx')
 
 const timePicker = ref(false);
 
@@ -55,8 +55,7 @@ const isLoading = ref(false);
 const canSchedule = computed(() => {
     return (postId.value && props.form.accounts.length) &&
         editAllowed.value &&
-        !accountsHitTextLimit.value.length &&
-        !accountsHitMediaLimit.value.length;
+        validationPassed.value;
 });
 
 const schedule = (postNow = false) => {

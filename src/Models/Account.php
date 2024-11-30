@@ -4,7 +4,6 @@ namespace Inovector\Mixpost\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Inovector\Mixpost\Casts\AccountMediaCast;
 use Inovector\Mixpost\Casts\EncryptArrayObject;
@@ -12,6 +11,7 @@ use Inovector\Mixpost\Concerns\Model\HasUuid;
 use Inovector\Mixpost\Events\AccountUnauthorized;
 use Inovector\Mixpost\Facades\SocialProviderManager;
 use Inovector\Mixpost\SocialProviders\Mastodon\MastodonProvider;
+use Inovector\Mixpost\Support\SocialProviderPostConfigs;
 
 class Account extends Model
 {
@@ -98,6 +98,15 @@ class Account extends Model
         return $provider::name();
     }
 
+    public function postConfigs(): array
+    {
+        if (!$provider = $this->getProviderClass()) {
+            return SocialProviderPostConfigs::make()->jsonSerialize();
+        }
+
+        return $provider::postConfigs()->jsonSerialize();
+    }
+
     public function isServiceActive(): bool
     {
         if (!$this->getProviderClass()) {
@@ -135,12 +144,5 @@ class Account extends Model
     {
         $this->authorized = true;
         $this->save();
-    }
-
-    public function providerOptions()
-    {
-        $rules = config('mixpost.social_provider_options');
-
-        return Arr::get($rules, $this->provider);
     }
 }

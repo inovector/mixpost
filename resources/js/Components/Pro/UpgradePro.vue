@@ -1,7 +1,6 @@
 <script setup>
 import {ref} from "vue";
 import DialogModal from "../Modal/DialogModal.vue";
-import LockClosed from "../../Icons/LockClosed.vue";
 import LockOpen from "../../Icons/LockOpen.vue";
 import Flex from "../Layout/Flex.vue";
 import PrimaryButton from "../Button/PrimaryButton.vue";
@@ -9,6 +8,7 @@ import MenuDelimiter from "../Sidebar/MenuDelimiter.vue";
 import Check from "../../Icons/Check.vue";
 import QuestionMarkCircle from "../../Icons/QuestionMarkCircle.vue";
 import PureButton from "../Button/PureButton.vue";
+import ProLabel from "./ProLabel.vue";
 
 const show = ref(false);
 
@@ -54,7 +54,7 @@ const features = [
         desc: 'Manage operations in your language. Quickly switch between languages.',
     },
     {
-        name: 'Post first comment/thread',
+        name: 'Post first comment/Thread',
         desc: 'Automatically add impactful first comments to your posts to boost engagement and extend conversations.',
     },
     {
@@ -81,14 +81,9 @@ const features = [
 </script>
 <template>
     <template v-if="!$slots.trigger">
-        <button @click="open"
-                type="button"
-                class="relative inline-flex px-1 items-center bg-indigo-500 border border-transparent rounded-md text-[11px] text-black hover:bg-orange-700 active:bg-orange-700 focus:border-orange-700 focus:shadow-outline-orange transition ease-in-out duration-200">
-            <span class="inline-flex sm:mr-[3px]">
-               <LockClosed class="!w-3 !h-3"/>
-            </span>
-            <span class="inline-flex items-center">Pro</span>
-        </button>
+        <div role="button" @click="open" class="relative">
+            <ProLabel/>
+        </div>
     </template>
 
     <template v-else>
@@ -105,9 +100,7 @@ const features = [
         <template #header>
             <Flex>
                 <LockOpen/>
-                Unlock <span
-                class="bg-clip-text text-transparent font-medium bg-gradient-to-r from-purple-500 to-indigo-500">Pro</span>
-                Features
+                <span class="bg-clip-text text-transparent font-medium bg-gradient-to-r from-purple-500 to-indigo-500">Unlock Pro Features</span>
             </Flex>
         </template>
 

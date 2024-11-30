@@ -32,13 +32,13 @@ const save = () => {
 
         <div class="row-px">
             <Panel>
-                <template #title>Admin Notifications</template>
+                <template #title>Notifications</template>
                 <template #description>
-                    This email will be used for all admin notifications.
+                    This email will be used for notifications.
                 </template>
 
                 <HorizontalGroup class="mt-lg">
-                    <template #title>Admin Email</template>
+                    <template #title>Email</template>
 
                     <Input v-model="form.admin_email" type="email"  :error="form.errors.admin_email !== undefined"/>
 

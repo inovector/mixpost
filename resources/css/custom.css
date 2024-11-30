@@ -49,8 +49,16 @@
         @apply mb-3 sm:mb-6 lg:mb-8;
     }
 
+    .row-pb {
+        @apply pb-3 sm:pb-6 lg:pb-8;
+    }
+
     .row-mt {
         @apply mt-3 sm:mt-6 lg:mb-8;
+    }
+
+    .row-pt {
+        @apply pt-3 sm:pt-6 lg:pt-8;
     }
 
     .m-container {
@@ -82,5 +90,9 @@
 
     .mixpost-scroll-style::-webkit-scrollbar-thumb:hover {
         @apply bg-gray-400;
+    }
+
+    .group-visible {
+        @apply opacity-0 group-hover:opacity-100 transition-opacity ease-in-out duration-200;
     }
 }

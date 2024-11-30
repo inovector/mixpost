@@ -21,6 +21,8 @@ import Document from "../../Icons/Document.vue";
 import Forward from "../../Icons/Forward.vue";
 import Webhooks from "../../Icons/Webhooks.vue";
 import UpgradePro from "../Pro/UpgradePro.vue";
+import RectangleGroup from "../../Icons/RectangleGroup.vue";
+import ProLabel from "../Pro/ProLabel.vue";
 </script>
 <template>
     <div class="w-full h-full flex flex-col py-2xl bg-white border-r border-gray-200">
@@ -77,6 +79,16 @@ import UpgradePro from "../Pro/UpgradePro.vue";
                     </template>
                     Media Library
                 </MenuItem>
+                <UpgradePro>
+                    <template #trigger>
+                        <ProMenuItem v-tooltip="`Posting Schedule`">
+                            <template #icon>
+                                <RectangleGroup/>
+                            </template>
+                            Templates
+                        </ProMenuItem>
+                    </template>
+                </UpgradePro>
             </MenuGroupBody>
             <MenuDelimiter/>
             <MenuGroupHeader :create-url="route('mixpost.posts.create')">
@@ -158,9 +170,9 @@ import UpgradePro from "../Pro/UpgradePro.vue";
             <MenuDelimiter/>
             <div class="flex flex-col items-start px-xl mt-sm">
                 <div class="text-sm text-gray-500 mb-xs">Lite version: {{ $page.props.mixpost.version }}</div>
-                <a href="https://mixpost.app/pricing"
+                <a href="https://mixpost.app/pricing?utm_source=mixpost-lite-app&utm_medium=sidebar&utm_campaign=upgrade"
                    class="text-indigo-500 hover:text-indigo-400 transition-colors ease-in-out duration-200 text-sm">
-                    Upgrade to Pro
+                    <ProLabel name="Upgrade to Pro" icon="lock-open"/>
                 </a>
             </div>
         </div>

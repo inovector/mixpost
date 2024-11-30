@@ -21,6 +21,7 @@ class SocialProviderManager extends SocialProviderManagerAbstract
         return $this->providers = [
             'twitter' => TwitterProvider::class,
             'facebook_page' => FacebookPageProvider::class,
+            'mastodon' => MastodonProvider::class,
         ];
     }
 

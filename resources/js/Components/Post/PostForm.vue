@@ -1,5 +1,5 @@
 <script setup>
-import {computed, inject, onMounted, ref, watch} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import {capitalize, clone, cloneDeep} from "lodash";
 import usePost from "@/Composables/usePost";
 import usePostVersions from "@/Composables/usePostVersions";
@@ -13,9 +13,13 @@ import PostAddMedia from "@/Components/Post/PostAddMedia.vue"
 import PostMedia from "@/Components/Post/PostMedia.vue"
 import PostCharacterCount from "@/Components/Post/PostCharacterCount.vue"
 import Flex from "../Layout/Flex.vue";
-import EditorButton from "../Button/EditorButton.vue";
 import Plus from "../../Icons/Plus.vue";
-import UpgradePro from "../Pro/UpgradePro.vue";
+import Hashtag from "../../Icons/Hashtag.vue";
+import Variable from "../../Icons/Variable.vue";
+import RectangleGroup from "../../Icons/RectangleGroup.vue";
+import ProEditorButton from "../Pro/ProEditorButton.vue";
+import PostContentValidator from "./PostContentValidator.vue";
+import Sparkles from "../../Icons/Sparkles.vue";
 
 const props = defineProps({
     form: {
@@ -57,7 +61,7 @@ const selectedAccounts = computed(() => {
 
 const providersWithDisabledSimultaneousPosting = computed(() => {
     return selectedAccounts.value.filter((account) => {
-        return !account.provider_options.simultaneous_posting_on_multiple_accounts;
+        return !account.post_configs.simultaneous_posting;
     }).map((account) => {
         return account.provider;
     });
@@ -153,7 +157,7 @@ watch(() => props.form.accounts, () => {
     setupVersions();
 });
 
-const {insertEmoji, insertContent, focusEditor} = useEditor();
+const {insertEmoji, focusEditor} = useEditor();
 </script>
 <template>
     <div class="flex flex-wrap items-center gap-sm mb-lg">
@@ -187,8 +191,7 @@ const {insertEmoji, insertContent, focusEditor} = useEditor();
             <Editor id="postEditor"
                     :value="item.body"
                     :editable="editAllowed"
-                    @update="updateContent(index, 'body', $event)"
-                    placeholder="Type here something interesting for your audience...">
+                    @update="updateContent(index, 'body', $event)">
                 <template #default="props">
                     <PostMedia :media="item.media"/>
 
@@ -196,35 +199,50 @@ const {insertEmoji, insertContent, focusEditor} = useEditor();
                           class="relative justify-between border-t border-gray-200 pt-md mt-md">
                         <div v-if="!editAllowed" class="absolute w-full h-full"></div>
 
-                        <Flex>
+                        <Flex :responsive="false">
                             <EmojiPicker
                                 @selected="insertEmoji({editorId: 'postEditor', emoji: $event})"
                                 @close="focusEditor({editorId: 'postEditor'})"
                             />
 
-                            <PostAddMedia @insert="updateContent(index, 'media', [...item.media, ...$event])"
-                                          :selectedAccounts="selectedAccounts"
-                                          :activeVersion="activeVersion"
-                                          :versions="form.versions"
-                                          :media="item.media"/>
-                        </Flex>
+                            <PostAddMedia @insert="updateContent(index, 'media', [...item.media, ...$event])"/>
 
+                            <ProEditorButton tooltip="Open Hashtag Manager">
+                                <Hashtag/>
+                            </ProEditorButton>
+
+                            <ProEditorButton tooltip="Open Variable Manager">
+                                <Variable/>
+                            </ProEditorButton>
+
+                            <ProEditorButton tooltip="Open Template Manager">
+                                <RectangleGroup/>
+                            </ProEditorButton>
+
+                            <ProEditorButton tooltip="AI Assistant">
+                                <Sparkles/>
+                            </ProEditorButton>
+                        </Flex>
 
                        <Flex>
                            <PostCharacterCount :selectedAccounts="selectedAccounts"
+                                               :versions="form.versions"
                                                :activeVersion="activeVersion"
-                                               :versions="form.versions"/>
+                                               :activeContent="index"/>
 
-                          <Flex>
-                              <EditorButton>
-                                  <Plus/>
-                              </EditorButton>
-                              <UpgradePro/>
-                          </Flex>
+                           <ProEditorButton tooltip="Add first comment">
+                               <Plus/>
+                           </ProEditorButton>
                        </Flex>
                     </Flex>
                 </template>
             </Editor>
+
+            <PostContentValidator
+                :selectedAccounts="selectedAccounts"
+                :activeVersion="activeVersion"
+                :activeContent="index"
+                :versions="form.versions"/>
         </template>
     </Panel>
 </template>
