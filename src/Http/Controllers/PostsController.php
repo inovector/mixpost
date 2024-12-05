@@ -70,7 +70,7 @@ class PostsController extends Controller
             'prefill' => [
                 'body' => $request->query('body', '')
             ],
-            'is_configured_service' => ServiceManager::isConfigured()
+            'is_configured_service' => ServiceManager::isActive(),
         ]);
     }
 

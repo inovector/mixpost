@@ -9,16 +9,16 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
-use Inovector\Mixpost\Facades\ServiceManager;
 use Inovector\Mixpost\Http\Resources\MediaResource;
 use Inovector\Mixpost\Models\Media;
+use Inovector\Mixpost\Services\TenorService;
 use Symfony\Component\HttpFoundation\Response;
 
 class MediaFetchGifsController extends Controller
 {
     public function __invoke(Request $request): AnonymousResourceCollection
     {
-        $clientId = ServiceManager::get('tenor', 'client_id');
+        $clientId = TenorService::getConfiguration('client_id');
 
         if (!$clientId) {
             abort(Response::HTTP_FORBIDDEN);
