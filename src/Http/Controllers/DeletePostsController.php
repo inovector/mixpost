@@ -12,7 +12,7 @@ class DeletePostsController extends Controller
 {
     public function __invoke(Request $request, RedirectAfterDeletedPost $redirectAfterPostDeleted): RedirectResponse
     {
-        Post::whereIn('id', $request->input('posts'))->delete();
+        Post::whereIn('uuid', $request->input('posts'))->delete();
 
         return $redirectAfterPostDeleted($request);
     }

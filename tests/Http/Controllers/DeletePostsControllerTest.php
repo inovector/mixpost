@@ -17,7 +17,7 @@ it("will delete posts and redirect back", function () {
     $countPostsBeforeDelete = Post::count();
 
     $this->delete(route('mixpost.posts.multipleDelete'), [
-        'posts' => $posts->pluck('id')
+        'posts' => $posts->pluck('uuid')
     ])->assertRedirect(url('/'));
 
     $countPostsAfterDelete = Post::count();
@@ -34,7 +34,7 @@ it("will delete posts and redirect to posts page", function () {
     $countPostsBeforeDelete = Post::count();
 
     $this->delete(route('mixpost.posts.multipleDelete'), [
-        'posts' => $posts->pluck('id'),
+        'posts' => $posts->pluck('uuid'),
         'status' => Str::lower(PostStatus::FAILED->name)
     ])->assertRedirectToRoute('mixpost.posts.index');
 

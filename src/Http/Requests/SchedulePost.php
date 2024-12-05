@@ -19,7 +19,7 @@ class SchedulePost extends FormRequest
 
     public function withValidator($validator)
     {
-        $this->post = Post::findOrFail($this->route('post'));
+        $this->post = Post::firstOrFailByUuid($this->route('post'));
 
         $validator->after(function ($validator) {
             if ($this->post->isInHistory()) {
