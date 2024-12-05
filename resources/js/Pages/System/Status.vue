@@ -92,12 +92,12 @@ const copyToClipboard = () => {
                         <TableRow :hoverable="true">
                             <TableCell>
                                 <Badge
-                                    :variant="health.horizon_status === 'active' ? 'success' : (health.horizon_status === 'paused' ? 'warning' : 'error')">
+                                    :variant="health.horizon_status === 'Active' ? 'success' : (health.horizon_status === 'Paused' ? 'warning' : 'error')">
                                     Horizon
                                 </Badge>
                             </TableCell>
                             <TableCell>
-                                <span v-if="health.horizon_status === 'inactive'">
+                                <span v-if="health.horizon_status === 'Inactive'">
                                     <span class="block">Inactive</span>
                                     Read the <a
                                     :href="`${$page.props.mixpost.docs_link}/lite/installation/laravel-package#5-install-horizon`">documentation</a>.
