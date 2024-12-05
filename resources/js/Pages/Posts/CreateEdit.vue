@@ -233,7 +233,7 @@ watch(form, debounce(() => {
                                 />
                             </template>
 
-                            <template v-if="tab === 'activity' && $page.props.post !== null">
+                            <template v-if="tab === 'activity'">
                                 <PostActivity :post="$page.props.post"/>
                             </template>
                         </div>

@@ -17,6 +17,10 @@ import ProviderIcon from "@/Components/Account/ProviderIcon.vue";
 import CalendarIcon from "@/Icons/Calendar.vue"
 import PaperAirplaneIcon from "@/Icons/PaperAirplane.vue"
 import XIcon from "@/Icons/X.vue"
+import WarningButton from "../Button/WarningButton.vue";
+import Forward from "../../Icons/Forward.vue";
+import UpgradePro from "../Pro/UpgradePro.vue";
+import ProLabel from "../Pro/ProLabel.vue";
 
 const props = defineProps({
     form: {
@@ -140,6 +144,23 @@ const accounts = computed(() => {
                     <PaperAirplaneIcon class="mr-xs"/>
                     {{ scheduleTime ? 'Schedule' : 'Post now' }}
                 </PrimaryButton>
+
+                <UpgradePro>
+                    <template #trigger>
+                        <WarningButton
+                            :hiddenTextOnSmallScreen="true"
+                            :disabled="!canSchedule || isLoading"
+                            size="md">
+                            <template #icon>
+                                <Forward/>
+                            </template>
+
+                            Add to queue
+
+                            <ProLabel/>
+                        </WarningButton>
+                    </template>
+                </UpgradePro>
             </template>
         </div>
 
