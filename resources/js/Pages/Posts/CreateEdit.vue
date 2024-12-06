@@ -159,7 +159,7 @@ watch(form, debounce(() => {
 
     <div class="flex flex-col grow h-full overflow-y-auto">
         <div class="flex flex-row h-full overflow-y-auto">
-            <div class="w-full md:w-3/5 h-full flex flex-col overflow-x-hidden overflow-y-auto">
+            <div class="w-full h-full flex flex-col overflow-x-hidden overflow-y-auto">
                 <div class="flex flex-col h-full">
                     <PostErrors/>
 
@@ -192,7 +192,7 @@ watch(form, debounce(() => {
                 </div>
             </div>
             <div :class="{'translate-x-0 pb-32': showPreview, 'translate-x-full md:translate-x-0': !showPreview}"
-                 class="fixed md:relative w-full md:w-2/5 h-full overflow-x-hidden overflow-y-auto flex flex-col border-l border-gray-200 bg-stone-500 transition-transform ease-in-out duration-200">
+                 class="fixed md:relative w-full md:w-[750px] h-full overflow-x-hidden overflow-y-auto flex flex-col border-l border-gray-200 bg-stone-500 transition-transform ease-in-out duration-200">
                 <Teleport v-if="isMounted && form.accounts.length" to="#navRightButton">
                     <SecondaryButton @click="showPreview = !showPreview" size="xs" class="md:hidden">
                         <template #icon>
