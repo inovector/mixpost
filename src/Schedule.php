@@ -13,5 +13,6 @@ class Schedule
         $schedule->command('mixpost:import-account-audience')->everyThreeHours();
         $schedule->command('mixpost:process-metrics')->everyThreeHours();
         $schedule->command('mixpost:delete-old-data')->daily();
+        $schedule->command('mixpost:prune-temporary-directory')->hourly();
     }
 }

@@ -88,4 +88,15 @@ class Util
     {
         return self::getDatabaseDriver($connection) === 'mysql';
     }
+
+    public static function closeAndDeleteStreamResource(array $stream): void
+    {
+        if (is_resource($stream['stream'])) {
+            fclose($stream['stream']);
+        }
+
+        if (isset($stream['temporaryDirectory'])) {
+            $stream['temporaryDirectory']->delete();
+        }
+    }
 }

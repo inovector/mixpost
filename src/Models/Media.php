@@ -12,6 +12,7 @@ use Inovector\Mixpost\Support\MediaFilesystem;
 use Inovector\Mixpost\Support\MediaTemporaryDirectory;
 use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\Local\LocalFilesystemAdapter;
+use Exception;
 
 class Media extends Model
 {
@@ -107,6 +108,25 @@ class Media extends Model
         return [
             'stream' => $this->filesystem($disk)->readStream($path),
             'temporaryDirectory' => null,
+        ];
+    }
+
+    public function downloadToTemp(): array
+    {
+        if ($this->isLocalAdapter()) {
+            throw new Exception('This function only works with remote adapters');
+        }
+
+        $disk = $this->disk;
+        $path = $this->path;
+
+        $temporaryDirectory = MediaTemporaryDirectory::create();
+        $tempFilePath = $temporaryDirectory->path($path);
+        MediaFilesystem::copyFromDisk($path, $disk, $tempFilePath);
+
+        return [
+            'temporaryDirectory' => $temporaryDirectory,
+            'fullPath' => $tempFilePath,
         ];
     }
 

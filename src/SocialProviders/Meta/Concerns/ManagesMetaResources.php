@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use Inovector\Mixpost\Enums\SocialProviderResponseStatus;
 use Inovector\Mixpost\Models\Media;
 use Inovector\Mixpost\Support\SocialProviderResponse;
+use Inovector\Mixpost\Util;
 
 trait ManagesMetaResources
 {
@@ -97,11 +98,7 @@ trait ManagesMetaResources
                 'access_token' => $accessToken
             ]);
 
-        if (is_resource($readStream['stream'])) {
-            fclose($readStream['stream']);
-        }
-
-        $readStream['temporaryDirectory']?->delete();
+        Util::closeAndDeleteStreamResource($readStream);
 
         return $this->buildResponse($response);
     }
