@@ -114,7 +114,7 @@ const handleMediaMaxLimitError = ({used, limits, accountId, accountName}) => {
         }
     });
 
-    if (used.mixing && !limits.allow_mixing.count) {
+    if (used.mixing && !limits.allow_mixing.limit) {
         addAccountError({
             group: mediaErrorGroup,
             key: `c_mixing`,
