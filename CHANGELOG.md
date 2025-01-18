@@ -2,6 +2,38 @@
 
 All notable changes to `mixpost` will be documented in this file.
 
+## v2.0.0 - 2025-01-18
+
+**New features**
+
+- Added email notification for broken social account connections
+- Begin processing analytics immediately after connecting a social account.
+- Added system status page
+- Added system logs page
+
+**Fixes**
+
+- Fixed filter by tags for calendar
+- Fixed issue with X video/GIF media uploads
+- Fixed issue with deleting temporarily downloaded media for the Facebook platform
+
+**Changes**
+
+- Service support status "Active/Inactive"
+- Shows media file title
+- Improved performance Emoji picker render
+- Improved post validator
+- Optimized schedule commands
+- Improve editor and media layout for post page
+- `uuid` instead `id` of resource in the URL
+
+**Miscellaneous**
+
+- Support Laravel 11
+- Support Facebook API v21.0
+- Support Carbon 3
+- New command and schedule for pruning the temporary media directory.
+
 ## v1.7.2 - 2024-08-16
 
 **Miscellaneous**
