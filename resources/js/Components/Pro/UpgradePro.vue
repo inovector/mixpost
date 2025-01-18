@@ -114,7 +114,7 @@ const features = [
             <MenuDelimiter class="mt-md"/>
 
             <div class="mt-md">
-                <p class="font-medium">Mixpost Pro gives:</p>
+                <p>Mixpost <span class="font-medium">Pro</span> gives:</p>
                 <ul class="mt-xs">
                     <template v-for="(feature, index) in features" :key="index">
                         <li class="flex items-center gap-xs mb-xs last:mb-0">

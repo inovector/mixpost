@@ -4,6 +4,7 @@ namespace Inovector\Mixpost\Actions;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
+use Inovector\Mixpost\Events\AccountAdded;
 use Inovector\Mixpost\Models\Account;
 use Inovector\Mixpost\Support\MediaUploader;
 
@@ -11,7 +12,7 @@ class UpdateOrCreateAccount
 {
     public function __invoke(string $providerName, array $account, array $accessToken): void
     {
-        Account::updateOrCreate(
+        $account = Account::updateOrCreate(
             [
                 'provider' => $providerName,
                 'provider_id' => $account['id']
@@ -25,6 +26,10 @@ class UpdateOrCreateAccount
                 'access_token' => $accessToken,
             ]
         );
+
+        if ($account->wasRecentlyCreated) {
+            AccountAdded::dispatch($account);
+        }
     }
 
     protected function media(string|null $imageUrl, string $providerName): array|null

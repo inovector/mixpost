@@ -2,7 +2,6 @@
 import {Link} from '@inertiajs/vue3';
 import Logo from "@/Components/DataDisplay/Logo.vue"
 import MenuItem from "@/Components/Sidebar/MenuItem.vue"
-import ProMenuItem from "@/Components/Pro/TriggerMenuItem.vue"
 import MenuDelimiter from "@/Components/Sidebar/MenuDelimiter.vue"
 import MenuGroupHeader from "@/Components/Sidebar/MenuGroupHeader.vue"
 import MenuGroupBody from "@/Components/Sidebar/MenuGroupBody.vue"
@@ -18,11 +17,8 @@ import UserMenu from "../Navigation/UserMenu.vue";
 import QueueList from "../../Icons/QueueList.vue";
 import InformationCircle from "../../Icons/InformationCircle.vue";
 import Document from "../../Icons/Document.vue";
-import Forward from "../../Icons/Forward.vue";
-import Webhooks from "../../Icons/Webhooks.vue";
-import UpgradePro from "../Pro/UpgradePro.vue";
-import RectangleGroup from "../../Icons/RectangleGroup.vue";
 import ProLabel from "../Pro/ProLabel.vue";
+import UpgradePro from "../Pro/UpgradePro.vue";
 </script>
 <template>
     <div class="w-full h-full flex flex-col py-2xl bg-white border-r border-gray-200">
@@ -79,16 +75,6 @@ import ProLabel from "../Pro/ProLabel.vue";
                     </template>
                     Media Library
                 </MenuItem>
-                <UpgradePro>
-                    <template #trigger>
-                        <ProMenuItem v-tooltip="`Posting Schedule`">
-                            <template #icon>
-                                <RectangleGroup/>
-                            </template>
-                            Templates
-                        </ProMenuItem>
-                    </template>
-                </UpgradePro>
             </MenuGroupBody>
             <MenuDelimiter/>
             <MenuGroupHeader :create-url="route('mixpost.posts.create')">
@@ -99,7 +85,7 @@ import ProLabel from "../Pro/ProLabel.vue";
                     <template #icon>
                         <ShareIcon/>
                     </template>
-                    Accounts
+                    Social Accounts
                 </MenuItem>
                 <MenuItem :url="route('mixpost.services.index')" :active="$page.component === 'Services'">
                     <template #icon>
@@ -107,26 +93,6 @@ import ProLabel from "../Pro/ProLabel.vue";
                     </template>
                     Services
                 </MenuItem>
-                <UpgradePro>
-                    <template #trigger>
-                        <ProMenuItem v-tooltip="`Posting Schedule`">
-                            <template #icon>
-                                <Forward/>
-                            </template>
-                            Posting Sch...
-                        </ProMenuItem>
-                    </template>
-                </UpgradePro>
-                <UpgradePro>
-                    <template #trigger>
-                        <ProMenuItem>
-                            <template #icon>
-                                <Webhooks/>
-                            </template>
-                            Webhooks
-                        </ProMenuItem>
-                    </template>
-                </UpgradePro>
                 <MenuItem :url="route('mixpost.settings.index')" :active="$page.component === 'Settings'">
                     <template #icon>
                         <CogIcon/>
@@ -139,14 +105,6 @@ import ProLabel from "../Pro/ProLabel.vue";
                 System
             </MenuGroupHeader>
             <MenuGroupBody>
-                <template v-if="$page.props.app.horizon_path">
-                    <MenuItem :url="`/${$page.props.app.horizon_path}`" :external="true" externalTarget="_blank">
-                        <template #icon>
-                            <QueueList/>
-                        </template>
-                        Laravel Horizon
-                    </MenuItem>
-                </template>
                 <MenuItem :url="route('mixpost.system.status')" :active="$page.component === 'System/Status'">
                     <template #icon>
                         <InformationCircle/>
@@ -159,6 +117,14 @@ import ProLabel from "../Pro/ProLabel.vue";
                     </template>
                     Logs
                 </MenuItem>
+                <template v-if="$page.props.app.horizon_path">
+                    <MenuItem :url="`/${$page.props.app.horizon_path}`" :external="true" externalTarget="_blank">
+                        <template #icon>
+                            <QueueList/>
+                        </template>
+                        Laravel Horizon
+                    </MenuItem>
+                </template>
             </MenuGroupBody>
         </div>
 
@@ -170,10 +136,11 @@ import ProLabel from "../Pro/ProLabel.vue";
             <MenuDelimiter/>
             <div class="flex flex-col items-start px-xl mt-sm">
                 <div class="text-sm text-gray-500 mb-xs">Lite version: {{ $page.props.mixpost.version }}</div>
-                <a href="https://mixpost.app/pricing?utm_source=mixpost-lite-app&utm_medium=sidebar&utm_campaign=upgrade"
-                   class="text-indigo-500 hover:text-indigo-400 transition-colors ease-in-out duration-200 text-sm">
-                    <ProLabel name="Upgrade to Pro" icon="lock-open"/>
-                </a>
+                <UpgradePro>
+                    <template #trigger>
+                        <ProLabel name="Unlock Pro Features" icon="lock-open"/>
+                    </template>
+                </UpgradePro>
             </div>
         </div>
     </div>

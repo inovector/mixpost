@@ -99,4 +99,29 @@ class Util
             $stream['temporaryDirectory']->delete();
         }
     }
+
+    public static function performTaskWithDelay(callable $task, int $initialDelay = 15, int $maxDelay = 60, int $maxAttempts = 10)
+    {
+        $delay = $initialDelay;
+        $attempt = 0;
+
+        while ($attempt < $maxAttempts) {
+            $result = $task();
+
+            if ($result !== null) {
+                return $result;
+            }
+
+            sleep($delay);
+
+            // Increase delay for the next iteration, maxing out at maxDelay
+            $delay = min($delay * 2, $maxDelay);
+            // Add a random jitter to the delay
+            $delay += rand(-(int)($delay * 0.1), (int)($delay * 0.1));
+
+            $attempt++;
+        }
+
+        return null;
+    }
 }

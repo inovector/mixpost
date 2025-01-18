@@ -14,8 +14,10 @@ use Inovector\Mixpost\Commands\ImportAccountData;
 use Inovector\Mixpost\Commands\ProcessMetrics;
 use Inovector\Mixpost\Commands\PublishAssetsCommand;
 use Inovector\Mixpost\Commands\RunScheduledPosts;
+use Inovector\Mixpost\Events\AccountAdded;
 use Inovector\Mixpost\Events\AccountUnauthorized;
 use Inovector\Mixpost\Exceptions\MixpostExceptionHandler;
+use Inovector\Mixpost\Listeners\HandleAccountImports;
 use Inovector\Mixpost\Listeners\SendAccountUnauthorizedNotification;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
@@ -102,6 +104,7 @@ class MixpostServiceProvider extends PackageServiceProvider
 
     protected function bootEvents(): void
     {
+        Event::listen(AccountAdded::class, HandleAccountImports::class);
         Event::listen(AccountUnauthorized::class, SendAccountUnauthorizedNotification::class);
     }
 
