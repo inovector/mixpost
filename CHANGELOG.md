@@ -2,6 +2,45 @@
 
 All notable changes to `mixpost` will be documented in this file.
 
+## v1.7.2 - 2024-08-16
+
+**Miscellaneous**
+
+- Removed Unsplash doc link.
+
+## v1.7.1 - 2024-06-14
+
+**Fixes**
+
+- Fixed Facebook service version validation.
+- Fixed confirmation process for removing post versions.
+
+## v1.7.0 - 2024-06-06
+
+**Changes**
+
+- Support `v20` for Facebook API
+
+**Miscellaneous**
+
+- Expanded compatibility of the post keyword filter with additional database versions
+
+## v1.6.0 - 2024-05-09
+
+**Fixes**
+
+- Fixed media file item in the Safari browser
+- Calendar Month: Fix timezone with (-)
+- Calendar Month: Get posts for prev&next month
+
+**Changes**
+
+- Changed documentation URL
+
+**Miscellaneous**
+
+- Support `s3` disk for X (Twitter)
+
 ## v1.5.2 - 2024-04-12
 
 **Fixes**
