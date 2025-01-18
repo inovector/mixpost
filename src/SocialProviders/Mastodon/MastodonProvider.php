@@ -8,6 +8,8 @@ use Inovector\Mixpost\Http\Resources\AccountResource;
 use Inovector\Mixpost\SocialProviders\Mastodon\Concerns\ManagesOAuth;
 use Inovector\Mixpost\SocialProviders\Mastodon\Concerns\ManagesRateLimit;
 use Inovector\Mixpost\SocialProviders\Mastodon\Concerns\ManagesResources;
+use Inovector\Mixpost\Support\SocialProviderPostConfigs;
+use Inovector\Mixpost\Util;
 
 class MastodonProvider extends SocialProvider
 {
@@ -25,6 +27,26 @@ class MastodonProvider extends SocialProvider
         $this->serverUrl = "https://{$values['data']['server']}";
 
         parent::__construct($request, $clientId, $clientSecret, $redirectUrl, $values);
+    }
+
+    public static function service(): string
+    {
+        return 'mastodon';
+    }
+
+    public static function postConfigs(): SocialProviderPostConfigs
+    {
+        return SocialProviderPostConfigs::make()
+            ->simultaneousPosting(Util::config('social_provider_options.mastodon.simultaneous_posting_on_multiple_accounts'))
+            ->minTextChar(1)
+            ->maxTextChar(Util::config('social_provider_options.mastodon.post_character_limit'))
+            ->minPhotos(1)
+            ->minVideos(1)
+            ->minGifs(1)
+            ->maxPhotos(Util::config('social_provider_options.mastodon.media_limit.photos'))
+            ->maxVideos(Util::config('social_provider_options.mastodon.media_limit.videos'))
+            ->maxGifs(Util::config('social_provider_options.mastodon.media_limit.gifs'))
+            ->allowMixingMediaTypes(Util::config('social_provider_options.mastodon.allow_mixing'));
     }
 
     public static function externalPostUrl(AccountResource $accountResource): string

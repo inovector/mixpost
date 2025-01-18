@@ -9,9 +9,6 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/inovector/mixpost.svg?style=flat-square)](https://packagist.org/packages/inovector/mixpost)
 
 ## Introduction
-**Mixpost** it's the coolest **Self hosted social media management software**. 
-
-This package is the **Lite version** of Mixpost Pro.
 
 Mixpost is a robust and versatile **social media management platform**, designed to streamline **social media operations** and enhance **content marketing strategies**. Our platform empowers brands and businesses to effectively manage their **online presence**, leading them to success in the dynamic digital landscape. Mixpost's mission is to offer a comprehensive and powerful solution, enabling users to elevate their **social media management** and achieve tangible results.
 
@@ -69,20 +66,16 @@ Please see [Releases](../../releases) for more information what has changed rece
 
 ## Contributing
 
-By participating in this project you agree to these conditions 👇
+By participating in this project, you agree to the following terms 👇
 
-Please note that this project is a [commercial product](https://mixpost.app/), and this repository is the lite version
-of Mixpost Pro. We work hard to offer the community the best free social media manager solution and please read this
-section carefully.
+This repository contains the Lite version of Mixpost Pro, a [commercial product](https://mixpost.app/) product. We’re committed to providing the community with the best free social media management solution. Please read the information below carefully.
 
-If you want to add a feature, it's better to open an issue before you start coding. It is important for us that features
-from the Lite version do not correlate with features from the Mixpost Pro. PRs with optimizations, bug fixes are
-welcome.
+- If you’d like to add a feature, please open an issue first to discuss it before you begin coding. It’s essential that Lite version features remain distinct from those in Mixpost Pro.
+- Pull requests (PRs) for optimizations and bug fixes are always welcome.
+- Make sure your commit messages and pull request descriptions are clear and informative. PRs with empty descriptions may be rejected.
+- When contributing code to Mixpost, you must follow
+  the [PSR-12 Coding Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-12-extended-coding-style-guide.md).
 
-Please, be very clear on your commit messages and pull requests, empty pull request messages may be rejected.
-
-When contributing code to Mixpost, you must follow
-the [PSR-12 Coding Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-12-extended-coding-style-guide.md).
 The golden rule is: Imitate the existing Mixpost code.
 
 ## Security Vulnerabilities

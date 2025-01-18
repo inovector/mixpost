@@ -11,6 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Arr;
 use Inovector\Mixpost\Concerns\Job\HasSocialProviderJobRateLimit;
+use Inovector\Mixpost\Concerns\Job\SocialProviderException;
 use Inovector\Mixpost\Concerns\Job\SocialProviderJobFail;
 use Inovector\Mixpost\Concerns\UsesSocialProviderManager;
 use Inovector\Mixpost\Models\Account;
@@ -24,6 +25,7 @@ class ImportTwitterPostsJob implements ShouldQueue
     use UsesSocialProviderManager;
     use HasSocialProviderJobRateLimit;
     use SocialProviderJobFail;
+    use SocialProviderException;
 
     public $deleteWhenMissingModels = true;
 
@@ -38,6 +40,14 @@ class ImportTwitterPostsJob implements ShouldQueue
 
     public function handle(): void
     {
+        if ($this->account->isUnauthorized()) {
+            return;
+        }
+
+        if (!$this->account->isServiceActive()) {
+            return;
+        }
+
         if ($retryAfter = $this->rateLimitExpiration()) {
             $this->release($retryAfter);
 
@@ -56,6 +66,13 @@ class ImportTwitterPostsJob implements ShouldQueue
 
         $response = $provider->getUserTweetTimeline($this->account->provider_id, $this->params['pagination_next_token'] ?? '');
 
+        if ($response->isUnauthorized()) {
+            $this->account->setUnauthorized();
+            $this->captureException($response);
+
+            return;
+        }
+
         if ($response->hasExceededRateLimit()) {
             $this->storeRateLimitExceeded($response->retryAfter(), $response->isAppLevel());
             $this->release($response->retryAfter());
@@ -68,7 +85,7 @@ class ImportTwitterPostsJob implements ShouldQueue
         }
 
         if ($response->hasError()) {
-            $this->makeFail($response);
+            $this->captureException($response);
 
             return;
         }
@@ -94,7 +111,7 @@ class ImportTwitterPostsJob implements ShouldQueue
                     'replies' => $item->public_metrics->reply_count ?? 0,
                     'retweets' => $item->public_metrics->retweet_count ?? 0,
                 ]),
-                'created_at' => Carbon::parse($item->created_at, 'UTC')->toDateString()
+                'created_at' => Carbon::parse($item->created_at, 'UTC')->toDateTimeString()
             ];
         });
 

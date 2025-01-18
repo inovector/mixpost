@@ -14,7 +14,8 @@ it('can update the settings', function () {
     $data = [
         'timezone' => 'Europe/Chisinau',
         'time_format' => 12,
-        'week_starts_on' => 1
+        'week_starts_on' => 1,
+        'admin_email' => 'test@mail.com'
     ];
 
     $this->putJson(route('mixpost.settings.update'), $data)->assertStatus(302);

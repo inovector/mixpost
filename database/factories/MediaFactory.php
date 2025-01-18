@@ -14,6 +14,7 @@ class MediaFactory extends Factory
         $size = $this->faker->randomDigit();
 
         return [
+            'uuid' => $this->faker->uuid,
             'name' => $this->faker->domainName,
             'mime_type' => $this->faker->mimeType(),
             'disk' => 'public',

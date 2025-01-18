@@ -13,7 +13,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Inovector\Mixpost\Actions\RedirectAfterDeletedPost;
 use Inovector\Mixpost\Builders\PostQuery;
-use Inovector\Mixpost\Facades\Services;
+use Inovector\Mixpost\Facades\ServiceManager;
 use Inovector\Mixpost\Facades\Settings;
 use Inovector\Mixpost\Http\Requests\StorePost;
 use Inovector\Mixpost\Http\Requests\UpdatePost;
@@ -70,7 +70,7 @@ class PostsController extends Controller
             'prefill' => [
                 'body' => $request->query('body', '')
             ],
-            'is_configured_service' =>  Services::isConfigured()
+            'is_configured_service' => ServiceManager::isActive(),
         ]);
     }
 
@@ -78,11 +78,13 @@ class PostsController extends Controller
     {
         $post = $storePost->handle();
 
-        return redirect()->route('mixpost.posts.edit', ['post' => $post->id]);
+        return redirect()->route('mixpost.posts.edit', ['post' => $post->uuid]);
     }
 
-    public function edit(Post $post): Response
+    public function edit(Request $request): Response
     {
+        $post = Post::firstOrFailTrashedByUuid($request->route('post'));
+
         $post->load('accounts', 'versions', 'tags');
 
         EagerLoadPostVersionsMedia::apply($post);
@@ -91,7 +93,8 @@ class PostsController extends Controller
             'accounts' => AccountResource::collection(Account::oldest()->get())->resolve(),
             'tags' => TagResource::collection(Tag::latest()->get())->resolve(),
             'post' => new PostResource($post),
-            'is_configured_service' =>  Services::isConfigured()
+            'is_configured_service' => ServiceManager::isActive(),
+            'service_configs' => ServiceManager::exposedConfiguration(),
         ]);
     }
 
@@ -102,9 +105,9 @@ class PostsController extends Controller
         return response()->noContent();
     }
 
-    public function destroy(Request $request, RedirectAfterDeletedPost $redirectAfterPostDeleted, $id): RedirectResponse
+    public function destroy(Request $request, RedirectAfterDeletedPost $redirectAfterPostDeleted): RedirectResponse
     {
-        Post::where('id', $id)->delete();
+        Post::where('uuid', $request->route('post'))->delete();
 
         return $redirectAfterPostDeleted($request);
     }

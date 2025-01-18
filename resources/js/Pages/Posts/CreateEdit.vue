@@ -14,17 +14,21 @@ import PostPreviewProviders from "@/Components/Post/PostPreviewProviders.vue"
 import SecondaryButton from "@/Components/Button/SecondaryButton.vue"
 import PostStatus from "@/Components/Post/PostStatus.vue";
 import Alert from "@/Components/Util/Alert.vue";
-import PostLimitErrors from "@/Components/Post/PostLimitErrors.vue";
+import PostErrors from "@/Components/Post/PostErrors.vue";
 import EyeIcon from "@/Icons/Eye.vue"
-import EyeOffIcon from "@/Icons/EyeOff.vue"
+import PostActivity from "../../Components/PostActivity/PostActivity.vue";
+import Tabs from "../../Components/Navigation/Tabs.vue";
+import Tab from "../../Components/Navigation/Tab.vue";
+import SidebarIcon from "@/Icons/Sidebar.vue";
+import ChatBubbleBottomCenterText from "../../Icons/ChatBubbleBottomCenterText.vue";
+import ProLabel from "../../Components/Pro/ProLabel.vue";
 
 const props = defineProps(['post', 'schedule_at', 'accounts', 'prefill']);
 
 const post = props.post ? cloneDeep(props.post) : null;
 
 const context = reactive({
-    textLimit: [],
-    mediaLimit: []
+    errors: {},
 });
 
 provide('postCtx', context);
@@ -34,6 +38,12 @@ const showPreview = ref(false);
 const isLoading = ref(false);
 const triedToSave = ref(false);
 const hasError = ref(false);
+
+const tab = ref('preview');
+
+const setTab = (id) => {
+    tab.value = id;
+}
 
 const {isInHistory, isScheduleProcessing, editAllowed} = usePost();
 const {versionObject} = usePostVersions();
@@ -149,9 +159,9 @@ watch(form, debounce(() => {
 
     <div class="flex flex-col grow h-full overflow-y-auto">
         <div class="flex flex-row h-full overflow-y-auto">
-            <div class="w-full md:w-3/5 h-full flex flex-col overflow-x-hidden overflow-y-auto">
+            <div class="w-full h-full flex flex-col overflow-x-hidden overflow-y-auto">
                 <div class="flex flex-col h-full">
-                    <PostLimitErrors/>
+                    <PostErrors/>
 
                     <div class="row-py h-full overflow-y-auto">
                         <PageHeader title="Your post">
@@ -182,24 +192,51 @@ watch(form, debounce(() => {
                 </div>
             </div>
             <div :class="{'translate-x-0 pb-32': showPreview, 'translate-x-full md:translate-x-0': !showPreview}"
-                 class="fixed md:relative w-full md:w-2/5 h-full overflow-x-hidden overflow-y-auto flex flex-col border-l border-gray-200 bg-stone-500 transition-transform ease-in-out duration-200">
+                 class="fixed md:relative w-full md:w-[750px] h-full overflow-x-hidden overflow-y-auto flex flex-col border-l border-gray-200 bg-stone-500 transition-transform ease-in-out duration-200">
                 <Teleport v-if="isMounted && form.accounts.length" to="#navRightButton">
                     <SecondaryButton @click="showPreview = !showPreview" size="xs" class="md:hidden">
-                            <span class="mr-xs">
-                                <EyeOffIcon v-if="showPreview"/>
-                                <EyeIcon v-else/>
-                            </span>
-                        <span>Preview</span>
+                        <template #icon>
+                            <SidebarIcon/>
+                        </template>
                     </SecondaryButton>
                 </Teleport>
 
-                <div class="py-2xl">
-                    <PageHeader title="Preview"/>
+                <div class="flex pb-md flex-col h-full">
+                    <div class="flex flex-col h-full">
+                        <div class="row-px pt-md relative border-b border-gray-200">
+                            <Tabs>
+                                <Tab @click="setTab('preview')" :active="tab === 'preview'">
 
-                    <div class="row-px">
-                        <PostPreviewProviders :accounts="postAccounts"
-                                              :versions="form.versions"
-                        />
+                                    <template #icon>
+                                        <EyeIcon/>
+                                    </template>
+                                    Preview
+                                </Tab>
+
+                                <Tab @click="setTab('activity')" :active="tab === 'activity'"
+                                class="relative">
+                                    <template #icon>
+                                        <ChatBubbleBottomCenterText/>
+                                    </template>
+                                    Activity
+
+                                    <ProLabel class="ml-xs"/>
+                                </Tab>
+                            </Tabs>
+                        </div>
+
+                        <div class="flex flex-col h-full overflow-y-auto">
+                            <template v-if="tab === 'preview'">
+                                <PostPreviewProviders :accounts="postAccounts"
+                                                      :versions="form.versions"
+                                                      class="row-px row-pt"
+                                />
+                            </template>
+
+                            <template v-if="tab === 'activity'">
+                                <PostActivity :post="$page.props.post"/>
+                            </template>
+                        </div>
                     </div>
                 </div>
             </div>

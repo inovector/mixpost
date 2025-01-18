@@ -95,7 +95,7 @@ const closePreview = () => {
         </TableCell>
         <TableCell :clickable="true" @click="openPreview">
             <div v-if="content.media" class="w-48 flex relative">
-                <MediaFile v-if="content.media" :media="content.media" img-height="sm" :imgWidthFull="false">
+                <MediaFile v-if="content.media" :media="content.media" img-height="sm" :imgWidthFull="false" :showCaption="false">
                     <div v-if="content.media_count > 1" class="absolute top-0 -right-5 z-10">
                         <Badge>+{{ content.media_count - 1 }}</Badge>
                     </div>

@@ -12,24 +12,6 @@ use Inovector\Mixpost\Support\SocialProviderResponse;
 trait ManagesRateLimit
 {
     /**
-     * Rate limit
-     *
-     * @see https://docs.joinmastodon.org/api/rate-limits/#headers
-     * @see https://docs.joinmastodon.org/client/intro/#http
-     * @see https://docs.joinmastodon.org/entities/Error
-     */
-    public function getRateLimitUsage(array $headers): array
-    {
-        $timestampToRegainAccess = Carbon::parse(Arr::get($headers, 'X-RateLimit-Reset.0'));
-
-        return [
-            'limit' => intval(Arr::get($headers, 'X-RateLimit-Limit.0')),
-            'remaining' => intval(Arr::get($headers, 'X-RateLimit-Remaining.0')),
-            'retry_after' => Carbon::now('UTC')->diffInSeconds($timestampToRegainAccess),
-        ];
-    }
-
-    /**
      * @param $response Response
      */
     public function buildResponse($response, Closure $okResult = null): SocialProviderResponse
@@ -39,10 +21,10 @@ trait ManagesRateLimit
         $rateLimitAboutToBeExceeded = $usage['remaining'] < 5;
         $retryAfter = $rateLimitAboutToBeExceeded ? 5 * 60 : $usage['retry_after'];
 
-        if (in_array($response->status(), [200, 201])) {
+        if (in_array($response->status(), [200, 201, 202])) {
             return $this->response(
                 SocialProviderResponseStatus::OK,
-                $okResult ? $okResult() : $response->json(),
+                $okResult ? $okResult() : ($response->json() ?? []),
                 $rateLimitAboutToBeExceeded,
                 $retryAfter
             );
@@ -57,11 +39,38 @@ trait ManagesRateLimit
             );
         }
 
+        if ($response->status() === 401) {
+            return $this->response(
+                SocialProviderResponseStatus::UNAUTHORIZED,
+                ['access_token_expired']
+            );
+        }
+
         return $this->response(
             SocialProviderResponseStatus::ERROR,
-            $response->json(),
+            $response->json() ?? [],
             $rateLimitAboutToBeExceeded,
             $retryAfter
         );
+    }
+
+    /**
+     * Rate limit
+     *
+     * @see https://docs.joinmastodon.org/api/rate-limits/#headers
+     * @see https://docs.joinmastodon.org/client/intro/#http
+     * @see https://docs.joinmastodon.org/entities/Error
+     */
+    public function getRateLimitUsage(array $headers): array
+    {
+        $headers = array_change_key_case($headers, CASE_LOWER);
+
+        $timestampToRegainAccess = Carbon::parse(Arr::get($headers, 'x-ratelimit-reset.0'));
+
+        return [
+            'limit' => (int)Arr::get($headers, 'x-ratelimit-limit.0'),
+            'remaining' => (int)Arr::get($headers, 'x-ratelimit-remaining.0'),
+            'retry_after' => (int)Carbon::now('UTC')->diffInSeconds($timestampToRegainAccess),
+        ];
     }
 }

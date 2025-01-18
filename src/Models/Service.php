@@ -5,7 +5,7 @@ namespace Inovector\Mixpost\Models;
 use Inovector\Mixpost\Casts\EncryptArrayObject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Inovector\Mixpost\Facades\Services as ServicesFacade;
+use Inovector\Mixpost\Facades\ServiceManager;
 
 class Service extends Model
 {
@@ -15,15 +15,17 @@ class Service extends Model
 
     protected $fillable = [
         'name',
-        'credentials'
+        'configuration',
+        'active'
     ];
 
     protected $casts = [
-        'credentials' => EncryptArrayObject::class
+        'configuration' => EncryptArrayObject::class,
+        'active' => 'boolean'
     ];
 
     protected $hidden = [
-        'credentials'
+        'configuration'
     ];
 
     public $timestamps = false;
@@ -31,11 +33,15 @@ class Service extends Model
     protected static function booted()
     {
         static::saved(function ($service) {
-            ServicesFacade::put($service->name, $service->credentials->toArray());
+            ServiceManager::put(
+                name: $service->name,
+                configuration: $service->configuration->toArray(),
+                active: $service->active
+            );
         });
 
         static::deleted(function ($service) {
-            ServicesFacade::forget($service->name);
+            ServiceManager::forget($service->name);
         });
     }
 }

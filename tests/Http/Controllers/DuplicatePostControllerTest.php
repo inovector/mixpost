@@ -6,7 +6,7 @@ use Inovector\Mixpost\Enums\PostScheduleStatus;
 use Inovector\Mixpost\Enums\PostStatus;
 use Inovector\Mixpost\Models\Post;
 use Inovector\Mixpost\Models\User;
-use function Pest\Faker\faker;
+use function Pest\Faker\fake;
 
 beforeEach(function () {
     test()->user = User::factory()->create();
@@ -27,7 +27,7 @@ it('can duplicate a post', function () {
             'is_original' => true,
             'content' => [
                 [
-                    'body' => faker()->paragraph,
+                    'body' => fake()->paragraph,
                     'media' => []
                 ]
             ]

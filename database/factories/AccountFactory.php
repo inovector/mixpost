@@ -12,17 +12,20 @@ class AccountFactory extends Factory
 
     public function definition()
     {
-        $providers = ['twitter', 'mastodon', 'facebook_page', 'facebook_group'];
+        $providers = ['twitter', 'mastodon', 'facebook_page'];
 
         $name = $this->faker->name;
 
         return [
+            'uuid' => $this->faker->uuid,
             'name' => $name,
             'username' => Str::camel($this->faker->name),
-            'provider' => $providers[rand(0, 3)],
+            'provider' => $providers[rand(0, 2)],
             'provider_id' => Str::random(),
             'media' => ['disk' => 'public', 'path' => '/'],
-            'access_token' => ['auth_token' => Str::random()]
+            'data' => null,
+            'authorized' => true,
+            'access_token' => ['access_token' => Str::random()]
         ];
     }
 }

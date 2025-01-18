@@ -4,7 +4,7 @@ namespace Inovector\Mixpost\Commands;
 
 use Illuminate\Console\Command;
 use Inovector\Mixpost\Actions\CreateMastodonApp as CreateMastodonAppAction;
-use Inovector\Mixpost\Facades\Services;
+use Inovector\Mixpost\Facades\ServiceManager;
 
 class CreateMastodonApp extends Command
 {
@@ -18,7 +18,7 @@ class CreateMastodonApp extends Command
 
         $serviceName = "mastodon.$server";
 
-        if (Services::get($serviceName)) {
+        if (ServiceManager::get($serviceName)) {
             if (!$this->confirm('Are you sure you want to create a new application for this server?')) {
                 return self::FAILURE;
             }

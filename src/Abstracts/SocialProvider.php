@@ -5,6 +5,7 @@ namespace Inovector\Mixpost\Abstracts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use Inovector\Mixpost\Concerns\UsesSocialProviderResponse;
 use Inovector\Mixpost\Contracts\SocialProvider as SocialProviderContract;
 use Exception;
@@ -39,6 +40,20 @@ abstract class SocialProvider implements SocialProviderContract
         $this->clientSecret = $clientSecret;
         $this->redirectUrl = $redirectUrl;
         $this->values = $values;
+    }
+
+    public function identifier(): string
+    {
+        $className = basename(str_replace('\\', '/', get_class($this)));
+
+        return Str::of($className)->replace('Provider', '')->snake();
+    }
+
+    public static function name(): string
+    {
+        $className = basename(str_replace('\\', '/', static::class));
+
+        return Str::of($className)->replace('Provider', '');
     }
 
     public function isOnlyUserAccount(): bool
@@ -93,7 +108,7 @@ abstract class SocialProvider implements SocialProviderContract
         $expires_in = $this->getAccessToken()['expires_in'];
 
         $expiresAt = Carbon::createFromTimestamp($expires_in, 'UTC');
-        $minutesAhead = Carbon::now('UTC')->addMinute();
+        $minutesAhead = Carbon::now('UTC')->addMinutes(10);
 
         return $expiresAt->lte($minutesAhead);
     }
@@ -105,9 +120,7 @@ abstract class SocialProvider implements SocialProviderContract
         $this->useAccessToken($accessToken);
 
         if ($account = Account::find($this->values['account_id'])) {
-            $account->update([
-                'access_token' => $accessToken
-            ]);
+            $account->updateAccessToken($accessToken);
         }
     }
 
@@ -124,7 +137,7 @@ abstract class SocialProvider implements SocialProviderContract
     public function rateLimitExceedContext(int $retryAfter, ?string $customText = null): array
     {
         $defaultText = 'The rate limit has been exceeded';
-        $date = Carbon::now('UTC')->addSeconds($retryAfter)->format('Y-m-d');
+        $date = Carbon::now('UTC')->addSeconds($retryAfter)->format('Y-m-d H:i');
 
         return [
             'rate_limit_exceed' => true,

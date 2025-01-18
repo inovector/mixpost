@@ -10,6 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Inovector\Mixpost\Concerns\Job\HasSocialProviderJobRateLimit;
+use Inovector\Mixpost\Concerns\Job\SocialProviderException;
 use Inovector\Mixpost\Concerns\Job\SocialProviderJobFail;
 use Inovector\Mixpost\Concerns\UsesSocialProviderManager;
 use Inovector\Mixpost\Models\Account;
@@ -24,6 +25,7 @@ class ImportTwitterFollowersJob implements ShouldQueue
     use UsesSocialProviderManager;
     use HasSocialProviderJobRateLimit;
     use SocialProviderJobFail;
+    use SocialProviderException;
 
     public $deleteWhenMissingModels = true;
 
@@ -36,6 +38,14 @@ class ImportTwitterFollowersJob implements ShouldQueue
 
     public function handle(): void
     {
+        if ($this->account->isUnauthorized()) {
+            return;
+        }
+
+        if (!$this->account->isServiceActive()) {
+            return;
+        }
+
         if ($retryAfter = $this->rateLimitExpiration()) {
             $this->release($retryAfter);
 
@@ -47,6 +57,13 @@ class ImportTwitterFollowersJob implements ShouldQueue
          * @var SocialProviderResponse $response
          */
         $response = $this->connectProvider($this->account)->getAccountMetrics();
+
+        if ($response->isUnauthorized()) {
+            $this->account->setUnauthorized();
+            $this->captureException($response);
+
+            return;
+        }
 
         if ($response->hasExceededRateLimit()) {
             $this->storeRateLimitExceeded($response->retryAfter(), $response->isAppLevel());
@@ -60,7 +77,7 @@ class ImportTwitterFollowersJob implements ShouldQueue
         }
 
         if ($response->hasError()) {
-            $this->makeFail($response);
+            $this->captureException($response);
 
             return;
         }

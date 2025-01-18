@@ -29,13 +29,15 @@ it('show list of accounts on Accounts page without service alerts', function () 
     $this->actingAs(test()->user);
 
     (new UpdateOrCreateService())('twitter', [
-        'client_id' => 'my-tw-client-id',
-        'client_secret' => 'my-tw-client-secret'
-    ]);
+        'client_id' => '11',
+        'client_secret' => 'secret-twitter',
+        'tier' => 'free'
+    ], true);
 
     (new UpdateOrCreateService())('facebook', [
-        'client_id' => 'my-fb-client-id',
-        'client_secret' => 'my-fb-client-secret'
+        'client_id' => '222',
+        'client_secret' => 'secret-fb',
+        'api_version' => 'v21.0'
     ]);
 
     $this->get(route('mixpost.accounts.index'))
@@ -44,5 +46,7 @@ it('show list of accounts on Accounts page without service alerts', function () 
             ->has('accounts', 3)
             ->where('is_configured_service.twitter', true)
             ->where('is_configured_service.facebook', true)
+            ->where('is_service_active.twitter', true)
+            ->where('is_service_active.facebook', false)
         );
 });

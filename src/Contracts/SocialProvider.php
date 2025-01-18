@@ -12,6 +12,12 @@ interface SocialProvider
 {
     public function __construct(Request $request, string $clientId, string $clientSecret, string $redirectUrl, array $values = []);
 
+    public function identifier(): string;
+
+    public static function name(): string;
+
+    public static function service(): string;
+
     public function getAuthUrl(): string;
 
     public function requestAccessToken(array $params): array;

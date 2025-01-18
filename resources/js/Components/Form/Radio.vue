@@ -5,7 +5,6 @@ const emit = defineEmits(['update:checked']);
 
 const props = defineProps({
     checked: {
-        type: [Number, String],
         default: false,
     },
     value: {
@@ -26,5 +25,5 @@ const proxyChecked = computed({
 
 <template>
     <input type="radio" :value="value" v-model="proxyChecked"
-           class="rounded-full w-5 h-5 border-gray-200 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 disabled:border-gray-100 disabled:cursor-not-allowed">
+           class="rounded-full w-5 h-5 border-gray-200 text-indigo-500 shadow-sm focus:border-indigo-200 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 disabled:border-gray-100 disabled:cursor-not-allowed">
 </template>

@@ -6,7 +6,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Inertia\Inertia;
 use Inertia\Response;
-use Inovector\Mixpost\Facades\Services;
+use Inovector\Mixpost\Facades\ServiceManager;
 use Inovector\Mixpost\Http\Requests\SaveService;
 
 class ServicesController extends Controller
@@ -14,7 +14,7 @@ class ServicesController extends Controller
     public function index(): Response
     {
         return Inertia::render('Services', [
-            'services' => Services::all()
+            'services' => ServiceManager::all()
         ]);
     }
 

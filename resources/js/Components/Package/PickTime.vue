@@ -48,7 +48,7 @@ const setDateTime = () => {
             // Display the next time if the date and time are null
             const currentTime = utcToZonedTime(new Date().toISOString(), timeZone)
 
-            const [nextDate, nextHour] = format(addHours(currentTime, 1), 'Y-MM-dd H').split(' ');
+            const [nextDate, nextHour] = format(addHours(currentTime, 1), 'yyyy-MM-dd H').split(' ');
 
             date.value = nextDate
             time.value = `${nextHour}:00`

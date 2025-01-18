@@ -6,18 +6,19 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
-use Inovector\Mixpost\Facades\Services;
 use Inovector\Mixpost\Http\Resources\MediaResource;
 use Inovector\Mixpost\Models\Media;
+use Inovector\Mixpost\Services\TenorService;
 use Symfony\Component\HttpFoundation\Response;
 
 class MediaFetchGifsController extends Controller
 {
     public function __invoke(Request $request): AnonymousResourceCollection
     {
-        $clientId = Services::get('tenor', 'client_id');
+        $clientId = TenorService::getConfiguration('client_id');
 
         if (!$clientId) {
             abort(Response::HTTP_FORBIDDEN);
@@ -27,7 +28,7 @@ class MediaFetchGifsController extends Controller
 
         $items = Http::get("https://tenor.googleapis.com/v2/search", [
             'key' => $clientId,
-            'client_key' => Str::slug(env('APP_NAME', 'mixpost'), '_'),
+            'client_key' => Str::slug(Config::get('app.name', 'mixpost'), '_'),
             'q' => $request->query('keyword', Arr::random($terms)),
             'limit' => 30,
         ]);

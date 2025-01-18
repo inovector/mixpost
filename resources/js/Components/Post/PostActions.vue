@@ -1,8 +1,9 @@
 <script setup>
-import {computed, inject, ref} from "vue";
+import {computed, ref} from "vue";
 import {format, parseISO} from "date-fns";
 import {router} from "@inertiajs/vue3";
 import {usePage} from "@inertiajs/vue3";
+import usePostValidator from "../../Composables/usePostValidator.js";
 import usePost from "@/Composables/usePost";
 import useNotifications from "@/Composables/useNotifications";
 import useSettings from "@/Composables/useSettings";
@@ -16,6 +17,10 @@ import ProviderIcon from "@/Components/Account/ProviderIcon.vue";
 import CalendarIcon from "@/Icons/Calendar.vue"
 import PaperAirplaneIcon from "@/Icons/PaperAirplane.vue"
 import XIcon from "@/Icons/X.vue"
+import WarningButton from "../Button/WarningButton.vue";
+import Forward from "../../Icons/Forward.vue";
+import UpgradePro from "../Pro/UpgradePro.vue";
+import ProLabel from "../Pro/ProLabel.vue";
 
 const props = defineProps({
     form: {
@@ -24,11 +29,10 @@ const props = defineProps({
     }
 });
 
-const {postId, editAllowed, accountsHitTextLimit, accountsHitMediaLimit} = usePost();
+const {postId, editAllowed} = usePost();
+const {validationPassed} = usePostValidator();
 
 const emit = defineEmits(['submit'])
-
-const postCtx = inject('postCtx')
 
 const timePicker = ref(false);
 
@@ -36,7 +40,7 @@ const {timeFormat, weekStartsOn} = useSettings();
 
 const scheduleTime = computed(() => {
     if (props.form.date && props.form.time) {
-        return format(new Date(parseISO(props.form.date + ' ' + props.form.time)), `E, MMM do, 'at' ${timeFormat === 24 ? 'kk:mm' : 'h:mmaaa'}`, {
+        return format(new Date(parseISO(props.form.date + ' ' + props.form.time)), `MMM do, ${timeFormat === 24 ? 'kk:mm' : 'h:mmaaa'}`, {
             weekStartsOn: weekStartsOn
         });
     }
@@ -55,8 +59,7 @@ const isLoading = ref(false);
 const canSchedule = computed(() => {
     return (postId.value && props.form.accounts.length) &&
         editAllowed.value &&
-        !accountsHitTextLimit.value.length &&
-        !accountsHitMediaLimit.value.length;
+        validationPassed.value;
 });
 
 const schedule = (postNow = false) => {
@@ -141,6 +144,23 @@ const accounts = computed(() => {
                     <PaperAirplaneIcon class="mr-xs"/>
                     {{ scheduleTime ? 'Schedule' : 'Post now' }}
                 </PrimaryButton>
+
+                <UpgradePro>
+                    <template #trigger>
+                        <WarningButton
+                            :hiddenTextOnSmallScreen="true"
+                            :disabled="!canSchedule || isLoading"
+                            size="md">
+                            <template #icon>
+                                <Forward/>
+                            </template>
+
+                            Add to queue
+
+                            <ProLabel/>
+                        </WarningButton>
+                    </template>
+                </UpgradePro>
             </template>
         </div>
 

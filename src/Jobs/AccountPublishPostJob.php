@@ -40,6 +40,17 @@ class AccountPublishPostJob implements ShouldQueue
             return;
         }
 
+        if (!$this->account->isServiceActive()) {
+            $this->post->insertErrors($this->account, ['Service disabled']);
+            return;
+        }
+
+        if ($this->account->isUnauthorized()) {
+            $this->post->insertErrors($this->account, ['Access token expired']);
+
+            return;
+        }
+
         if ($retryAfter = $this->rateLimitExpiration()) {
             $this->release($retryAfter);
 
@@ -47,6 +58,13 @@ class AccountPublishPostJob implements ShouldQueue
         }
 
         $response = $accountPublishPost($this->account, $this->post);
+
+        if ($response->isUnauthorized()) {
+            $this->account->setUnauthorized();
+            $this->delete();
+
+            return;
+        }
 
         if ($response->hasExceededRateLimit()) {
             $this->storeRateLimitExceeded($response->retryAfter(), $response->isAppLevel());

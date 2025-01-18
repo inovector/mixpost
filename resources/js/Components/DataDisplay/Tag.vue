@@ -67,7 +67,7 @@ const renameTag = () => {
         return;
     }
 
-    router.put(route('mixpost.tags.update', {tag: props.item.id}), {
+    router.put(route('mixpost.tags.update', {tag: props.item.uuid}), {
         action: 'name',
         name: renameText.value
     }, {
@@ -97,7 +97,7 @@ const closeChangeColorModal = () => {
 }
 
 const changeTagColor = () => {
-    router.put(route('mixpost.tags.update', {tag: props.item.id}), {
+    router.put(route('mixpost.tags.update', {tag: props.item.uuid}), {
         action: 'color',
         hex_color: changeColorHex.value,
     }, {
@@ -116,7 +116,7 @@ const confirmationTagDeletion = ref(false);
 const isDeleting = ref(false);
 
 const deleteTag = () => {
-    router.delete(route('mixpost.tags.delete', {tag: props.item.id}), {
+    router.delete(route('mixpost.tags.delete', {tag: props.item.uuid}), {
         onStart() {
             isDeleting.value = true;
         },

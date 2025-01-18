@@ -1,33 +1,46 @@
 <script setup>
-import data from "emoji-mart-vue-fast/data/apple.json";
-import "emoji-mart-vue-fast/css/emoji-mart.css";
-import {Picker, EmojiIndex} from "emoji-mart-vue-fast/src";
+import {defineAsyncComponent} from "vue";
 import Dropdown from "@/Components/Dropdown/Dropdown.vue"
 import EmojiIcon from "@/Icons/Emoji.vue"
+import EmojiPreloader from "../Util/EmojiPreloader.vue";
 
-const emojiIndex = new EmojiIndex(data);
+const EmojiMart = defineAsyncComponent({
+    loader: () => import("@/Components/Package/EmojiMart.vue"),
+    loadingComponent: EmojiPreloader,
+});
+
+defineProps({
+    closeOnSelect: {
+        type: Boolean,
+        default: false
+    },
+    tooltip: {
+        type: String,
+        default: 'Emoji'
+    }
+});
 
 const emit = defineEmits(['selected', 'close'])
 
-function showEmoji(emoji) {
+const select = (emoji) => {
     emit('selected', emoji);
 }
 </script>
 <template>
-    <Dropdown placement="bottom-start" :closeable-on-content="false" width-classes="w-auto" @close="$emit('close')">
+    <Dropdown placement="bottom-start"
+              :closeable-on-content="closeOnSelect"
+              width-classes="w-auto"
+              @close="$emit('close')">
         <template #trigger>
-            <button type="button" v-tooltip="'Emoji'"
-                    class="hover:text-orange-500 transition-colors ease-in-out duration-200 outline-none text-stone-800">
-                <EmojiIcon/>
-            </button>
+            <div class="flex">
+                <button type="button" v-tooltip="tooltip"
+                        class="hover:text-orange-500 transition-colors ease-in-out duration-200 outline-none text-stone-800">
+                    <EmojiIcon/>
+                </button>
+            </div>
         </template>
         <template #content>
-            <Picker :data="emojiIndex"
-                    :auto-focus="true"
-                    :show-preview="false"
-                    :native="true"
-                    @select="showEmoji"
-            />
+            <EmojiMart @select="select"/>
         </template>
     </Dropdown>
 </template>

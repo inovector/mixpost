@@ -10,10 +10,15 @@ import PlusIcon from "@/Icons/Plus.vue"
 import GridIcon from "@/Icons/Grid.vue"
 import CalendarIcon from "@/Icons/Calendar.vue"
 import PhotoIcon from "@/Icons/Photo.vue"
-import PackageIcon from "@/Icons/Package.vue"
+import ShareIcon from "@/Icons/Share.vue"
 import CogIcon from "@/Icons/Cog.vue"
 import ServerStackIcon from "@/Icons/ServerStack.vue"
 import UserMenu from "../Navigation/UserMenu.vue";
+import QueueList from "../../Icons/QueueList.vue";
+import InformationCircle from "../../Icons/InformationCircle.vue";
+import Document from "../../Icons/Document.vue";
+import ProLabel from "../Pro/ProLabel.vue";
+import UpgradePro from "../Pro/UpgradePro.vue";
 </script>
 <template>
     <div class="w-full h-full flex flex-col py-2xl bg-white border-r border-gray-200">
@@ -78,15 +83,9 @@ import UserMenu from "../Navigation/UserMenu.vue";
             <MenuGroupBody>
                 <MenuItem :url="route('mixpost.accounts.index')" :active="$page.component === 'Accounts/Accounts'">
                     <template #icon>
-                        <PackageIcon/>
+                        <ShareIcon/>
                     </template>
-                    Accounts
-                </MenuItem>
-                <MenuItem :url="route('mixpost.settings.index')" :active="$page.component === 'Settings'">
-                    <template #icon>
-                        <CogIcon/>
-                    </template>
-                    Settings
+                    Social Accounts
                 </MenuItem>
                 <MenuItem :url="route('mixpost.services.index')" :active="$page.component === 'Services'">
                     <template #icon>
@@ -94,6 +93,38 @@ import UserMenu from "../Navigation/UserMenu.vue";
                     </template>
                     Services
                 </MenuItem>
+                <MenuItem :url="route('mixpost.settings.index')" :active="$page.component === 'Settings'">
+                    <template #icon>
+                        <CogIcon/>
+                    </template>
+                    Settings
+                </MenuItem>
+            </MenuGroupBody>
+            <MenuDelimiter/>
+            <MenuGroupHeader>
+                System
+            </MenuGroupHeader>
+            <MenuGroupBody>
+                <MenuItem :url="route('mixpost.system.status')" :active="$page.component === 'System/Status'">
+                    <template #icon>
+                        <InformationCircle/>
+                    </template>
+                    Status
+                </MenuItem>
+                <MenuItem :url="route('mixpost.system.logs.index')" :active="$page.component === 'System/Logs'">
+                    <template #icon>
+                        <Document/>
+                    </template>
+                    Logs
+                </MenuItem>
+                <template v-if="$page.props.app.horizon_path">
+                    <MenuItem :url="`/${$page.props.app.horizon_path}`" :external="true" externalTarget="_blank">
+                        <template #icon>
+                            <QueueList/>
+                        </template>
+                        Laravel Horizon
+                    </MenuItem>
+                </template>
             </MenuGroupBody>
         </div>
 
@@ -105,10 +136,11 @@ import UserMenu from "../Navigation/UserMenu.vue";
             <MenuDelimiter/>
             <div class="flex flex-col items-start px-xl mt-sm">
                 <div class="text-sm text-gray-500 mb-xs">Lite version: {{ $page.props.mixpost.version }}</div>
-                <a href="https://mixpost.app/pricing"
-                   class="text-indigo-500 hover:text-indigo-400 transition-colors ease-in-out duration-200 text-sm">
-                    Upgrade to Pro
-                </a>
+                <UpgradePro>
+                    <template #trigger>
+                        <ProLabel name="Unlock Pro Features" icon="lock-open"/>
+                    </template>
+                </UpgradePro>
             </div>
         </div>
     </div>

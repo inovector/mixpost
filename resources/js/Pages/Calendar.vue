@@ -56,7 +56,9 @@ const dateSelected = (date) => {
 
     selectedDate.value = newSelectedDate;
 
-    fetchPostsThrottle({date: newSelectedDate});
+    fetchPostsThrottle(Object.assign({
+        date: newSelectedDate
+    }, pickBy(filter.value)));
 }
 
 watch(type, () => {

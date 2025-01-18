@@ -3,6 +3,7 @@
 namespace Inovector\Mixpost\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Inovector\Mixpost\Http\Requests\StoreTag;
 use Inovector\Mixpost\Http\Requests\UpdateTag;
@@ -24,9 +25,9 @@ class TagsController extends Controller
         return redirect()->back();
     }
 
-    public function destroy($id): RedirectResponse
+    public function destroy(Request $request): RedirectResponse
     {
-        Tag::where('id', $id)->delete();
+        Tag::where('uuid', $request->route('tag'))->delete();
 
         return redirect()->back();
     }

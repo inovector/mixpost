@@ -3,13 +3,14 @@
 namespace Inovector\Mixpost\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Arr;
 use Inertia\Inertia;
 use Inertia\Response;
 use Inovector\Mixpost\Actions\UpdateOrCreateAccount;
 use Inovector\Mixpost\Concerns\UsesSocialProviderManager;
-use Inovector\Mixpost\Facades\Services;
+use Inovector\Mixpost\Enums\ServiceGroup;
+use Inovector\Mixpost\Facades\ServiceManager;
 use Inovector\Mixpost\Http\Resources\AccountResource;
 use Inovector\Mixpost\Models\Account;
 
@@ -19,14 +20,19 @@ class AccountsController extends Controller
 
     public function index(): Response
     {
+        $socialServices = ServiceManager::services()->group(ServiceGroup::SOCIAL)->getNames();
+
         return Inertia::render('Accounts/Accounts', [
             'accounts' => AccountResource::collection(Account::latest()->get())->resolve(),
-            'is_configured_service' => Arr::except(Services::isConfigured(), ['unsplash', 'tenor'])
+            'is_configured_service' => ServiceManager::isConfigured($socialServices),
+            'is_service_active' => ServiceManager::isActive($socialServices),
         ]);
     }
 
-    public function update(Account $account): RedirectResponse
+    public function update(Request $request): RedirectResponse
     {
+        $account = Account::firstOrFailByUuid($request->route('account'));
+
         $connection = $this->connectProvider($account);
 
         $response = $connection->getAccount();
@@ -44,8 +50,10 @@ class AccountsController extends Controller
         return redirect()->back();
     }
 
-    public function delete(Account $account): RedirectResponse
+    public function delete(Request $request): RedirectResponse
     {
+        $account = Account::firstOrFailByUuid($request->route('account'));
+
         $connection = $this->connectProvider($account);
 
         if (method_exists($connection, 'revokeToken')) {

@@ -4,7 +4,7 @@ use Inertia\Testing\AssertableInertia as Assert;
 use Inovector\Mixpost\Enums\PostStatus;
 use Inovector\Mixpost\Models\Account;
 use Inovector\Mixpost\Models\Tag;
-use function Pest\Faker\faker;
+use function Pest\Faker\fake;
 use Inovector\Mixpost\Models\User;
 use Inovector\Mixpost\Models\Post;
 use Carbon\Carbon;
@@ -84,13 +84,13 @@ it('shows edit form', function () {
         'status' => PostStatus::DRAFT
     ])->create();
 
-    $this->get(route('mixpost.posts.edit', ['post' => $post]))
+    $this->get(route('mixpost.posts.edit', ['post' => $post->uuid]))
         ->assertInertia(fn(Assert $page) => $page
             ->component('Posts/CreateEdit')
             ->has('accounts', 3)
             ->has('tags', 4)
             ->has('post')
-            ->where('post.id', $post->id)
+            ->where('post.id', $post->uuid)
             ->where('post.status', $post->status->name)
         );
 });
@@ -105,7 +105,7 @@ it('can store a post', function () {
                 'is_original' => true,
                 'content' => [
                     [
-                        'body' => faker()->paragraph,
+                        'body' => fake()->paragraph,
                         'media' => []
                     ]
                 ]
@@ -115,7 +115,7 @@ it('can store a post', function () {
 
     $post = Post::first();
 
-    $response->assertStatus(302)->assertRedirectToRoute('mixpost.posts.edit', ['post' => $post]);
+    $response->assertStatus(302)->assertRedirectToRoute('mixpost.posts.edit', ['post' => $post->uuid]);
 });
 
 it('can prevent unauthorized users to store a post', function () {
@@ -142,7 +142,7 @@ it('can update a post', function () {
             'is_original' => true,
             'content' => [
                 [
-                    'body' => faker()->paragraph,
+                    'body' => fake()->paragraph,
                     'media' => []
                 ]
             ]
@@ -160,7 +160,7 @@ it('can update a post', function () {
                 'is_original' => true,
                 'content' => [
                     [
-                        'body' => faker()->paragraph,
+                        'body' => fake()->paragraph,
                         'media' => []
                     ]
                 ]

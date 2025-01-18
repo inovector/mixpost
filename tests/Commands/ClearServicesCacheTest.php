@@ -1,14 +1,14 @@
 <?php
 
 use Inovector\Mixpost\Commands\ClearServicesCache;
-use Inovector\Mixpost\Facades\Services;
+use Inovector\Mixpost\Facades\ServiceManager;
 
 it('will clear services cache', function () {
-    Services::put('facebook', ['client_id' => '123', 'client_secret' => '456']);
-    Services::put('twitter', ['client_id' => '11111', 'client_secret' => '22222', 'tier' => 'free']);
+    ServiceManager::put('facebook', ['client_id' => '123', 'client_secret' => '456']);
+    ServiceManager::put('twitter', ['client_id' => '11111', 'client_secret' => '22222', 'tier' => 'free']);
 
     $this->artisan(ClearServicesCache::class)->assertExitCode(0);
 
-    expect(Services::getFromCache('facebook'))->toBeNull()
-    ->and(Services::getFromCache('tiktok'))->toBeNull();
+    expect(ServiceManager::getFromCache('facebook'))->toBeNull()
+    ->and(ServiceManager::getFromCache('tiktok'))->toBeNull();
 });

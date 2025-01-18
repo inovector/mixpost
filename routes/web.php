@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use Inovector\Mixpost\Http\Controllers\AccountEntitiesController;
 use Inovector\Mixpost\Http\Controllers\AccountsController;
@@ -9,6 +11,8 @@ use Inovector\Mixpost\Http\Controllers\CalendarController;
 use Inovector\Mixpost\Http\Controllers\CallbackSocialProviderController;
 use Inovector\Mixpost\Http\Controllers\CreateMastodonAppController;
 use Inovector\Mixpost\Http\Controllers\DashboardController;
+use Inovector\Mixpost\Http\Controllers\SystemLogsController;
+use Inovector\Mixpost\Http\Controllers\SystemStatusController;
 use Inovector\Mixpost\Http\Controllers\UpdateAuthUserController;
 use Inovector\Mixpost\Http\Controllers\UpdateAuthUserPasswordController;
 use Inovector\Mixpost\Http\Controllers\ProfileController;
@@ -104,6 +108,21 @@ Route::middleware([
             Route::put('user', UpdateAuthUserController::class)->name('updateUser');
             Route::put('password', UpdateAuthUserPasswordController::class)->name('updatePassword');
         });
+
+        Route::prefix('system')->name('system.')->group(function () {
+            Route::get('status', SystemStatusController::class)->name('status');
+
+            Route::prefix('logs')->name('logs.')->group(function () {
+                Route::get('/', [SystemLogsController::class, 'index'])->name('index');
+                Route::get('download', [SystemLogsController::class, 'download'])->name('download');
+                Route::delete('clear', [SystemLogsController::class, 'clear'])->name('clear');
+            });
+        });
+
+        Route::get('refresh-csrf-token', function (Request $request) {
+            $request->session()->regenerateToken();
+            return response(Config::get('app.name'));
+        })->name('refreshCsrfToken');
 
         Route::post('logout', [AuthenticatedController::class, 'destroy'])
             ->name('logout');

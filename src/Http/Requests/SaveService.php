@@ -4,39 +4,54 @@ namespace Inovector\Mixpost\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
-use Illuminate\Validation\Rule;
 use Inovector\Mixpost\Actions\UpdateOrCreateService;
-use Inovector\Mixpost\Facades\Services as ServicesFacade;
+use Inovector\Mixpost\Facades\ServiceManager;
 
 class SaveService extends FormRequest
 {
     public function rules(): array
     {
-        $keys = array_keys(ServicesFacade::services());
+        $default = [
+            'active' => ['required', 'boolean'],
+        ];
 
-        $serviceRules = $this->service()::rules();
+        $formRules = $this->service()::formRules();
+        $modifiedFormRules = array_reduce(array_keys($formRules), function ($carry, $key) use ($formRules) {
+            $carry["configuration.$key"] = $formRules[$key];
+            return $carry;
+        }, []);
 
-        return array_merge($serviceRules, [Rule::in($keys)]);
+        return array_merge(
+            $default,
+            $modifiedFormRules
+        );
     }
 
     public function handle(): void
     {
-        $form = $this->service()::form();
-
-        $value = Arr::map($form, function ($item, $key) {
-            return $this->input($key);
+        $configuration = Arr::map($this->service()::form(), function ($_, $key) {
+            return $this->input("configuration.$key");
         });
 
-        (new UpdateOrCreateService())($this->route('service'), $value);
+        (new UpdateOrCreateService())(
+            name: $this->route('service'),
+            configuration: $configuration,
+            active: $this->input('active', false)
+        );
     }
 
     public function messages(): array
     {
-        return $this->service()::messages();
+        $formMessages = $this->service()::formMessages();
+
+        return array_reduce(array_keys($formMessages), function ($carry, $key) use ($formMessages) {
+            $carry["configuration.$key"] = $formMessages[$key];
+            return $carry;
+        }, []);
     }
 
-    protected function service()
+    protected function service(): ?string
     {
-        return ServicesFacade::services($this->route('service'));
+        return ServiceManager::getServiceClass($this->route('service'));
     }
 }

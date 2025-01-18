@@ -3,6 +3,7 @@
 namespace Inovector\Mixpost\Support;
 
 use Illuminate\Support\Str;
+use Inovector\Mixpost\Util;
 use Spatie\TemporaryDirectory\TemporaryDirectory as BaseTemporaryDirectory;
 
 class MediaTemporaryDirectory
@@ -12,10 +13,13 @@ class MediaTemporaryDirectory
         return new BaseTemporaryDirectory(static::getTemporaryDirectoryPath());
     }
 
-    protected static function getTemporaryDirectoryPath(): string
+    public static function getParentTemporaryDirectoryPath()
     {
-        $path = config('mixpost.temporary_directory_path') ?? storage_path('mixpost-media/temp');
+        return Util::config('temporary_directory_path') ?? storage_path('mixpost-media/temp');
+    }
 
-        return $path . DIRECTORY_SEPARATOR . Str::random(32);
+    public static function getTemporaryDirectoryPath(): string
+    {
+        return self::getParentTemporaryDirectoryPath() . DIRECTORY_SEPARATOR . Str::random(32);
     }
 }

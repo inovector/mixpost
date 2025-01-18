@@ -10,6 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Inovector\Mixpost\Concerns\Job\HasSocialProviderJobRateLimit;
+use Inovector\Mixpost\Concerns\Job\SocialProviderException;
 use Inovector\Mixpost\Concerns\Job\SocialProviderJobFail;
 use Inovector\Mixpost\Concerns\UsesSocialProviderManager;
 use Inovector\Mixpost\Models\Account;
@@ -24,6 +25,7 @@ class ImportFacebookPageFollowersJob implements ShouldQueue
     use UsesSocialProviderManager;
     use HasSocialProviderJobRateLimit;
     use SocialProviderJobFail;
+    use SocialProviderException;
 
     public $deleteWhenMissingModels = true;
 
@@ -36,6 +38,14 @@ class ImportFacebookPageFollowersJob implements ShouldQueue
 
     public function handle(): void
     {
+        if ($this->account->isUnauthorized()) {
+            return;
+        }
+
+        if (!$this->account->isServiceActive()) {
+            return;
+        }
+
         if ($retryAfter = $this->rateLimitExpiration()) {
             $this->release($retryAfter);
 
@@ -47,6 +57,13 @@ class ImportFacebookPageFollowersJob implements ShouldQueue
          * @var SocialProviderResponse $response
          */
         $response = $this->connectProvider($this->account)->getPageAudience();
+
+        if ($response->isUnauthorized()) {
+            $this->account->setUnauthorized();
+            $this->captureException($response);
+
+            return;
+        }
 
         if ($response->hasExceededRateLimit()) {
             $this->storeRateLimitExceeded($response->retryAfter(), $response->isAppLevel());
@@ -61,7 +78,7 @@ class ImportFacebookPageFollowersJob implements ShouldQueue
 
         if ($response->hasError()) {
             // TODO: Create a table for logs all import, collect jobs in background
-            $this->makeFail($response);
+            $this->captureException($response);
 
             return;
         }

@@ -4,7 +4,7 @@ namespace Inovector\Mixpost\Integrations\Unsplash;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
-use Inovector\Mixpost\Facades\Services;
+use Inovector\Mixpost\Services\UnsplashService;
 use Inovector\Mixpost\Util;
 
 class Unsplash
@@ -14,7 +14,7 @@ class Unsplash
 
     public function __construct()
     {
-        $clientId = Services::get('unsplash', 'client_id');
+        $clientId = UnsplashService::getConfiguration('client_id');
 
         if (!$clientId) {
             throw new \Exception('Unsplash is not configured.');
