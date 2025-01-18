@@ -34,7 +34,7 @@ const save = () => {
             <Panel>
                 <template #title>Notifications</template>
                 <template #description>
-                    This email will be used for notifications.
+                    This email will receive notifications of lost account connections.
                 </template>
 
                 <HorizontalGroup class="mt-lg">
