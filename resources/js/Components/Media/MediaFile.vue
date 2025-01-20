@@ -59,7 +59,7 @@ const imgHeightClass = computed(() => {
             />
         </div>
         <template v-if="showCaption">
-            <figcaption class="mt-xs text-sm">{{ media.name }}</figcaption>
+            <figcaption class="mt-xs text-sm break-all">{{ media.name }}</figcaption>
         </template>
     </figure>
 </template>
