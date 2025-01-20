@@ -2,6 +2,12 @@
 
 All notable changes to `mixpost` will be documented in this file.
 
+## v2.0.1 - 2025-01-20
+
+**Fixes**
+
+- Fixed style of media file name
+
 ## v2.0.0 - 2025-01-18
 
 **New features**
