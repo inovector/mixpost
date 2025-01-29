@@ -101,7 +101,7 @@ const save = () => {
             <Select v-model="form.configuration.api_version"
                     :error="errors['configuration.api_version'] !== undefined"
                     id="version">
-                <option value="v21.0">v22.0</option>
+                <option value="v22.0">v22.0</option>
                 <option value="v21.0">v21.0</option>
                 <option value="v20.0">v20.0</option>
                 <option value="v19.0">v19.0</option>
