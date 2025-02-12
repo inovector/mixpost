@@ -16,7 +16,7 @@ const getPostLength = (content) => {
     let result = processedLines.join('\n');
 
     return CountTextCharacters.getLength(result, {
-        urlWeight: null,
+        urlWeight: 23,
         emojiWeight: 1,
     });
 };
