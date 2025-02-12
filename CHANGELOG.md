@@ -2,6 +2,12 @@
 
 All notable changes to `mixpost` will be documented in this file.
 
+## v2.1.1 - 2025-02-12
+
+**Fixed**
+
+- Fixed URL weight in the post text for Mastodon
+
 ## v2.1.0 - 2025-01-29
 
 **Changes**
