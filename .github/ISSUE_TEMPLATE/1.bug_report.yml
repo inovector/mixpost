@@ -43,12 +43,30 @@ body:
         What version or commit hash of Mixpost did you find this bug in?
 
         If a front-end issue, what browser and operating systems were you using?
+
+        Navigate to your https://domain.com/app/admin/system/status Admin Console > Status and click Copy Button at top right corner. 
       placeholder: |
-        Mixpost 1.0.2
+        ## Admin Console Health Status
 
-        Google Chrome 106.0.5249.119
-        Firefox 105.0.3
-
-        etc...
+        --- 
+        ## Health
+        
+        **Environment:**: production 
+        **Debug Mode**: Enabled 
+        **Horizon**: Active 
+        **Queue connection**: OK 
+        **Schedule**: Ran 0 minute(s) ago 
+        
+        ## Technical details:
+        
+        **App directory**: /var/www/smm.uhl.agency 
+        **Upload Media Disk**: public 
+        **Log Channel**: mixpost 
+        **User agent**: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15 
+        **PHP**: 8.2.17 
+        **Laravel**: 10.48.8 
+        **Horizon**: 5.24.1.0 
+        **Mixpost**: 2.0.3.0 
+        **Mixpost Enterprise**: 2.0.0.0
     validations:
       required: true
