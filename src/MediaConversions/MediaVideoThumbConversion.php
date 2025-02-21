@@ -54,7 +54,9 @@ class MediaVideoThumbConversion extends MediaConversion
 
         $video = $ffmpeg->open($file);
         $duration = $ffmpeg->getFFProbe()->format($file)->get('duration');
-        $seconds = $duration <= $this->atSecond ? 0 : $this->atSecond;
+
+        // Ensure $seconds is within valid bounds
+        $seconds = ($duration > 0 && $this->atSecond > 0) ? min($this->atSecond, floor($duration)) : 0;
 
         $frame = $video->frame(TimeCode::fromSeconds($seconds));
         $frame->save($thumbFilepath);
