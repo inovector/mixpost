@@ -4,6 +4,7 @@ namespace Inovector\Mixpost\MediaConversions;
 
 use FFMpeg\Coordinate\TimeCode;
 use FFMpeg\FFMpeg;
+use Illuminate\Support\Facades\File;
 use Inovector\Mixpost\Abstracts\MediaConversion;
 use Inovector\Mixpost\Support\MediaConversionData;
 use Inovector\Mixpost\Support\MediaFilesystem;
@@ -57,6 +58,13 @@ class MediaVideoThumbConversion extends MediaConversion
 
         $frame = $video->frame(TimeCode::fromSeconds($seconds));
         $frame->save($thumbFilepath);
+
+        // Sometimes the frame is not saved, so we save it again with the first frame
+        // This is a workaround for the issue
+        if ($this->atSecond !== 0 && !File::exists($thumbFilepath)) {
+            $frame = $video->frame(TimeCode::fromSeconds(0));
+            $frame->save($thumbFilepath);
+        }
 
         // Copy
         MediaFilesystem::copyToDisk($this->getToDisk(), $this->getPath(), $thumbFilepath);
