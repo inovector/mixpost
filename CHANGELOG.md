@@ -2,6 +2,12 @@
 
 All notable changes to `mixpost` will be documented in this file.
 
+## v2.1.2 - 2025-02-21
+
+**Fixes**
+
+- Fixed video thumbnail generation when no keyframe is available at the requested time.
+
 ## v2.1.1 - 2025-02-12
 
 **Fixed**
