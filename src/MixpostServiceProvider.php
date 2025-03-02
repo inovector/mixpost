@@ -12,6 +12,7 @@ use Inovector\Mixpost\Commands\DeleteOldData;
 use Inovector\Mixpost\Commands\ImportAccountAudience;
 use Inovector\Mixpost\Commands\ImportAccountData;
 use Inovector\Mixpost\Commands\ProcessMetrics;
+use Inovector\Mixpost\Commands\PruneTemporaryDirectory;
 use Inovector\Mixpost\Commands\PublishAssetsCommand;
 use Inovector\Mixpost\Commands\RunScheduledPosts;
 use Inovector\Mixpost\Events\AccountAdded;
@@ -49,7 +50,8 @@ class MixpostServiceProvider extends PackageServiceProvider
                 ImportAccountAudience::class,
                 ImportAccountData::class,
                 ProcessMetrics::class,
-                DeleteOldData::class
+                DeleteOldData::class,
+                PruneTemporaryDirectory::class,
             ])->hasInstallCommand(function (InstallCommand $command) {
                 $command
                     ->startWith(function (InstallCommand $command) {
