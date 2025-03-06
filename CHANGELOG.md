@@ -2,6 +2,12 @@
 
 All notable changes to `mixpost` will be documented in this file.
 
+## v2.1.3 - 2025-03-06
+
+**Fixes**
+
+- Fixed non-registered `PruneTemporaryDirectory` command
+
 ## v2.1.2 - 2025-02-21
 
 **Fixes**
