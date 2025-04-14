@@ -37,7 +37,7 @@ const save = () => {
 <template>
     <Head :title="title"/>
 
-    <div class="w-full max-w-6xl mx-auto row-py">
+    <div class="w-full max-w-(--container-6xl) mx-auto row-py">
         <PageHeader title="Choose entity">
             <template #description>
                 Select the social entities you want to connect

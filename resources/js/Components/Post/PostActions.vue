@@ -113,7 +113,7 @@ const accounts = computed(() => {
 
             <div class="flex items-center" role="group">
                 <SecondaryButton size="md"
-                                 :class="{'!normal-case border-r-indigo-800 rounded-r-none': scheduleTime, '!rounded-r-lg': !canSchedule}"
+                                 :class="{'normal-case! border-r-indigo-800 rounded-r-none': scheduleTime, 'rounded-r-lg!': !canSchedule}"
                                  @click="timePicker = true">
                     <CalendarIcon class="sm:mr-xs"/>
                     <span class="hidden sm:block">{{ scheduleTime ? scheduleTime : 'Pick time' }}</span>
@@ -123,7 +123,7 @@ const accounts = computed(() => {
                     <SecondaryButton size="md"
                                      @click="clearScheduleTime"
                                      v-tooltip="'Clear time'"
-                                     class="rounded-l-none border-l-0 hover:text-red-500 !px-2">
+                                     class="rounded-l-none border-l-0 hover:text-red-500 px-2!">
                         <XIcon/>
                     </SecondaryButton>
                 </template>
@@ -173,7 +173,7 @@ const accounts = computed(() => {
 
                 <div class="mt-sm flex flex-wrap items-center gap-xs">
                     <Badge v-for="account in accounts" :key="account.id">
-                        <ProviderIcon :provider="account.provider" class="!w-4 !h-4 mr-xs"/>
+                        <ProviderIcon :provider="account.provider" class="w-4! h-4! mr-xs"/>
                         {{ account.name }}
                     </Badge>
                 </div>

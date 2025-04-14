@@ -104,11 +104,11 @@ const closeConfirmationAccountDeletion = () => {
 
                                 <template #content>
                                     <DropdownItem @click="updateAccount(account.uuid)" as="button">
-                                        <RefreshIcon class="!w-5 !h-5 mr-1"/>
+                                        <RefreshIcon class="w-5! h-5! mr-1"/>
                                         Refresh
                                     </DropdownItem>
                                     <DropdownItem @click="confirmationAccountDeletion = account.uuid" as="button">
-                                        <TrashIcon class="!w-5 !h-5 mr-1 text-red-500"/>
+                                        <TrashIcon class="w-5! h-5! mr-1 text-red-500"/>
                                         Delete
                                     </DropdownItem>
                                 </template>

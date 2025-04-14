@@ -18,7 +18,7 @@ defineProps({
     <div class="relative group z-10">
         <UpgradePro>
             <template #trigger>
-                <EditorButton v-tooltip="tooltip" class="!text-indigo-200">
+                <EditorButton v-tooltip="tooltip" class="text-indigo-200!">
                     <slot/>
                 </EditorButton>
             </template>

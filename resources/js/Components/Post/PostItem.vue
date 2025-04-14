@@ -90,7 +90,7 @@ const closePreview = () => {
                 </div>
             </div>
         </TableCell>
-        <TableCell :clickable="true" @click="openPreview" class="!pl-0">
+        <TableCell :clickable="true" @click="openPreview" class="pl-0!">
             <div class="w-96 text-left break-words">{{ content.excerpt }}</div>
         </TableCell>
         <TableCell :clickable="true" @click="openPreview">
