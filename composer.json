@@ -31,10 +31,10 @@
         "php-ffmpeg/php-ffmpeg": "^1.0",
         "spatie/laravel-package-tools": "^1.14",
         "spatie/temporary-directory": "^2.1",
-        "tightenco/ziggy": "1.*"
+        "tightenco/ziggy": "^2.5"
     },
     "require-dev": {
-        "laradumps/laradumps": "^3.1",
+        "laradumps/laradumps": "^4.0",
         "nunomaduro/collision": "^8.1",
         "orchestra/testbench": "^9.2|^10.0",
         "pestphp/pest": "^2.34|^3.0",

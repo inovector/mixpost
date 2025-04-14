@@ -47,6 +47,7 @@
         "twemoji-parser": "^14.0.0",
         "twitter-text": "^3.1.0",
         "vue-flatpickr-component": "^9.0.6",
-        "vuedraggable": "^4.1.0"
+        "vuedraggable": "^4.1.0",
+        "ziggy-js": "^2.5.2"
     }
 }
