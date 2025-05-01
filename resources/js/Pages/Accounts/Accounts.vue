@@ -131,7 +131,7 @@ const closeConfirmationAccountDeletion = () => {
                                     class="w-md h-md bg-red-500 rounded-full"
                                 ></div>
                             </div>
-                            <div class="mt-sm font-semibold text-center break-words">{{ account.name }}</div>
+                            <div class="mt-sm font-medium text-center break-words">{{ account.name }}</div>
                             <div class="mt-1 text-center text-stone-800">Added: {{ account.created_at }}</div>
                         </div>
                     </Panel>

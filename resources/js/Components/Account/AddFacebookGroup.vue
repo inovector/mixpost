@@ -13,7 +13,7 @@ const metaAppVersion = usePage().props.additionally.meta_app_version;
             <FacebookIcon class="text-facebook"/>
         </span>
         <span class="flex flex-col items-start">
-            <span class="font-semibold">Facebook Group <template v-if="metaAppVersion === 'v19.0'"><Badge variant="error">Deprecated in v19</Badge></template></span>
+            <span class="font-medium">Facebook Group <template v-if="metaAppVersion === 'v19.0'"><Badge variant="error">Deprecated in v19</Badge></template></span>
             <span>Connect a new Facebook group</span>
 
             <template v-if="metaAppVersion === 'v19.0'">

@@ -8,7 +8,7 @@ import FacebookIcon from "@/Icons/Facebook.vue";
             <FacebookIcon class="text-facebook"/>
         </span>
         <span class="flex flex-col items-start">
-            <span class="font-semibold">Facebook Page</span>
+            <span class="font-medium">Facebook Page</span>
             <span>Connect a new Facebook page</span>
         </span>
     </Link>
