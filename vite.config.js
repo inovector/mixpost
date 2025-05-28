@@ -1,9 +1,10 @@
 import { defineConfig, loadEnv } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
+import tailwindcss from "@tailwindcss/vite";
 import DefineOptions from 'unplugin-vue-define-options/vite'
 import fs from 'fs';
-import { resolve } from 'path';
+import path from 'path'
 import { homedir } from 'os';
 
 export default defineConfig(({command, mode}) => {
@@ -21,10 +22,10 @@ export default defineConfig(({command, mode}) => {
         serverConfig = {
             https: {
                 key: fs.readFileSync(
-                    resolve(homeDir, `${certificatesPath}.key`),
+                    path.resolve(homeDir, `${certificatesPath}.key`),
                 ),
                 cert: fs.readFileSync(
-                    resolve(homeDir, `${certificatesPath}.crt`),
+                    path.resolve(homeDir, `${certificatesPath}.crt`),
                 ),
             },
             hmr: {
@@ -51,12 +52,14 @@ export default defineConfig(({command, mode}) => {
                     },
                 },
             }),
+            tailwindcss(),
             DefineOptions()
         ],
         resolve: {
             alias: {
-                '@css': '/resources/css',
-                '@img': '/resources/img'
+                '@': path.resolve(__dirname, 'resources/js'),
+                '@css': path.resolve(__dirname, 'resources/css'),
+                '@img':  path.resolve(__dirname, 'resources/img'),
             },
         },
         server: serverConfig

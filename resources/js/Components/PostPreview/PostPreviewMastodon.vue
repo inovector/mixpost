@@ -41,9 +41,9 @@ const mainContent = computed(()=> {
         <div class="flex items-start justify-between">
            <div class="flex items-center">
                <div class="mr-sm">
-                <span class="inline-flex justify-center items-center flex-shrink-0 w-10 h-10 rounded-full">
+                <span class="inline-flex justify-center items-center shrink-0 w-10 h-10 rounded-full">
                     <img :src="image"
-                         class="object-cover w-full h-full rounded" alt=""/>
+                         class="object-cover w-full h-full rounded-sm" alt=""/>
                 </span>
                </div>
                <div>
@@ -68,7 +68,6 @@ const mainContent = computed(()=> {
             <div class="mt-5 flex items-center justify-between">
                 <div class="flex items-center">
                     <img :src="ReplyImg" alt="Reply" class="w-5 h-5"/>
-                    <div class="ml-xs">0</div>
                 </div>
                 <div class="flex items-center">
                     <img :src="RetweetImg" alt="Retweet" class="w-5 h-5"/>

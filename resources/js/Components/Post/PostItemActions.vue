@@ -70,12 +70,12 @@ const duplicate = () => {
 
                 <template #content>
                     <DropdownItem @click="duplicate" as="button">
-                        <DuplicateIcon class="!w-5 !h-5 mr-1"/>
+                        <DuplicateIcon class="w-5! h-5! mr-1"/>
                         Duplicate
                     </DropdownItem>
 
                     <DropdownItem @click="confirmationDeletion = true" as="button">
-                        <TrashIcon class="!w-5 !h-5 mr-1 text-red-500"/>
+                        <TrashIcon class="w-5! h-5! mr-1 text-red-500"/>
                         Delete
                     </DropdownItem>
                 </template>

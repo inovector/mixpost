@@ -79,14 +79,14 @@ const hasErrors = (errors) => {
                            <div v-if="preview.account.external_url"
                                 class="mr-xs flex items-center justify-center p-2 w-7 h-7 rounded-full bg-white border border-gray-200">
                                <a :href="preview.account.external_url" target="_blank" class="link">
-                                   <ArrowTopRightOnSquare class="!w-5 !h-5"/>
+                                   <ArrowTopRightOnSquare class="w-5! h-5!"/>
                                </a>
                            </div>
 
                            <div
                                class="flex items-center justify-center p-2 w-7 h-7 rounded-full bg-white border border-gray-200">
                                <div>
-                                   <ProviderIcon :provider="preview.account.provider" class="!w-5 !h-5"/>
+                                   <ProviderIcon :provider="preview.account.provider" class="w-5! h-5!"/>
                                </div>
                            </div>
                        </div>
@@ -103,7 +103,7 @@ const hasErrors = (errors) => {
                <div class="flex items-start">
                    <div class="mr-sm">
                     <span
-                        class="inline-flex justify-center items-center flex-shrink-0 w-10 h-10 rounded-full bg-gray-100"></span>
+                        class="inline-flex justify-center items-center shrink-0 w-10 h-10 rounded-full bg-gray-100"></span>
                    </div>
                    <div class="w-full">
                        <div class="flex items-center">

@@ -35,7 +35,7 @@ const mainContent = computed(()=> {
     <Panel class="relative">
         <div class="flex items-start">
             <div class="mr-sm">
-                <span class="inline-flex justify-center items-center flex-shrink-0 w-10 h-10 rounded-full">
+                <span class="inline-flex justify-center items-center shrink-0 w-10 h-10 rounded-full">
                     <img :src="image"
                          class="object-cover w-full h-full rounded-full" alt=""/>
                 </span>

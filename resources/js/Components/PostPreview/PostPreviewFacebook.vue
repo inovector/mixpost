@@ -36,7 +36,7 @@ const mainContent = computed(() => {
 <template>
     <Panel class="relative">
         <div class="flex items-center">
-            <span class="inline-flex justify-center items-center flex-shrink-0 w-10 h-10 rounded-full mr-sm">
+            <span class="inline-flex justify-center items-center shrink-0 w-10 h-10 rounded-full mr-sm">
                 <img :src="image"
                      class="object-cover w-full h-full rounded-full" alt=""/>
             </span>
@@ -83,7 +83,8 @@ const mainContent = computed(() => {
         </div>
     </Panel>
 </template>
-<style>
+<style lang="css">
+@reference "@css/app.css";
 .facebook-toolbar-icon {
     @apply inline-block w-5 h-5 bg-no-repeat;
 }

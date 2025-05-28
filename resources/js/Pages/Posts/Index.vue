@@ -135,7 +135,7 @@ const deletePosts = () => {
                                 <Checkbox v-model:checked="toggleSelectRecordsOnPage" :disabled="!posts.meta.total"/>
                             </TableCell>
                             <TableCell component="th" scope="col" class="w-44">Status</TableCell>
-                            <TableCell component="th" scope="col" class="!pl-0 text-left">Content</TableCell>
+                            <TableCell component="th" scope="col" class="pl-0! text-left">Content</TableCell>
                             <TableCell component="th" scope="col" class="w-48">Media</TableCell>
                             <TableCell component="th" scope="col">Labels</TableCell>
                             <TableCell component="th" scope="col">Accounts</TableCell>

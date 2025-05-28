@@ -1,3 +1,5 @@
+@reference "./app.css";
+
 .v-popper--theme-dropdown .v-popper__inner {
     @apply rounded-md border border-gray-200 shadow-mix;
 }

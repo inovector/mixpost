@@ -177,7 +177,7 @@ watch(form, debounce(() => {
                             </div>
                         </PageHeader>
 
-                        <div class="w-full max-w-7xl mx-auto row-px">
+                        <div class="w-full max-w-(--container-7xl) mx-auto row-px">
                             <Alert v-if="isInHistory" :closeable="false" class="mb-lg">
                                 Posts in history cannot be edited.
                             </Alert>

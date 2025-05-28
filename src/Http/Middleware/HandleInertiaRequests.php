@@ -10,7 +10,7 @@ use Inovector\Mixpost\Concerns\UsesAuth;
 use Inovector\Mixpost\Facades\Settings;
 use Inovector\Mixpost\Http\Resources\UserResource;
 use Inovector\Mixpost\Models\User;
-use Tightenco\Ziggy\Ziggy;
+use Tighten\Ziggy\Ziggy;
 
 class HandleInertiaRequests extends Middleware
 {

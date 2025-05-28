@@ -40,11 +40,11 @@ defineProps({
 
         <Flex :responsive="false" class="border-t border-gray-200 mt-xs pt-md items-start justify-between">
             <Flex :wrap="true">
-                <div class="border border-gray-200 rounded-xl px-[6px] hover:bg-primary-100 transition-colors duration-200">
+                <div class="border border-gray-200 rounded-xl px-[6px] hover:bg-indigo transition-colors duration-200">
                     👍
                 </div>
 
-                <div class="border border-gray-200 rounded-xl px-[6px] hover:bg-primary-100 transition-colors duration-200">
+                <div class="border border-gray-200 rounded-xl px-[6px] hover:bg-indigo transition-colors duration-200">
                     ✅
                 </div>
             </Flex>

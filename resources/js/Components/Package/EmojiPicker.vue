@@ -34,7 +34,7 @@ const select = (emoji) => {
         <template #trigger>
             <div class="flex">
                 <button type="button" v-tooltip="tooltip"
-                        class="hover:text-orange-500 transition-colors ease-in-out duration-200 outline-none text-stone-800">
+                        class="hover:text-orange-500 transition-colors ease-in-out duration-200 outline-hidden text-stone-800">
                     <EmojiIcon/>
                 </button>
             </div>

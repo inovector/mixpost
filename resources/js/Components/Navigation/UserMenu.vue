@@ -16,7 +16,7 @@ const open = ref(false);
         <template #trigger>
             <div role="button" class="w-full flex items-center">
                 <div class="mr-sm">
-                    <UserCircle class="!w-9 !h-9 text-gray-400"/>
+                    <UserCircle class="w-9! h-9! text-gray-400"/>
                 </div>
                 <div class="w-[calc(100%-3rem)]">
                     <div class="truncate">{{ user.name }}</div>

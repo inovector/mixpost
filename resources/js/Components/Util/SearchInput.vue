@@ -29,7 +29,7 @@ defineEmits(['update:modelValue']);
         <div v-if="modelValue" @click="$emit('update:modelValue', '')" tabindex="0" role="button"
              class="absolute top-0 right-0 mr-xs mt-2.5">
             <XIcon
-                class="!w-5 !h-5 text-stone-600 hover:text-stone-800 transition-colors ease-in-out duration-200"/>
+                class="w-5! h-5! text-stone-600 hover:text-stone-800 transition-colors ease-in-out duration-200"/>
         </div>
     </div>
 </template>

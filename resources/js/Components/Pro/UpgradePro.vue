@@ -100,7 +100,7 @@ const features = [
         <template #header>
             <Flex>
                 <LockOpen/>
-                <span class="bg-clip-text text-transparent font-medium bg-gradient-to-r from-purple-500 to-indigo-500">Unlock Pro Features</span>
+                <span class="bg-clip-text text-transparent font-medium bg-linear-to-r from-purple-500 to-indigo-500">Unlock Pro Features</span>
             </Flex>
         </template>
 
@@ -125,7 +125,7 @@ const features = [
                                 {{ feature.name }}
                                 <template v-if="feature.desc"> <span><PureButton class="inline-block">
                                         <template #icon>
-                                            <QuestionMarkCircle class="!w-5 !h-5" v-tooltip="feature.desc"/>
+                                            <QuestionMarkCircle class="w-5! h-5!" v-tooltip="feature.desc"/>
                                         </template></PureButton></span>
                                 </template>
                             </Flex>

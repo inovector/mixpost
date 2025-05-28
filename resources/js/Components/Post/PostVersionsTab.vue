@@ -91,7 +91,7 @@ const remove = () => {
                     <Tab @click="$emit('select', version.account_id)" :active="activeVersion === version.account_id"
                          :tab-index="index" class="relative mb-xs group">
                         <ProviderIcon v-if="!version.is_original" :provider="version.account.provider"
-                                      :class="['!w-4', '!h-4']" class="mr-xs"/>
+                                      :class="['w-4!', 'h-4!']" class="mr-xs"/>
                         <span v-if="version.is_original && nameOfLastAvailableAccount"
                               v-tooltip="nameOfLastAvailableAccount"
                               class="mr-xs">{{ version.account.name }}</span>
@@ -101,8 +101,8 @@ const remove = () => {
                         <div v-if="!version.is_original"
                              class="absolute hidden group-hover:flex items-center top-0 right-0 pb-2 pl-0.5 h-full bg-white">
                             <button @click.prevent.stop="confirmationRemoval = version"
-                                    class="inline-flex text-gray-300 group-hover:text-gray-500 hover:!text-red-500 transition-colors ease-in-out duration-200">
-                                <XIcon class="!w-4 !h-4"/>
+                                    class="inline-flex text-gray-300 group-hover:text-gray-500 hover:text-red-500! transition-colors ease-in-out duration-200">
+                                <XIcon class="w-4! h-4!"/>
                             </button>
                         </div>
                     </Tab>
