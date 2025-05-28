@@ -175,10 +175,10 @@ const selected = ref([]);
                  @dragover.prevent
                  class="w-full h-full absolute"></div>
             <PhotoIcon :class="{'text-stone-700': !dragEnter, 'text-cyan-500': dragEnter}"
-                       class="!w-16 !h-16 mx-auto mb-xs transition-colors ease-in-out duration-200"/>
+                       class="w-16! h-16! mx-auto mb-xs transition-colors ease-in-out duration-200"/>
             <div class="text-center mb-1">Drag & drop files here, or
                 <label for="browse"
-                       class="cursor-pointer text-indigo-500 hover:text-indigo-700 active:text-indigo-700 focus:outline-none focus:text-indigo-700 transition-colors ease-in-out duration-200">
+                       class="cursor-pointer text-indigo-500 hover:text-indigo-700 active:text-indigo-700 focus:outline-hidden focus:text-indigo-700 transition-colors ease-in-out duration-200">
                     Browse
                 </label>
             </div>

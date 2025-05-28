@@ -146,23 +146,23 @@ const deleteTag = () => {
                 <Dropdown width-classes="w-48">
                     <template #trigger>
                         <div tabindex="0" role="button" class="group-btn">
-                            <EllipsisHorizontalIcon class="!w-5 !h-5 opacity-75 [.group-btn:hover_&]:opacity-100"/>
+                            <EllipsisHorizontalIcon class="w-5! h-5! opacity-75 [.group-btn:hover_&]:opacity-100"/>
                         </div>
                     </template>
 
                     <template #content>
                         <DropdownItem @click="openRename" as="button">
-                            <PencilSquareIcon class="!w-5 !h-5 mr-1"/>
+                            <PencilSquareIcon class="w-5! h-5! mr-1"/>
                             Rename
                         </DropdownItem>
 
                         <DropdownItem @click="openChangeColorModal" as="button">
-                            <SwatchIcon class="!w-5 !h-5 mr-1"/>
+                            <SwatchIcon class="w-5! h-5! mr-1"/>
                             Change color
                         </DropdownItem>
 
                         <DropdownItem @click="confirmationTagDeletion = true" as="button">
-                            <TrashIcon class="!w-5 !h-5 mr-1 text-red-500"/>
+                            <TrashIcon class="w-5! h-5! mr-1 text-red-500"/>
                             Delete
                         </DropdownItem>
                     </template>
@@ -170,7 +170,7 @@ const deleteTag = () => {
             </template>
 
             <div v-if="removable" @click="$emit('remove')" tabindex="0" role="button" class="ml-1 group-btn">
-                <XIcon class="!w-5 !h-5 opacity-75 [.group-btn:hover_&]:opacity-100"/>
+                <XIcon class="w-5! h-5! opacity-75 [.group-btn:hover_&]:opacity-100"/>
             </div>
         </div>
 
@@ -183,7 +183,7 @@ const deleteTag = () => {
                    v-model="renameText"
                    @keyup.enter="renameTag"
                    @blur="closeRename"
-                   class="p-0 w-auto outline-none focus:outline-0 focus:outline-none border-none bg-transparent rounded-md"/>
+                   class="p-0 w-auto outline-hidden focus:outline-0 focus:outline-hidden border-none bg-transparent rounded-md"/>
         </div>
     </div>
 

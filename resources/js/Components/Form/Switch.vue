@@ -18,12 +18,12 @@ const apply = () => {
         type="button"
         role="checkbox"
         aria-checked="false"
-        class="flex items-center focus:outline-none border-0 p-0 bg-none"
+        class="flex items-center focus:outline-hidden border-0 p-0 bg-none"
     >
         <slot/>
         <span
             :class="{ 'justify-start': !modelValue, 'justify-end': modelValue }"
-            class="inline-flex items-center px-1 border border-stone-600 h-6 w-10 rounded-full focus:outline-none"
+            class="inline-flex items-center px-1 border border-stone-600 h-6 w-10 rounded-full focus:outline-hidden"
         >
           <span
               :class="{ 'bg-indigo-500': modelValue, 'bg-gray-500': !modelValue }"

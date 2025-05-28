@@ -1,3 +1,5 @@
+@reference "./app.css";
+
 .v-popper--theme-tooltip .v-popper__inner {
     @apply bg-indigo-800 rounded-md border-none max-w-[300px];
 }

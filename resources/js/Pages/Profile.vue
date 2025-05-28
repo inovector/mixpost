@@ -9,7 +9,7 @@ import Password from "../Components/Profile/Password.vue";
 <template>
     <Head title="Edit Profile"/>
 
-    <div class="row-py mb-2xl w-full max-w-5xl mx-auto">
+    <div class="row-py mb-2xl w-full max-w-(--container-5xl) mx-auto">
         <PageHeader title="Edit Profile"/>
 
         <div class="row-px">

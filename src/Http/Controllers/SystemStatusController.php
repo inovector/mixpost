@@ -33,6 +33,7 @@ class SystemStatusController extends Controller
                 'disk' => Config::get('mixpost.disk'),
                 'log_channel' => Config::get('mixpost.log_channel') ? Config::get('mixpost.log_channel') : Config::get('logging.default'),
                 'user_agent' => $request->userAgent(),
+                'ffmpeg_status' => Util::isFFmpegInstalled() ? 'Installed' : 'Not Installed',
                 'versions' => [
                     'php' => PHP_VERSION,
                     'laravel' => App::version(),
