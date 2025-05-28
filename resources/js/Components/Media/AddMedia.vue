@@ -119,7 +119,7 @@ const insert = () => {
 
             <template v-if="selectedItems.length">
                 <SecondaryButton @click="deselectAll" v-tooltip.top="'Dismiss'" class="mr-xs">
-                    <XIcon class="!w-5 !h-5"/>
+                    <XIcon class="w-5! h-5!"/>
                 </SecondaryButton>
 
                 <PrimaryButton @click="insert">Insert {{ selectedItems.length }} items

@@ -32,7 +32,7 @@ const tab = ref('facebook');
         </PageHeader>
 
         <div class="w-full row-px mb-lg">
-            <Tabs class="overflow-x-auto !flex-nowrap 2xl:!flex-wrap 2xl:gap-sm max-w-full w-full">
+            <Tabs class="overflow-x-auto flex-nowrap! 2xl:flex-wrap! 2xl:gap-sm max-w-full w-full">
                 <Tab @click="tab = 'facebook'" :active="tab === 'facebook'">
                     <template #icon>
                         <ProviderIcon provider="facebook"/>

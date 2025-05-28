@@ -11,7 +11,7 @@ import ProLabel from "./ProLabel.vue";
             <slot/>
         </span>
 
-        <span class="absolute right-0 top-0 mt-2 !-mr-5">
+        <span class="absolute right-0 top-0 mt-2 -mr-5!">
             <ProLabel/>
         </span>
     </div>

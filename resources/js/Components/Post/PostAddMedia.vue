@@ -10,7 +10,7 @@ defineEmits(["insert"]);
         <button
             type="button"
             v-tooltip="`Media`"
-            class="text-stone-800 hover:text-primary-500 transition-colors ease-in-out duration-200"
+            class="text-stone-800 hover:text-indigo-500 transition-colors ease-in-out duration-200"
         >
             <PhotoIcon/>
         </button>

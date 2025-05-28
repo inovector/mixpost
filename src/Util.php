@@ -124,4 +124,15 @@ class Util
 
         return null;
     }
+
+    public static function isFFmpegInstalled(): bool
+    {
+        $ffmpegPath = Util::config('ffmpeg_path');
+        $ffprobePath = Util::config('ffprobe_path');
+
+        return file_exists($ffmpegPath) &&
+            file_exists($ffprobePath) &&
+            str_ends_with($ffmpegPath, 'ffmpeg') &&
+            str_ends_with($ffprobePath, 'ffprobe');
+    }
 }

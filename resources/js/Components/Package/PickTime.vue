@@ -167,7 +167,7 @@ const configTimePicker = {
                 </div>
                 <div class="text-sm flex items-center justify-center mt-sm">
                     <div class="mr-1">{{ timeZone }}</div>
-                    <Link :href="route('mixpost.settings.index')" v-tooltip="'Post will be scheduled according to this timezone. Click to update it.'"><ExclamationCircleIcon class="!w-4 !h-4"/></Link>
+                    <Link :href="route('mixpost.settings.index')" v-tooltip="'Post will be scheduled according to this timezone. Click to update it.'"><ExclamationCircleIcon class="w-4! h-4!"/></Link>
                 </div>
                 <div v-if="hasErrors" class="mt-xs text-center text-red-500">The selected date and time is in the past</div>
             </div>

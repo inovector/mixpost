@@ -1,7 +1,113 @@
-@import "fonts.css";
-@import "custom.css";
+@import './fonts.css' layer(base);
+@import './custom.css';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
+@plugin '@tailwindcss/forms';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../views/**/*.blade.php';
+
+@theme {
+  --font-sans:
+    Inter, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+  --color-stone-50: #ffffff;
+  --color-stone-100: #ffffff;
+  --color-stone-200: #fcfcfc;
+  --color-stone-300: #fcfcfc;
+  --color-stone-400: #fafafa;
+  --color-stone-500: #fafafa;
+  --color-stone-600: #c7c7c7;
+  --color-stone-700: #969696;
+  --color-stone-800: #636363;
+  --color-stone-900: #333333;
+
+  --color-red-50: #fdeded;
+  --color-red-100: #fbdadc;
+  --color-red-200: #f7b6b9;
+  --color-red-300: #f3969a;
+  --color-red-400: #ef7177;
+  --color-red-500: #eb4d55;
+  --color-red-600: #e11923;
+  --color-red-700: #aa131b;
+  --color-red-800: #6e0c11;
+  --color-red-900: #370609;
+
+  --color-orange-50: #fff5eb;
+  --color-orange-100: #ffeedb;
+  --color-orange-200: #ffdeb8;
+  --color-orange-300: #ffcd94;
+  --color-orange-400: #ffbc70;
+  --color-orange-500: #ffab4c;
+  --color-orange-600: #ff8d0a;
+  --color-orange-700: #c76a00;
+  --color-orange-800: #854700;
+  --color-orange-900: #422300;
+
+  --color-cyan-50: #f1fdfe;
+  --color-cyan-100: #e7fbfd;
+  --color-cyan-200: #d0f7fb;
+  --color-cyan-300: #b4f2f9;
+  --color-cyan-400: #9ceef7;
+  --color-cyan-500: #84e9f5;
+  --color-cyan-600: #3edeef;
+  --color-cyan-700: #11bcd0;
+  --color-cyan-800: #0b818e;
+  --color-cyan-900: #064047;
+
+  --color-indigo-50: #edecf8;
+  --color-indigo-100: #dcdaf1;
+  --color-indigo-200: #b8b4e4;
+  --color-indigo-300: #958fd6;
+  --color-indigo-400: #726ac8;
+  --color-indigo-500: #4f46bb;
+  --color-indigo-600: #3f3795;
+  --color-indigo-700: #2f2970;
+  --color-indigo-800: #1f1b4b;
+  --color-indigo-900: #100e25;
+
+  --color-facebook: #1877f2;
+  --color-twitter: #000000;
+  --color-mastodon: #6364ff;
+
+  --shadow-mix: 0 5px 10px rgb(55 55 89 / 8%);
+
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 0.75rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 2.5rem;
+
+  --grid-template-columns-week-time-sm: 48px repeat(7, 1fr);
+  --grid-template-columns-week-time: 70px repeat(7, 1fr);
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+
+  Buttons now use cursor: default instead of cursor: pointer to match the default browser behavior.
+
+  If you'd like to continue using cursor: pointer by default, add these base styles to your CSS: cursor: pointer;
+*/
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+
+    button:not(:disabled),
+    [role="button"]:not(:disabled) {
+        cursor: pointer;
+    }
+}

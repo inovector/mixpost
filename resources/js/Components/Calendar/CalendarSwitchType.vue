@@ -30,12 +30,12 @@ const select = (type) => {
 
         <template #content>
             <DropdownItem as="button" @click="select('month')">
-                <CalendarIcon class="!w-5 !h-5 mr-1"/>
+                <CalendarIcon class="w-5! h-5! mr-1"/>
                 Month
             </DropdownItem>
 
             <DropdownItem as="button" @click="select('week')">
-                <CalendarIcon class="!w-5 !h-5 mr-1"/>
+                <CalendarIcon class="w-5! h-5! mr-1"/>
                 Week
             </DropdownItem>
         </template>

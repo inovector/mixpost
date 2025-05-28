@@ -19,7 +19,7 @@ defineProps({
             <button @click="isOpen = true"
                     v-if="!isOpen"
                     class="w-16 h-16 border-2 border-white rounded-full flex items-center justify-center text-white">
-                <PlayIcon class="!w-10 !h-10"/>
+                <PlayIcon class="w-10! h-10!"/>
             </button>
         </div>
 

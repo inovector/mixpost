@@ -8,7 +8,7 @@ import Flex from "../Layout/Flex.vue";
 <template>
     <div class="flex flex-col h-full relative">
         <div
-            class="flex flex-col h-full overflow-y-scroll mixpost-scroll-style row-px row-pt pr-1 sm:!pr-4 lg:!pr-6 pb-md blur-sm">
+            class="flex flex-col h-full overflow-y-scroll mixpost-scroll-style row-px row-pt pr-1 sm:pr-4! lg:pr-6! pb-md blur-xs">
             <ul class="space-y-md">
                 <li>
                     <TypeLayout>

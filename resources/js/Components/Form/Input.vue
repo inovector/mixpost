@@ -21,5 +21,5 @@ onMounted(() => {
            @input="$emit('update:modelValue', $event.target.value)"
            ref="input"
            :class="{'border-stone-600': !error, 'border-red-600': error}"
-           class="w-full rounded-md focus:border-indigo-200 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 outline-none transition-colors ease-in-out duration-200">
+           class="w-full rounded-md focus:border-indigo-200 focus:ring-3 focus:ring-indigo-200/50 disabled:bg-gray-50 disabled:cursor-not-allowed outline-hidden transition-colors ease-in-out duration-200">
 </template>

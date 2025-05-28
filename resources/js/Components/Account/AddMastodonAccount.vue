@@ -53,16 +53,16 @@ const connect = async () => {
 }
 </script>
 <template>
-    <div :class="{'bg-mastodon bg-opacity-20': open}">
+    <div :class="{'bg-mastodon/20': open}">
         <div role="button" @click="open = !open"
              type="button"
-             class="w-full flex items-center px-lg py-md hover:bg-mastodon hover:bg-opacity-20 ease-in-out duration-200">
+             class="w-full flex items-center px-lg py-md hover:bg-mastodon/20 ease-in-out duration-200">
             <span class="flex mr-md">
                 <MastodonIcon class="text-mastodon"/>
             </span>
 
             <span class="flex flex-col items-start">
-                <span class="font-semibold">Mastodon</span>
+                <span class="font-medium">Mastodon</span>
                 <span>Connect a new Mastodon profile</span>
             </span>
         </div>
@@ -76,7 +76,7 @@ const connect = async () => {
             <PrimaryButton @click="connect" :disabled="!server || isLoading" :isLoading="isLoading"
                            class="mt-xs md:mt-0">
                 <span class="mr-xs">Next</span>
-                <span><ArrowRightIcon class="!w-5 !h-5"/></span>
+                <span><ArrowRightIcon class="w-5! h-5!"/></span>
             </PrimaryButton>
         </div>
     </div>

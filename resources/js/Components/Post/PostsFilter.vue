@@ -83,7 +83,7 @@ const clear = () => {
                                     <Checkbox v-model:checked="modelValue.accounts" :value="account.id" number
                                               class="mr-1"/>
                                     <Badge>
-                                        <ProviderIcon :provider="account.provider" class="!w-4 !h-4 mr-xs"/>
+                                        <ProviderIcon :provider="account.provider" class="w-4! h-4! mr-xs"/>
                                         {{ account.name }}
                                     </Badge>
                                 </label>

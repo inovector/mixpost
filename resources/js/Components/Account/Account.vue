@@ -53,7 +53,7 @@ const iconWrapperClasses = computed(() => {
 
 const iconClasses = computed(() => {
     return {
-        'md': '!w-4 !h-4'
+        'md': 'w-4! h-4!'
     }[props.size];
 });
 </script>
@@ -62,7 +62,7 @@ const iconClasses = computed(() => {
         <span :class="border"
               class="flex items-center justify-center relative border-2 p-1 rounded-full bg-white">
             <span :class="[activeBgClasses, sizeImgClasses, {'grayscale': !active}]"
-                  class="inline-flex justify-center items-center flex-shrink-0 rounded-full">
+                  class="inline-flex justify-center items-center shrink-0 rounded-full">
                 <img :src="imgUrl" class="object-cover w-full h-full rounded-full" alt=""/>
             </span>
             <span v-if="warningMessage" v-tooltip="warningMessage"

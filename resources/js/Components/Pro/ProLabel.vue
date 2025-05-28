@@ -24,14 +24,14 @@ defineProps({
 <template>
     <span
         :class="paddingClass"
-        class="relative inline-flex items-center bg-indigo-500 bg-gradient-to-r from-purple-100 to-indigo-100 rounded-md text-[11px] text-gray-500">
+        class="relative inline-flex items-center bg-indigo-500 bg-linear-to-r from-purple-100 to-indigo-100 rounded-md text-[11px] text-gray-500">
             <span :class="{'sm:mr-[3px]': withTitle}" class="inline-flex">
                 <template v-if="icon === 'lock-closed'">
-                      <LockClosed class="!w-3 !h-3"/>
+                      <LockClosed class="w-3! h-3!"/>
                 </template>
 
                 <template v-if="icon === 'lock-open'">
-                      <LockOpen class="!w-3 !h-3"/>
+                      <LockOpen class="w-3! h-3!"/>
                 </template>
             </span>
 

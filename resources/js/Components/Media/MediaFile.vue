@@ -33,11 +33,11 @@ const imgHeightClass = computed(() => {
     <figure :class="{'border border-gray-200 rounded-md p-xs bg-stone-500': showCaption}" class="group relative">
         <slot/>
         <div
-            class="relative flex rounded"
+            class="relative flex rounded-sm"
             :class="{'border border-red-500 p-md': media.hasOwnProperty('error')}"
         >
             <span v-if="media.is_video" class="absolute top-0 left-0 mt-1 ml-1">
-                <VideoSolidIcon class="!w-4 !h-4 text-white"/>
+                <VideoSolidIcon class="w-4! h-4! text-white"/>
             </span>
 
             <div v-if="media.hasOwnProperty('error')" class="text-center">
