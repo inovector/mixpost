@@ -2,6 +2,18 @@
 
 All notable changes to `mixpost` will be documented in this file.
 
+## v2.2.0 - 2025-05-28
+
+**Changes**
+
+- Show the status of FFmpeg on the status page.
+
+**Miscellaneous**
+
+- Upload video without FFmpeg
+- Support Laravel 12
+- Upgraded to Tailwind CSS 4
+
 ## v2.1.3 - 2025-03-06
 
 **Fixes**
