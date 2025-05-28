@@ -37,7 +37,7 @@ const save = () => {
 <template>
     <Head :title="title"/>
 
-    <div class="w-full max-w-(--container-6xl) mx-auto row-py">
+    <div class="w-full mx-auto row-py">
         <PageHeader title="Choose entity">
             <template #description>
                 Select the social entities you want to connect
@@ -69,7 +69,7 @@ const save = () => {
                     </label>
                 </div>
             </Panel>
-            <PrimaryButton @click="save" class="mt-lg" :disabled="!form.selected.length">Choose</PrimaryButton>
+            <PrimaryButton @click="save" class="mt-lg" :disabled="!form.selected.length">Finish connection</PrimaryButton>
         </div>
     </div>
 </template>

@@ -35,6 +35,7 @@ const getBody = () => {
     body += `*Log Channel**: ${props.tech.log_channel} \n`;
     body += `**Cache Driver**: ${props.tech.cache_driver} \n`;
     body += `**User agent**: ${props.tech.user_agent} \n`;
+    body += `**FFmpeg**: ${props.ffmpeg_status} \n`;
     if (props.tech.versions.mysql) {
         body += `**MySql**: ${props.tech.versions.mysql} \n`;
     }
@@ -179,6 +180,14 @@ const copyToClipboard = () => {
                             </TableCell>
                             <TableCell>
                                 {{ tech.user_agent }}
+                            </TableCell>
+                        </TableRow>
+                        <TableRow :hoverable="true">
+                            <TableCell class="font-medium">
+                                FFMpeg
+                            </TableCell>
+                            <TableCell>
+                                {{ tech.ffmpeg_status }}
                             </TableCell>
                         </TableRow>
                         <template v-if="tech.versions.mysql">

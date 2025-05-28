@@ -85,7 +85,7 @@ const maxWidthClass = computed(() => {
                     leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                 >
                     <div v-show="show" class="flex flex-col h-full">
-                        <div class="bg-white rounded-lg transform transition-all sm:w-full sm:mx-auto" :class="[maxWidthClass, dialogClass]">
+                        <div class="bg-white rounded-lg transform-[translateX(--spacing(0))] transition-all sm:w-full sm:mx-auto" :class="[maxWidthClass, dialogClass]">
                             <slot v-if="show" />
                         </div>
                     </div>
