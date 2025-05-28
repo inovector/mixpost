@@ -1,4 +1,4 @@
-f<script setup>
+<script setup>
 import {computed} from "vue";
 import useEditor from "@/Composables/useEditor";
 import Panel from "@/Components/Surface/Panel.vue";
