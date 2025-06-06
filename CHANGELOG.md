@@ -2,6 +2,12 @@
 
 All notable changes to `mixpost` will be documented in this file.
 
+## v2.3.0 - 2025-06-06
+
+**Miscellaneous**
+
+- Added support for Facebook Graph API v23.0
+
 ## v2.2.0 - 2025-05-28
 
 **Changes**
