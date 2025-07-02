@@ -17,7 +17,7 @@ services:
       - key: APP_DEBUG
         value: false
       - key: APP_URL
-        value: https://mixpost-web.onrender.com # replace if using a custom domain
+        value: https://mixpost-web.onrender.com
       - key: LOG_CHANNEL
         value: stderr
       - key: DB_CONNECTION
@@ -51,7 +51,7 @@ services:
       - key: APP_KEY
         generateValue: true
 
-  - type: background
+  - type: worker
     name: mixpost-worker
     env: php
     plan: free
