@@ -1,1 +1,0 @@
-import{c as a,f as t,o,b as s,a as c,cf as n,t as r}from"./app-DEeAE-ho.js";const l={key:0,class:"inline-flex items-start text-red-500 leading-loose text-sm"},m={class:"mr-xs"},d={__name:"Error",props:["message"],setup(e){return(i,_)=>e.message?(o(),a("p",l,[s("span",m,[c(n,{class:"w-5! !-5"})]),s("span",null,r(e.message),1)])):t("",!0)}};export{d as _};
