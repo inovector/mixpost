@@ -1,0 +1,13 @@
+# Exported from Render on 2025-07-02T17:34:10Z
+services:
+- type: web
+  name: mixpost
+  runtime: node
+  repo: https://github.com/mhamidawad/mixpost
+  plan: free
+  region: oregon
+  buildCommand: composer install --optimize-autoloader --no-dev php artisan config:cache
+    php artisan route:cache php artisan migrate --force
+  startCommand: php artisan serve --host=0.0.0.0 --port=$PORT
+  autoDeployTrigger: commit
+version: "1"
