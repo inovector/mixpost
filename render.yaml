@@ -1,0 +1,89 @@
+services:
+  - type: web
+    name: mixpost-web
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: APP_NAME
+        value: Mixpost
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_URL
+        value: https://mixpost-web.onrender.com
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        fromDatabase:
+          name: mixpost-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: mixpost-db
+          property: port
+      - key: DB_DATABASE
+        fromDatabase:
+          name: mixpost-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: mixpost-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: mixpost-db
+          property: password
+      - key: QUEUE_CONNECTION
+        value: database
+      - key: SESSION_DRIVER
+        value: database
+      - key: CACHE_DRIVER
+        value: file
+      - key: APP_KEY
+        generateValue: true
+
+  - type: worker
+    name: mixpost-worker
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    startCommand: php artisan queue:work --sleep=3 --tries=3
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        fromDatabase:
+          name: mixpost-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: mixpost-db
+          property: port
+      - key: DB_DATABASE
+        fromDatabase:
+          name: mixpost-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: mixpost-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: mixpost-db
+          property: password
+      - key: QUEUE_CONNECTION
+        value: database
+
+databases:
+  - name: mixpost-db
+    plan: free
+    databaseName: mixpost
+    user: mixpost_user
