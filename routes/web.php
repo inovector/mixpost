@@ -33,13 +33,23 @@ use Inovector\Mixpost\Http\Controllers\TagsController;
 use Inovector\Mixpost\Http\Middleware\Auth as MixpostAuthMiddleware;
 use Inovector\Mixpost\Http\Middleware\HandleInertiaRequests;
 
-Route::middleware([
-    'web',
-    MixpostAuthMiddleware::class,
-    HandleInertiaRequests::class
-])->prefix('mixpost')
-    ->name('mixpost.')
-    ->group(function () {
+// Get route configuration from config file
+$routeConfig = config('mixpost.routes', [
+    'middleware' => [
+        'web',
+        MixpostAuthMiddleware::class,
+        HandleInertiaRequests::class
+    ],
+    'prefix' => 'mixpost',
+    'name' => 'mixpost.'
+]);
+
+// Filter out null and empty values to avoid unintended behavior
+$routeConfig = array_filter($routeConfig, function ($value) {
+    return !is_null($value) && $value !== '';
+});
+
+Route::group($routeConfig, function () {
         Route::get('/', DashboardController::class)->name('dashboard');
         Route::get('reports', ReportsController::class)->name('reports');
 

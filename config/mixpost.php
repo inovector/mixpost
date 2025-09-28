@@ -17,6 +17,22 @@ return [
     'redirect_unauthorized_users_to_route' => 'login',
 
     /*
+     * Route configuration for Mixpost.
+     * You can customize the routing behavior by modifying these values.
+     * Set any value to null to exclude it from the route group configuration.
+     */
+    'routes' => [
+        'middleware' => [
+            'web',
+            \Inovector\Mixpost\Http\Middleware\Auth::class,
+            \Inovector\Mixpost\Http\Middleware\HandleInertiaRequests::class
+        ],
+        'prefix' => env('MIXPOST_ROUTE_PREFIX', 'mixpost'),
+        'name' => 'mixpost.',
+        'domain' => env('MIXPOST_ROUTE_DOMAIN', null),
+    ],
+
+    /*
      * The disk on which to store added files.
      * Choose one or more of the disks you've configured in config/filesystems.php.
      */
