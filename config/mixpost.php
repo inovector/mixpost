@@ -28,7 +28,7 @@ return [
             \Inovector\Mixpost\Http\Middleware\HandleInertiaRequests::class
         ],
         'prefix' => env('MIXPOST_ROUTE_PREFIX', 'mixpost'),
-        'name' => 'mixpost.',
+        'as' => 'mixpost.',
         'domain' => env('MIXPOST_ROUTE_DOMAIN', null),
     ],
 

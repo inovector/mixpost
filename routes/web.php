@@ -41,13 +41,8 @@ $routeConfig = config('mixpost.routes', [
         HandleInertiaRequests::class
     ],
     'prefix' => 'mixpost',
-    'name' => 'mixpost.'
+    'as' => 'mixpost.'
 ]);
-
-// Filter out null and empty values to avoid unintended behavior
-$routeConfig = array_filter($routeConfig, function ($value) {
-    return !is_null($value) && $value !== '';
-});
 
 Route::group($routeConfig, function () {
         Route::get('/', DashboardController::class)->name('dashboard');
