@@ -10,6 +10,7 @@ use Inovector\Mixpost\Http\Controllers\AuthenticatedController;
 use Inovector\Mixpost\Http\Controllers\CalendarController;
 use Inovector\Mixpost\Http\Controllers\CallbackSocialProviderController;
 use Inovector\Mixpost\Http\Controllers\CreateMastodonAppController;
+use Inovector\Mixpost\Http\Controllers\CreatePixelfedAppController;
 use Inovector\Mixpost\Http\Controllers\DashboardController;
 use Inovector\Mixpost\Http\Controllers\SystemLogsController;
 use Inovector\Mixpost\Http\Controllers\SystemStatusController;
@@ -101,6 +102,7 @@ Route::middleware([
             Route::put('{service}', [ServicesController::class, 'update'])->name('update');
 
             Route::post('create-mastodon-app', CreateMastodonAppController::class)->name('createMastodonApp');
+            Route::post('create-pixelfed-app', CreatePixelfedAppController::class)->name('createPixelfedApp');
         });
 
         Route::prefix('profile')->name('profile.')->group(function () {

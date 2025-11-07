@@ -12,7 +12,7 @@ class AccountFactory extends Factory
 
     public function definition()
     {
-        $providers = ['twitter', 'mastodon', 'facebook_page'];
+        $providers = ['twitter', 'mastodon', 'facebook_page', 'pixelfed'];
 
         $name = $this->faker->name;
 
@@ -20,7 +20,7 @@ class AccountFactory extends Factory
             'uuid' => $this->faker->uuid,
             'name' => $name,
             'username' => Str::camel($this->faker->name),
-            'provider' => $providers[rand(0, 2)],
+            'provider' => $providers[rand(0, 3)],
             'provider_id' => Str::random(),
             'media' => ['disk' => 'public', 'path' => '/'],
             'data' => null,
