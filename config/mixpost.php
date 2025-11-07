@@ -121,6 +121,16 @@ return [
                 'gifs' => 1,
                 'allow_mixing' => false,
             ]
+        ],
+        'pixelfed' => [
+            'simultaneous_posting_on_multiple_accounts' => true,
+            'post_character_limit' => 500,
+            'media_limit' => [
+                'photos' => 4,
+                'videos' => 1,
+                'gifs' => 1,
+                'allow_mixing' => false,
+            ]
         ]
     ],
 ];

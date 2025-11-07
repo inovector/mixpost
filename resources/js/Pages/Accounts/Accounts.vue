@@ -11,6 +11,7 @@ import Account from "@/Components/Account/Account.vue"
 import AddTwitterAccount from "@/Components/Account/AddTwitterAccount.vue"
 import AddFacebookPage from "@/Components/Account/AddFacebookPage.vue"
 import AddMastodonAccount from "@/Components/Account/AddMastodonAccount.vue"
+import AddPixelfedAccount from "@/Components/Account/AddPixelfedAccount.vue"
 import SecondaryButton from "@/Components/Button/SecondaryButton.vue"
 import DangerButton from "@/Components/Button/DangerButton.vue"
 import Dropdown from "@/Components/Dropdown/Dropdown.vue"
@@ -167,6 +168,7 @@ const closeConfirmationAccountDeletion = () => {
                 v-if="$page.props.is_service_active.facebook"
             />
             <AddMastodonAccount/>
+            <AddPixelfedAccount/>
             <AddTwitterAccount
                 v-if="$page.props.is_service_active.twitter"
             />
