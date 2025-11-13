@@ -2,6 +2,13 @@
 
 All notable changes to `mixpost` will be documented in this file.
 
+## 2.4.0 - 2025-11-13
+
+**Miscellaneous**
+
+- Added support for Facebook Graph API v24.0
+- Migrated fonts from ttf to woff2 for better performance
+
 ## v2.3.0 - 2025-06-06
 
 **Miscellaneous**
