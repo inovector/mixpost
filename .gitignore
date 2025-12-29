@@ -12,3 +12,6 @@ vendor
 node_modules
 resources/dist/hot
 .DS_Store
+CLAUDE.md
+.guidelines
+laradumps.yaml
