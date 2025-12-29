@@ -1,13 +1,14 @@
 <?php
 
+use Carbon\Carbon;
 use Inertia\Testing\AssertableInertia as Assert;
 use Inovector\Mixpost\Enums\PostStatus;
 use Inovector\Mixpost\Models\Account;
-use Inovector\Mixpost\Models\Tag;
-use function Pest\Faker\fake;
-use Inovector\Mixpost\Models\User;
 use Inovector\Mixpost\Models\Post;
-use Carbon\Carbon;
+use Inovector\Mixpost\Models\Tag;
+use Inovector\Mixpost\Models\User;
+
+use function Pest\Faker\fake;
 
 beforeEach(function () {
     test()->user = User::factory()->create();
@@ -22,11 +23,11 @@ it('shows post list', function () {
     Tag::factory(4)->create();
     Post::factory()->count(5)->create();
     Post::factory()->state([
-        'status' => PostStatus::FAILED
+        'status' => PostStatus::FAILED,
     ])->count(1)->create();
 
     $this->get(route('mixpost.posts.index'))
-        ->assertInertia(fn(Assert $page) => $page
+        ->assertInertia(fn (Assert $page) => $page
             ->component('Posts/Index')
             ->has('accounts', 3)
             ->has('tags', 4)
@@ -45,7 +46,7 @@ it('shows create form', function () {
     Tag::factory(4)->create();
 
     $this->get(route('mixpost.posts.create'))
-        ->assertInertia(fn(Assert $page) => $page
+        ->assertInertia(fn (Assert $page) => $page
             ->component('Posts/CreateEdit')
             ->has('accounts', 3)
             ->has('tags', 4)
@@ -64,7 +65,7 @@ it('shows create form with prefill body', function () {
     $this->get(route('mixpost.posts.create', [
         'body' => 'testbody',
     ]))
-        ->assertInertia(fn(Assert $page) => $page
+        ->assertInertia(fn (Assert $page) => $page
             ->component('Posts/CreateEdit')
             ->has('accounts', 3)
             ->has('tags', 4)
@@ -81,11 +82,11 @@ it('shows edit form', function () {
     Tag::factory(4)->create();
 
     $post = Post::factory()->state([
-        'status' => PostStatus::DRAFT
+        'status' => PostStatus::DRAFT,
     ])->create();
 
     $this->get(route('mixpost.posts.edit', ['post' => $post->uuid]))
-        ->assertInertia(fn(Assert $page) => $page
+        ->assertInertia(fn (Assert $page) => $page
             ->component('Posts/CreateEdit')
             ->has('accounts', 3)
             ->has('tags', 4)
@@ -106,11 +107,11 @@ it('can store a post', function () {
                 'content' => [
                     [
                         'body' => fake()->paragraph,
-                        'media' => []
-                    ]
-                ]
-            ]
-        ]
+                        'media' => [],
+                    ],
+                ],
+            ],
+        ],
     ]);
 
     $post = Post::first();
@@ -133,7 +134,7 @@ it('can show validation on store a post', function () {
 
 it('can update a post', function () {
     $post = Post::factory()->state([
-        'status' => PostStatus::DRAFT
+        'status' => PostStatus::DRAFT,
     ])->create();
 
     $post->versions()->createMany([
@@ -143,10 +144,10 @@ it('can update a post', function () {
             'content' => [
                 [
                     'body' => fake()->paragraph,
-                    'media' => []
-                ]
-            ]
-        ]
+                    'media' => [],
+                ],
+            ],
+        ],
     ]);
 
     $this->actingAs(test()->user);
@@ -161,11 +162,11 @@ it('can update a post', function () {
                 'content' => [
                     [
                         'body' => fake()->paragraph,
-                        'media' => []
-                    ]
-                ]
-            ]
-        ]
+                        'media' => [],
+                    ],
+                ],
+            ],
+        ],
     ];
 
     $this->putJson(route('mixpost.posts.update', ['post' => $post]), $data)

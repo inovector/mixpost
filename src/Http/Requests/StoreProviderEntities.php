@@ -16,6 +16,6 @@ class StoreProviderEntities extends FormRequest
 
     public function handle()
     {
-        (new StoreProviderEntitiesAsAccountsAction())($this->route('provider'), $this->input('items'));
+        (new StoreProviderEntitiesAsAccountsAction)($this->route('provider'), $this->input('items'));
     }
 }

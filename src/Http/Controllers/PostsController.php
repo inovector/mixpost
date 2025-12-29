@@ -39,20 +39,20 @@ class PostsController extends Controller
         EagerLoadPostVersionsMedia::apply($posts);
 
         return Inertia::render('Posts/Index', [
-            'accounts' => fn() => AccountResource::collection(Account::oldest()->get())->resolve(),
-            'tags' => fn() => TagResource::collection(Tag::latest()->get())->resolve(),
+            'accounts' => fn () => AccountResource::collection(Account::oldest()->get())->resolve(),
+            'tags' => fn () => TagResource::collection(Tag::latest()->get())->resolve(),
             'filter' => [
                 'keyword' => $request->query('keyword', ''),
                 'status' => $request->query('status'),
                 'tags' => $request->query('tags', []),
-                'accounts' => $request->query('accounts', [])
+                'accounts' => $request->query('accounts', []),
             ],
-            'posts' => fn() => PostResource::collection($posts)->additional([
+            'posts' => fn () => PostResource::collection($posts)->additional([
                 'filter' => [
-                    'accounts' => Arr::map($request->query('accounts', []), 'intval')
-                ]
+                    'accounts' => Arr::map($request->query('accounts', []), 'intval'),
+                ],
             ]),
-            'has_failed_posts' => Post::failed()->exists()
+            'has_failed_posts' => Post::failed()->exists(),
         ]);
     }
 
@@ -68,7 +68,7 @@ class PostsController extends Controller
                 'time' => Str::after($request->route('schedule_at'), ' '),
             ],
             'prefill' => [
-                'body' => $request->query('body', '')
+                'body' => $request->query('body', ''),
             ],
             'is_configured_service' => ServiceManager::isActive(),
         ]);

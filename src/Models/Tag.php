@@ -15,6 +15,6 @@ class Tag extends Model
 
     protected $fillable = [
         'name',
-        'hex_color'
+        'hex_color',
     ];
 }

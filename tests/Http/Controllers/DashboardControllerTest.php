@@ -15,7 +15,7 @@ test('render dashboard page', function () {
     $this->publishAssets();
 
     $this->get(route('mixpost.dashboard'))
-        ->assertInertia(fn(Assert $page) => $page
+        ->assertInertia(fn (Assert $page) => $page
             ->component('Dashboard')
             ->has('accounts', 3)
         );

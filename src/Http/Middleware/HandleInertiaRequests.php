@@ -26,7 +26,6 @@ class HandleInertiaRequests extends Middleware
     /**
      * Determine the current asset version.
      *
-     * @param \Illuminate\Http\Request $request
      * @return string|null
      */
     public function version(Request $request)
@@ -41,7 +40,6 @@ class HandleInertiaRequests extends Middleware
     /**
      * Define the props that are shared by default.
      *
-     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function share(Request $request)
@@ -73,16 +71,16 @@ class HandleInertiaRequests extends Middleware
                     'timezone' => Settings::get('timezone'),
                     'time_format' => Settings::get('time_format'),
                     'week_starts_on' => Settings::get('week_starts_on'),
-                ]
-            ]
+                ],
+            ],
         ]);
     }
 
     protected function auth(): array
     {
-        if (!self::getAuthGuard()->check()) {
+        if (! self::getAuthGuard()->check()) {
             return [
-                'user' => null
+                'user' => null,
             ];
         }
 
@@ -90,7 +88,7 @@ class HandleInertiaRequests extends Middleware
 
         // If `Auth Middleware` was not resolved first
         // return empty auth
-        if (!$user instanceof User) {
+        if (! $user instanceof User) {
             return [];
         }
 

@@ -12,24 +12,24 @@ class TenorService extends Service
         return ServiceGroup::MEDIA;
     }
 
-    static function form(): array
+    public static function form(): array
     {
         return [
-            'client_id' => ''
+            'client_id' => '',
         ];
     }
 
     public static function formRules(): array
     {
         return [
-            "client_id" => ['required']
+            'client_id' => ['required'],
         ];
     }
 
     public static function formMessages(): array
     {
         return [
-            'client_id' => 'The API Key is required.'
+            'client_id' => 'The API Key is required.',
         ];
     }
 }

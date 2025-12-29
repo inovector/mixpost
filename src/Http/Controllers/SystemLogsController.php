@@ -15,10 +15,10 @@ class SystemLogsController extends Controller
 {
     public function index(): Response
     {
-        $systemLogs = new SystemLogs();
+        $systemLogs = new SystemLogs;
 
         return Inertia::render('System/Logs', [
-            'logs' => $systemLogs->logs()
+            'logs' => $systemLogs->logs(),
         ]);
     }
 
@@ -28,7 +28,7 @@ class SystemLogsController extends Controller
 
         $headers = [
             'Content-Type' => 'text/plain',
-            'Content-Disposition' => 'attachment; filename="' . $systemLog->input('filename') . '"',
+            'Content-Disposition' => 'attachment; filename="'.$systemLog->input('filename').'"',
         ];
 
         return new StreamedResponse(function () use ($filePath) {

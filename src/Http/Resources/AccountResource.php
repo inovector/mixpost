@@ -23,7 +23,7 @@ class AccountResource extends JsonResource
             'authorized' => $this->authorized,
             'created_at' => $this->created_at->diffForHumans(),
             'external_url' => $this->whenPivotLoaded('mixpost_post_accounts', function () {
-                if (!$this->pivot->provider_post_id) {
+                if (! $this->pivot->provider_post_id) {
                     return null;
                 }
 
@@ -31,7 +31,7 @@ class AccountResource extends JsonResource
             }),
             'errors' => $this->whenPivotLoaded('mixpost_post_accounts', function () {
                 return $this->pivot->errors ? json_decode($this->pivot->errors) : [];
-            })
+            }),
         ];
     }
 

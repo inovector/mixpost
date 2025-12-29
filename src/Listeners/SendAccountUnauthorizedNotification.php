@@ -14,7 +14,7 @@ class SendAccountUnauthorizedNotification implements ShouldQueue
     {
         $adminEmail = Settings::get('admin_email');
 
-        if (!$adminEmail) {
+        if (! $adminEmail) {
             return;
         }
 

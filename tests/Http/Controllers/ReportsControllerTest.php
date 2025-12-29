@@ -4,8 +4,8 @@ use Carbon\CarbonPeriod;
 use Illuminate\Support\Carbon;
 use Inovector\Mixpost\Models\Account;
 use Inovector\Mixpost\Models\Audience;
-use Inovector\Mixpost\Models\User;
 use Inovector\Mixpost\Models\Metric;
+use Inovector\Mixpost\Models\User;
 
 beforeEach(function () {
     test()->user = User::factory()->create();
@@ -24,13 +24,13 @@ test('display reports', function () {
     Audience::factory()->state([
         'account_id' => $account->id,
         'date' => $yesterday,
-        'total' => 0
+        'total' => 0,
     ])->create();
 
     Audience::factory()->state([
         'account_id' => $account->id,
         'date' => $subWeek,
-        'total' => 28
+        'total' => 28,
     ])->create();
 
     Metric::factory()->state([
@@ -44,7 +44,7 @@ test('display reports', function () {
             'audience' => [
                 'labels',
                 'values',
-            ]
+            ],
         ]);
 
     $audienceResult = $response->json('audience');

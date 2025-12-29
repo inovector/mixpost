@@ -24,11 +24,10 @@ use Inovector\Mixpost\Support\SocialProviderResponse;
 class ImportFacebookInsightsJob implements ShouldQueue
 {
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-    use UsesSocialProviderManager;
     use HasSocialProviderJobRateLimit;
-    use SocialProviderJobFail;
     use SocialProviderException;
+    use SocialProviderJobFail;
+    use UsesSocialProviderManager;
 
     public $deleteWhenMissingModels = true;
 
@@ -45,7 +44,7 @@ class ImportFacebookInsightsJob implements ShouldQueue
             return;
         }
 
-        if (!$this->account->isServiceActive()) {
+        if (! $this->account->isServiceActive()) {
             return;
         }
 
@@ -57,6 +56,7 @@ class ImportFacebookInsightsJob implements ShouldQueue
 
         /**
          * @see FacebookPageProvider
+         *
          * @var SocialProviderResponse $response
          */
         $response = $this->connectProvider($this->account)->getPageInsights();

@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Queue;
-use Inovector\Mixpost\Models\ImportedPost;
 use Inovector\Mixpost\Commands\ProcessMetrics;
+use Inovector\Mixpost\Models\ImportedPost;
 use Inovector\Mixpost\Models\Metric;
 
 it('will process metrics for service providers', function () {

@@ -1,22 +1,24 @@
-import emitter from "@/Services/emitter";
+import emitter from '@/Services/emitter'
 
 const useNotifications = () => {
-    const notify = (variant, message, button) => {
-        if (typeof message !== 'object') {
-            emitter.emit('notify', {variant, message, button});
-        }
-
-        if (typeof message === 'object') {
-            // Convert laravel validation errors to a string
-            const text = Object.keys(message).map((item) => message[item].join("\n")).join("\n");
-
-            emitter.emit('notify', {variant, message: text, button});
-        }
+  const notify = (variant, message, button) => {
+    if (typeof message !== 'object') {
+      emitter.emit('notify', { variant, message, button })
     }
 
-    return {
-        notify,
+    if (typeof message === 'object') {
+      // Convert laravel validation errors to a string
+      const text = Object.keys(message)
+        .map(item => message[item].join('\n'))
+        .join('\n')
+
+      emitter.emit('notify', { variant, message: text, button })
     }
+  }
+
+  return {
+    notify
+  }
 }
 
-export default useNotifications;
+export default useNotifications

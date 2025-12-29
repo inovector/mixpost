@@ -1,2 +1,2 @@
-import mitt from 'mitt';
-export default mitt();
+import mitt from 'mitt'
+export default mitt()

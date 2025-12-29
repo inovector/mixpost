@@ -11,7 +11,7 @@ class DeleteOldData extends Command
 {
     public $signature = 'mixpost:delete-old-data';
 
-    public $description = "Delete old data from social service providers";
+    public $description = 'Delete old data from social service providers';
 
     public function handle(): int
     {

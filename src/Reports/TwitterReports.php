@@ -16,7 +16,7 @@ class TwitterReports extends Report
         return [
             'metrics' => $this->metrics($account, $period),
             'audience' => $this->audience($account, $period),
-            'tier' => ServiceManager::get('twitter', 'tier') ?? 'legacy'
+            'tier' => ServiceManager::get('twitter', 'tier') ?? 'legacy',
         ];
     }
 

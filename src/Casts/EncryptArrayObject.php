@@ -19,7 +19,7 @@ class EncryptArrayObject implements CastsAttributes
 
     public function set($model, string $key, $value, array $attributes): ?array
     {
-        if (!is_null($value)) {
+        if (! is_null($value)) {
             return [$key => Crypt::encryptString(json_encode($value))];
         }
 

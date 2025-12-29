@@ -4,11 +4,11 @@ namespace Inovector\Mixpost\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\File;
 use Inovector\Mixpost\MediaConversions\MediaImageResizeConversion;
 use Inovector\Mixpost\MediaConversions\MediaVideoThumbConversion;
 use Inovector\Mixpost\Models\Media;
 use Inovector\Mixpost\Support\MediaUploader;
-use Illuminate\Validation\Rules\File;
 use Inovector\Mixpost\Util;
 
 class MediaUploadFile extends FormRequest
@@ -16,7 +16,7 @@ class MediaUploadFile extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => ['required', File::types($this->allowedTypes())->max($this->max())]
+            'file' => ['required', File::types($this->allowedTypes())->max($this->max())],
         ];
     }
 
@@ -26,16 +26,16 @@ class MediaUploadFile extends FormRequest
             ->path(now()->format('m-Y'))
             ->conversions([
                 MediaImageResizeConversion::name('thumb')->width(430),
-                MediaVideoThumbConversion::name('thumb')->atSecond(5)
+                MediaVideoThumbConversion::name('thumb')->atSecond(5),
             ])
             ->uploadAndInsert();
     }
 
     public function messages(): array
     {
-        if (!$this->file('file')) {
+        if (! $this->file('file')) {
             return [
-                'file.required' => 'File is required'
+                'file.required' => 'File is required',
             ];
         }
 
@@ -66,7 +66,7 @@ class MediaUploadFile extends FormRequest
     {
         $max = 0;
 
-        if (!$this->file('file')) {
+        if (! $this->file('file')) {
             return $max;
         }
 

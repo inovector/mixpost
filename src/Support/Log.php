@@ -6,22 +6,22 @@ use Illuminate\Support\Facades\Log as LogFacade;
 
 class Log
 {
-    static public function info(string $message, array $context = []): void
+    public static function info(string $message, array $context = []): void
     {
         LogFacade::stack(self::stack())->info($message, $context);
     }
 
-    static public function error(string $message, array $context = []): void
+    public static function error(string $message, array $context = []): void
     {
         LogFacade::stack(self::stack())->error($message, $context);
     }
 
-    static public function warning(string $message, array $context = []): void
+    public static function warning(string $message, array $context = []): void
     {
         LogFacade::stack(self::stack())->warning($message, $context);
     }
 
-    static protected function stack(): array
+    protected static function stack(): array
     {
         if ($channel = config('mixpost.log_channel')) {
             return [$channel];

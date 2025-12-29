@@ -3,16 +3,16 @@
 namespace Inovector\Mixpost\Support;
 
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Inovector\Mixpost\Models\Media;
 
 class EagerLoadPostVersionsMedia
 {
     protected Collection $mediaCollection;
 
-    public function __construct(readonly LengthAwarePaginator|Collection|Model $postResult)
+    public function __construct(public readonly LengthAwarePaginator|Collection|Model $postResult)
     {
         $this->mediaCollection = $this->getMediaCollection();
     }

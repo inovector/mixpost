@@ -2,6 +2,7 @@
 
 namespace Inovector\Mixpost\Models;
 
+use Exception;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +13,6 @@ use Inovector\Mixpost\Support\MediaFilesystem;
 use Inovector\Mixpost\Support\MediaTemporaryDirectory;
 use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\Local\LocalFilesystemAdapter;
-use Exception;
 
 class Media extends Model
 {
@@ -28,12 +28,12 @@ class Media extends Model
         'path',
         'size',
         'size_total',
-        'conversions'
+        'conversions',
     ];
 
     protected $casts = [
         'id' => 'string',
-        'conversions' => 'array'
+        'conversions' => 'array',
     ];
 
     public function getFullPath(): string
@@ -94,7 +94,7 @@ class Media extends Model
         }
 
         // Download from external adapter (s3...etc.) and read the stream
-        if (!$this->isLocalAdapter()) {
+        if (! $this->isLocalAdapter()) {
             $temporaryDirectory = MediaTemporaryDirectory::create();
             $tempFilePath = $temporaryDirectory->path($path);
             MediaFilesystem::copyFromDisk($path, $disk, $tempFilePath);

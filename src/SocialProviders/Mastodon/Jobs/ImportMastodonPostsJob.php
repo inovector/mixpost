@@ -22,15 +22,15 @@ use Inovector\Mixpost\Support\SocialProviderResponse;
 class ImportMastodonPostsJob implements ShouldQueue
 {
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-    use UsesSocialProviderManager;
     use HasSocialProviderJobRateLimit;
-    use SocialProviderJobFail;
     use SocialProviderException;
+    use SocialProviderJobFail;
+    use UsesSocialProviderManager;
 
     public $deleteWhenMissingModels = true;
 
     public Account $account;
+
     public array $params;
 
     public function __construct(Account $account, array $params = [])
@@ -45,7 +45,7 @@ class ImportMastodonPostsJob implements ShouldQueue
             return;
         }
 
-        if (!$this->account->isServiceActive()) {
+        if (! $this->account->isServiceActive()) {
             return;
         }
 
@@ -57,6 +57,7 @@ class ImportMastodonPostsJob implements ShouldQueue
 
         /**
          * @see MastodonProvider
+         *
          * @var SocialProviderResponse $response
          */
         $response = $this->connectProvider($this->account)->getUserStatuses($this->account->provider_id, $this->params['max_id'] ?? '');
@@ -114,7 +115,7 @@ class ImportMastodonPostsJob implements ShouldQueue
                     'reblogs' => $item['reblogs_count'],
                     'favourites' => $item['favourites_count'],
                 ]),
-                'created_at' => Carbon::parse($item['created_at'], 'UTC')->toDateString()
+                'created_at' => Carbon::parse($item['created_at'], 'UTC')->toDateString(),
             ];
         });
 

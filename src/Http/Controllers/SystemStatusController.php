@@ -24,7 +24,7 @@ class SystemStatusController extends Controller
                 'env' => App::environment(),
                 'debug' => Config::get('app.debug'),
                 'horizon_status' => resolve(HorizonStatus::class)->get(),
-                'has_queue_connection' => Config::get('queue.connections.mixpost-redis') && !empty(Config::get('queue.connections.mixpost-redis')),
+                'has_queue_connection' => Config::get('queue.connections.mixpost-redis') && ! empty(Config::get('queue.connections.mixpost-redis')),
                 'last_scheduled_run' => $this->getLastScheduleRun(),
             ],
             'tech' => [
@@ -40,7 +40,7 @@ class SystemStatusController extends Controller
                     'horizon' => InstalledVersions::getVersion('laravel/horizon'),
                     'mysql' => $this->mysqlVersion(),
                     'mixpost' => InstalledVersions::getVersion('inovector/mixpost'),
-                ]
+                ],
             ],
         ]);
     }
@@ -49,36 +49,36 @@ class SystemStatusController extends Controller
     {
         $lastScheduleRun = Cache::get('mixpost-last-schedule-run');
 
-        if (!$lastScheduleRun) {
+        if (! $lastScheduleRun) {
             return [
                 'variant' => 'error',
-                'message' => 'It never started'
+                'message' => 'It never started',
             ];
         }
 
-        $diff = (int)abs(Carbon::now('UTC')->diffInMinutes($lastScheduleRun));
+        $diff = (int) abs(Carbon::now('UTC')->diffInMinutes($lastScheduleRun));
 
         if ($diff < 10) {
             return [
                 'variant' => 'success',
-                'message' => "Ran $diff minute(s) ago"
+                'message' => "Ran $diff minute(s) ago",
             ];
         }
 
         return [
             'variant' => 'warning',
-            'message' => "Ran $diff minute(s) ago"
+            'message' => "Ran $diff minute(s) ago",
         ];
     }
 
     protected function mysqlVersion(): string
     {
-        if (!Util::isMysqlDatabase()) {
+        if (! Util::isMysqlDatabase()) {
             return '';
         }
 
         $results = DB::select('select version() as version');
 
-        return (string)$results[0]->version;
+        return (string) $results[0]->version;
     }
 }

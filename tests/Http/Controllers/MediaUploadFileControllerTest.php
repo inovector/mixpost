@@ -1,9 +1,9 @@
 <?php
 
+use Illuminate\Http\UploadedFile;
 use Inovector\Mixpost\Http\Resources\MediaResource;
 use Inovector\Mixpost\Models\Media;
 use Inovector\Mixpost\Models\User;
-use Illuminate\Http\UploadedFile;
 
 beforeEach(function () {
     test()->user = User::factory()->create();
@@ -15,7 +15,7 @@ it('can upload an image', function () {
     $file = UploadedFile::fake()->image('image.jpg', 1200, 1200);
 
     $response = $this->postJson(route('mixpost.media.upload'), [
-        'file' => $file
+        'file' => $file,
     ]);
 
     $response->assertStatus(201);
@@ -33,7 +33,7 @@ it('will resize image', function () {
     $file = UploadedFile::fake()->image('image.jpg', 1200, 1200);
 
     $response = $this->postJson(route('mixpost.media.upload'), [
-        'file' => $file
+        'file' => $file,
     ]);
 
     $response->assertStatus(201);

@@ -1,11 +1,11 @@
 <?php
 
-
 use Carbon\Carbon;
 use Inovector\Mixpost\Enums\PostScheduleStatus;
 use Inovector\Mixpost\Enums\PostStatus;
 use Inovector\Mixpost\Models\Post;
 use Inovector\Mixpost\Models\User;
+
 use function Pest\Faker\fake;
 
 beforeEach(function () {
@@ -18,7 +18,7 @@ it('can duplicate a post', function () {
     $post = Post::factory()->state([
         'status' => PostStatus::SCHEDULED,
         'schedule_status' => PostScheduleStatus::PENDING,
-        'scheduled_at' => Carbon::now()->addDay()
+        'scheduled_at' => Carbon::now()->addDay(),
     ])->create();
 
     $post->versions()->createMany([
@@ -28,10 +28,10 @@ it('can duplicate a post', function () {
             'content' => [
                 [
                     'body' => fake()->paragraph,
-                    'media' => []
-                ]
-            ]
-        ]
+                    'media' => [],
+                ],
+            ],
+        ],
     ]);
 
     $countPostsBeforeDuplicate = Post::count();

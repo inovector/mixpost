@@ -18,7 +18,7 @@ class PostFormRequest extends FormRequest
             'versions' => ['required', 'array', 'min:1'],
             'versions.*.content.*.body' => ['nullable', 'string', 'max:5000'],
             'versions.*.content.*.media' => ['array'],
-            'versions.*.content.*.media.*' => ['integer']
+            'versions.*.content.*.media.*' => ['integer'],
         ];
     }
 

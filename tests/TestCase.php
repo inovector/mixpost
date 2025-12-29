@@ -2,16 +2,16 @@
 
 namespace Inovector\Mixpost\Tests;
 
+use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Foundation\Testing\RefreshDatabaseState;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Redis;
-use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\ServiceProvider;
@@ -27,16 +27,16 @@ class TestCase extends Orchestra
     {
         parent::setUp();
 
-        Route::get('login', fn() => 'Login Form')->name('login');
+        Route::get('login', fn () => 'Login Form')->name('login');
 
         Redis::flushAll();
         Cache::clear();
         $this->filesystem()->delete($this->filesystem()->allFiles());
 
-        Gate::define('viewMixpost', fn() => true);
+        Gate::define('viewMixpost', fn () => true);
 
         Factory::guessFactoryNamesUsing(
-            fn(string $modelName) => 'Inovector\\Mixpost\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
+            fn (string $modelName) => 'Inovector\\Mixpost\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
     }
 
@@ -45,13 +45,13 @@ class TestCase extends Orchestra
         return [
             MixpostServiceProvider::class,
             ServiceProvider::class,
-            ImageServiceProvider::class
+            ImageServiceProvider::class,
         ];
     }
 
     protected function refreshTestDatabase()
     {
-        if (!RefreshDatabaseState::$migrated) {
+        if (! RefreshDatabaseState::$migrated) {
             if ($this->appMajorVersion() > 10) {
                 $this->artisan('vendor:publish', ['--tag' => 'mixpost-migrations', '--force' => true]);
             } else {
@@ -61,16 +61,16 @@ class TestCase extends Orchestra
             $this->artisan('migrate:fresh', $this->migrateFreshUsing());
 
             if ($this->app->version() > 10) {
-                $migration = include __DIR__ . '/../vendor/orchestra/testbench-core/laravel/migrations/0001_01_01_000000_testbench_create_users_table.php';
+                $migration = include __DIR__.'/../vendor/orchestra/testbench-core/laravel/migrations/0001_01_01_000000_testbench_create_users_table.php';
                 $migration->up();
 
-                $migration = include __DIR__ . '/../vendor/orchestra/testbench-core/laravel/migrations/0001_01_01_000002_testbench_create_jobs_table.php';
+                $migration = include __DIR__.'/../vendor/orchestra/testbench-core/laravel/migrations/0001_01_01_000002_testbench_create_jobs_table.php';
                 $migration->up();
             } else {
-                $migration = include __DIR__ . '/../vendor/orchestra/testbench-core/laravel/migrations/2014_10_12_000000_testbench_create_users_table.php';
+                $migration = include __DIR__.'/../vendor/orchestra/testbench-core/laravel/migrations/2014_10_12_000000_testbench_create_users_table.php';
                 $migration->up();
 
-                $migration = include __DIR__ . '/../vendor/orchestra/testbench-core/laravel/migrations/2019_08_19_000000_testbench_create_failed_jobs_table.php';
+                $migration = include __DIR__.'/../vendor/orchestra/testbench-core/laravel/migrations/2019_08_19_000000_testbench_create_failed_jobs_table.php';
                 $migration->up();
             }
 
@@ -103,7 +103,7 @@ class TestCase extends Orchestra
         config()->set('filesystems.disks.mixpost_test', [
             'driver' => 'local',
             'root' => storage_path('app/public/mixpost'),
-            'url' => env('APP_URL') . '/storage/mixpost',
+            'url' => env('APP_URL').'/storage/mixpost',
             'visibility' => 'public',
             'throw' => false,
         ]);
@@ -132,6 +132,6 @@ class TestCase extends Orchestra
 
     private function appMajorVersion(): int
     {
-        return (int)Str::of($this->app->version())->explode('.')->first();
+        return (int) Str::of($this->app->version())->explode('.')->first();
     }
 }

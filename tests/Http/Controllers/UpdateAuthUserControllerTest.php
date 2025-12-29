@@ -19,7 +19,7 @@ it('can update the auth user', function () {
     test()->user->refresh();
 
     expect(test()->user->name)->toBe('name')
-    ->and(test()->user->email)->toBe('test@mail.com');
+        ->and(test()->user->email)->toBe('test@mail.com');
 });
 
 it('can show validation on update the auth user', function () {
@@ -33,4 +33,3 @@ it('can show validation on update the auth user', function () {
 it('can prevent unauthorized users to update the auth user', function () {
     $this->putJson(route('mixpost.profile.updateUser'))->assertUnauthorized();
 });
-

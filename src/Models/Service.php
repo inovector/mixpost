@@ -2,9 +2,9 @@
 
 namespace Inovector\Mixpost\Models;
 
-use Inovector\Mixpost\Casts\EncryptArrayObject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Inovector\Mixpost\Casts\EncryptArrayObject;
 use Inovector\Mixpost\Facades\ServiceManager;
 
 class Service extends Model
@@ -16,16 +16,16 @@ class Service extends Model
     protected $fillable = [
         'name',
         'configuration',
-        'active'
+        'active',
     ];
 
     protected $casts = [
         'configuration' => EncryptArrayObject::class,
-        'active' => 'boolean'
+        'active' => 'boolean',
     ];
 
     protected $hidden = [
-        'configuration'
+        'configuration',
     ];
 
     public $timestamps = false;

@@ -19,7 +19,7 @@ class PostVersionResource extends JsonResource
             'post_id' => $this->post_id,
             'account_id' => $this->account_id,
             'is_original' => $this->is_original,
-            'content' => $this->content()
+            'content' => $this->content(),
         ];
     }
 
@@ -39,14 +39,14 @@ class PostVersionResource extends JsonResource
 
         return collect($items)->map(function ($item) {
             $data = [
-                'body' => (string)$item['body'],
+                'body' => (string) $item['body'],
                 'media' => Arr::map($item['media'], function ($mediaItem) {
                     if ($mediaItem instanceof Media) {
                         return new MediaResource($mediaItem);
                     }
 
                     return $mediaItem;
-                })
+                }),
             ];
 
             if ($this->isIndexPage()) {

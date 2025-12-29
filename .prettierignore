@@ -1,0 +1,5 @@
+node_modules
+vendor
+*.min.js
+resources/dist
+resources/views

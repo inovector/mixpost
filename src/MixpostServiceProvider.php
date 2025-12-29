@@ -39,7 +39,7 @@ class MixpostServiceProvider extends PackageServiceProvider
             ->hasViews()
             ->hasRoute('web')
             ->hasMigrations([
-                'create_mixpost_tables'
+                'create_mixpost_tables',
             ])
             ->hasCommands([
                 PublishAssetsCommand::class,
@@ -57,8 +57,8 @@ class MixpostServiceProvider extends PackageServiceProvider
                     ->startWith(function (InstallCommand $command) {
                         $this->writeSeparationLine($command);
                         $command->line('Mixpost Lite Installation. Self-hosted social media management software.');
-                        $command->line('Laravel version: ' . app()->version());
-                        $command->line('PHP version: ' . trim(phpversion()));
+                        $command->line('Laravel version: '.app()->version());
+                        $command->line('PHP version: '.trim(phpversion()));
                         $command->line(' ');
                         $command->line('Github: https://github.com/inovector/mixpost');
                         $this->writeSeparationLine($command);
