@@ -34,4 +34,3 @@ it('can show validation on update the auth user password', function () {
 it('can prevent unauthorized users to update the auth user password', function () {
     $this->putJson(route('mixpost.profile.updatePassword'))->assertUnauthorized();
 });
-

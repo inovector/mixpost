@@ -10,5 +10,5 @@ it('will clear services cache', function () {
     $this->artisan(ClearServicesCache::class)->assertExitCode(0);
 
     expect(ServiceManager::getFromCache('facebook'))->toBeNull()
-    ->and(ServiceManager::getFromCache('tiktok'))->toBeNull();
+        ->and(ServiceManager::getFromCache('tiktok'))->toBeNull();
 });

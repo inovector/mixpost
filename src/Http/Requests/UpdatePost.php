@@ -28,7 +28,7 @@ class UpdatePost extends PostFormRequest
     public function handle()
     {
         return DB::transaction(function () {
-            if (empty($this->input('accounts')) || !$this->scheduledAt()) {
+            if (empty($this->input('accounts')) || ! $this->scheduledAt()) {
                 $this->post->setDraft();
             }
 
@@ -37,7 +37,6 @@ class UpdatePost extends PostFormRequest
 
             $this->post->versions()->delete();
             $this->post->versions()->createMany($this->input('versions'));
-
 
             $this->post->setScheduled(
                 datetime: $this->scheduledAt() ? Util::convertTimeToUTC($this->scheduledAt()) : null,

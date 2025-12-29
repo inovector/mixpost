@@ -10,7 +10,7 @@ class UpdateOrCreateService
     {
         return Service::updateOrCreate(['name' => $name], [
             'configuration' => $configuration,
-            'active' => $active
+            'active' => $active,
         ]);
     }
 }

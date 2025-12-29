@@ -18,7 +18,6 @@ class HexRule implements Rule
         $this->forceFull = $forceFull;
     }
 
-
     /**
      * Determine if the validation rule passes.
      *
@@ -30,13 +29,13 @@ class HexRule implements Rule
     {
         $pattern = '/^#([a-fA-F0-9]{6}';
 
-        if (!$this->forceFull) {
+        if (! $this->forceFull) {
             $pattern .= '|[a-fA-F0-9]{3}';
         }
 
         $pattern .= ')$/';
 
-        return (bool)preg_match($pattern, $value);
+        return (bool) preg_match($pattern, $value);
     }
 
     /**

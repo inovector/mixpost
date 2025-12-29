@@ -4,9 +4,9 @@ namespace Inovector\Mixpost;
 
 use Inovector\Mixpost\Abstracts\SocialProviderManager as SocialProviderManagerAbstract;
 use Inovector\Mixpost\Facades\ServiceManager;
+use Inovector\Mixpost\SocialProviders\Mastodon\MastodonProvider;
 use Inovector\Mixpost\SocialProviders\Meta\FacebookPageProvider;
 use Inovector\Mixpost\SocialProviders\Twitter\TwitterProvider;
-use Inovector\Mixpost\SocialProviders\Mastodon\MastodonProvider;
 
 class SocialProviderManager extends SocialProviderManagerAbstract
 {
@@ -14,7 +14,7 @@ class SocialProviderManager extends SocialProviderManagerAbstract
 
     public function providers(): array
     {
-        if (!empty($this->providers)) {
+        if (! empty($this->providers)) {
             return $this->providers;
         }
 
@@ -51,7 +51,7 @@ class SocialProviderManager extends SocialProviderManagerAbstract
         if ($request->route() && $request->route()->getName() === 'mixpost.accounts.add') {
             $serverName = $this->container->request->input('server');
             $request->session()->put($sessionServerKey, $serverName); // We keep the server name in the session. We'll need it in the callback
-        } else if ($request->route() && $request->route()->getName() === 'mixpost.callbackSocialProvider') {
+        } elseif ($request->route() && $request->route()->getName() === 'mixpost.callbackSocialProvider') {
             $serverName = $request->session()->get($sessionServerKey);
         } else {
             $serverName = $this->values['data']['server']; // Get the server value that have been set on SocialProviderManager::connect($provider, array $values = [])
@@ -61,7 +61,7 @@ class SocialProviderManager extends SocialProviderManagerAbstract
 
         $config['redirect'] = route('mixpost.callbackSocialProvider', ['provider' => 'mastodon']);
         $config['values'] = [
-            'data' => ['server' => $serverName]
+            'data' => ['server' => $serverName],
         ];
 
         return $this->buildConnectionProvider(MastodonProvider::class, $config);

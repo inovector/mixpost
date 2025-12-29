@@ -21,11 +21,10 @@ use Inovector\Mixpost\Support\SocialProviderResponse;
 class ImportTwitterFollowersJob implements ShouldQueue
 {
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-    use UsesSocialProviderManager;
     use HasSocialProviderJobRateLimit;
-    use SocialProviderJobFail;
     use SocialProviderException;
+    use SocialProviderJobFail;
+    use UsesSocialProviderManager;
 
     public $deleteWhenMissingModels = true;
 
@@ -42,7 +41,7 @@ class ImportTwitterFollowersJob implements ShouldQueue
             return;
         }
 
-        if (!$this->account->isServiceActive()) {
+        if (! $this->account->isServiceActive()) {
             return;
         }
 
@@ -54,6 +53,7 @@ class ImportTwitterFollowersJob implements ShouldQueue
 
         /**
          * @see TwitterProvider
+         *
          * @var SocialProviderResponse $response
          */
         $response = $this->connectProvider($this->account)->getAccountMetrics();
@@ -84,9 +84,9 @@ class ImportTwitterFollowersJob implements ShouldQueue
 
         Audience::updateOrCreate([
             'account_id' => $this->account->id,
-            'date' => Carbon::today('UTC')
+            'date' => Carbon::today('UTC'),
         ], [
-            'total' => $response->followers_count
+            'total' => $response->followers_count,
         ]);
     }
 }

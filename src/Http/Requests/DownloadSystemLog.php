@@ -7,7 +7,6 @@ use Inovector\Mixpost\Support\SystemLogs;
 
 class DownloadSystemLog extends FormRequest
 {
-
     public function rules(): array
     {
         return [
@@ -17,11 +16,11 @@ class DownloadSystemLog extends FormRequest
 
     public function handle(): string
     {
-        $systemLogs = new SystemLogs();
+        $systemLogs = new SystemLogs;
 
         $filePath = $systemLogs->getFilePath($this->input('filename'));
 
-        if (!file_exists($filePath)) {
+        if (! file_exists($filePath)) {
             abort(404);
         }
 

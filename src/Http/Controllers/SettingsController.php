@@ -16,7 +16,7 @@ class SettingsController extends Controller
     {
         return Inertia::render('Settings', [
             'settings' => Settings::all(),
-            'timezone_list' => (new TimezoneList())->splitGroup()->list(),
+            'timezoneList' => (new TimezoneList)->splitGroup()->list(),
         ]);
     }
 

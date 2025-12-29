@@ -45,7 +45,7 @@ class AccountsController extends Controller
             return redirect()->back()->with('error', 'The account cannot be updated.');
         }
 
-        (new UpdateOrCreateAccount())($account->provider, $response->context(), $account->access_token->toArray());
+        (new UpdateOrCreateAccount)($account->provider, $response->context(), $account->access_token->toArray());
 
         return redirect()->back();
     }

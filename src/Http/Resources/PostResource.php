@@ -24,8 +24,8 @@ class PostResource extends JsonResource
                 'human' => $this->scheduled_at ? Util::dateTimeFormat($this->scheduled_at, Settings::get('timezone')) : null,
             ],
             'published_at' => [
-                'human' => $this->published_at?->tz(Settings::get('timezone'))->format("D, M j, " . Util::timeFormat())
-            ]
+                'human' => $this->published_at?->tz(Settings::get('timezone'))->format('D, M j, '.Util::timeFormat()),
+            ],
         ];
     }
 

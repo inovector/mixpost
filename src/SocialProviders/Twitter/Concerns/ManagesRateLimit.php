@@ -23,27 +23,27 @@ trait ManagesRateLimit
         // Twitter no longer returns data about limit rates.
         // To avoid blocking script for a long period of time (`retry_after` may have too large a value),
         // we will set some dummy data and the script will skip the rate limit check
-        if (!Arr::has($headers, ['x_rate_limit_reset', 'x_rate_limit_limit', 'x_rate_limit_remaining'])) {
+        if (! Arr::has($headers, ['x_rate_limit_reset', 'x_rate_limit_limit', 'x_rate_limit_remaining'])) {
             return [
                 'limit' => 100,
                 'remaining' => 99,
-                'retry_after' => 300
+                'retry_after' => 300,
             ];
         }
 
-        $timeToRegainAccess = Carbon::parse((int)Arr::get($headers, 'x_rate_limit_reset', 0));
+        $timeToRegainAccess = Carbon::parse((int) Arr::get($headers, 'x_rate_limit_reset', 0));
 
         return [
             'limit' => intval(Arr::get($headers, 'x_rate_limit_limit')),
             'remaining' => intval(Arr::get($headers, 'x_rate_limit_remaining', 0)),
-            'retry_after' => (int)Carbon::now('UTC')->diffInSeconds($timeToRegainAccess),
+            'retry_after' => (int) Carbon::now('UTC')->diffInSeconds($timeToRegainAccess),
         ];
     }
 
     /**
-     * @param $response array|object
+     * @param  $response  array|object
      */
-    public function buildResponse($response, Closure $okResult = null): SocialProviderResponse
+    public function buildResponse($response, ?Closure $okResult = null): SocialProviderResponse
     {
         $usage = $this->getRateLimitUsage();
         $rateLimitAboutToBeExceeded = $usage['remaining'] < 5;
@@ -73,7 +73,7 @@ trait ManagesRateLimit
             );
         }
 
-        if (!isset($response->errors)) {
+        if (! isset($response->errors)) {
             return $this->response(
                 SocialProviderResponseStatus::OK,
                 $okResult ? $okResult() : Arr::wrap($response),

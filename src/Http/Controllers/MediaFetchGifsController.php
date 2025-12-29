@@ -20,13 +20,13 @@ class MediaFetchGifsController extends Controller
     {
         $clientId = TenorService::getConfiguration('client_id');
 
-        if (!$clientId) {
+        if (! $clientId) {
             abort(Response::HTTP_FORBIDDEN);
         }
 
         $terms = config('mixpost.external_media_terms');
 
-        $items = Http::get("https://tenor.googleapis.com/v2/search", [
+        $items = Http::get('https://tenor.googleapis.com/v2/search', [
             'key' => $clientId,
             'client_key' => Str::slug(Config::get('app.name', 'mixpost'), '_'),
             'q' => $request->query('keyword', Arr::random($terms)),
@@ -43,9 +43,9 @@ class MediaFetchGifsController extends Controller
                     [
                         'disk' => 'stock',
                         'name' => 'thumb',
-                        'path' => $item['media_formats']['tinygif']['url']
-                    ]
-                ]
+                        'path' => $item['media_formats']['tinygif']['url'],
+                    ],
+                ],
             ]);
 
             $media->setAttribute('id', $item['id']);
@@ -58,8 +58,8 @@ class MediaFetchGifsController extends Controller
 
         return MediaResource::collection($media)->additional([
             'links' => [
-                'next' => "?page=$nextPage"
-            ]
+                'next' => "?page=$nextPage",
+            ],
         ]);
     }
 }

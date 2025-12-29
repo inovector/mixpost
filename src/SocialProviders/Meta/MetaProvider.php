@@ -15,14 +15,15 @@ use Inovector\Mixpost\Util;
 
 class MetaProvider extends SocialProvider
 {
-    use ManagesRateLimit;
-    use MetaOauth;
     use ManagesConfig;
     use ManagesMetaResources;
+    use ManagesRateLimit;
+    use MetaOauth;
 
     public array $callbackResponseKeys = ['code'];
 
     protected string $apiVersion;
+
     protected string $apiUrl = 'https://graph.facebook.com';
 
     protected string $scope;

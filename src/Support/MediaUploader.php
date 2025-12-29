@@ -5,14 +5,17 @@ namespace Inovector\Mixpost\Support;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Inovector\Mixpost\Models\Media;
 use Inovector\Mixpost\Contracts\MediaConversion;
+use Inovector\Mixpost\Models\Media;
 
 class MediaUploader
 {
     protected UploadedFile $file;
+
     protected string $disk;
+
     protected string $path = '';
+
     protected array $conversions;
 
     public function __construct(UploadedFile $file)
@@ -58,7 +61,7 @@ class MediaUploader
     {
         $path = $this->filesystem()->putFile($this->path, $this->file, 'public');
 
-        if (!$path) {
+        if (! $path) {
             throw new \Exception("The file was not uploaded. Check your $this->disk driver configuration.");
         }
 
@@ -69,7 +72,7 @@ class MediaUploader
             'size_total' => $this->file->getSize() + 0,
             'disk' => $this->disk,
             'path' => $path,
-            'conversions' => $this->performConversions($path)
+            'conversions' => $this->performConversions($path),
         ];
     }
 
@@ -85,13 +88,13 @@ class MediaUploader
         }
 
         return collect($this->conversions)->map(function ($conversion) use ($filepath) {
-            if (!$conversion instanceof MediaConversion) {
+            if (! $conversion instanceof MediaConversion) {
                 throw new \Exception('The conversion must be an instance of MediaConversion');
             }
 
             $perform = $conversion->filepath($filepath)->fromDisk($this->disk)->perform();
 
-            if (!$perform) {
+            if (! $perform) {
                 return null;
             }
 

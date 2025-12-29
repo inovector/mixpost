@@ -1,0 +1,30 @@
+includes:
+    - phpstan-baseline.neon
+parameters:
+    paths:
+        - src
+
+    level: 4
+
+    checkModelProperties: false
+    noEnvCallsOutsideOfConfig: false
+    reportUnmatchedIgnoredErrors: false
+    noUnnecessaryCollectionCall: true
+    checkNullables: true
+    treatPhpDocTypesAsCertain: false
+    editorUrl: 'pstorm://open?file=%%file%%&line=%%line%%'
+
+    databaseMigrationsPath:
+        - database/migrations
+
+    excludePaths:
+        - tests
+
+    ignoreErrors:
+        - identifier: property.notFound
+        - '#Unsafe usage of new static#'
+        - '#Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection#'
+        - '#Parameter \#1 \$callback of method Illuminate\\Support\\Collection#'
+        - '#Parameter \#1 \$callback of method Illuminate\\Support\\LazyCollection#'
+        - '#Parameter \#1 \$groupBy of method Illuminate\\Support\\Collection#'
+        - '#Parameter \#1 \$view of function view expects view-string\|null, string given#'

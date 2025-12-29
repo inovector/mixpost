@@ -10,7 +10,7 @@ it('can store new service', function () {
         'active' => true,
     ];
 
-    $service = (new UpdateOrCreateService())($name, $data['configuration'], $data['active']);
+    $service = (new UpdateOrCreateService)($name, $data['configuration'], $data['active']);
 
     expect($service)->toBeObject()->and($service->name)->toEqual($name)
         ->and($service->active)->toBe($data['active'])
@@ -27,7 +27,7 @@ it('can update a service', function () {
         'active' => true,
     ];
 
-    $updatedService = (new UpdateOrCreateService())($service->name, $data['configuration'], $data['active']);
+    $updatedService = (new UpdateOrCreateService)($service->name, $data['configuration'], $data['active']);
 
     $service->refresh();
 

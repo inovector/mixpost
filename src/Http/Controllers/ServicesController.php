@@ -14,7 +14,7 @@ class ServicesController extends Controller
     public function index(): Response
     {
         return Inertia::render('Services', [
-            'services' => ServiceManager::all()
+            'services' => ServiceManager::all(),
         ]);
     }
 

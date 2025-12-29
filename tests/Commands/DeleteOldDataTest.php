@@ -1,9 +1,9 @@
 <?php
 
 use Carbon\Carbon;
-use Inovector\Mixpost\Models\ImportedPost;
-use Inovector\Mixpost\Models\FacebookInsight;
 use Inovector\Mixpost\Commands\DeleteOldData;
+use Inovector\Mixpost\Models\FacebookInsight;
+use Inovector\Mixpost\Models\ImportedPost;
 
 it('will delete old data', function () {
     ImportedPost::factory()->count(10)->state([

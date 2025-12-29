@@ -1,14 +1,14 @@
-import {computed} from "vue";
-import {usePage} from "@inertiajs/vue3";
+import { computed } from 'vue'
+import { usePage } from '@inertiajs/vue3'
 
 const useAuth = () => {
-    const user = computed(() => {
-        return usePage().props.auth.user;
-    })
+  const user = computed(() => {
+    return usePage().props.auth.user
+  })
 
-    return {
-        user
-    }
-};
+  return {
+    user
+  }
+}
 
-export default useAuth;
+export default useAuth

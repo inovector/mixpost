@@ -15,12 +15,12 @@ class TwitterService extends Service
         return ServiceGroup::SOCIAL;
     }
 
-    static function form(): array
+    public static function form(): array
     {
         return [
             'client_id' => '',
             'client_secret' => '',
-            'tier' => 'free'
+            'tier' => 'free',
         ];
     }
 
@@ -29,7 +29,7 @@ class TwitterService extends Service
         return [
             'client_id' => ['required'],
             'client_secret' => ['required'],
-            'tier' => ['required', Rule::in(['legacy', 'free', 'basic'])]
+            'tier' => ['required', Rule::in(['legacy', 'free', 'basic'])],
         ];
     }
 
@@ -38,7 +38,7 @@ class TwitterService extends Service
         return [
             'client_id' => 'The API Key is required.',
             'client_secret' => 'The API Secret is required.',
-            'tier' => 'Tier is invalid.'
+            'tier' => 'Tier is invalid.',
         ];
     }
 }

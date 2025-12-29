@@ -25,7 +25,7 @@ class RunScheduledPosts extends Command
             ->where('schedule_status', PostScheduleStatus::PENDING->value)
             ->where('scheduled_at', '<=', Carbon::now()->utc())
             ->each(function (Post $post) {
-                (new PublishPost())($post);
+                (new PublishPost)($post);
             });
 
         return self::SUCCESS;

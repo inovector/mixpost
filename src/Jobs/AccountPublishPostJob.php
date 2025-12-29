@@ -16,12 +16,12 @@ use Inovector\Mixpost\Models\Post;
 class AccountPublishPostJob implements ShouldQueue
 {
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
     use HasSocialProviderJobRateLimit;
 
     public $deleteWhenMissingModels = true;
 
     public Account $account;
+
     public Post $post;
 
     public function __construct(Account $account, Post $post)
@@ -40,8 +40,9 @@ class AccountPublishPostJob implements ShouldQueue
             return;
         }
 
-        if (!$this->account->isServiceActive()) {
+        if (! $this->account->isServiceActive()) {
             $this->post->insertErrors($this->account, ['Service disabled']);
+
             return;
         }
 

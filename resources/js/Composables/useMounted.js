@@ -1,15 +1,15 @@
-import {onMounted, ref} from "vue";
+import { onMounted, ref } from 'vue'
 
 const useMounted = () => {
-    const isMounted = ref(false);
+  const isMounted = ref(false)
 
-    onMounted(() => {
-        isMounted.value = true;
-    });
+  onMounted(() => {
+    isMounted.value = true
+  })
 
-    return {
-        isMounted,
-    }
+  return {
+    isMounted
+  }
 }
 
-export default useMounted;
+export default useMounted

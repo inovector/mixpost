@@ -13,7 +13,7 @@ trait ManagesFacebookOAuth
             'response_type' => 'code',
         ];
 
-        $url = 'https://www.facebook.com/' . $this->apiVersion . '/dialog/oauth';
+        $url = 'https://www.facebook.com/'.$this->apiVersion.'/dialog/oauth';
 
         return $this->buildUrlFromBase($url, $params);
     }

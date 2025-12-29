@@ -12,10 +12,8 @@ class PostContentParser
 {
     public function __construct(
         private readonly Account $account,
-        private readonly Post    $post
-    )
-    {
-    }
+        private readonly Post $post
+    ) {}
 
     public function getVersionContent(): array
     {
@@ -43,7 +41,7 @@ class PostContentParser
 
     public function formatBody(?string $text): string
     {
-        if (!$text) {
+        if (! $text) {
             return '';
         }
 

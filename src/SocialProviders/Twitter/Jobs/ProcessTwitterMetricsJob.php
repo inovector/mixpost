@@ -47,7 +47,7 @@ class ProcessTwitterMetricsJob implements ShouldQueue
                     'replies' => $item->replies,
                     'retweets' => $item->retweets,
                     'impressions' => $item->impressions,
-                ])
+                ]),
             ];
         });
 
