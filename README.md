@@ -1,7 +1,3 @@
-[<img src="./art/standwithua.png" />](https://supportukrainenow.org)
-
-* * *
-
 [<img src="./art/logo.svg" alt="Logo Mixpost" />](https://mixpost.app)
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/inovector/mixpost.svg?style=flat-square)](https://packagist.org/packages/inovector/mixpost)
