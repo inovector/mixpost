@@ -5,6 +5,7 @@ namespace Inovector\Mixpost;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
+use Inovector\Mixpost\Commands\ChangeDisk;
 use Inovector\Mixpost\Commands\ClearServicesCache;
 use Inovector\Mixpost\Commands\ClearSettingsCache;
 use Inovector\Mixpost\Commands\CreateMastodonApp;
@@ -52,6 +53,7 @@ class MixpostServiceProvider extends PackageServiceProvider
                 ProcessMetrics::class,
                 DeleteOldData::class,
                 PruneTemporaryDirectory::class,
+                ChangeDisk::class,
             ])->hasInstallCommand(function (InstallCommand $command) {
                 $command
                     ->startWith(function (InstallCommand $command) {
