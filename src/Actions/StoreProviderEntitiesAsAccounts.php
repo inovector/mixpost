@@ -12,7 +12,7 @@ class StoreProviderEntitiesAsAccounts
 {
     public function __invoke(string $provider, array $items)
     {
-        $method = 'store' . Str::studly(Str::plural($provider));
+        $method = 'store'.Str::studly(Str::plural($provider));
 
         if (method_exists($this, $method)) {
             return $this->$method($items);
@@ -37,7 +37,7 @@ class StoreProviderEntitiesAsAccounts
         });
 
         foreach ($entities as $account) {
-            (new UpdateOrCreateAccount())(
+            (new UpdateOrCreateAccount)(
                 providerName: 'facebook_page',
                 account: $account,
                 accessToken: array_merge($provider->getAccessToken(), ['page_access_token' => $account['access_token']['access_token']])

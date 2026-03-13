@@ -83,6 +83,6 @@ class Settings
 
     private function resolveCacheKey(string $key): string
     {
-        return $this->config->get('mixpost.cache_prefix') . ".settings.$key";
+        return $this->config->get('mixpost.cache_prefix').".settings.$key";
     }
 }

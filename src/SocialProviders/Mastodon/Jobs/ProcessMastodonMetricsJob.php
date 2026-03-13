@@ -44,7 +44,7 @@ class ProcessMastodonMetricsJob implements ShouldQueue
                     'replies' => $item->replies,
                     'reblogs' => $item->reblogs,
                     'favourites' => $item->favourites,
-                ])
+                ]),
             ];
         });
 

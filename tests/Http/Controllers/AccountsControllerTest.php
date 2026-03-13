@@ -17,7 +17,7 @@ it('show list of accounts on Accounts page with service alerts', function () {
     $this->actingAs(test()->user);
 
     $this->get(route('mixpost.accounts.index'))
-        ->assertInertia(fn(Assert $page) => $page
+        ->assertInertia(fn (Assert $page) => $page
             ->component('Accounts/Accounts')
             ->has('accounts', 3)
             ->where('is_configured_service.twitter', false)
@@ -28,20 +28,20 @@ it('show list of accounts on Accounts page with service alerts', function () {
 it('show list of accounts on Accounts page without service alerts', function () {
     $this->actingAs(test()->user);
 
-    (new UpdateOrCreateService())('twitter', [
+    (new UpdateOrCreateService)('twitter', [
         'client_id' => '11',
         'client_secret' => 'secret-twitter',
-        'tier' => 'free'
+        'tier' => 'free',
     ], true);
 
-    (new UpdateOrCreateService())('facebook', [
+    (new UpdateOrCreateService)('facebook', [
         'client_id' => '222',
         'client_secret' => 'secret-fb',
-        'api_version' => 'v21.0'
+        'api_version' => 'v21.0',
     ]);
 
     $this->get(route('mixpost.accounts.index'))
-        ->assertInertia(fn(Assert $page) => $page
+        ->assertInertia(fn (Assert $page) => $page
             ->component('Accounts/Accounts')
             ->has('accounts', 3)
             ->where('is_configured_service.twitter', true)

@@ -8,13 +8,11 @@ class HorizonStatus
 {
     public function __construct(
         private readonly ?MasterSupervisorRepository $masterSupervisorRepository = null
-    )
-    {
-    }
+    ) {}
 
     public function get(): string
     {
-        if (!$masters = $this->masterSupervisorRepository->all()) {
+        if (! $masters = $this->masterSupervisorRepository->all()) {
             return 'Inactive';
         }
 

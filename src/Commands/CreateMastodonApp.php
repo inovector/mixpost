@@ -19,18 +19,18 @@ class CreateMastodonApp extends Command
         $serviceName = "mastodon.$server";
 
         if (ServiceManager::get($serviceName)) {
-            if (!$this->confirm('Are you sure you want to create a new application for this server?')) {
+            if (! $this->confirm('Are you sure you want to create a new application for this server?')) {
                 return self::FAILURE;
             }
 
             $this->comment("This action may have a negative impact on scheduled posts and authenticated accounts with Mastodon on $server server.");
 
-            if (!$this->confirm('I confirm that I understand the risks and I will reauthenticate all accounts on this Mastodon server.')) {
+            if (! $this->confirm('I confirm that I understand the risks and I will reauthenticate all accounts on this Mastodon server.')) {
                 return self::FAILURE;
             }
         }
 
-        $result = (new CreateMastodonAppAction())($server);
+        $result = (new CreateMastodonAppAction)($server);
 
         if (isset($result['error'])) {
             $this->error($result['error']);

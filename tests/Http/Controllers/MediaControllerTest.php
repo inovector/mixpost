@@ -14,7 +14,7 @@ it('will delete media file', function () {
     $file = UploadedFile::fake()->image('image.jpg', 1200, 1200);
 
     $response = $this->postJson(route('mixpost.media.upload'), [
-        'file' => $file
+        'file' => $file,
     ]);
 
     $response->assertStatus(201);
@@ -22,7 +22,7 @@ it('will delete media file', function () {
     $media = Media::find($response->json()['id']);
 
     $response = $this->deleteJson(route('mixpost.media.delete'), [
-        'items' => [$media->id]
+        'items' => [$media->id],
     ]);
 
     $response->assertStatus(204);

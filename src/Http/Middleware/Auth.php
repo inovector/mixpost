@@ -3,35 +3,35 @@
 namespace Inovector\Mixpost\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Auth as AuthFacade;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth as AuthFacade;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
-use Inovector\Mixpost\Models\User;
 use Inovector\Mixpost\Concerns\UsesAuth;
 use Inovector\Mixpost\Concerns\UsesUserModel;
+use Inovector\Mixpost\Models\User;
 use Symfony\Component\HttpFoundation\Response;
 
 class Auth
 {
-    use UsesUserModel;
     use UsesAuth;
+    use UsesUserModel;
 
     public function handle(Request $request, Closure $next)
     {
         AuthFacade::shouldUse(self::getAuthGuardName());
 
-        if (!auth()->check()) {
+        if (! auth()->check()) {
             return $this->redirect($request);
         }
 
-        if (!Gate::allows('viewMixpost')) {
+        if (! Gate::allows('viewMixpost')) {
             abort(403);
         }
 
         // TODO: find a better way to use the custom model instance
-        if (!auth()->user() instanceof User) {
+        if (! auth()->user() instanceof User) {
             $user = self::getUserClass()::make(auth()->user()->only('name', 'email'))->setAttribute('id', auth()->id());
 
             AuthFacade::setUser($user);
@@ -42,7 +42,7 @@ class Auth
 
     protected function redirect(Request $request): JsonResponse|Response
     {
-        if (!$request->expectsJson()) {
+        if (! $request->expectsJson()) {
             $request->session()->put('url.intended', url()->current());
 
             return Inertia::location(route(config('mixpost.redirect_unauthorized_users_to_route')));

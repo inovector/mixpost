@@ -15,7 +15,7 @@ trait ManagesFacebookPageResources
     {
         $response = Http::get("$this->apiUrl/$this->apiVersion/me", [
             'fields' => 'id,name,username,picture{url}',
-            'access_token' => $this->getAccessToken()['page_access_token']
+            'access_token' => $this->getAccessToken()['page_access_token'],
         ]);
 
         return $this->buildResponse($response, function () use ($response) {
@@ -34,8 +34,8 @@ trait ManagesFacebookPageResources
     {
         $response = Http::withToken($this->getAccessToken()['access_token'])
             ->get("$this->apiUrl/$this->apiVersion/me/accounts", [
-                'fields' => 'id,name,username,picture{url}' . ($withAccessToken ? ',access_token' : ''),
-                'limit' => 200
+                'fields' => 'id,name,username,picture{url}'.($withAccessToken ? ',access_token' : ''),
+                'limit' => 200,
             ]);
 
         return $this->buildResponse($response, function () use ($response, $withAccessToken) {
@@ -49,7 +49,7 @@ trait ManagesFacebookPageResources
 
                 if ($withAccessToken) {
                     $array['access_token'] = [
-                        'access_token' => $item['access_token']
+                        'access_token' => $item['access_token'],
                     ];
                 }
 
@@ -67,7 +67,7 @@ trait ManagesFacebookPageResources
     {
         $response = Http::get("$this->apiUrl/$this->apiVersion/{$this->values['provider_id']}", [
             'fields' => 'fan_count,followers_count',
-            'access_token' => $this->getAccessToken()['page_access_token']
+            'access_token' => $this->getAccessToken()['page_access_token'],
         ]);
 
         return $this->buildResponse($response);

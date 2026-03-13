@@ -15,17 +15,17 @@ class PublishAssetsCommand extends Command
     {
         $force = boolval($this->option('force'));
 
-        if (!$force && File::exists(public_path('vendor/mixpost'))) {
+        if (! $force && File::exists(public_path('vendor/mixpost'))) {
             $this->line('Your application already have the Mixpost assets');
 
-            if (!$this->confirm('Do you want to rewrite?')) {
+            if (! $this->confirm('Do you want to rewrite?')) {
                 return self::FAILURE;
             }
         }
 
         File::deleteDirectory(public_path('vendor/mixpost'));
-        File::copyDirectory(__DIR__ . '/../../resources/dist/vendor', public_path('vendor'));
-        File::copy(__DIR__ . '/../../resources/img/favicon.ico', public_path('vendor/mixpost/favicon.ico'));
+        File::copyDirectory(__DIR__.'/../../resources/dist/vendor', public_path('vendor'));
+        File::copy(__DIR__.'/../../resources/img/favicon.ico', public_path('vendor/mixpost/favicon.ico'));
 
         $this->info('Assets was published to [public/vendor/mixpost]');
 

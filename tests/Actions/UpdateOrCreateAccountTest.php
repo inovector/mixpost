@@ -11,15 +11,15 @@ it('can create new account', function () {
         'id' => $providerId,
         'name' => 'Name of Account',
         'username' => 'username',
-//        'image' => fake()->imageUrl() TODO: find a solution to test an image
-        'image' => ''
+        //        'image' => fake()->imageUrl() TODO: find a solution to test an image
+        'image' => '',
     ];
 
-    (new UpdateOrCreateAccount())('twitter', $data, ['access_token' => ['auth_token' => 'my-token']]);
+    (new UpdateOrCreateAccount)('twitter', $data, ['access_token' => ['auth_token' => 'my-token']]);
 
     $account = Account::where('provider_id', $providerId)->first();
 
-//    expect($account)->toBeObject()->and($account->image())->toBeString();
+    //    expect($account)->toBeObject()->and($account->image())->toBeString();
 
     expect($account)->toBeObject()->and($account->name)->toBe($data['name']);
 });
@@ -34,7 +34,7 @@ it('can update the account', function () {
         'image' => '',
     ];
 
-    (new UpdateOrCreateAccount())($account->provider, $data, ['access_token' => ['auth_token' => 'my-token']]);
+    (new UpdateOrCreateAccount)($account->provider, $data, ['access_token' => ['auth_token' => 'my-token']]);
 
     $account->refresh();
 

@@ -11,9 +11,9 @@ use Inovector\Mixpost\Support\SocialProviderResponse;
 trait ManagesRateLimit
 {
     /**
-     * @param $response Response
+     * @param  $response  Response
      */
-    public function buildResponse($response, Closure $okResult = null): SocialProviderResponse
+    public function buildResponse($response, ?Closure $okResult = null): SocialProviderResponse
     {
         $appUsage = $this->getAppUsage($response->headers());
         $businessUsage = $this->getBusinessUsage($response->headers());
@@ -30,12 +30,12 @@ trait ManagesRateLimit
         }
 
         // Check Business usage
-        if (!$isAppLevel && $businessUsage && ($businessUsage['call_count'] > 90 || $businessUsage['total_time'] > 90 || $businessUsage['total_cputime'] > 90)) {
+        if (! $isAppLevel && $businessUsage && ($businessUsage['call_count'] > 90 || $businessUsage['total_time'] > 90 || $businessUsage['total_cputime'] > 90)) {
             $rateLimitAboutToBeExceeded = true;
             $retryAfter = $businessUsage['retry_after'] === 0 ? 60 * 60 : $businessUsage['retry_after'];
         }
 
-        if (!Arr::has($response->json(), 'error')) {
+        if (! Arr::has($response->json(), 'error')) {
             return $this->response(
                 SocialProviderResponseStatus::OK,
                 $okResult ? $okResult() : $response->json(),
@@ -81,13 +81,13 @@ trait ManagesRateLimit
     public function getAppUsage(array $headers): array
     {
         $usage = Arr::get($headers, 'x-app-usage', []);
-        $map = Arr::map($usage, fn($item) => json_decode($item, true));
+        $map = Arr::map($usage, fn ($item) => json_decode($item, true));
 
         return [
             'call_count' => Arr::get($map, '0.call_count', 0),
             'total_cputime' => Arr::get($map, '0.total_cputime', 0),
             'total_time' => Arr::get($map, '0.total_time', 0),
-            'retry_after' => 60 * 60 // 1h
+            'retry_after' => 60 * 60, // 1h
         ];
     }
 
@@ -96,15 +96,15 @@ trait ManagesRateLimit
      *
      * @see https://developers.facebook.com/docs/graph-api/overview/rate-limiting#buc-rate-limits
      */
-    public function getBusinessUsage(array $headers): array|null
+    public function getBusinessUsage(array $headers): ?array
     {
-        if (!Arr::has($this->values, 'provider_id')) {
+        if (! Arr::has($this->values, 'provider_id')) {
             return null;
         }
 
         $usage = Arr::get($headers, 'x-business-use-case-usage.0', []);
 
-        if (!is_array($usage)) {
+        if (! is_array($usage)) {
             $usage = json_decode($usage, true);
         }
 
@@ -116,7 +116,7 @@ trait ManagesRateLimit
             'call_count' => Arr::get($usage, '0.call_count', 0),
             'total_cputime' => Arr::get($usage, '0.total_cputime', 0),
             'total_time' => Arr::get($usage, '0.total_time', 0),
-            'retry_after' => Arr::get($usage, '0.estimated_time_to_regain_access', 0) * 60
+            'retry_after' => Arr::get($usage, '0.estimated_time_to_regain_access', 0) * 60,
         ];
     }
 }

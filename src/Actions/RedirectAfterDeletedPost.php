@@ -15,7 +15,7 @@ class RedirectAfterDeletedPost
         $hasFilterFailedStatus = $request->has('status') && $request->get('status') === Str::lower(PostStatus::FAILED->name);
 
         if ($hasFilterFailedStatus) {
-            if (!Post::failed()->exists()) {
+            if (! Post::failed()->exists()) {
                 return redirect()->route('mixpost.posts.index');
             }
 

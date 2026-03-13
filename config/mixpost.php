@@ -29,7 +29,7 @@ return [
     'max_file_size' => [
         'image' => 1024 * 5, // 5MB
         'gif' => 1024 * 15, // 15MB
-        'video' => 1024 * 200 // 200MB
+        'video' => 1024 * 200, // 200MB
     ],
 
     /*
@@ -43,7 +43,7 @@ return [
         'image/gif',
         'image/png',
         'video/mp4',
-        'video/x-m4v'
+        'video/x-m4v',
     ],
 
     /*
@@ -90,7 +90,7 @@ return [
                 'videos' => 1,
                 'gifs' => 1,
                 'allow_mixing' => false,
-            ]
+            ],
         ],
         'facebook_page' => [
             'simultaneous_posting_on_multiple_accounts' => true,
@@ -100,7 +100,7 @@ return [
                 'videos' => 1,
                 'gifs' => 1,
                 'allow_mixing' => false,
-            ]
+            ],
         ],
         'facebook_group' => [
             'simultaneous_posting_on_multiple_accounts' => true,
@@ -110,7 +110,7 @@ return [
                 'videos' => 1,
                 'gifs' => 1,
                 'allow_mixing' => false,
-            ]
+            ],
         ],
         'mastodon' => [
             'simultaneous_posting_on_multiple_accounts' => true,
@@ -120,7 +120,7 @@ return [
                 'videos' => 1,
                 'gifs' => 1,
                 'allow_mixing' => false,
-            ]
-        ]
+            ],
+        ],
     ],
 ];

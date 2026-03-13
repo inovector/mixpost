@@ -13,7 +13,7 @@ class MediaFetchStockController extends Controller
 {
     public function __invoke(Request $request): AnonymousResourceCollection
     {
-        $unsplash = new Unsplash();
+        $unsplash = new Unsplash;
 
         $items = $unsplash->photos($request->query('keyword', ''), $request->query('page', 1));
 
@@ -27,15 +27,15 @@ class MediaFetchStockController extends Controller
                     [
                         'disk' => 'stock',
                         'name' => 'thumb',
-                        'path' => $item['urls']['thumb']
-                    ]
-                ]
+                        'path' => $item['urls']['thumb'],
+                    ],
+                ],
             ]);
 
             $media->setAttribute('id', $item['id']);
             $media->setAttribute('credit_url', $item['user']['links']['html']);
             $media->setAttribute('download_data', [
-                'download_location' => $item['links']['download_location']
+                'download_location' => $item['links']['download_location'],
             ]);
 
             return $media;
@@ -45,8 +45,8 @@ class MediaFetchStockController extends Controller
 
         return MediaResource::collection($media)->additional([
             'links' => [
-                'next' => "?page=$nextPage"
-            ]
+                'next' => "?page=$nextPage",
+            ],
         ]);
     }
 }

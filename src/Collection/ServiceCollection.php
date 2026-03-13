@@ -7,11 +7,9 @@ use Inovector\Mixpost\Enums\ServiceGroup;
 
 class ServiceCollection
 {
-    public function __construct(public readonly array $services)
-    {
-    }
+    public function __construct(public readonly array $services) {}
 
-    public function group(ServiceGroup|array $group = null): static
+    public function group(ServiceGroup|array|null $group = null): static
     {
         return new static(
             array_values(
@@ -29,7 +27,7 @@ class ServiceCollection
 
     public function getNames(): array
     {
-        return array_map(fn($service) => $service::name(), $this->services);
+        return array_map(fn ($service) => $service::name(), $this->services);
     }
 
     public function getCollection(): array

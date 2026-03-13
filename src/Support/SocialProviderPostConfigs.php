@@ -41,56 +41,56 @@ class SocialProviderPostConfigs implements JsonSerializable
         return $this;
     }
 
-    public function minTextChar(int $value = null, string $type = 'default'): SocialProviderPostConfigs
+    public function minTextChar(?int $value = null, string $type = 'default'): SocialProviderPostConfigs
     {
         $this->setConfigArrayValue($this->minTextChar, $value, $type);
 
         return $this;
     }
 
-    public function maxTextChar(int $value = null, string $type = 'default'): SocialProviderPostConfigs
+    public function maxTextChar(?int $value = null, string $type = 'default'): SocialProviderPostConfigs
     {
         $this->setConfigArrayValue($this->maxTextChar, $value, $type);
 
         return $this;
     }
 
-    public function minPhotos(int $value = null, string $type = 'default'): SocialProviderPostConfigs
+    public function minPhotos(?int $value = null, string $type = 'default'): SocialProviderPostConfigs
     {
         $this->setConfigArrayValue($this->minPhotos, $value, $type);
 
         return $this;
     }
 
-    public function maxPhotos(int $value = null, string $type = 'default'): SocialProviderPostConfigs
+    public function maxPhotos(?int $value = null, string $type = 'default'): SocialProviderPostConfigs
     {
         $this->setConfigArrayValue($this->maxPhotos, $value, $type);
 
         return $this;
     }
 
-    public function minVideos(int $value = null, string $type = 'default'): SocialProviderPostConfigs
+    public function minVideos(?int $value = null, string $type = 'default'): SocialProviderPostConfigs
     {
         $this->setConfigArrayValue($this->minVideos, $value, $type);
 
         return $this;
     }
 
-    public function maxVideos(int $value = null, string $type = 'default'): SocialProviderPostConfigs
+    public function maxVideos(?int $value = null, string $type = 'default'): SocialProviderPostConfigs
     {
         $this->setConfigArrayValue($this->maxVideos, $value, $type);
 
         return $this;
     }
 
-    public function minGifs(int $value = null, string $type = 'default'): SocialProviderPostConfigs
+    public function minGifs(?int $value = null, string $type = 'default'): SocialProviderPostConfigs
     {
         $this->setConfigArrayValue($this->minGifs, $value, $type);
 
         return $this;
     }
 
-    public function maxGifs(int $value = null, string $type = 'default'): SocialProviderPostConfigs
+    public function maxGifs(?int $value = null, string $type = 'default'): SocialProviderPostConfigs
     {
         $this->setConfigArrayValue($this->maxGifs, $value, $type);
 

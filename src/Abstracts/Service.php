@@ -13,15 +13,14 @@ abstract class Service implements ServiceContract
      * The form attributes that should be considered as exposed.
      * By default, all form attributes are encrypted and stored in the `configuration` column of database.
      * Exposed attributes are not sensitive and can be exposed to the user.
+     *
      * @return array
-     * @var array
      */
     public static array $exposedFormAttributes = [];
 
     /**
      * Group name of the service.
      * Should be one of the values from ServiceGroup enum.
-     * @return ServiceGroup
      */
     public static function group(): ServiceGroup
     {
@@ -31,7 +30,6 @@ abstract class Service implements ServiceContract
     /**
      * Unique name of the service.
      * Should be lowercase and snake cased.
-     * @return string
      */
     public static function name(): string
     {
@@ -43,7 +41,6 @@ abstract class Service implements ServiceContract
     /**
      * Localized name of the service.
      * Friendly name for the user interface.
-     * @return string
      */
     public static function nameLocalized(): string
     {
@@ -52,7 +49,7 @@ abstract class Service implements ServiceContract
         return Str::of($className)->replace('Service', '');
     }
 
-    public static function getConfiguration(string $key = null)
+    public static function getConfiguration(?string $key = null)
     {
         if ($key) {
             return ServiceManager::get(static::name(), "configuration.$key");

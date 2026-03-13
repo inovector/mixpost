@@ -15,9 +15,7 @@ class AccountUnauthorizedMail extends Mailable
 
     public $deleteWhenMissingModels = true;
 
-    public function __construct(public readonly Account $account)
-    {
-    }
+    public function __construct(public readonly Account $account) {}
 
     public function envelope(): Envelope
     {

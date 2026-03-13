@@ -14,7 +14,7 @@ class PostVersion extends Model
     protected $fillable = [
         'account_id',
         'is_original',
-        'content'
+        'content',
     ];
 
     protected $casts = [
@@ -24,7 +24,7 @@ class PostVersion extends Model
 
     public function scopeHasMedia(Builder $query, Media $media): Builder
     {
-        return $query->whereRaw("JSON_SEARCH(content, 'all', ?, NULL, '$[*].media') is not null", [(string)$media->id]);
+        return $query->whereRaw("JSON_SEARCH(content, 'all', ?, NULL, '$[*].media') is not null", [(string) $media->id]);
     }
 
     public function removeMedia(Media $media): void
@@ -33,12 +33,11 @@ class PostVersion extends Model
 
         foreach ($content as $i => $contentData) {
             $content[$i]['media'] = array_values(array_filter($contentData['media'], function ($val) use ($media) {
-                return $val != (string)$media->id;
+                return $val != (string) $media->id;
             }));
         }
 
         $this->content = $content;
         $this->save();
     }
-
 }

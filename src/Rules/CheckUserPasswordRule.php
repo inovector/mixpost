@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 class CheckUserPasswordRule implements Rule
 {
     public $user;
+
     public ?string $message;
 
     public function __construct($user, ?string $message = null)

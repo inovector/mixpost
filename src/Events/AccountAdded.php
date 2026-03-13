@@ -10,7 +10,5 @@ class AccountAdded
 {
     use Dispatchable, SerializesModels;
 
-    public function __construct(public readonly Account $account)
-    {
-    }
+    public function __construct(public readonly Account $account) {}
 }

@@ -19,7 +19,7 @@ class Metric extends Model
 
     protected $casts = [
         'data' => 'array',
-        'date' => 'date'
+        'date' => 'date',
     ];
 
     public $timestamps = false;

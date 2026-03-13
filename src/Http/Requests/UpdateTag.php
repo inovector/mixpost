@@ -15,7 +15,7 @@ class UpdateTag extends FormRequest
         return [
             'action' => ['required', Rule::in(['name', 'color'])],
             'name' => [Rule::requiredIf($this->input('action') === 'name'), 'string', 'max:255'],
-            'hex_color' => [Rule::requiredIf($this->input('action') === 'color'), new HexRule()],
+            'hex_color' => [Rule::requiredIf($this->input('action') === 'color'), new HexRule],
         ];
     }
 

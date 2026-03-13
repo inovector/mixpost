@@ -11,12 +11,6 @@ use Inovector\Mixpost\Http\Controllers\CalendarController;
 use Inovector\Mixpost\Http\Controllers\CallbackSocialProviderController;
 use Inovector\Mixpost\Http\Controllers\CreateMastodonAppController;
 use Inovector\Mixpost\Http\Controllers\DashboardController;
-use Inovector\Mixpost\Http\Controllers\SystemLogsController;
-use Inovector\Mixpost\Http\Controllers\SystemStatusController;
-use Inovector\Mixpost\Http\Controllers\UpdateAuthUserController;
-use Inovector\Mixpost\Http\Controllers\UpdateAuthUserPasswordController;
-use Inovector\Mixpost\Http\Controllers\ProfileController;
-use Inovector\Mixpost\Http\Controllers\ReportsController;
 use Inovector\Mixpost\Http\Controllers\DeletePostsController;
 use Inovector\Mixpost\Http\Controllers\DuplicatePostController;
 use Inovector\Mixpost\Http\Controllers\MediaController;
@@ -26,17 +20,23 @@ use Inovector\Mixpost\Http\Controllers\MediaFetchStockController;
 use Inovector\Mixpost\Http\Controllers\MediaFetchUploadsController;
 use Inovector\Mixpost\Http\Controllers\MediaUploadFileController;
 use Inovector\Mixpost\Http\Controllers\PostsController;
+use Inovector\Mixpost\Http\Controllers\ProfileController;
+use Inovector\Mixpost\Http\Controllers\ReportsController;
 use Inovector\Mixpost\Http\Controllers\SchedulePostController;
 use Inovector\Mixpost\Http\Controllers\ServicesController;
 use Inovector\Mixpost\Http\Controllers\SettingsController;
+use Inovector\Mixpost\Http\Controllers\SystemLogsController;
+use Inovector\Mixpost\Http\Controllers\SystemStatusController;
 use Inovector\Mixpost\Http\Controllers\TagsController;
+use Inovector\Mixpost\Http\Controllers\UpdateAuthUserController;
+use Inovector\Mixpost\Http\Controllers\UpdateAuthUserPasswordController;
 use Inovector\Mixpost\Http\Middleware\Auth as MixpostAuthMiddleware;
 use Inovector\Mixpost\Http\Middleware\HandleInertiaRequests;
 
 Route::middleware([
     'web',
     MixpostAuthMiddleware::class,
-    HandleInertiaRequests::class
+    HandleInertiaRequests::class,
 ])->prefix('mixpost')
     ->name('mixpost.')
     ->group(function () {
@@ -121,6 +121,7 @@ Route::middleware([
 
         Route::get('refresh-csrf-token', function (Request $request) {
             $request->session()->regenerateToken();
+
             return response(Config::get('app.name'));
         })->name('refreshCsrfToken');
 

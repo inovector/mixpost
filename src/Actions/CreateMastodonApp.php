@@ -2,8 +2,8 @@
 
 namespace Inovector\Mixpost\Actions;
 
-use Illuminate\Support\Facades\Http;
 use Exception;
+use Illuminate\Support\Facades\Http;
 
 class CreateMastodonApp
 {
@@ -15,16 +15,16 @@ class CreateMastodonApp
             $configuration = Http::post("https:/$serverName/api/v1/apps", [
                 'client_name' => config('app.name'),
                 'redirect_uris' => route('mixpost.callbackSocialProvider', ['provider' => 'mastodon']),
-                'scopes' => 'read write'
+                'scopes' => 'read write',
             ])->json();
 
             if (isset($configuration['error'])) {
                 return [
-                    'error' => $configuration['error']
+                    'error' => $configuration['error'],
                 ];
             }
 
-            (new UpdateOrCreateService())(
+            (new UpdateOrCreateService)(
                 name: $serviceName,
                 configuration: $configuration,
                 active: true
@@ -33,7 +33,7 @@ class CreateMastodonApp
             return $configuration;
         } catch (Exception $exception) {
             return [
-                'error' => 'This Mastodon server is not responding or does not exist.'
+                'error' => 'This Mastodon server is not responding or does not exist.',
             ];
         }
     }

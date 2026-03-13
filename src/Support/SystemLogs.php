@@ -29,7 +29,7 @@ class SystemLogs
                     'PB',
                     'EB',
                     'ZB',
-                    'YB'
+                    'YB',
                 ];
 
                 $i = 0;
@@ -39,7 +39,7 @@ class SystemLogs
                     $i++;
                 }
 
-                $error = sprintf('Warning: Error log file %s is %s!', $filename, round(substr($size, 0, strpos($size, '.') + 4), 2) . $suffix[$i]);
+                $error = sprintf('Warning: Error log file %s is %s!', $filename, round(substr($size, 0, strpos($size, '.') + 4), 2).$suffix[$i]);
             }
 
             $handle = fopen($file, 'r+');
@@ -47,7 +47,7 @@ class SystemLogs
             $logs[] = [
                 'name' => $filename,
                 'contents' => fread($handle, 3145728),
-                'error' => $error
+                'error' => $error,
             ];
 
             fclose($handle);
@@ -63,12 +63,12 @@ class SystemLogs
 
     public function getFilePath(string $name): string
     {
-        return $this->basePathForLogs() . $name;
+        return $this->basePathForLogs().$name;
     }
 
     protected function getFilePaths(): bool|array
     {
-        $files = glob($this->basePathForLogs() . '*.log');
+        $files = glob($this->basePathForLogs().'*.log');
 
         $files = array_map('realpath', $files);
 
