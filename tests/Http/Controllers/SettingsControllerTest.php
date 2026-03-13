@@ -1,8 +1,8 @@
 <?php
 
 use Inovector\Mixpost\Facades\Settings;
-use Inovector\Mixpost\Models\User;
 use Inovector\Mixpost\Models\Setting;
+use Inovector\Mixpost\Models\User;
 
 beforeEach(function () {
     test()->user = User::factory()->create();
@@ -15,7 +15,7 @@ it('can update the settings', function () {
         'timezone' => 'Europe/Chisinau',
         'time_format' => 12,
         'week_starts_on' => 1,
-        'admin_email' => 'test@mail.com'
+        'admin_email' => 'test@mail.com',
     ];
 
     $this->putJson(route('mixpost.settings.update'), $data)->assertStatus(302);
@@ -37,4 +37,3 @@ it('can show validation on update the settings', function () {
 it('can prevent unauthorized users to update the settings', function () {
     $this->putJson(route('mixpost.settings.update'))->assertUnauthorized();
 });
-

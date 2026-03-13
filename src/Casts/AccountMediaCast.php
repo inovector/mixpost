@@ -13,13 +13,13 @@ class AccountMediaCast implements CastsAttributes
 
     public function set($model, string $key, $value, array $attributes)
     {
-        if (!isset($value['disk']) && !isset($value['path'])) {
+        if (! isset($value['disk']) && ! isset($value['path'])) {
             return null;
         }
 
         return json_encode([
             'disk' => $value['disk'],
-            'path' => $value['path']
+            'path' => $value['path'],
         ]);
     }
 }

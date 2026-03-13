@@ -2,10 +2,10 @@
 
 use Illuminate\Support\HtmlString;
 
-if (!function_exists('mixpostAssets')) {
+if (! function_exists('mixpostAssets')) {
     function mixpostAssets(): HtmlString
     {
-        $hot = __DIR__ . '/../resources/dist/hot';
+        $hot = __DIR__.'/../resources/dist/hot';
 
         $devServerIsRunning = file_exists($hot);
 
@@ -21,8 +21,8 @@ if (!function_exists('mixpostAssets')) {
 
         $manifestPath = public_path('vendor/mixpost/manifest.json');
 
-        if (!file_exists($manifestPath)) {
-            return new HtmlString(<<<HTML
+        if (! file_exists($manifestPath)) {
+            return new HtmlString(<<<'HTML'
                 <div>The manifest.json file could not be found.</div>
             HTML
             );

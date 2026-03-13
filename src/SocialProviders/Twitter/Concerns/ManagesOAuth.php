@@ -8,7 +8,7 @@ trait ManagesOAuth
     {
         $result = $this->connection->oauth('oauth/request_token', [
             'x_auth_access_type' => 'write',
-            'oauth_callback' => $this->redirectUrl
+            'oauth_callback' => $this->redirectUrl,
         ]);
 
         return $this->connection->url('oauth/authorize', ['oauth_token' => $result['oauth_token']]);
@@ -20,7 +20,7 @@ trait ManagesOAuth
 
         return [
             'oauth_token' => $result['oauth_token'],
-            'oauth_token_secret' => $result['oauth_token_secret']
+            'oauth_token_secret' => $result['oauth_token_secret'],
         ];
     }
 

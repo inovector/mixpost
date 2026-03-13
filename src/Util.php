@@ -31,7 +31,7 @@ class Util
 
     public static function dateTimeFormat(Carbon $datetime, DateTimeZone|string|null $tz = null): string
     {
-        $format = $datetime->year === now($tz)->year ? 'M j, ' . self::timeFormat() : 'M j, Y, ' . self::timeFormat();
+        $format = $datetime->year === now($tz)->year ? 'M j, '.self::timeFormat() : 'M j, Y, '.self::timeFormat();
 
         return $datetime->tz($tz ?: Settings::get('timezone'))->translatedFormat($format);
     }
@@ -43,7 +43,7 @@ class Util
 
     public static function removeHtmlTags($string): string
     {
-        if (!$string) {
+        if (! $string) {
             return '';
         }
 
@@ -81,7 +81,7 @@ class Util
     {
         $key = is_null($connection) ? Config::get('database.default') : $connection;
 
-        return strtolower(Config::get('database.connections.' . $key . '.driver'));
+        return strtolower(Config::get('database.connections.'.$key.'.driver'));
     }
 
     public static function isMysqlDatabase(?string $connection = null): bool
@@ -117,7 +117,7 @@ class Util
             // Increase delay for the next iteration, maxing out at maxDelay
             $delay = min($delay * 2, $maxDelay);
             // Add a random jitter to the delay
-            $delay += rand(-(int)($delay * 0.1), (int)($delay * 0.1));
+            $delay += rand(-(int) ($delay * 0.1), (int) ($delay * 0.1));
 
             $attempt++;
         }

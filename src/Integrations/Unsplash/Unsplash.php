@@ -10,13 +10,14 @@ use Inovector\Mixpost\Util;
 class Unsplash
 {
     protected string $clientId;
+
     protected string $endpointUrl = 'https://api.unsplash.com';
 
     public function __construct()
     {
         $clientId = UnsplashService::getConfiguration('client_id');
 
-        if (!$clientId) {
+        if (! $clientId) {
             throw new \Exception('Unsplash is not configured.');
         }
 

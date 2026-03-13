@@ -2,13 +2,13 @@
 
 namespace Inovector\Mixpost\Abstracts;
 
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Inovector\Mixpost\Concerns\UsesSocialProviderResponse;
 use Inovector\Mixpost\Contracts\SocialProvider as SocialProviderContract;
-use Exception;
 use Inovector\Mixpost\Models\Account;
 
 abstract class SocialProvider implements SocialProviderContract
@@ -22,11 +22,15 @@ abstract class SocialProvider implements SocialProviderContract
     public bool $onlyUserAccount = true;
 
     public array $callbackResponseKeys = [];
+
     protected array $accessToken = [];
 
     protected Request $request;
+
     protected string $clientId = '';
+
     protected string $clientSecret = '';
+
     protected string $redirectUrl;
 
     protected array $values = [];
@@ -76,13 +80,13 @@ abstract class SocialProvider implements SocialProviderContract
 
     public function getAccessToken()
     {
-        if (!empty($this->accessToken)) {
+        if (! empty($this->accessToken)) {
             return $this->accessToken;
         }
 
         $token = $this->request->session()->get(self::ACCESS_TOKEN_SESSION_NAME);
 
-        if (!$token) {
+        if (! $token) {
             throw new Exception('Missing Access Token.');
         }
 
@@ -131,7 +135,7 @@ abstract class SocialProvider implements SocialProviderContract
 
     public function buildUrlFromBase(string $url, array $params): string
     {
-        return $url . '?' . http_build_query($params, '', '&');
+        return $url.'?'.http_build_query($params, '', '&');
     }
 
     public function rateLimitExceedContext(int $retryAfter, ?string $customText = null): array
@@ -142,7 +146,7 @@ abstract class SocialProvider implements SocialProviderContract
         return [
             'rate_limit_exceed' => true,
             'message' => $customText ?? $defaultText,
-            'next_attempt_at' => $date
+            'next_attempt_at' => $date,
         ];
     }
 }

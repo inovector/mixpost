@@ -16,7 +16,7 @@ class PruneTemporaryDirectory extends Command
     {
         $temporaryDirectory = MediaTemporaryDirectory::getParentTemporaryDirectoryPath();
 
-        if (!is_dir($temporaryDirectory)) {
+        if (! is_dir($temporaryDirectory)) {
             return self::SUCCESS;
         }
 
@@ -32,9 +32,9 @@ class PruneTemporaryDirectory extends Command
                 continue;
             }
 
-            $path = $temporaryDirectory . DIRECTORY_SEPARATOR . $directory;
+            $path = $temporaryDirectory.DIRECTORY_SEPARATOR.$directory;
 
-            $diff = (int)abs(Carbon::now()->diffInHours(Carbon::createFromTimestamp(filemtime($path))));
+            $diff = (int) abs(Carbon::now()->diffInHours(Carbon::createFromTimestamp(filemtime($path))));
 
             if ($diff >= $this->option('hours')) {
                 exec("rm -rf $path");

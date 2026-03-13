@@ -9,24 +9,7 @@ beforeEach(function () {
     test()->user = User::factory()->create();
 });
 
-it("will delete posts and redirect back", function () {
-    $this->actingAs(test()->user);
-
-    $posts = Post::factory()->count(5)->create();
-
-    $countPostsBeforeDelete = Post::count();
-
-    $this->delete(route('mixpost.posts.multipleDelete'), [
-        'posts' => $posts->pluck('uuid')
-    ])->assertRedirect(url('/'));
-
-    $countPostsAfterDelete = Post::count();
-
-    expect($countPostsBeforeDelete)->toBe(5)
-        ->and($countPostsAfterDelete)->toBe(0);
-});
-
-it("will delete posts and redirect to posts page", function () {
+it('will delete posts and redirect back', function () {
     $this->actingAs(test()->user);
 
     $posts = Post::factory()->count(5)->create();
@@ -35,7 +18,24 @@ it("will delete posts and redirect to posts page", function () {
 
     $this->delete(route('mixpost.posts.multipleDelete'), [
         'posts' => $posts->pluck('uuid'),
-        'status' => Str::lower(PostStatus::FAILED->name)
+    ])->assertRedirect(url('/'));
+
+    $countPostsAfterDelete = Post::count();
+
+    expect($countPostsBeforeDelete)->toBe(5)
+        ->and($countPostsAfterDelete)->toBe(0);
+});
+
+it('will delete posts and redirect to posts page', function () {
+    $this->actingAs(test()->user);
+
+    $posts = Post::factory()->count(5)->create();
+
+    $countPostsBeforeDelete = Post::count();
+
+    $this->delete(route('mixpost.posts.multipleDelete'), [
+        'posts' => $posts->pluck('uuid'),
+        'status' => Str::lower(PostStatus::FAILED->name),
     ])->assertRedirectToRoute('mixpost.posts.index');
 
     $countPostsAfterDelete = Post::count();

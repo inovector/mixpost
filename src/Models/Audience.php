@@ -18,7 +18,7 @@ class Audience extends Model
     ];
 
     protected $casts = [
-        'date' => 'date'
+        'date' => 'date',
     ];
 
     public $timestamps = false;

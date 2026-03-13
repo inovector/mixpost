@@ -15,7 +15,7 @@ class FacebookPageReports extends Report
     {
         return [
             'metrics' => $this->metrics($account, $period),
-            'audience' => $this->audience($account, $period)
+            'audience' => $this->audience($account, $period),
         ];
     }
 
@@ -30,9 +30,9 @@ class FacebookPageReports extends Report
             ->get();
 
         return [
-//            'page_engaged_users' => $reports->where('type', FacebookInsightType::PAGE_ENGAGED_USERS)->value('total', 0), Facebook deprecated `page_engaged_users` metric
+            //            'page_engaged_users' => $reports->where('type', FacebookInsightType::PAGE_ENGAGED_USERS)->value('total', 0), Facebook deprecated `page_engaged_users` metric
             'page_post_engagements' => $reports->where('type', FacebookInsightType::PAGE_POST_ENGAGEMENTS)->value('total', 0),
-            'page_posts_impressions' => $reports->where('type', FacebookInsightType::PAGE_POSTS_IMPRESSIONS)->value('total', 0)
+            'page_posts_impressions' => $reports->where('type', FacebookInsightType::PAGE_POSTS_IMPRESSIONS)->value('total', 0),
         ];
     }
 }

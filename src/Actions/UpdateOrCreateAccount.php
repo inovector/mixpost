@@ -15,7 +15,7 @@ class UpdateOrCreateAccount
         $account = Account::updateOrCreate(
             [
                 'provider' => $providerName,
-                'provider_id' => $account['id']
+                'provider_id' => $account['id'],
             ],
             [
                 'name' => $account['name'],
@@ -32,15 +32,15 @@ class UpdateOrCreateAccount
         }
     }
 
-    protected function media(string|null $imageUrl, string $providerName): array|null
+    protected function media(?string $imageUrl, string $providerName): ?array
     {
-        if (!$imageUrl) {
+        if (! $imageUrl) {
             return null;
         }
 
         $info = pathinfo($imageUrl);
         $contents = file_get_contents($imageUrl);
-        $file = '/tmp/' . Str::random(32);
+        $file = '/tmp/'.Str::random(32);
         file_put_contents($file, $contents);
 
         $file = new UploadedFile($file, $info['basename']);
@@ -50,7 +50,7 @@ class UpdateOrCreateAccount
 
         return [
             'disk' => $upload['disk'],
-            'path' => $upload['path']
+            'path' => $upload['path'],
         ];
     }
 }

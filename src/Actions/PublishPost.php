@@ -25,6 +25,7 @@ class PublishPost
             ->finally(function () use ($post) {
                 if ($post->hasErrors()) {
                     $post->setFailed();
+
                     return;
                 }
 

@@ -2,11 +2,11 @@
 
 namespace Inovector\Mixpost\SocialProviders\Twitter\Concerns;
 
+use Exception;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Inovector\Mixpost\Enums\SocialProviderResponseStatus;
 use Inovector\Mixpost\Support\SocialProviderResponse;
-use Exception;
 
 trait ManagesResources
 {
@@ -19,7 +19,7 @@ trait ManagesResources
                 'id' => $response->data->id,
                 'name' => $response->data->name,
                 'username' => $response->data->username,
-                'image' => str_replace('normal', '400x400', $response->data->profile_image_url)
+                'image' => str_replace('normal', '400x400', $response->data->profile_image_url),
             ];
         });
     }
@@ -32,7 +32,7 @@ trait ManagesResources
             return $this->response(SocialProviderResponseStatus::ERROR, [$exception->getMessage()]);
         }
 
-        if (!empty($mediaResult['errors'])) {
+        if (! empty($mediaResult['errors'])) {
             return $this->response(SocialProviderResponseStatus::ERROR, $mediaResult['errors']);
         }
 
@@ -48,15 +48,23 @@ trait ManagesResources
 
         $postParameters = ['status' => $text];
 
-        if (!empty($mediaResult['ids'])) {
+        if (! empty($mediaResult['ids'])) {
             $postParameters['media_ids'] = implode(',', $mediaResult['ids']);
         }
 
         $postResult = $this->connection->post('statuses/update', $postParameters);
 
+        $httpCode = $this->connection->getLastHttpCode();
+
+        if ($httpCode !== 201) {
+            $error = $postResult->errors[0]->message ?? (json_encode($postResult) ?: 'An error occurred while creating the post.');
+
+            return $this->response(SocialProviderResponseStatus::ERROR, [$error]);
+        }
+
         return $this->buildResponse($postResult, function () use ($postResult) {
             return [
-                'id' => $postResult->id
+                'id' => $postResult->id,
             ];
         });
     }
@@ -67,15 +75,24 @@ trait ManagesResources
 
         $postParameters = ['text' => $text];
 
-        if (!empty($mediaResult['ids'])) {
+        if (! empty($mediaResult['ids'])) {
             $postParameters['media']['media_ids'] = $mediaResult['ids'];
         }
 
         $postResult = $this->connection->post('tweets', $postParameters, ['jsonPayload' => true]);
 
+        if ($this->connection->getLastHttpCode() !== 201) {
+            $title = $postResult->title ?? '';
+            $detail = $postResult->detail ?? '';
+
+            $error = (trim("$title: $detail") ?: 'An error occurred while creating the post.');
+
+            return $this->response(SocialProviderResponseStatus::ERROR, [$error]);
+        }
+
         return $this->buildResponse($postResult, function () use ($postResult) {
             return [
-                'id' => $postResult->data->id
+                'id' => $postResult->data->id,
             ];
         });
     }
@@ -90,7 +107,7 @@ trait ManagesResources
         foreach ($media as $item) {
             $chunkUpload = $item->isVideo() || $item->isImageGif();
 
-            if (!$chunkUpload) {
+            if (! $chunkUpload) {
                 $result = $this->connection->upload('media/upload', [
                     'media' => $item->isLocalAdapter() ? $item->getFullPath() : $item->getUrl(),
                     'media_type' => $item->mime_type,
@@ -117,8 +134,9 @@ trait ManagesResources
                 }
             }
 
-            if (!$result) {
+            if (! $result) {
                 $errors[] = $result;
+
                 continue;
             }
 
@@ -139,6 +157,7 @@ trait ManagesResources
 
                 if ($state === 'failed') {
                     $errors[] = "Failed to upload {$item['name']} file.";
+
                     continue;
                 }
             }
@@ -148,7 +167,7 @@ trait ManagesResources
 
         return [
             'ids' => $ids,
-            'errors' => $errors
+            'errors' => $errors,
         ];
     }
 
@@ -172,7 +191,7 @@ trait ManagesResources
             'tweet.fields' => 'public_metrics,created_at,in_reply_to_user_id',
             'start_time' => Carbon::now('UTC')->subMonths(3)->startOfDay()->toRfc3339String(),
             'exclude' => 'retweets,replies',
-            'max_results' => 100
+            'max_results' => 100,
         ];
 
         if ($paginationToken) {

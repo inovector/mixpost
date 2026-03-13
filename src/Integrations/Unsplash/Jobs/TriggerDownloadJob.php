@@ -16,9 +16,7 @@ class TriggerDownloadJob implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public function __construct(public readonly string $downloadLocation)
-    {
-    }
+    public function __construct(public readonly string $downloadLocation) {}
 
     public function handle(Unsplash $unsplash): void
     {

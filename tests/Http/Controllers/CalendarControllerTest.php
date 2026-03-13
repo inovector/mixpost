@@ -35,13 +35,13 @@ test('calendar page - Month type', function () {
         ->count(5)
         ->state([
             'status' => PostStatus::SCHEDULED,
-            'schedule_status' => PostScheduleStatus::PENDING
+            'schedule_status' => PostScheduleStatus::PENDING,
         ])
         ->withScheduledAtBetweenDates(Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth())
         ->create();
 
     $this->get(route('mixpost.calendar'))
-        ->assertInertia(fn(Assert $page) => $page
+        ->assertInertia(fn (Assert $page) => $page
             ->component('Calendar')
             ->has('accounts', 3)
             ->has('tags', 4)
@@ -68,7 +68,7 @@ test('calendar page - Week type', function () {
         ->count(5)
         ->state([
             'status' => PostStatus::SCHEDULED,
-            'schedule_status' => PostScheduleStatus::PENDING
+            'schedule_status' => PostScheduleStatus::PENDING,
         ])
         ->withScheduledAtBetweenDates(Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek())
         ->create();
@@ -76,7 +76,7 @@ test('calendar page - Week type', function () {
     $today = Carbon::now()->tz(Settings::get('timezone'))->toDateString();
 
     $this->get(route('mixpost.calendar', ['date' => $today, 'type' => 'week']))
-        ->assertInertia(fn(Assert $page) => $page
+        ->assertInertia(fn (Assert $page) => $page
             ->component('Calendar')
             ->has('accounts', 3)
             ->has('tags', 4)

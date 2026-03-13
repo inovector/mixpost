@@ -58,7 +58,7 @@ class TimezoneList
         $list = [];
 
         // Do not split group
-        if (!$this->splitGroup) {
+        if (! $this->splitGroup) {
             if ($this->includeGeneral) {
                 foreach ($this->generalTimezones as $timezone) {
                     $list[$timezone] = $timezone;
@@ -94,18 +94,18 @@ class TimezoneList
         return $list;
     }
 
-    protected function formatTimezone(string $timezone, null|string $cutOffContinent = null): string
+    protected function formatTimezone(string $timezone, ?string $cutOffContinent = null): string
     {
         $displayedTimezone = empty($cutOffContinent) ? $timezone : substr($timezone, strlen($cutOffContinent) + 1);
         $normalizedTimezone = $this->normalizeTimezone($displayedTimezone);
 
-        if (!$this->showOffset) {
+        if (! $this->showOffset) {
             return $normalizedTimezone;
         }
 
         $separator = $this->normalizeSeparator();
 
-        return '(' . $this->offsetPrefix . $this->getOffset($timezone) . ')' . $separator . $normalizedTimezone;
+        return '('.$this->offsetPrefix.$this->getOffset($timezone).')'.$separator.$normalizedTimezone;
     }
 
     protected function normalizeTimezone(string $timezone): string

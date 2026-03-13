@@ -20,6 +20,6 @@ class MediaTemporaryDirectory
 
     public static function getTemporaryDirectoryPath(): string
     {
-        return self::getParentTemporaryDirectoryPath() . DIRECTORY_SEPARATOR . Str::random(32);
+        return self::getParentTemporaryDirectoryPath().DIRECTORY_SEPARATOR.Str::random(32);
     }
 }

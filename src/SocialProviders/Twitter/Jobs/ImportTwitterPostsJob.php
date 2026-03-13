@@ -21,15 +21,15 @@ use Inovector\Mixpost\SocialProviders\Twitter\TwitterProvider;
 class ImportTwitterPostsJob implements ShouldQueue
 {
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-    use UsesSocialProviderManager;
     use HasSocialProviderJobRateLimit;
-    use SocialProviderJobFail;
     use SocialProviderException;
+    use SocialProviderJobFail;
+    use UsesSocialProviderManager;
 
     public $deleteWhenMissingModels = true;
 
     public Account $account;
+
     public array $params;
 
     public function __construct(Account $account, array $params = [])
@@ -44,7 +44,7 @@ class ImportTwitterPostsJob implements ShouldQueue
             return;
         }
 
-        if (!$this->account->isServiceActive()) {
+        if (! $this->account->isServiceActive()) {
             return;
         }
 
@@ -111,7 +111,7 @@ class ImportTwitterPostsJob implements ShouldQueue
                     'replies' => $item->public_metrics->reply_count ?? 0,
                     'retweets' => $item->public_metrics->retweet_count ?? 0,
                 ]),
-                'created_at' => Carbon::parse($item->created_at, 'UTC')->toDateTimeString()
+                'created_at' => Carbon::parse($item->created_at, 'UTC')->toDateTimeString(),
             ];
         });
 

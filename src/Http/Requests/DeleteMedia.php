@@ -11,7 +11,7 @@ class DeleteMedia extends FormRequest
     public function rules(): array
     {
         return [
-            'items' => ['required', 'array']
+            'items' => ['required', 'array'],
         ];
     }
 
@@ -20,7 +20,7 @@ class DeleteMedia extends FormRequest
         foreach ($this->input('items') as $id) {
             $media = Media::find($id);
 
-            if (!$media) {
+            if (! $media) {
                 continue;
             }
 

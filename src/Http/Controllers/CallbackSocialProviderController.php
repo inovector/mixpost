@@ -23,7 +23,7 @@ class CallbackSocialProviderController extends Controller
             return redirect()->route('mixpost.accounts.index')->with('error', $error);
         }
 
-        if (!$provider->isOnlyUserAccount()) {
+        if (! $provider->isOnlyUserAccount()) {
             return redirect()->route('mixpost.accounts.entities.index', ['provider' => $providerName])
                 ->with('mixpost_callback_response', $provider->getCallbackResponse());
         }

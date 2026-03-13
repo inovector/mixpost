@@ -2,13 +2,13 @@
 
 namespace Inovector\Mixpost\Models;
 
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 use Inovector\Mixpost\Concerns\Model\HasUuid;
 use Inovector\Mixpost\Enums\PostScheduleStatus;
 use Inovector\Mixpost\Enums\PostStatus;
@@ -24,7 +24,7 @@ class Post extends Model
     protected $fillable = [
         'status',
         'scheduled_at',
-        'published_at'
+        'published_at',
     ];
 
     protected $casts = [
@@ -37,14 +37,14 @@ class Post extends Model
     protected function scheduledAt(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => $this->attributes['scheduled_at'] ? Carbon::parse($this->attributes['scheduled_at'])->shiftTimezone('UTC') : null,
+            get: fn ($value) => $this->attributes['scheduled_at'] ? Carbon::parse($this->attributes['scheduled_at'])->shiftTimezone('UTC') : null,
         );
     }
 
     protected function publishedAt(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => $this->attributes['published_at'] ? Carbon::parse($this->attributes['published_at'])->shiftTimezone('UTC') : null,
+            get: fn ($value) => $this->attributes['published_at'] ? Carbon::parse($this->attributes['published_at'])->shiftTimezone('UTC') : null,
         );
     }
 
@@ -84,7 +84,7 @@ class Post extends Model
     public function canSchedule(): bool
     {
         // TODO: check if original content is not empty
-        return $this->scheduled_at && !$this->scheduled_at->isPast() && $this->accounts()->exists();
+        return $this->scheduled_at && ! $this->scheduled_at->isPast() && $this->accounts()->exists();
     }
 
     public function isScheduled(): bool
@@ -165,7 +165,7 @@ class Post extends Model
     public function insertErrors(Account $account, $errors): void
     {
         $this->accounts()->updateExistingPivot($account->id, [
-            'errors' => json_encode($errors)
+            'errors' => json_encode($errors),
         ]);
     }
 }

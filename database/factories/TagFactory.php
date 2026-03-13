@@ -15,7 +15,7 @@ class TagFactory extends Factory
         return [
             'uuid' => $this->faker->uuid(),
             'name' => $this->faker->domainName,
-            'hex_color' => Str::after($this->faker->hexColor, '#')
+            'hex_color' => Str::after($this->faker->hexColor, '#'),
         ];
     }
 }

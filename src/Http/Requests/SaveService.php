@@ -18,6 +18,7 @@ class SaveService extends FormRequest
         $formRules = $this->service()::formRules();
         $modifiedFormRules = array_reduce(array_keys($formRules), function ($carry, $key) use ($formRules) {
             $carry["configuration.$key"] = $formRules[$key];
+
             return $carry;
         }, []);
 
@@ -33,7 +34,7 @@ class SaveService extends FormRequest
             return $this->input("configuration.$key");
         });
 
-        (new UpdateOrCreateService())(
+        (new UpdateOrCreateService)(
             name: $this->route('service'),
             configuration: $configuration,
             active: $this->input('active', false)
@@ -46,6 +47,7 @@ class SaveService extends FormRequest
 
         return array_reduce(array_keys($formMessages), function ($carry, $key) use ($formMessages) {
             $carry["configuration.$key"] = $formMessages[$key];
+
             return $carry;
         }, []);
     }

@@ -13,7 +13,7 @@ class StoreTag extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'hex_color' => ['required', new HexRule()]
+            'hex_color' => ['required', new HexRule],
         ];
     }
 

@@ -18,7 +18,7 @@ trait MetaOauth
 
         if (isset($response['error'])) {
             return [
-                'error' => $response['error']['message']
+                'error' => $response['error']['message'],
             ];
         }
 
@@ -31,7 +31,7 @@ trait MetaOauth
             'grant_type' => 'fb_exchange_token',
             'client_id' => $this->clientId,
             'client_secret' => $this->clientSecret,
-            'fb_exchange_token' => $shortLivedAccessToken ?: $this->getAccessToken()['access_token']
+            'fb_exchange_token' => $shortLivedAccessToken ?: $this->getAccessToken()['access_token'],
         ];
 
         return $this->getHttpClient()::post("$this->apiUrl/$this->apiVersion/oauth/access_token", $params)->json();

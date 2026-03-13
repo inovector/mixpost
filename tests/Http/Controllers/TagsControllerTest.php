@@ -1,8 +1,9 @@
 <?php
 
-use function Pest\Faker\fake;
-use Inovector\Mixpost\Models\User;
 use Inovector\Mixpost\Models\Tag;
+use Inovector\Mixpost\Models\User;
+
+use function Pest\Faker\fake;
 
 beforeEach(function () {
     test()->user = User::factory()->create();
@@ -13,7 +14,7 @@ it('can store a tag', function () {
 
     $this->post(route('mixpost.tags.store'), [
         'name' => 'Test',
-        'hex_color' => fake()->hexColor
+        'hex_color' => fake()->hexColor,
     ])->assertStatus(302);
 
     expect(Tag::where('name', 'Test')->first() !== null)->toBeTrue();
@@ -57,7 +58,7 @@ it('can show validation on update a tag', function () {
     $this->actingAs(test()->user);
 
     $response = $this->putJson(route('mixpost.tags.update', ['tag' => $tag]), [
-        'action' => 'name'
+        'action' => 'name',
     ]);
 
     $response->assertStatus(422)

@@ -9,19 +9,18 @@ beforeEach(function () {
     test()->user = User::factory()->create();
 });
 
-
-it("shows validation error", function () {
+it('shows validation error', function () {
     $this->actingAs(test()->user);
 
     $this->postJson(route('mixpost.media.download'), [
-        'items' => [[]]
+        'items' => [[]],
     ])->assertUnprocessable()->assertJsonValidationErrors([
         'items',
-        'from'
+        'from',
     ]);
 });
 
-it("will not download media from internal url", function () {
+it('will not download media from internal url', function () {
     $this->actingAs(test()->user);
 
     $this->postJson(route('mixpost.media.download'), [
@@ -31,14 +30,14 @@ it("will not download media from internal url", function () {
                 'id' => '123',
                 'url' => 'http://localhost:8000',
                 'download_data' => [
-                    'download_location' => 'https://publicdomain.example/image.jpg?download=1'
-                ]
-            ]
-        ]
+                    'download_location' => 'https://publicdomain.example/image.jpg?download=1',
+                ],
+            ],
+        ],
     ])->assertUnprocessable();
 });
 
-it("will start to download media file", function () {
+it('will start to download media file', function () {
     $this->actingAs(test()->user);
 
     Queue::fake();
@@ -54,10 +53,10 @@ it("will start to download media file", function () {
                 'id' => '123',
                 'url' => $url,
                 'download_data' => [
-                    'download_location' => $downloadLocation
-                ]
-            ]
-        ]
+                    'download_location' => $downloadLocation,
+                ],
+            ],
+        ],
     ])->assertOk();
 
     Http::assertSent(function ($request) use ($url) {

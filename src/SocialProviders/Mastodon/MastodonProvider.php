@@ -13,13 +13,14 @@ use Inovector\Mixpost\Util;
 
 class MastodonProvider extends SocialProvider
 {
-    use ManagesRateLimit;
     use ManagesOAuth;
+    use ManagesRateLimit;
     use ManagesResources;
 
     public array $callbackResponseKeys = ['code'];
 
     protected string $apiVersion = 'v1';
+
     protected string $serverUrl;
 
     public function __construct(Request $request, string $clientId, string $clientSecret, string $redirectUrl, array $values = [])

@@ -13,7 +13,7 @@ class SchedulePost extends FormRequest
     public function rules(): array
     {
         return [
-            'postNow' => ['required', 'boolean']
+            'postNow' => ['required', 'boolean'],
         ];
     }
 
@@ -36,7 +36,7 @@ class SchedulePost extends FormRequest
                 $this->post->setAttribute('scheduled_at', Carbon::now()->utc()->addMinute());
             }
 
-            if (!$this->post->canSchedule()) {
+            if (! $this->post->canSchedule()) {
                 $validator->errors()->add('cannot_scheduled', "This post cannot be scheduled!\nThe date is in the past.");
             }
         });

@@ -2,8 +2,8 @@
 
 use Inertia\Testing\AssertableInertia as Assert;
 use Inovector\Mixpost\Facades\ServiceManager;
-use Inovector\Mixpost\Models\User;
 use Inovector\Mixpost\Models\Service;
+use Inovector\Mixpost\Models\User;
 
 beforeEach(function () {
     test()->user = User::factory()->create();
@@ -15,7 +15,7 @@ it('shows services page', function () {
     $this->publishAssets();
 
     $this->get(route('mixpost.services.index'))
-        ->assertInertia(fn(Assert $page) => $page
+        ->assertInertia(fn (Assert $page) => $page
             ->component('Services')
             ->where('services', ServiceManager::all())
         );
@@ -55,5 +55,3 @@ it('can show validation on update a service', function () {
 it('can prevent unauthorized users to update a service', function () {
     $this->putJson(route('mixpost.services.update', ['service' => 'service']))->assertUnauthorized();
 });
-
-

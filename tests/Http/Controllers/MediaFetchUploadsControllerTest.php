@@ -11,7 +11,7 @@ it('fetch uploaded media files', function () {
     $this->actingAs(test()->user);
 
     Media::factory()->count(10)->state([
-        'disk' => config('mixpost.disk')
+        'disk' => config('mixpost.disk'),
     ])->create();
 
     $response = $this->getJson(route('mixpost.media.fetchUploads'));
@@ -19,7 +19,7 @@ it('fetch uploaded media files', function () {
     $response->assertStatus(200);
 
     $response->assertJsonStructure([
-        'data'
+        'data',
     ]);
 
     expect(count($response->json('data')))->toBe(10);
@@ -29,7 +29,7 @@ it('fetch uploaded media files with pagination', function () {
     $this->actingAs(test()->user);
 
     Media::factory()->count(50)->state([
-        'disk' => config('mixpost.disk')
+        'disk' => config('mixpost.disk'),
     ])->create();
 
     $response = $this->getJson(route('mixpost.media.fetchUploads'));
@@ -39,9 +39,9 @@ it('fetch uploaded media files with pagination', function () {
     $response->assertJsonStructure([
         'data',
         'links',
-        'meta'
+        'meta',
     ]);
 
     expect(count($response->json('data')))->toBe(30)
-    ->and($response->json('links')['next'] !== null)->toBeTrue();
+        ->and($response->json('links')['next'] !== null)->toBeTrue();
 });

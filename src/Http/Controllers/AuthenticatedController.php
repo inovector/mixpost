@@ -4,8 +4,8 @@ namespace Inovector\Mixpost\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Request as RequestInertia;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Request as RequestInertia;
 use Inertia\Inertia;
 use Inovector\Mixpost\Concerns\UsesAuth;
 use Symfony\Component\HttpFoundation\Response;

@@ -11,11 +11,11 @@ class Setting extends Model
 
     protected $fillable = [
         'name',
-        'payload'
+        'payload',
     ];
 
     protected $casts = [
-        'payload' => 'array'
+        'payload' => 'array',
     ];
 
     public $timestamps = false;

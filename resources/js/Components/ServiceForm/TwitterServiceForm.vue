@@ -95,6 +95,7 @@ const save = () => {
             <Select v-model="form.configuration.tier"
                     :error="errors['configuration.tier'] !== undefined"
                     id="tier">
+                <option value="pay_as_you_go">Pay as you go (Recommended)</option>
                 <option value="legacy">Legacy</option>
                 <option value="free">Free</option>
                 <option value="basic">Basic</option>
