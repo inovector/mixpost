@@ -2,6 +2,12 @@
 
 All notable changes to `mixpost` will be documented in this file.
 
+## 2.6.0 - 2026-03-16
+
+**Added**
+
+- Support for the X pay-as-you-go tier
+
 ## 2.5.0 - 2026-02-24
 
 **Added**
