@@ -6,6 +6,7 @@ use Inovector\Mixpost\Abstracts\SocialProviderManager as SocialProviderManagerAb
 use Inovector\Mixpost\Facades\ServiceManager;
 use Inovector\Mixpost\SocialProviders\Mastodon\MastodonProvider;
 use Inovector\Mixpost\SocialProviders\Meta\FacebookPageProvider;
+use Inovector\Mixpost\SocialProviders\Pubky\PubkyProvider;
 use Inovector\Mixpost\SocialProviders\Twitter\TwitterProvider;
 
 class SocialProviderManager extends SocialProviderManagerAbstract
@@ -22,6 +23,7 @@ class SocialProviderManager extends SocialProviderManagerAbstract
             'twitter' => TwitterProvider::class,
             'facebook_page' => FacebookPageProvider::class,
             'mastodon' => MastodonProvider::class,
+            'pubky' => PubkyProvider::class,
         ];
     }
 
@@ -65,5 +67,29 @@ class SocialProviderManager extends SocialProviderManagerAbstract
         ];
 
         return $this->buildConnectionProvider(MastodonProvider::class, $config);
+    }
+
+    protected function connectPubkyProvider()
+    {
+        $request = $this->container->request;
+        $sessionHomeserverKey = "{$this->config->get('mixpost.cache_prefix')}.pubky_homeserver";
+
+        if ($request->route() && $request->route()->getName() === 'mixpost.accounts.add') {
+            $homeserver = $this->container->request->input('homeserver');
+            $request->session()->put($sessionHomeserverKey, $homeserver);
+        } elseif ($request->route() && $request->route()->getName() === 'mixpost.callbackSocialProvider') {
+            $homeserver = $request->session()->get($sessionHomeserverKey);
+        } else {
+            $homeserver = $this->values['data']['homeserver'];
+        }
+
+        $config = ServiceManager::get("pubky.$homeserver", 'configuration');
+
+        $config['redirect'] = route('mixpost.callbackSocialProvider', ['provider' => 'pubky']);
+        $config['values'] = [
+            'data' => ['homeserver' => $homeserver],
+        ];
+
+        return $this->buildConnectionProvider(PubkyProvider::class, $config);
     }
 }

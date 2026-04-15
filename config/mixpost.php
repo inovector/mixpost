@@ -122,5 +122,9 @@ return [
                 'allow_mixing' => false,
             ],
         ],
+        'pubky' => [
+            'simultaneous_posting_on_multiple_accounts' => true,
+            'post_character_limit' => 5000,
+        ],
     ],
 ];

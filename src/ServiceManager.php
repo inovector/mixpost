@@ -12,6 +12,7 @@ use Inovector\Mixpost\Collection\ServiceCollection;
 use Inovector\Mixpost\Exceptions\ServiceNotRegistered;
 use Inovector\Mixpost\Models\Service as ServiceModel;
 use Inovector\Mixpost\Services\FacebookService;
+use Inovector\Mixpost\Services\PubkyService;
 use Inovector\Mixpost\Services\TenorService;
 use Inovector\Mixpost\Services\TwitterService;
 use Inovector\Mixpost\Services\UnsplashService;
@@ -32,6 +33,7 @@ class ServiceManager
     {
         return [
             FacebookService::class,
+            PubkyService::class,
             TwitterService::class,
             UnsplashService::class,
             TenorService::class,
@@ -145,9 +147,12 @@ class ServiceManager
         // Mastodon configuration is stored during connection process.
         $isMastodon = Str::startsWith($name, 'mastodon.');
 
+        // Pubky service is not exists. Each Pubky homeserver has its own configuration.
+        $isPubky = Str::startsWith($name, 'pubky.');
+
         $defaultPayload = [
-            'configuration' => $isMastodon ? [] : $this->getServiceClass($name)::form(),
-            'active' => $isMastodon,
+            'configuration' => ($isMastodon || $isPubky) ? [] : $this->getServiceClass($name)::form(),
+            'active' => $isMastodon || $isPubky,
         ];
 
         $value = $this->getFromCache($name, function () use ($name, $defaultPayload) {
