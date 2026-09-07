@@ -12,7 +12,7 @@ class CreateMastodonApp
         $serviceName = "mastodon.$serverName";
 
         try {
-            $configuration = Http::post("https:/$serverName/api/v1/apps", [
+            $configuration = Http::post("https://$serverName/api/v1/apps", [
                 'client_name' => config('app.name'),
                 'redirect_uris' => route('mixpost.callbackSocialProvider', ['provider' => 'mastodon']),
                 'scopes' => 'read write',
