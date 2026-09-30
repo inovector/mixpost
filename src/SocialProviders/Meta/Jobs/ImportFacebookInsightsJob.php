@@ -54,41 +54,45 @@ class ImportFacebookInsightsJob implements ShouldQueue
             return;
         }
 
-        /**
-         * @see FacebookPageProvider
-         *
-         * @var SocialProviderResponse $response
-         */
-        $response = $this->connectProvider($this->account)->getPageInsights();
+        // One request per metric: Facebook rejects the whole request when a single metric is invalid
+        // (error #100), so a retired metric must not block the others.
+        foreach (FacebookPageProvider::PAGE_INSIGHT_METRICS as $metric) {
+            /**
+             * @see FacebookPageProvider
+             *
+             * @var SocialProviderResponse $response
+             */
+            $response = $this->connectProvider($this->account)->getPageInsights([$metric]);
 
-        if ($response->isUnauthorized()) {
-            $this->account->setUnauthorized();
-            $this->captureException($response);
+            if ($response->isUnauthorized()) {
+                $this->account->setUnauthorized();
+                $this->captureException($response);
 
-            return;
-        }
+                return;
+            }
 
-        if ($response->hasExceededRateLimit()) {
-            $this->storeRateLimitExceeded($response->retryAfter(), $response->isAppLevel());
-            $this->release($response->retryAfter());
+            if ($response->hasExceededRateLimit()) {
+                $this->storeRateLimitExceeded($response->retryAfter(), $response->isAppLevel());
+                $this->release($response->retryAfter());
 
-            return;
-        }
+                return;
+            }
 
-        if ($response->rateLimitAboutToBeExceeded()) {
-            $this->storeRateLimitExceeded($response->retryAfter(), $response->isAppLevel());
-        }
+            if ($response->rateLimitAboutToBeExceeded()) {
+                $this->storeRateLimitExceeded($response->retryAfter(), $response->isAppLevel());
+            }
 
-        if ($response->hasError()) {
-            $this->captureException($response);
+            if ($response->hasError()) {
+                $this->captureException($response);
 
-            return;
-        }
+                continue;
+            }
 
-        $insights = $response->context()['data'];
+            $insights = $response->context()['data'];
 
-        foreach ($insights as $insight) {
-            $this->importInsights(FacebookInsightType::fromName(Str::upper($insight['name'])), $insight['values']);
+            foreach ($insights as $insight) {
+                $this->importInsights(FacebookInsightType::fromName(Str::upper($insight['name'])), $insight['values']);
+            }
         }
     }
 

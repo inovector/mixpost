@@ -73,11 +73,17 @@ trait ManagesFacebookPageResources
         return $this->buildResponse($response);
     }
 
-    public function getPageInsights(): SocialProviderResponse
+    /**
+     * Page insight metrics to import. Facebook deprecated `page_engaged_users` and `page_posts_impressions`
+     * (an invalid metric makes the whole request fail with error #100), so only valid ones are listed here.
+     */
+    public const PAGE_INSIGHT_METRICS = ['page_post_engagements'];
+
+    public function getPageInsights(array $metrics = self::PAGE_INSIGHT_METRICS): SocialProviderResponse
     {
         $data = [
             'access_token' => $this->getAccessToken()['page_access_token'],
-            'metric' => 'page_post_engagements,page_posts_impressions', // facebook deprecated `page_engaged_users` metric
+            'metric' => implode(',', $metrics),
             'period' => 'day',
             'since' => Carbon::today('UTC')->subDays(90)->toDateString(),
             'until' => Carbon::today('UTC')->toDateString(),
