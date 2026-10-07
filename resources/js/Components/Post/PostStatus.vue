@@ -20,6 +20,7 @@ const classNames = computed(() => {
         'PUBLISHING': 'bg-violet-500',
         'SCHEDULED': 'bg-cyan-500',
         'FAILED': 'bg-red-500',
+        'PARTIALLY_FAILED': 'bg-orange-500',
     }[props.value]
 })
 
@@ -30,6 +31,7 @@ const name = computed(() => {
         'PUBLISHING': 'Publishing',
         'SCHEDULED': 'Scheduled',
         'FAILED': 'Failed',
+        'PARTIALLY_FAILED': 'Partially failed',
     }[props.value]
 })
 </script>

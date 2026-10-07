@@ -35,6 +35,10 @@ class PostResource extends JsonResource
             return 'PUBLISHING';
         }
 
+        if ($this->isFailed() && $this->hasSuccessfulPublications()) {
+            return 'PARTIALLY_FAILED';
+        }
+
         return $this->status->name;
     }
 }

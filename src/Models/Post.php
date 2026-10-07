@@ -81,6 +81,17 @@ class Post extends Model
         return $this->accounts()->wherePivot('errors', '!=', null)->exists();
     }
 
+    public function hasSuccessfulPublications(): bool
+    {
+        if ($this->relationLoaded('accounts')) {
+            return $this->accounts->contains(
+                fn (Account $account) => filled($account->pivot->provider_post_id)
+            );
+        }
+
+        return $this->accounts()->wherePivotNotNull('provider_post_id')->exists();
+    }
+
     public function canSchedule(): bool
     {
         // TODO: check if original content is not empty

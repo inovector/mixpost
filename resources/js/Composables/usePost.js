@@ -15,7 +15,7 @@ const usePost = () => {
             return false;
         }
 
-        return ['PUBLISHED', 'FAILED'].includes(post.value.status)
+        return ['PUBLISHED', 'FAILED', 'PARTIALLY_FAILED'].includes(post.value.status)
     })
 
     const isScheduleProcessing = computed(() => {

@@ -37,6 +37,54 @@ it('shows post list', function () {
         );
 });
 
+it('shows a partial failure when at least one account published successfully', function () {
+    $this->actingAs(test()->user);
+
+    $this->publishAssets();
+
+    $post = Post::factory()->state([
+        'status' => PostStatus::FAILED,
+    ])->create();
+
+    $publishedAccount = Account::factory()->create();
+    $failedAccount = Account::factory()->create();
+
+    $post->accounts()->attach($publishedAccount->id, [
+        'provider_post_id' => 'published-post-id',
+    ]);
+    $post->accounts()->attach($failedAccount->id, [
+        'errors' => json_encode(['Provider rejected the post']),
+    ]);
+
+    $this->get(route('mixpost.posts.index'))
+        ->assertInertia(fn (Assert $page) => $page
+            ->where('posts.data.0.id', $post->uuid)
+            ->where('posts.data.0.status', 'PARTIALLY_FAILED')
+        );
+});
+
+it('keeps failed status when no account published successfully', function () {
+    $this->actingAs(test()->user);
+
+    $this->publishAssets();
+
+    $post = Post::factory()->state([
+        'status' => PostStatus::FAILED,
+    ])->create();
+
+    $failedAccount = Account::factory()->create();
+
+    $post->accounts()->attach($failedAccount->id, [
+        'errors' => json_encode(['Provider rejected the post']),
+    ]);
+
+    $this->get(route('mixpost.posts.index'))
+        ->assertInertia(fn (Assert $page) => $page
+            ->where('posts.data.0.id', $post->uuid)
+            ->where('posts.data.0.status', 'FAILED')
+        );
+});
+
 it('shows create form', function () {
     $this->actingAs(test()->user);
 
